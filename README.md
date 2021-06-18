@@ -1,7 +1,7 @@
 # Zhaba-script-lang
  Exprssions test only (for now)
 
-
+```
 Test expression calculator with space char wieght:
 
 2 + 2 * 2 = 6
@@ -15,3 +15,4 @@ allowed symbols:
  numbers like: 0 666 54
  operators: +/*
  space: ' ' (for magic separation)
+```
