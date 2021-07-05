@@ -8,7 +8,7 @@ Test expression calculator with space char wieght:
 if spaces near operator ater equal '.. + ..' this is binary operator (operator with 2 operands)
 else operator concidered postfix or prefix depending on spaces near it:
   if operator looks like this '.. ++   ..' this is postfix operator (spaces pefore operator are less the after it)
-  else if operator looks like this '..   ++ ..' this is postfix operator (spaces pefore operator are less the after it)
+  else if operator looks like this '..   ++ ..' this is prefix operator (spaces pefore operator are less the after it)
 
 examples:
  2 + 2 = 2 + 2
