@@ -4,7 +4,7 @@ int main() {
   ExpParser prs;
   prs.settings["DEBUG"] = false;
 
-  std::string s = "++   ++  ++ ++1++ ++  ++   ++";
+  std::string s = "2++ + 4*4+4  *  0   ++";
   if (1) {
 
     int res = prs.calc(s);

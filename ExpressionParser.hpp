@@ -60,21 +60,21 @@ class ExpParser {
 
   void printExpTree(Exp* exp, std::string prefix = "") {
     if (IntLiteral* op = dynamic_cast<IntLiteral*>(exp)) {
-      std::cout << op->val << " <- int";
+      std::cout << op->val << "  int";
       std::cout << std::endl;
     }
 
     if (BinOperator* op = dynamic_cast<BinOperator*>(exp)) {
-      std::cout << op->val << " <- bin op " << op->priority << std::endl;
-      std::cout << prefix + "|__";
+      std::cout << op->val << "  bin: " << op->priority << std::endl;
+      std::cout << prefix + "|-- ";
       printExpTree(op->lhs, prefix + "|  ");
-      std::cout << prefix + "|__";
+      std::cout << prefix + "'-- ";
       printExpTree(op->rhs, prefix + "   ");
     }
     if (UnaryOperator* op = dynamic_cast<UnaryOperator*>(exp)) {
-      std::cout << op->val << " <- un op" << op->priority << std::endl;
-      std::cout << prefix + "|_";
-      printExpTree(op->child, prefix + "| ");
+      std::cout << op->val << (dynamic_cast<PrefixOperator*>(op)?"  prefix: ":"  postfix: ") << op->priority << std::endl;
+      std::cout << prefix + "'-- ";
+      printExpTree(op->child, prefix + "   ");
     }
   }
 
