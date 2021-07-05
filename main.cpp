@@ -1,10 +1,10 @@
-#include "ExpressionParser.h"
+#include "ExpressionParser.hpp"
 
 int main() {
   ExpParser prs;
   prs.settings["DEBUG"] = false;
 
-  std::string s = "2+3 * 5++";
+  std::string s = "++   ++  ++ ++1++ ++  ++   ++";
   if (1) {
 
     int res = prs.calc(s);
