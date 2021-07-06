@@ -1,4 +1,5 @@
-#include "TokenParser.hpp"
+#include "Lexer.hpp"
+#include "TreeLib/TreePrinterASCII.h"
 
 class ExpParser {
   struct ExpParserError {
@@ -58,21 +59,50 @@ class ExpParser {
         : UnaryOperator(new_pos, new_val, new_priority, new_child) {}
   };
 
-  void printExpTree(Exp* exp, std::string prefix = "") {
+  TreeNode<std::string>* toGenericTree(Exp* exp) {
+    auto node = new TreeNode<std::string>;
     if (IntLiteral* op = dynamic_cast<IntLiteral*>(exp)) {
-      std::cout << op->val << "  int";
-      std::cout << std::endl;
+      node->data = "'" + std::to_string(op->val) + "' int";
     }
 
     if (BinOperator* op = dynamic_cast<BinOperator*>(exp)) {
-      std::cout << op->val << "  bin: " << op->priority << std::endl;
+      node->data = "'" + op->val + "' bin " + std::to_string((int)op->priority);
+      node->branches.push_back(toGenericTree(op->lhs));
+      node->branches.push_back(toGenericTree(op->rhs));
+    }
+    if (UnaryOperator* op = dynamic_cast<UnaryOperator*>(exp)) {
+      node->data = "'" + op->val +
+                   (dynamic_cast<PrefixOperator*>(op) ? "' pref " : "' post ") +
+                   std::to_string((int)op->priority);
+      node->branches.push_back(toGenericTree(op->child));
+    }
+    return node;
+  }
+  void printGenericTree(Exp* exp) {
+    auto tree = toGenericTree(exp);
+    std::cout << "ascii" << std::endl;
+    printASCII(tree);
+    tree->inorderVisit([](TreeNode<std::string>* node) { node->~TreeNode(); });
+  }
+  void printExpTree(Exp* exp, std::string prefix = "") {
+    if (IntLiteral* op = dynamic_cast<IntLiteral*>(exp)) {
+      std::cout << "'" + std::to_string(op->val) + "' int" << std::endl;
+    }
+
+    if (BinOperator* op = dynamic_cast<BinOperator*>(exp)) {
+      std::cout << "'" + op->val + "' bin " + std::to_string((int)op->priority)
+                << std::endl;
       std::cout << prefix + "|-- ";
       printExpTree(op->lhs, prefix + "|  ");
       std::cout << prefix + "'-- ";
       printExpTree(op->rhs, prefix + "   ");
     }
     if (UnaryOperator* op = dynamic_cast<UnaryOperator*>(exp)) {
-      std::cout << op->val << (dynamic_cast<PrefixOperator*>(op)?"  prefix: ":"  postfix: ") << op->priority << std::endl;
+      std::cout << "'" + op->val +
+                       (dynamic_cast<PrefixOperator*>(op) ? "' pref "
+                                                          : "' post ") +
+                       std::to_string((int)op->priority)
+                << std::endl;
       std::cout << prefix + "'-- ";
       printExpTree(op->child, prefix + "   ");
     }
@@ -83,23 +113,27 @@ class ExpParser {
       {"DEBUG", true}, {"SHOW_TREE", true}, {"SHOW_ERROR", true}};
 
  private:
-  const double INF = 1000 * 1000 * 1000;
+  //
+  const double INF = 1000000000000.0;
   const double priority_offset = 100;
-
+  const double parentheses_offset = 1000000;
   std::unordered_map<std::string, double> bin_priority_table = {
-      {"::", 1},  {".", 2},   {"->", 2},  {"*", 5},   {"/", 5},    {"%", 5},
-      {"+", 6},   {"-", 6},   {"<<", 7},  {">>", 7},  {"<=>", 8},  {"<", 9},
-      {"<=", 9},  {">", 9},   {">=", 9},  {"==", 10}, {"!=", 10},  {"&", 11},
-      {"^", 12},  {"|", 13},  {"&&", 14}, {"||", 15}, {"=", 16},   {"+=", 16},
-      {"-=", 16}, {"*=", 16}, {"/=", 16}, {"%=", 16}, {"<<=", 16}, {">>=", 16},
-      {"&=", 16}, {"^=", 16}, {"|=", 16}, {",", 17}};
+      {"::", 1},   {".", 2},   {"->", 2},  {"*", 5},   {"/", 5},   {"%", 5},
+      {"%%", 5},   {"+", 6},   {"-", 6},   {"<<", 7},  {">>", 7},  {"<=>", 8},
+      {"<", 9},    {"<=", 9},  {">", 9},   {">=", 9},  {"==", 10}, {"!=", 10},
+      {"&", 11},   {"^", 12},  {"|", 13},  {"&&", 14}, {"||", 15}, {"=", 16},
+      {"+=", 16},  {"-=", 16}, {"*=", 16}, {"/=", 16}, {"%=", 16}, {"<<=", 16},
+      {">>=", 16}, {"&=", 16}, {"^=", 16}, {"|=", 16}, {",", 17}};
   std::unordered_map<std::string, double> prefix_priority_table = {
-      {"++", 3}, {"--", 3}, {"!", 3}, {"~", 3}, {"*", 3}};
+      {"++", 3}, {"--", 3}, {"!", 3}, {"~", 3}, {"*", 3},  {"-", 3}};
   std::unordered_map<std::string, double> postfix_priority_table = {{"++", 2},
                                                                     {"--", 2}};
 
   Exp* build_exp(const std::vector<Exp*>::iterator begin,
                  const std::vector<Exp*>::iterator end, int depth = 0) {
+    if (distance(begin, end) == 0)
+      throw ExpParserError(0, "Unknown error (empty build_exp range)");
+
     if (distance(begin, end) == 1) {
       if (IntLiteral* op = dynamic_cast<IntLiteral*>(*begin))
         return op;
@@ -107,19 +141,19 @@ class ExpParser {
         throw ExpParserError(op->pos, "Expected int literal");
     }
 
-    int low_priority = INF;
+    double max_priority = -INF;
     std::vector<Exp*>::iterator pos = end;
     bool is_bin = false;
     for (auto i = begin; i != end; ++i) {
       if (BinOperator* op = dynamic_cast<BinOperator*>(*i)) {
-        if (op->priority < low_priority) {
-          low_priority = op->priority;
+        if (op->priority >= max_priority) {
+          max_priority = op->priority;
           pos = i;
           is_bin = true;
         }
       } else if (UnaryOperator* op = dynamic_cast<UnaryOperator*>(*i)) {
-        if (op->priority < low_priority) {
-          low_priority = op->priority;
+        if (op->priority >= max_priority) {
+          max_priority = op->priority;
           pos = i;
           is_bin = false;
         }
@@ -134,9 +168,10 @@ class ExpParser {
                              build_exp(pos + 1, end, depth + 1));
     } else {
       if (PrefixOperator* pref_op = dynamic_cast<PrefixOperator*>(*pos)) {
-        if (pos != begin) 
-          throw ExpParserError(pref_op->pos, "Unexpected stuff before prefix operator");
-        
+        if (pos != begin)
+          throw ExpParserError(pref_op->pos,
+                               "Unexpected stuff before prefix operator");
+
         return new PrefixOperator(pref_op->pos, pref_op->val, pref_op->priority,
                                   build_exp(pos + 1, end, depth + 1));
       } else {
@@ -153,7 +188,15 @@ class ExpParser {
   std::vector<Exp*> evaluate(const std::vector<Token>::iterator begin,
                              const std::vector<Token>::iterator end) {
     std::vector<Exp*> res;
+    int pcount = 0;
     for (auto i = begin; i != end; ++i) {
+      if (i->token == "p(")
+        ++pcount;
+      else if (i->token == "p)")
+        --pcount;
+      if (pcount < 0) throw ExpParserError(i->pos, "Too many ')'");
+      int bpriority = -parentheses_offset * pcount;
+
       if (i->token == "operator") {
         double spaces_lhs = 0, spaces_rhs = 0;
         if (i != begin) {
@@ -167,32 +210,42 @@ class ExpParser {
         if (spaces_lhs == spaces_rhs) {
           if (!bin_priority_table.count(i->val))
             throw ExpParserError(i->pos, "Unknown binary operator");
-          res.push_back(new BinOperator(
-              i->pos, i->val,
-              (-priority_offset) * spaces_lhs + bin_priority_table[i->val], 0,
-              0));
+          res.push_back(new BinOperator(i->pos, i->val,
+                                        (priority_offset)*spaces_lhs +
+                                            bin_priority_table[i->val] +
+                                            bpriority,
+                                        0, 0));
         } else {
-          if (!postfix_priority_table.count(i->val))
-            throw ExpParserError(i->pos, "Unknown postfix operator");
           if (spaces_lhs < spaces_rhs) {
-            res.push_back(
-                new PostfixOperator(i->pos, i->val,
-                                    (-priority_offset) * spaces_lhs +
-                                        postfix_priority_table[i->val],
-                                    0));
+            if (!postfix_priority_table.count(i->val))
+              throw ExpParserError(i->pos, "Unknown postfix operator");
+            res.push_back(new PostfixOperator(
+                i->pos, i->val,
+                (priority_offset)*spaces_lhs + postfix_priority_table[i->val] +
+                    bpriority,
+                0));
           } else {
             if (!prefix_priority_table.count(i->val))
               throw ExpParserError(i->pos, "Unknown prefix operator");
 
-            res.push_back(new PrefixOperator(
-                i->pos, i->val,
-                (-priority_offset) * spaces_rhs + prefix_priority_table[i->val],
-                0));
+            res.push_back(new PrefixOperator(i->pos, i->val,
+                                             (priority_offset)*spaces_rhs +
+                                                 prefix_priority_table[i->val] +
+                                                 bpriority,
+                                             0));
           }
         }
       } else if (i->token == "int") {
         res.push_back(new IntLiteral(i->pos, stoi(i->val)));
       }
+    }
+    if (pcount) {
+      if (pcount > 0)
+        throw ExpParserError((begin + std::distance(begin, end) - 1)->pos,
+                             "Not enought ')'");
+      else
+        throw ExpParserError((begin + std::distance(begin, end) - 1)->pos,
+                             "Too many ')'");
     }
     return res;
   }
@@ -205,28 +258,42 @@ class ExpParser {
       int rhs = calc_exp(op->rhs);
 
       if (op->val == "+") return lhs + rhs;
+      if (op->val == "-") return lhs - rhs;
       if (op->val == "*") return lhs * rhs;
+      if (op->val == "/") return lhs / rhs;
+      if (op->val == "%") return lhs % rhs;
+      if (op->val == "%%") return (lhs % rhs) == 0;
+      if (op->val == "&&") return lhs && rhs;
+      if (op->val == "||") return lhs || rhs;
+      if (op->val == "==") return lhs == rhs;
     }
 
-    if (UnaryOperator* op = dynamic_cast<UnaryOperator*>(exp))
+    if (UnaryOperator* op = dynamic_cast<UnaryOperator*>(exp)) {
       if (op->val == "++") return calc_exp(op->child) + 1;
-
-    return -1;
+      if (op->val == "++") return calc_exp(op->child) - 1;
+      if (op->val == "--") return calc_exp(op->child) - 1;
+      if (op->val == "-") return -calc_exp(op->child);
+      if (op->val == "!") return !calc_exp(op->child);
+    }
+    return -666;
   }
 
  public:
   int calc(const std::string& str) {
     try {
-      Parser parser({
+      Lexer parser({
           {"int", R"(([0-9]+))"},
           {"space", R"((\ +))"},
           {"operator", R"(([\+\-\*\\\%\<\>\=\^\&\|\/\!\#\$\@\?\:]+))"},
+          {"p(", R"((\())"},
+          {"p)", R"((\)))"},
       });
       auto parse_res = parser.parse(str, settings["DEBUG"]);
       auto exp_res = evaluate(parse_res.begin(), parse_res.end());
 
       Exp* exp = build_exp(exp_res.begin(), exp_res.end());
       if (settings["SHOW_TREE"]) printExpTree(exp);
+      if (settings["SHOW_COOL_TREE"]) printGenericTree(exp);
 
       return calc_exp(exp);
     } catch (ExpParserError error) {

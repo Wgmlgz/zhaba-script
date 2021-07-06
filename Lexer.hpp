@@ -21,10 +21,10 @@ struct Token {
     pos = new_pos;
   }
 };
-class Parser {
+class Lexer {
   std::vector<std::pair<std::string, std::string>> tokens;
 public:
-  Parser(const std::vector<std::pair<std::string, std::string>>& new_tokens) { tokens = new_tokens; }
+  Lexer(const std::vector<std::pair<std::string, std::string>>& new_tokens) { tokens = new_tokens; }
   std::vector<Token> parse(const std::string& str, const bool DEBUG = false) {
     std::string tokens_str = std::accumulate(tokens.begin(), tokens.end(), std::string(),
       [](std::string& ss, std::pair<std::string, std::string>& s) {
@@ -39,12 +39,12 @@ public:
       std::smatch m = *i;
 
       std::string log_str;
-      log_str += "val:\"";
+      log_str += "val:'";
       std::string token_val = m.str();
       log_str += token_val;
-      log_str += "\"    pos:";
+      log_str += "' pos:";
       log_str += std::to_string(m.position());
-      log_str += "    gid: ";
+      log_str += " gid: ";
 
       int index;
       for (auto i = 1; i < m.size(); ++i) if (!m[i].str().empty()) {
