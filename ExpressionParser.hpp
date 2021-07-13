@@ -1,5 +1,66 @@
+#pragma once
+#include "SyntaxTreeNodes.hpp"
 #include "Lexer.hpp"
 #include "TreeLib/TreePrinterASCII.h"
+
+struct Exp {
+  int pos;
+  Exp(int new_pos = 0) { pos = new_pos; }
+  virtual ~Exp() {}
+};
+struct IntLiteral : public Exp {
+  int val;
+  IntLiteral(int new_pos, int new_val) {
+    pos = new_pos;
+    val = new_val;
+  }
+};
+struct Operator : public Exp {
+  std::string val;
+  double priority;
+  size_t spl = 0, spr = 0;
+  Operator() {}
+  Operator(int new_pos, std::string new_val, double new_priority,
+           size_t new_spl, size_t new_spr) {
+    pos = new_pos;
+    val = new_val;
+    priority = new_priority;
+    spl = new_spl;
+    spr = new_spr;
+  }
+};
+struct BinOperator : public Operator {
+  Exp* lhs;
+  Exp* rhs;
+  BinOperator(int new_pos, std::string new_val, double new_priority,
+              Exp* new_lhs, Exp* new_rhs) {
+    pos = new_pos;
+    val = new_val;
+    priority = new_priority;
+    lhs = new_lhs;
+    rhs = new_rhs;
+  }
+};
+struct UnaryOperator : public Operator {
+  Exp* child;
+  UnaryOperator(int new_pos, std::string new_val, double new_priority,
+                Exp* new_child) {
+    pos = new_pos;
+    val = new_val;
+    priority = new_priority;
+    child = new_child;
+  }
+};
+struct PrefixOperator : public UnaryOperator {
+  PrefixOperator(int new_pos, std::string new_val, double new_priority,
+                 Exp* new_child)
+      : UnaryOperator(new_pos, new_val, new_priority, new_child) {}
+};
+struct PostfixOperator : public UnaryOperator {
+  PostfixOperator(int new_pos, std::string new_val, double new_priority,
+                  Exp* new_child)
+      : UnaryOperator(new_pos, new_val, new_priority, new_child) {}
+};
 
 class ExpParser {
   struct ExpParserError {
@@ -10,55 +71,7 @@ class ExpParser {
       message = new_message;
     }
   };
-  struct Exp {
-    int pos;
-    Exp(int new_pos = 0) { pos = new_pos; }
-    virtual ~Exp() {}
-  };
-  struct IntLiteral : public Exp {
-    int val;
-    IntLiteral(int new_pos, int new_val) {
-      pos = new_pos;
-      val = new_val;
-    }
-  };
-  struct BinOperator : public Exp {
-    std::string val;
-    Exp* lhs;
-    Exp* rhs;
-    double priority;
-    BinOperator(int new_pos, std::string new_val, double new_priority,
-                Exp* new_lhs, Exp* new_rhs) {
-      pos = new_pos;
-      val = new_val;
-      priority = new_priority;
-      lhs = new_lhs;
-      rhs = new_rhs;
-    }
-  };
-  struct UnaryOperator : public Exp {
-    std::string val;
-    Exp* child;
-    int priority;
-    UnaryOperator(int new_pos, std::string new_val, double new_priority,
-                  Exp* new_child) {
-      pos = new_pos;
-      val = new_val;
-      priority = new_priority;
-      child = new_child;
-    }
-  };
-  struct PrefixOperator : public UnaryOperator {
-    PrefixOperator(int new_pos, std::string new_val, double new_priority,
-                   Exp* new_child)
-        : UnaryOperator(new_pos, new_val, new_priority, new_child) {}
-  };
-  struct PostfixOperator : public UnaryOperator {
-    PostfixOperator(int new_pos, std::string new_val, double new_priority,
-                    Exp* new_child)
-        : UnaryOperator(new_pos, new_val, new_priority, new_child) {}
-  };
-
+  
   TreeNode<std::string>* toGenericTree(Exp* exp) {
     auto node = new TreeNode<std::string>;
     if (IntLiteral* op = dynamic_cast<IntLiteral*>(exp)) {
@@ -80,32 +93,15 @@ class ExpParser {
   }
   void printGenericTree(Exp* exp) {
     auto tree = toGenericTree(exp);
-    std::cout << "ascii" << std::endl;
+    std::cout << "ascii:" << std::endl;
     printASCII(tree);
-    tree->inorderVisit([](TreeNode<std::string>* node) { node->~TreeNode(); });
+    deleteTree(tree);
   }
   void printExpTree(Exp* exp, std::string prefix = "") {
-    if (IntLiteral* op = dynamic_cast<IntLiteral*>(exp)) {
-      std::cout << "'" + std::to_string(op->val) + "' int" << std::endl;
-    }
-
-    if (BinOperator* op = dynamic_cast<BinOperator*>(exp)) {
-      std::cout << "'" + op->val + "' bin " + std::to_string((int)op->priority)
-                << std::endl;
-      std::cout << prefix + "|-- ";
-      printExpTree(op->lhs, prefix + "|  ");
-      std::cout << prefix + "'-- ";
-      printExpTree(op->rhs, prefix + "   ");
-    }
-    if (UnaryOperator* op = dynamic_cast<UnaryOperator*>(exp)) {
-      std::cout << "'" + op->val +
-                       (dynamic_cast<PrefixOperator*>(op) ? "' pref "
-                                                          : "' post ") +
-                       std::to_string((int)op->priority)
-                << std::endl;
-      std::cout << prefix + "'-- ";
-      printExpTree(op->child, prefix + "   ");
-    }
+    auto tree = toGenericTree(exp);
+    std::cout << "ascii:" << std::endl;
+    printCompact(tree);
+    deleteTree(tree);
   }
 
  public:
@@ -113,20 +109,23 @@ class ExpParser {
       {"DEBUG", true}, {"SHOW_TREE", true}, {"SHOW_ERROR", true}};
 
  private:
-  //
   const double INF = 1000000000000.0;
   const double priority_offset = 100;
   const double parentheses_offset = 1000000;
-  std::unordered_map<std::string, double> bin_priority_table = {
+  std::unordered_map<std::string, double> bin_operators = {
       {"::", 1},   {".", 2},   {"->", 2},  {"*", 5},   {"/", 5},   {"%", 5},
       {"%%", 5},   {"+", 6},   {"-", 6},   {"<<", 7},  {">>", 7},  {"<=>", 8},
       {"<", 9},    {"<=", 9},  {">", 9},   {">=", 9},  {"==", 10}, {"!=", 10},
       {"&", 11},   {"^", 12},  {"|", 13},  {"&&", 14}, {"||", 15}, {"=", 16},
       {"+=", 16},  {"-=", 16}, {"*=", 16}, {"/=", 16}, {"%=", 16}, {"<<=", 16},
       {">>=", 16}, {"&=", 16}, {"^=", 16}, {"|=", 16}, {",", 17}};
-  std::unordered_map<std::string, double> prefix_priority_table = {
+  std::unordered_set<std::string> operators = {
+      "::", ".",  "->", "*",  "/",  "%",   "%%",  "+",  "-",  "<<", ">>", "<=>",
+      "<",  "<=", ">",  ">=", "==", "!=",  "&",   "^",  "|",  "&&", "||", "=",
+      "+=", "-=", "*=", "/=", "%=", "<<=", ">>=", "&=", "^=", "|=", ",", "++", "--"};
+  std::unordered_map<std::string, double> prefix_operators = {
       {"++", 3}, {"--", 3}, {"!", 3}, {"~", 3}, {"*", 3},  {"-", 3}};
-  std::unordered_map<std::string, double> postfix_priority_table = {{"++", 2},
+  std::unordered_map<std::string, double> postfix_operators = {{"++", 2},
                                                                     {"--", 2}};
 
   Exp* build_exp(const std::vector<Exp*>::iterator begin,
@@ -142,52 +141,54 @@ class ExpParser {
     }
 
     double max_priority = -INF;
-    std::vector<Exp*>::iterator pos = end;
     bool is_bin = false;
+    auto pos = end;
+    int true_priority = 0;
     for (auto i = begin; i != end; ++i) {
-      if (BinOperator* op = dynamic_cast<BinOperator*>(*i)) {
-        if (op->priority >= max_priority) {
-          max_priority = op->priority;
-          pos = i;
-          is_bin = true;
+      if (Operator* op = dynamic_cast<Operator*>(*i)) {
+        true_priority = op->priority;
+        if (i == begin) {
+          if (!prefix_operators.count(op->val))
+            throw ExpParserError(op->pos, "Unknown prefix operator");
+
+          true_priority +=
+              2 * op->spr * priority_offset + prefix_operators[op->val];
+        } else if (i == end-1) {
+          if (!postfix_operators.count(op->val))
+            throw ExpParserError(op->pos, "Unknown postfix operator");
+
+          true_priority +=
+              2 * op->spl * priority_offset + postfix_operators[op->val];
+        } else {
+          if (!bin_operators.count(op->val))
+            throw ExpParserError(op->pos, "Unknown binary operator");
+
+          true_priority += (op->spl + op->spr) * priority_offset +
+                           bin_operators[op->val];
         }
-      } else if (UnaryOperator* op = dynamic_cast<UnaryOperator*>(*i)) {
-        if (op->priority >= max_priority) {
-          max_priority = op->priority;
+        if (true_priority > max_priority) {
+          max_priority = true_priority;
           pos = i;
-          is_bin = false;
         }
       }
     }
     if (pos == end) throw ExpParserError((*begin)->pos, "Expected operator");
-
-    if (is_bin) {
-      BinOperator* op = dynamic_cast<BinOperator*>(*pos);
-      return new BinOperator(op->pos, op->val, op->priority,
+    auto op = static_cast<Operator*>(*pos);
+    if (pos == begin) {
+      return new PrefixOperator(op->pos, op->val, max_priority,
+                                build_exp(pos + 1, end, depth + 1));
+    } else if (pos == end-1) {
+      return new PostfixOperator(op->pos, op->val, max_priority,
+                                 build_exp(begin, pos, depth + 1));
+    } else {
+      return new BinOperator(op->pos, op->val, max_priority,
                              build_exp(begin, pos, depth + 1),
                              build_exp(pos + 1, end, depth + 1));
-    } else {
-      if (PrefixOperator* pref_op = dynamic_cast<PrefixOperator*>(*pos)) {
-        if (pos != begin)
-          throw ExpParserError(pref_op->pos,
-                               "Unexpected stuff before prefix operator");
-
-        return new PrefixOperator(pref_op->pos, pref_op->val, pref_op->priority,
-                                  build_exp(pos + 1, end, depth + 1));
-      } else {
-        PostfixOperator* post_op = dynamic_cast<PostfixOperator*>(*pos);
-        if (pos + 1 != end)
-          throw ExpParserError(post_op->pos,
-                               "Unexpected stuff after postfix operator");
-        return new PostfixOperator(post_op->pos, post_op->val,
-                                   post_op->priority,
-                                   build_exp(begin, pos, depth + 1));
-      }
     }
   }
   std::vector<Exp*> evaluate(const std::vector<Token>::iterator begin,
                              const std::vector<Token>::iterator end) {
-    std::vector<Exp*> res;
+    auto res = std::vector<Exp*>{};
     int pcount = 0;
     for (auto i = begin; i != end; ++i) {
       if (i->token == "p(")
@@ -197,44 +198,20 @@ class ExpParser {
       if (pcount < 0) throw ExpParserError(i->pos, "Too many ')'");
       int bpriority = -parentheses_offset * pcount;
 
-      if (i->token == "operator") {
+      if (i->token == "id" and operators.count(i->val)) {
+        // get spaces
         double spaces_lhs = 0, spaces_rhs = 0;
         if (i != begin) {
           if ((i - 1)->token == "space") spaces_lhs = (i - 1)->val.size();
-        } else
+        } else {
           spaces_lhs = INF;
+        }
         if (i != end - 1) {
           if ((i + 1)->token == "space") spaces_rhs = (i + 1)->val.size();
-        } else
-          spaces_rhs = INF;
-        if (spaces_lhs == spaces_rhs) {
-          if (!bin_priority_table.count(i->val))
-            throw ExpParserError(i->pos, "Unknown binary operator");
-          res.push_back(new BinOperator(i->pos, i->val,
-                                        (priority_offset)*spaces_lhs +
-                                            bin_priority_table[i->val] +
-                                            bpriority,
-                                        0, 0));
         } else {
-          if (spaces_lhs < spaces_rhs) {
-            if (!postfix_priority_table.count(i->val))
-              throw ExpParserError(i->pos, "Unknown postfix operator");
-            res.push_back(new PostfixOperator(
-                i->pos, i->val,
-                (priority_offset)*spaces_lhs + postfix_priority_table[i->val] +
-                    bpriority,
-                0));
-          } else {
-            if (!prefix_priority_table.count(i->val))
-              throw ExpParserError(i->pos, "Unknown prefix operator");
-
-            res.push_back(new PrefixOperator(i->pos, i->val,
-                                             (priority_offset)*spaces_rhs +
-                                                 prefix_priority_table[i->val] +
-                                                 bpriority,
-                                             0));
-          }
+          spaces_rhs = INF;
         }
+        res.push_back(new Operator(i->pos, i->val, bpriority, spaces_lhs, spaces_rhs));
       } else if (i->token == "int") {
         res.push_back(new IntLiteral(i->pos, stoi(i->val)));
       }
@@ -284,7 +261,9 @@ class ExpParser {
       Lexer parser({
           {"int", R"(([0-9]+))"},
           {"space", R"((\ +))"},
-          {"operator", R"(([\+\-\*\\\%\<\>\=\^\&\|\/\!\#\$\@\?\:]+))"},
+          {"id", R"(([_a-zA-Z][_a-zA-Z0-9]+|[\+\-\*\\\%\<\>\=\^\&\|\/\!\#\$\@\?]+))"},
+          {"block decl", R"((\:))"},
+          {"line end", R"((\n))"},
           {"p(", R"((\())"},
           {"p)", R"((\)))"},
       });

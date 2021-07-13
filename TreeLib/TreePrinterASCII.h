@@ -137,3 +137,24 @@ void printASCII(TreeNode<T>* node) {
     for (auto& i : renderRec(node))
         std::cout << i << std::endl;
 }
+template <typename T>
+std::string renderCompact(TreeNode<T>* node, std::string prefix = "") {
+  std::string res;
+
+  res += node->to_str() + "\n";
+  if (node->isEnd()) return res;
+  for (auto i = node->branches.begin(); i != node->branches.end(); ++i) {
+    if (i == node->branches.end() - 1) {
+      res += prefix + "'-- ";
+      res += renderCompact(*i, prefix + "   ");
+    } else {
+      res += prefix + "|-- ";
+      res += renderCompact(*i, prefix + "|  ");
+    }
+  }
+  return res;
+}
+template<typename T>
+void printCompact(TreeNode<T>* node) {
+  std::cout << renderCompact(node) << std::endl;
+}

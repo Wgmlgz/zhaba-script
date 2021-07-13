@@ -70,3 +70,8 @@ public:
     return ret;
   }
 };
+template<typename T>
+void deleteTree(TreeNode<T>* node) {
+  for(auto i : node->branches) delete i;
+  delete node;
+}
