@@ -1,10 +1,11 @@
 // #include "ExpressionParser.hpp"
 #include "Lexer.hpp"
-#include "TreeLib/TreePrinterASCII.h"
+#include "TreeLib/TreePrinterASCII.hpp"
 #include <string>
 #include <vector>
 #include <sstream>
 #include <utility>
+#include <stack>
 
 typedef std::vector<Token>::iterator tokeniter;
 
@@ -13,23 +14,29 @@ struct ASTNode {
 };
 struct ASTLine : public ASTNode {
   tokeniter begin, end;
-  ASTLine(tokeniter new_begin, tokeniter new_end): begin{new_begin}, end{new_end} {}
+  ASTLine(tokeniter new_begin, tokeniter new_end) : begin{ new_begin }, end{ new_end } {}
 };
 struct ASTBlock : public ASTNode {
   std::vector<ASTNode*> nodes;
+  size_t offset = 0;
+  bool undef_offset = false;
+  size_t line;
+  ASTBlock(size_t new_offset = 0, bool new_undef_offset = false,
+    size_t new_line = 0)
+    : offset{ new_offset }, undef_offset{ new_undef_offset }, line{ new_line } {}
 };
 
 class ASTParser {
   std::string lineToStr(tokeniter begin, tokeniter end) {
-    std::string res{"'"};
-    for(auto i = begin; i != end; ++i) res += i->val;
+    std::string res{ "'" };
+    for (auto i = begin; i != end; ++i) res += i->val;
     return res + "'";
   }
   TreeNode<std::string>* toGenericTree(ASTNode* node) {
     auto res = new TreeNode<std::string>;
     if (ASTBlock* block = dynamic_cast<ASTBlock*>(node)) {
       res->data = "[block]";
-      for(auto i : block->nodes) {
+      for (auto i : block->nodes) {
         res->branches.push_back(toGenericTree(i));
       }
     } else {
@@ -38,12 +45,16 @@ class ASTParser {
     }
     return res;
   }
-  std::pair<ASTBlock*, tokeniter> parseBlock(size_t offset, tokeniter begin, tokeniter end) {
+  ASTBlock* parseBlock(tokeniter begin, tokeniter end) {
+    std::stack<ASTBlock*> st;
+    auto root = new ASTBlock;
+    st.emplace(root);
     auto cur = begin;
-    auto block = new ASTBlock;
 
-    for(;;) {
-      auto block_begin = cur;
+    int line_n = -1;
+    for (;;) {
+      printCompact(toGenericTree(root));
+      if (cur == end) break;
       size_t line_offset = 0;
       if (cur->token == "space") {
         line_offset = cur->val.size();
@@ -51,51 +62,78 @@ class ASTParser {
       }
       if (cur->token == "line end") {
         ++cur;
+        ++line_n;
         continue;
       }
-      if (line_offset > offset) {
-        auto tmp = parseBlock(line_offset, block_begin, end);
-        block->nodes.push_back(tmp.first);
-        cur = tmp.second;
-        if (cur == end) return {block, end};
-      } else if (line_offset < offset) {
-        return {block, cur};
-      }
+      std::cout << line_offset << std::endl;
       tokeniter line_begin = cur, line_end = end;
       bool exit = false;
-      for(;;) {
+      for (;;) {
         if (cur == end) {
           exit = true;
           break;
         }
-        // if (cur->token == "block decl") {break;}
-        if (cur->token == "line end") {break;}
+        if (cur->token == "new block") {
+          break;
+        }
+        if (cur->token == "line end") {
+          break;
+        }
         ++cur;
       }
       line_end = cur;
-      block->nodes.push_back(new ASTLine(line_begin, line_end));
-      if(cur == end) {
-        return {block, end};
+      // cur at new line
+      if (line_n != st.top()->line) {
+        while (st.top()->undef_offset ? line_offset <= st.top()->offset
+          : line_offset < st.top()->offset) {
+          st.pop();
+        }
+        if (st.top()->undef_offset) {
+          if (line_offset > st.top()->offset) {
+            st.top()->offset = line_offset;
+            st.top()->undef_offset = false;
+          }
+        }
+        if (line_offset > st.top()->offset) {
+          auto tmp = new ASTBlock(line_offset, false, line_n);
+          st.top()->nodes.push_back(tmp);
+          st.emplace(tmp);
+        }
+        if (line_begin != line_end)
+          st.top()->nodes.push_back(new ASTLine(line_begin, line_end));
+      } else {
+        if (line_begin != line_end)
+          st.top()->nodes.push_back(new ASTLine(line_begin, line_end));
+      }
+      if (cur == end) break;
+      if (cur->token == "new block") {
+        auto tmp = new ASTBlock(st.top()->offset, true, line_n);
+        st.top()->nodes.push_back(tmp);
+        st.emplace(tmp);
+      }
+      if (cur->token == "line end") {
+        ++line_n;
       }
       ++cur;
     }
+    return root;
   }
 
- public:
+public:
   void parse(const std::string& str) {
     Lexer parser({
         {"int", R"(([0-9]+))"},
         {"space", R"((\ +))"},
         {"id",
-         R"(([_a-zA-Z][_a-zA-Z0-9]+|[\+\-\*\\\%\<\>\=\^\&\|\/\!\#\$\@\?]+))"},
-        {"block decl", R"((\:))"},
+         R"(([_a-zA-Z][_a-zA-Z0-9]*|[\.\+\-\*\\\%\<\>\=\^\&\|\/\!\#\$\@\?]+))"},
+        {"new block", R"((\:))"},
         {"line end", R"((\n))"},
         {"p(", R"((\())"},
         {"p)", R"((\)))"},
-    });
+      });
     auto parse_res = parser.parse(str, true);
-    auto block_parse_res = parseBlock(0, parse_res.begin(), parse_res.end());
+    auto block_parse_res = parseBlock(parse_res.begin(), parse_res.end());
 
-    printCompact(toGenericTree(block_parse_res.first));
+    printCompact(toGenericTree(block_parse_res));
   }
 };
