@@ -1,16 +1,47 @@
 #pragma once
 #include "Lexer.hpp"
 #include <set>
+#include <utility>
 #include "TreeLib/TreePrinterASCII.hpp"
+#include "OperatorTables.hpp"
+
+struct Type {
+  bool is_const = false;
+  std::string type = "undef";
+  std::vector<std::string> template_args;
+  virtual ~Type() {}
+};
+
+// struct Str : public Type { Str() { name = "str"; } };
+// auto Str_T = new Str;
+
+// template<class... args>
+// struct Typle : public Type { std::tuple<args...> val; };
+// auto Typle_T = new Typle<>;
+// struct Any : public Type {};
+// struct Void : public Type {};
+// template<typename T>
+// struct Vec : public Type {
+//   std::vector<T> val;
+// };
+// Vec<Any>* Vec_T = new Vec<Any>;
 
 struct Exp {
   int pos;
+  Type type;
   Exp(int new_pos = 0) { pos = new_pos; }
   virtual ~Exp() {}
 };
 struct IntLiteral : public Exp {
-  int val;
+  int64_t val;
   IntLiteral(int new_pos, int new_val) {
+    pos = new_pos;
+    val = new_val;
+  }
+};
+struct StrLiteral : public Exp {
+  std::string val;
+  StrLiteral(int new_pos, std::string new_val) {
     pos = new_pos;
     val = new_val;
   }
@@ -91,6 +122,8 @@ class ExpParser {
         std::to_string((int)op->priority);
       node->branches.push_back(toGenericTree(op->child));
     }
+    node->data += " type: " + exp->type.type;
+    if (exp->type.is_const) node->data += " const";
     return node;
   }
   void printGenericTree(Exp* exp) {
@@ -203,12 +236,12 @@ private:
       }
       bool lhs = false, rhs = false;
       if (i->token == "space") {
-        if (i != begin) if (std::set<std::string>{"p)", "int"}.count((i - 1)->token))
+        if (i != begin) if (std::set<std::string>{"p)", "int", "str"}.count((i - 1)->token))
           lhs = true;
-        if (i + 1 != end) if (std::set<std::string>{"p(", "int"}.count((i + 1)->token))
+        if (i + 1 != end) if (std::set<std::string>{"p(", "int", "str"}.count((i + 1)->token))
           rhs = true;
       } else {
-        if (i != begin) if (std::set<std::string>{"p)", "int"}.count((i - 1)->token))
+        if (i != begin) if (std::set<std::string>{"p)", "int", "str"}.count((i - 1)->token))
           lhs = true;
         // if (std::set<std::string>{"p(", "int", "id"}.count(i->token))
         //   rhs = true;
@@ -241,6 +274,8 @@ private:
         res.push_back(new Operator(i->pos, i->val, bpriority, spaces_lhs, spaces_rhs));
       } else if (i->token == "int") {
         res.push_back(new IntLiteral(i->pos, stoi(i->val)));
+      } else if (i->token == "str") {
+        res.push_back(new StrLiteral(i->pos, i->val.substr(1, i->val.size() - 2)));
       }
     }
     if (pcount) {
@@ -254,12 +289,12 @@ private:
     return res;
   }
 
-  int calc_exp(Exp* exp) {
+  int calcExp(Exp* exp) {
     if (IntLiteral* op = dynamic_cast<IntLiteral*>(exp)) return op->val;
 
     if (BinOperator* op = dynamic_cast<BinOperator*>(exp)) {
-      int lhs = calc_exp(op->lhs);
-      int rhs = calc_exp(op->rhs);
+      int lhs = calcExp(op->lhs);
+      int rhs = calcExp(op->rhs);
 
       if (op->val == "+") return lhs + rhs;
       if (op->val == "-") return lhs - rhs;
@@ -273,27 +308,84 @@ private:
     }
 
     if (UnaryOperator* op = dynamic_cast<UnaryOperator*>(exp)) {
-      if (op->val == "++") return calc_exp(op->child) + 1;
-      if (op->val == "++") return calc_exp(op->child) - 1;
-      if (op->val == "--") return calc_exp(op->child) - 1;
-      if (op->val == "-") return -calc_exp(op->child);
-      if (op->val == "!") return !calc_exp(op->child);
+      if (op->val == "++") return calcExp(op->child) + 1;
+      if (op->val == "++") return calcExp(op->child) - 1;
+      if (op->val == "--") return calcExp(op->child) - 1;
+      if (op->val == "-") return -calcExp(op->child);
+      if (op->val == "!") return !calcExp(op->child);
     }
     return -666;
   }
+  template<class... args>
+  struct OD {
+    std::string val;
+    std::tuple<args...> types;
+    bool operator< (const OD& od) {
+      if (val == od.val) {
 
+      } else {
+        return val < od.val;
+      }
+    }
+  };
+  std::map<std::tuple<std::string, std::string, std::string>, std::string> B_OD = tables::B_OD;
+  std::map<std::tuple<std::string, std::string>, std::string> PR_OD{
+    {{"++", "int"}, "int"},
+    {{"--", "int"}, "int"},
+  };
+  std::map<std::tuple<std::string, std::string>, std::string> PO_OD{
+    {{"++", "int"}, "int"},
+    {{"--", "int"}, "int"},
+  };
+  Type evaluateTypes(Exp* exp) {
+    if (auto op = dynamic_cast<IntLiteral*>(exp)) {
+      exp->type.type = "int";
+      exp->type.is_const = true;
+    }
+    if (auto op = dynamic_cast<StrLiteral*>(exp)) {
+      exp->type.type = "str";
+      exp->type.is_const = true;
+    }
+
+    if (auto op = dynamic_cast<BinOperator*>(exp)) {
+      auto lhs = evaluateTypes(op->lhs);
+      auto rhs = evaluateTypes(op->rhs);
+      if (B_OD.count({ op->val, lhs.type, rhs.type })) {
+        exp->type.type = B_OD[{op->val, lhs.type, rhs.type}];
+        if (lhs.is_const and rhs.is_const) {
+          exp->type.is_const = true;
+        }
+      } else throw
+        ExpParserError(op->pos, "There is no instance of binary operator '" + op->val + "' for types: " + lhs.type + ", " + rhs.type);
+    }
+
+    if (auto op = dynamic_cast<PostfixOperator*>(exp)) {
+      auto child = evaluateTypes(op->child);
+      if (PO_OD.count({ op->val, child.type })) {
+        exp->type.type = PO_OD[{op->val, child.type}];
+        if (child.is_const) {
+          exp->type.is_const = true;
+        }
+      } else throw
+        ExpParserError(op->pos, "There is no instance of postfix operator '" + op->val + "' for type: " + child.type);
+    }
+
+    if (auto op = dynamic_cast<PrefixOperator*>(exp)) {
+      auto child = evaluateTypes(op->child);
+      if (PR_OD.count({ op->val, child.type })) {
+        exp->type.type = PR_OD[{op->val, child.type}];
+        if (child.is_const) {
+          exp->type.is_const = true;
+        }
+      } else throw
+        ExpParserError(op->pos, "There is no instance of prefix operator '" + op->val + "' for type: " + child.type);
+    }
+    return exp->type;
+  }
 public:
   int calc(const std::string& str) {
     try {
-      Lexer parser({
-          {"int", R"(([0-9]+))"},
-          {"space", R"((\ +))"},
-          {"id", R"(([_a-zA-Z][_a-zA-Z0-9]+|[\.\+\-\*\\\%\<\>\=\^\&\|\/\!\#\$\@\?]+))"},
-          {"block decl", R"((\:))"},
-          {"line end", R"((\n))"},
-          {"p(", R"((\())"},
-          {"p)", R"((\)))"},
-        });
+      Lexer parser(tables::lexer_tokens);
       auto parse_res = parser.parse(str, settings["DEBUG"]);
       auto exp_res = evaluate(parse_res.begin(), parse_res.end());
 
@@ -312,10 +404,11 @@ public:
         }
       }
       Exp* exp = build_exp(exp_res.begin(), exp_res.end());
+      evaluateTypes(exp);
       if (settings["SHOW_TREE"]) printExpTree(exp);
       if (settings["SHOW_COOL_TREE"]) printGenericTree(exp);
 
-      return calc_exp(exp);
+      return calcExp(exp);
     }
     catch (ExpParserError error) {
       std::cout << str << std::endl;
