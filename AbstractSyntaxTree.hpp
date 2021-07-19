@@ -1,5 +1,7 @@
+#pragma once
 // #include "ExpressionParser.hpp"
 #include "Lexer.hpp"
+#include "OperatorTables.hpp"
 #include "TreeLib/TreePrinterASCII.hpp"
 #include <string>
 #include <vector>
@@ -26,9 +28,9 @@ struct ASTBlock : public ASTNode {
     : offset{ new_offset }, undef_offset{ new_undef_offset }, line{ new_line } {}
 };
 
-class ASTParser {
+namespace ASTParser {
   std::string lineToStr(tokeniter begin, tokeniter end) {
-    std::string res{ "'" };
+    std::string res = "'";
     for (auto i = begin; i != end; ++i) res += i->val;
     return res + "'";
   }
@@ -119,21 +121,13 @@ class ASTParser {
     return root;
   }
 
-public:
-  void parse(const std::string& str) {
-    Lexer parser({
-        {"int", R"(([0-9]+))"},
-        {"space", R"((\ +))"},
-        {"id",
-         R"(([_a-zA-Z][_a-zA-Z0-9]*|[\.\+\-\*\\\%\<\>\=\^\&\|\/\!\#\$\@\?]+))"},
-        {"new block", R"((\:))"},
-        {"line end", R"((\n))"},
-        {"p(", R"((\())"},
-        {"p)", R"((\)))"},
-      });
-    auto parse_res = parser.parse(str, true);
-    auto block_parse_res = parseBlock(parse_res.begin(), parse_res.end());
+  ASTBlock* parse(tokeniter begin, tokeniter end) {
+    // Lexer parser(tables::lexer_tokens);
+    // auto parse_res = parser.parse(str, true);
+    auto block_parse_res = parseBlock(begin, end);
 
-    printCompact(toGenericTree(block_parse_res));
+    auto tree = toGenericTree(block_parse_res);
+    std::cout << "FUCKFUCK" << std::endl;
+    return block_parse_res;
   }
 };

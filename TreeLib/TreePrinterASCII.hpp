@@ -140,7 +140,7 @@ void printASCII(TreeNode<T>* node) {
 template <typename T>
 std::string renderCompact(TreeNode<T>* node, std::string prefix = "") {
     std::string res;
-
+    if (!node) return res;
     res += node->to_str() + "\n";
     if (node->isEnd()) return res;
     for (auto i = node->branches.begin(); i != node->branches.end(); ++i) {
