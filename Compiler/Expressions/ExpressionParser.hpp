@@ -1,17 +1,36 @@
 #pragma once
-#include "Lexer.hpp"
 #include <set>
 #include <utility>
-#include "TreeLib/TreePrinterASCII.hpp"
-#include "OperatorTables.hpp"
+
+#include "..\Lexer.hpp"
+#include "..\OperatorTables.hpp"
 #include "Expression.hpp"
+#include "..\..\TreeLib/TreePrinterASCII.hpp"
 
 struct ParserError {
-  int pos;
+  size_t pos = 0;
+  size_t end_pos = 0;
+  size_t line = 0;
   std::string message;
-  ParserError(int new_pos, std::string new_message) {
+  ParserError(size_t new_pos, std::string new_message) {
     pos = new_pos;
     message = new_message;
+  }
+  std::string toString(std::string source_code = "") {
+    std::string res;
+    res += "line ";
+    res += std::to_string(line);
+    res += ": ";
+    size_t offset = res.size();
+    res += source_code;
+    res += "\n";
+    res += std::string(offset + pos, ' ');
+    if (end_pos) res += std::string(end_pos - pos, ' ');
+    res += "\n";
+    res += "Err: ";
+    res += message;
+    res += "\n";
+    return res;
   }
 };
 namespace ExpParser {
@@ -22,13 +41,13 @@ namespace ExpParser {
       node->branches.push_back(toGenericTree(op->operand));
     }
     if (auto op = dynamic_cast<IntLiteral*>(exp)) {
-      node->data = "'" + std::to_string(op->val) + "' int";
+      node->data = "'" + std::to_string(op->val) + "' iL";
     }
     if (auto op = dynamic_cast<StrLiteral*>(exp)) {
-      node->data = "'" + op->val + "' int";
+      node->data = "'" + op->val + "' sL";
     }
     if (auto op = dynamic_cast<IdLiteral*>(exp)) {
-      node->data = "'" + op->val + "' int";
+      node->data = "'" + op->val + "' idL,";
     }
     
     if (auto t = dynamic_cast<Tuple*>(exp)) {
@@ -39,17 +58,17 @@ namespace ExpParser {
     }
 
     if (BinOperator* op = dynamic_cast<BinOperator*>(exp)) {
-      node->data = "'" + op->val + "' bin " + std::to_string((int)op->priority);
+      node->data = "'" + op->val + "'b" + std::to_string((int)op->priority);
       node->branches.push_back(toGenericTree(op->lhs));
       node->branches.push_back(toGenericTree(op->rhs));
     }
     if (UnaryOperator* op = dynamic_cast<UnaryOperator*>(exp)) {
       node->data = "'" + op->val +
-        (dynamic_cast<PrefixOperator*>(op) ? "' pref " : "' post ") +
+        (dynamic_cast<PrefixOperator*>(op) ? "'pr" : "'po") +
         std::to_string((int)op->priority);
       node->branches.push_back(toGenericTree(op->child));
     }
-    node->data += " type: " + exp->type.toString();
+    node->data += "," + exp->type.toString();
     return node;
   }
   void printGenericTree(Exp* exp) {
@@ -100,7 +119,7 @@ namespace ExpParser {
     double max_priority = -INF;
     bool is_bin = false;
     auto pos = end;
-    int true_priority = 0;
+    double true_priority = 0;
     for (auto i = begin; i != end; ++i) {
       if (Operator* op = dynamic_cast<Operator*>(*i)) {
         true_priority = op->priority;
@@ -117,11 +136,12 @@ namespace ExpParser {
           true_priority +=
             2 * op->spl * priority_offset + postfix_operators[op->val];
         } else {
-          if (!bin_operators.count(op->val))
-            throw ParserError(op->pos, "Unknown binary operator");
-
-          true_priority += (op->spl + op->spr) * priority_offset +
-            bin_operators[op->val];
+          if (bin_operators.count(op->val)) {
+            true_priority +=
+                (op->spl + op->spr) * priority_offset + bin_operators[op->val];
+          } else {
+            true_priority = -INF;
+          }
         }
         if (true_priority > max_priority) {
           max_priority = true_priority;
@@ -130,6 +150,9 @@ namespace ExpParser {
       }
     }
     if (pos == end) throw ParserError((*begin)->pos, "Expected operator");
+    else if (!dynamic_cast<Operator*>(*pos)){
+      throw ParserError((*pos)->pos, "Unknown binary operator");
+    }
     auto op = static_cast<Operator*>(*pos);
     if (pos == begin) {
       return new PrefixOperator(op->pos, op->val, max_priority,

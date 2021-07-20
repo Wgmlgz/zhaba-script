@@ -1,8 +1,8 @@
 #pragma once
+#include "..\..\TreeLib/Tree.hpp"
+#include "..\..\TreeLib/TreePrinterASCII.hpp"
+#include "..\Expressions\ExpressionParser.hpp"
 #include "AbstractSyntaxTree.hpp"
-#include "ExpressionParser.hpp"
-#include "TreeLib/Tree.hpp"
-#include "TreeLib/TreePrinterASCII.hpp"
 
 struct STNode {
   virtual ~STNode() {}
@@ -51,8 +51,8 @@ STBlock* parseAST(ASTBlock* main_block) {
   printCompact(ASTParser::toGenericTree(dynamic_cast<ASTNode*>(main_block)));
   for (auto i = main_block->nodes.begin(); i != main_block->nodes.end(); ++i) {
     if (auto line = dynamic_cast<ASTLine*>(*i)) {
-      std::cout << "da" <<std::endl;
-      std::cout << "line:'"<<ASTParser::lineToStr(line->begin, line->end) << "'\n";
+      // std::cout << "da" <<std::endl;
+      // std::cout << "line:'"<<ASTParser::lineToStr(line->begin, line->end) << "'\n";
       auto exp = ExpParser::parse(line->begin, line->end);
       if (auto ctr = dynamic_cast<FlowOperator*>(exp)) {
         // if statement

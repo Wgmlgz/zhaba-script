@@ -21,7 +21,6 @@ public:
 
   TreeNode(T new_data) {
     data = new_data;
-    branches.resize(5, nullptr);
   }
 
   TreeNode(T new_data, std::vector<TreeNode*> new_branches) {

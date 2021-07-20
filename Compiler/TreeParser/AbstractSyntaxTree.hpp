@@ -1,8 +1,8 @@
 #pragma once
 // #include "ExpressionParser.hpp"
-#include "Lexer.hpp"
-#include "OperatorTables.hpp"
-#include "TreeLib/TreePrinterASCII.hpp"
+#include "..\Lexer.hpp"
+#include "..\OperatorTables.hpp"
+#include "..\..\TreeLib/TreePrinterASCII.hpp"
 #include <string>
 #include <vector>
 #include <sstream>

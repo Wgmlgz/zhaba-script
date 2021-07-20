@@ -11,21 +11,22 @@ struct Tuple : public Exp {
   double priority;
   std::vector<Exp*> content;
 };
-struct IntLiteral : public Exp {
+struct Literal : public Exp {};
+struct IntLiteral : public Literal {
   int64_t val;
   IntLiteral(int new_pos, int64_t new_val) {
     pos = new_pos;
     val = new_val;
   }
 };
-struct StrLiteral : public Exp {
+struct StrLiteral : public Literal {
   std::string val;
   StrLiteral(int new_pos, std::string new_val) {
     pos = new_pos;
     val = new_val;
   }
 };
-struct IdLiteral : public Exp {
+struct IdLiteral : public Literal {
   std::string val;
   IdLiteral(int new_pos, std::string new_val) {
     pos = new_pos;

@@ -11,12 +11,7 @@ struct ParserError {
 };
 
 auto s = R"(
-@:
-  ? y<0 + y>1: nor
-  ? x==n
-    ? dir + !y: nor
-@: i=0 | i<100 | ++i:
-@ i  <> 1 100 2
+? 2==2
   ? y<0 + y>1: nor
   ? x==n
     ? dir + !y: nor

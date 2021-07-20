@@ -1,12 +1,17 @@
-#include "ExpressionParser.hpp"
-#include "SyntaxTree.hpp"
-#include "AbstractSyntaxTree.hpp"
-
+#include "Compiler\Expressions\ExpressionParser.hpp"
+#include "Compiler\ToCpp.hpp"
+#include "Compiler\TreeParser\AbstractSyntaxTree.hpp"
+#include "Compiler\TreeParser\SyntaxTree.hpp"
 
 auto s = R"(
-? 2==2
-  2+2
-  2 2
+? 2++ == 2
+  2
+  1
+  ? 1==1 :
+    2
+  : ? 4==4 :
+    32
+   : 34
 )";
 
 int main() {
@@ -19,6 +24,8 @@ int main() {
     STBlock* b = parseAST(a);
     auto c = toGenericTree(b);
     printCompact(c);
+    std::cout << "cpp:" << std::endl;
+    std::cout << toCpp(b) << std::endl;
   } catch (ParserError error) {
       std::cout << s << std::endl;
       std::cout << std::string(error.pos, ' ') << "^" << std::endl;

@@ -24,7 +24,7 @@ struct Token {
 };
 class Lexer {
   std::vector<std::pair<std::string, std::string>> tokens;
-  void DefineFlowTokens(std::vector<Token>& tokens) {
+  void defineFlowTokens(std::vector<Token>& tokens) {
     for (auto i = tokens.begin(); i != tokens.end(); ++i) {
       if (i->token == "id") if (i->val == ":") i->token = "new block";
       if (i->token == "id") if (i->val == "|") i->token = "next block";
@@ -66,7 +66,7 @@ public:
 
       if(DEBUG) std::cout << log_str << std::endl;
     }
-
+    defineFlowTokens(parse_res);
     return parse_res;
   }
 };
