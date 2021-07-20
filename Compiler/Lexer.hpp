@@ -28,6 +28,7 @@ class Lexer {
     for (auto i = tokens.begin(); i != tokens.end(); ++i) {
       if (i->token == "id") if (i->val == ":") i->token = "new block";
       if (i->token == "id") if (i->val == "|") i->token = "next block";
+      if (i->token == "id") if (i->val == "\\") i->token = "fin block";
     }
   }
 

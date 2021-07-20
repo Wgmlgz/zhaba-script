@@ -75,6 +75,15 @@ std::string nodeToCpp(STNode* node, size_t depth) {
 
     res += " ";
     res += blockToCpp(nd->body, depth);
+    for (auto& i : nd->elseif_body) {
+      res += " else if ";
+      if (dynamic_cast<Literal*>(i.first)) res += "(";
+      res += expToCpp(i.first);
+      if (dynamic_cast<Literal*>(i.first)) res += ")";
+
+      res += " ";
+      res += blockToCpp(i.second, depth);
+    }
     if (nd->else_body) {
       res += " else ";
       res += blockToCpp(nd->else_body, depth);

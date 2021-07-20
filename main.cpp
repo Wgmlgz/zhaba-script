@@ -4,14 +4,20 @@
 #include "Compiler\TreeParser\SyntaxTree.hpp"
 
 auto s = R"(
-? 2++ == 2
-  2
-  1
-  ? 1==1 :
-    2
-  : ? 4==4 :
-    32
-   : 34
+@ i : 1 2 3
+  4
+)";
+
+auto fb = R"(
+fizzBuzz. 1,100
+
+#fizzBuzz < 2
+  @ -i -a -b
+    ? i%%3: s+='Fizz'
+    ? i%%5: s+='Buzz'
+    ? s: s+= i.str
+    << s
+
 )";
 
 int main() {
@@ -24,6 +30,7 @@ int main() {
     STBlock* b = parseAST(a);
     auto c = toGenericTree(b);
     printCompact(c);
+    // printASCII(c);
     std::cout << "cpp:" << std::endl;
     std::cout << toCpp(b) << std::endl;
   } catch (ParserError error) {
@@ -34,6 +41,7 @@ int main() {
     std::cout <<" s" << std::endl;
   }
 }
+// ? 54%%15 : 'FizzBuzz' | 54%%3 : 'Fizz' | 54%%5 : 'Buzz  \ 'i'
 /*
 0x9acc40
 0x9acdb0

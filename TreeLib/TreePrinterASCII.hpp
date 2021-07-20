@@ -11,7 +11,7 @@
 // settings
 int spacing_x = 0;
 int spacing_y = 0;
-int block_spacing = 2;
+int block_spacing = 1;
 int vertical_spacing = 1;
 
 std::string cor_top = ".";
@@ -108,16 +108,18 @@ vstr renderRec(TreeNode<T>* node) {
             }
         }
     }
-    range2(i, (rendered_this.size() - 2) / 2 + 1, offset) {
+    bool b = false;
+    range2(i, (rendered_this.size()) / 2, offset) {
         range(j, rendered_branches.size()) {
             int to_fill = rendered_branches[j][0].size();
-            bool b = (i != (rendered_branches.size() - 2) / 2 + 1);
+            // bool b = (i != (rendered_branches.size()) / 2);
             res[i] += std::string(to_fill - to_fill / 2 - 1, !b && j != 0 ? hor_arr : ' ');
             res[i] += b ? ver_arr : cor_top_arr;
             res[i] += std::string(to_fill / 2, !b && j != rendered_branches.size() - 1 ? hor_arr : ' ');
             if (j < rendered_branches.size() - 1)
                 res[i] += std::string(block_spacing, b ? ' ' : hor_arr);
         }
+        b = true;
     }
     range(i, (rendered_this.size() - 2) / 2 + 1) {
         res[i] += std::string(res[res.size() - 1].size(), ' ');
