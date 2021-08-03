@@ -1,9 +1,32 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <unordered_map>
+#include <unordered_set>
+#include "..\OperatorTables.hpp"
+#include <queue>
+
+std::unordered_map<std::string, std::vector<std::string>> cast_table = tables::cast_table;
+
+bool canCast(std::string from, std::string to) {
+  std::unordered_set<std::string> can;
+  can.insert(from);
+  std::queue<std::string> q;
+  q.push(from);
+  while(!q.empty()) {
+    auto t = q.front();
+    q.pop();
+    if (can.count(t)) continue;
+    if (to == t) return true;
+    can.insert(t);
+    q.push(t);
+  }
+  return false;
+}
 
 struct Type {
   bool is_const;
+  bool is_ref;
   std::string type;
   std::vector<Type> template_args;
 

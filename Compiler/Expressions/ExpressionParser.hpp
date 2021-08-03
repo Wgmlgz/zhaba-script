@@ -5,6 +5,7 @@
 #include "..\Lexer.hpp"
 #include "..\OperatorTables.hpp"
 #include "Expression.hpp"
+#include "..\Lang\Scope.hpp"
 #include "..\..\TreeLib/TreePrinterASCII.hpp"
 
 struct ParserError {
@@ -53,7 +54,7 @@ namespace ExpParser {
     if (auto t = dynamic_cast<Tuple*>(exp)) {
       node->data = "tuple";
       for (auto& i : t->content) {
-        node->branches.push_back(toGenericTree(i));
+        node->branches.push_back(toGenericTree(i)); 
       }
     }
 
@@ -166,7 +167,7 @@ namespace ExpParser {
         build_exp(pos + 1, end, depth + 1));
     }
   }
-  std::vector<Exp*> evaluate(std::vector<Token>::iterator begin,
+  std::vector<Exp*> preprocess(std::vector<Token>::iterator begin,
     std::vector<Token>::iterator end) {
     auto res = std::vector<Exp*>{};
     int pcount = 0;
@@ -296,10 +297,11 @@ namespace ExpParser {
     {{"++", "int"}, "int"},
     {{"--", "int"}, "int"},
   };
-  Exp* evaluateTypes(Exp* exp) {
+  enum expected_val {undef, var, id, val};
+  Exp* postprocess(Exp* exp, ScopeInfo& scope_info, ScopeInfo& cur_scope, expected_val eval = undef, Type varT = {}){
     if (auto op = dynamic_cast<FlowOperator*>(exp)) {
       exp->type.type = "flow control";
-      evaluateTypes(op->operand);
+      postprocess(op->operand, scope_info, cur_scope, val);
     }
     if (auto op = dynamic_cast<IntLiteral*>(exp)) {
       exp->type.type = "int";
@@ -310,15 +312,34 @@ namespace ExpParser {
       exp->type.is_const = true;
     }
     if (auto op = dynamic_cast<IdLiteral*>(exp)) {
-      exp->type.type = "id";
-      exp->type.is_const = true;
+      if (eval == id or eval == undef) {
+        exp->type.type = "id";
+        exp->type.is_const = true;
+      } else if (eval == var) {
+        if (scope_info.vars.count(op->val)) {
+          exp->type = scope_info.vars[op->val];
+          if (exp->type.is_const)
+            throw ParserError(0, "Cannot modify const variable");
+          if (exp->type.type != varT.type)
+            throw ParserError(0, "Type for '=' are different");
+        } else {
+          exp->type = varT;
+          exp->type.is_const = false;
+          cur_scope.vars.insert({op->val, exp->type});
+          scope_info.vars.insert({op->val, exp->type});
+        }
+      } else if (eval == val){
+        if (scope_info.vars.count(op->val)) {
+          exp->type = scope_info.vars[op->val];
+        } else throw ParserError(0, "'" + op->val + "' is undefined");
+      }
     }
 
     if (auto op = dynamic_cast<BinOperator*>(exp)) {
-      op->lhs = evaluateTypes(op->lhs);
-      op->rhs = evaluateTypes(op->rhs);
-
       if (op->val == ",") {
+        op->lhs = postprocess(op->lhs, scope_info, cur_scope);
+        op->rhs = postprocess(op->rhs, scope_info, cur_scope);
+
         bool b = true;
         if (auto t = dynamic_cast<Tuple*>(op->rhs)) {
           if (t->priority == op->priority) {
@@ -340,7 +361,12 @@ namespace ExpParser {
           exp = t;
           exp->type.type = "tuple";
         }
+      } else if (op->val == "=") {
+        op->rhs = postprocess(op->rhs, scope_info, cur_scope, val);
+        op->lhs = postprocess(op->lhs, scope_info, cur_scope, var, op->rhs->type);
       } else {
+        op->lhs = postprocess(op->lhs, scope_info, cur_scope, val);
+        op->rhs = postprocess(op->rhs, scope_info, cur_scope, val);
         if (B_OD.count({op->val, op->lhs->type.type, op->rhs->type.type})) {
           exp->type.type =
               B_OD[{op->val, op->lhs->type.type, op->rhs->type.type}];
@@ -358,7 +384,7 @@ namespace ExpParser {
     }
 
     if (auto op = dynamic_cast<PostfixOperator*>(exp)) {
-      op->child = evaluateTypes(op->child);
+      op->child = postprocess(op->child, scope_info, cur_scope, val);
       if (PO_OD.count({ op->val, op->child->type.type })) {
         exp->type.type = PO_OD[{op->val, op->child->type.type}];
         if (op->child->type.is_const) {
@@ -371,7 +397,7 @@ namespace ExpParser {
     }
 
     if (auto op = dynamic_cast<PrefixOperator*>(exp)) {
-      op->child = evaluateTypes(op->child);
+      op->child = postprocess(op->child, scope_info, cur_scope, val);
       if (PR_OD.count({ op->val, op->child->type.type })) {
         exp->type.type = PR_OD[{op->val, op->child->type.type}];
         if (op->child->type.is_const) {
@@ -384,45 +410,45 @@ namespace ExpParser {
     }
     return exp;
   }
-  Exp* parse(std::vector<Token>::iterator begin, std::vector<Token>::iterator end) {
-    auto exp_res = evaluate(begin, end);
+  Exp* parse(std::vector<Token>::iterator begin, std::vector<Token>::iterator end, ScopeInfo& scope_info, ScopeInfo& cur_scope) {
+    auto exp_res = preprocess(begin, end);
     Exp* exp = build_exp(exp_res.begin(), exp_res.end());
-    exp = evaluateTypes(exp);
+    exp = postprocess(exp, scope_info, cur_scope);
     return exp;
   }
-  int calc(const std::string& str) {
-    try {
-      Lexer parser(tables::lexer_tokens);
-      auto parse_res = parser.parse(str, settings["DEBUG"]);
-      auto exp_res = evaluate(parse_res.begin(), parse_res.end());
+  // int calc(const std::string& str) {
+  //   try {
+  //     Lexer parser(tables::lexer_tokens);
+  //     auto parse_res = parser.parse(str, settings["DEBUG"]);
+  //     auto exp_res = preprocess(parse_res.begin(), parse_res.end());
 
-      // for (auto exp : exp_res) {
-      //   if (IntLiteral* op = dynamic_cast<IntLiteral*>(exp)) {
-      //     std::cout << "'" + std::to_string(op->val) + "' int";
-      //   }
+  //     // for (auto exp : exp_res) {
+  //     //   if (IntLiteral* op = dynamic_cast<IntLiteral*>(exp)) {
+  //     //     std::cout << "'" + std::to_string(op->val) + "' int";
+  //     //   }
 
-      //   if (BinOperator* op = dynamic_cast<BinOperator*>(exp)) {
-      //     std::cout << "'" + op->val + "' bin " + std::to_string((int)op->priority);
-      //   }
-      //   if (UnaryOperator* op = dynamic_cast<UnaryOperator*>(exp)) {
-      //     std::cout << "'" + op->val +
-      //       (dynamic_cast<PrefixOperator*>(op) ? "' pref " : "' post ") +
-      //       std::to_string((int)op->priority);
-      //   }
-      // }
-      // std::cout << std::endl;
-      Exp* exp = build_exp(exp_res.begin(), exp_res.end());
-      exp = evaluateTypes(exp);
-      if (settings["SHOW_TREE"]) printExpTree(exp);
-      if (settings["SHOW_COOL_TREE"]) printGenericTree(exp);
+  //     //   if (BinOperator* op = dynamic_cast<BinOperator*>(exp)) {
+  //     //     std::cout << "'" + op->val + "' bin " + std::to_string((int)op->priority);
+  //     //   }
+  //     //   if (UnaryOperator* op = dynamic_cast<UnaryOperator*>(exp)) {
+  //     //     std::cout << "'" + op->val +
+  //     //       (dynamic_cast<PrefixOperator*>(op) ? "' pref " : "' post ") +
+  //     //       std::to_string((int)op->priority);
+  //     //   }
+  //     // }
+  //     // std::cout << std::endl;
+  //     Exp* exp = build_exp(exp_res.begin(), exp_res.end());
+  //     exp = postprocess(exp, );
+  //     if (settings["SHOW_TREE"]) printExpTree(exp);
+  //     if (settings["SHOW_COOL_TREE"]) printGenericTree(exp);
 
-      return calcExp(exp);
-    }
-    catch (ParserError error) {
-      std::cout << str << std::endl;
-      std::cout << std::string(error.pos, ' ') << "^" << std::endl;
-      std::cout << error.message << std::endl;
-    }
-    return -1;
-  }
+  //     return calcExp(exp);
+  //   }
+  //   catch (ParserError error) {
+  //     std::cout << str << std::endl;
+  //     std::cout << std::string(error.pos, ' ') << "^" << std::endl;
+  //     std::cout << error.message << std::endl;
+  //   }
+  //   return -1;
+  // }
 };

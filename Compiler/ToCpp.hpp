@@ -46,11 +46,11 @@ std::string blockToCpp(STBlock* block, size_t depth) {
   std::string res;
   res += "{\n";
 
-  for (auto& i : block->vars) {
-    res += std::string(depth * tab_size , ' ');
-    res += i.first.toCppString();
+  for (auto& i : block->scope_info.vars) {
+    res += std::string((depth+1) * tab_size , ' ');
+    res += i.second.toCppString();
     res += " ";
-    res += i.second;
+    res += i.first;
     res += ";\n";
   }
 
@@ -95,7 +95,7 @@ std::string nodeToCpp(STNode* node, size_t depth) {
 };
 
 std::string toCpp(STBlock* block) {
-  std::string res = R"(#include <bits/stdc++>
+  std::string res = R"(#include <bits/stdc++.h>
   
 int main() )";
   res += blockToCpp(block);

@@ -32,24 +32,42 @@ const std::vector<std::pair<std::string, std::string>> lexer_tokens = {
 };
 
 std::map<std::tuple<std::string, std::string, std::string>, std::string> B_OD{
-    {{"+", "int", "int"}, "int"},     {{"+", "bool", "int"}, "int"},
-    {{"+", "int", "bool"}, "int"},    {{"+", "bool", "bool"}, "int"},
+    {{"+", "int", "int"}, "int"},
+    {{"+", "bool", "int"}, "int"},
+    {{"+", "int", "bool"}, "int"},
+    {{"+", "bool", "bool"}, "int"},
+    {{"+", "int", "bool"}, "int"},
 
-    {{"-", "int", "int"}, "int"},     {{"-", "bool", "int"}, "int"},
-    {{"-", "int", "bool"}, "int"},    {{"-", "bool", "bool"}, "int"},
+    {{"+", "str", "str"}, "str"},
 
-    {{"*", "int", "int"}, "int"},     {{"*", "bool", "int"}, "int"},
-    {{"*", "int", "bool"}, "int"},    {{"*", "bool", "bool"}, "int"},
+    {{"-", "int", "int"}, "int"},
+    {{"-", "bool", "int"}, "int"},
+    {{"-", "int", "bool"}, "int"},
+    {{"-", "bool", "bool"}, "int"},
+
+    {{"*", "int", "int"}, "int"},
+    {{"*", "bool", "int"}, "int"},
+    {{"*", "int", "bool"}, "int"},
+    {{"*", "bool", "bool"}, "int"},
 
     {{"%%", "int", "int"}, "bool"},
 
     // {{"=", "id", "type"}, "bool"},
 
-    {{"==", "str", "str"}, "bool"},   {{"==", "int", "int"}, "bool"},
-    {{"==", "bool", "int"}, "bool"},  {{"==", "int", "bool"}, "bool"},
+    {{"==", "str", "str"}, "bool"},
+    {{"==", "int", "int"}, "bool"},
+    {{"==", "bool", "int"}, "bool"},
+    {{"==", "int", "bool"}, "bool"},
     {{"==", "bool", "bool"}, "bool"},
 
     // {{"<::>", "int", "int"}, "int range"}, {{"::", "int", "int range"}, "int
     // range"}
+};
+
+std::unordered_map<std::string, std::vector<std::string>> cast_table {
+  //  {"",{""}},
+   {"auto", {"int", "str", "bool"}},
+   {"int", {"bool"}},
+   {"str", {"bool"}},
 };
 }

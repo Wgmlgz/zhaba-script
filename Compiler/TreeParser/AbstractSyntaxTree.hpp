@@ -1,5 +1,6 @@
 #pragma once
 // #include "ExpressionParser.hpp"
+#include "..\Lang\Scope.hpp"
 #include "..\Lexer.hpp"
 #include "..\OperatorTables.hpp"
 #include <string>
@@ -24,6 +25,7 @@ struct ASTBlock : public ASTNode {
   size_t line;
   enum block_type {newB, nextB, finB};
   block_type btype = newB;
+  ScopeInfo scope_info;
   ASTBlock(size_t new_offset = 0, bool new_undef_offset = false,
     size_t new_line = 0)
     : offset{ new_offset }, undef_offset{ new_undef_offset }, line{ new_line } {}
