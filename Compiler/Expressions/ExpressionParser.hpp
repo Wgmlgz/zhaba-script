@@ -8,27 +8,44 @@
 #include "..\Lang\Scope.hpp"
 #include "..\..\TreeLib/TreePrinterASCII.hpp"
 
+std::unordered_map<int, int> which_line;
+std::vector<std::string> lines;
+
+size_t current_line = 0;
 struct ParserError {
   size_t pos = 0;
-  size_t end_pos = 0;
-  size_t line = 0;
+  size_t len = 0;
   std::string message;
+  size_t line = 666;
+  ParserError(size_t new_pos, size_t new_len, std::string new_message) {
+    pos = new_pos;
+    len = new_len;
+    message = new_message;
+  }
   ParserError(size_t new_pos, std::string new_message) {
     pos = new_pos;
     message = new_message;
   }
-  std::string toString(std::string source_code = "") {
+  std::string toString(std::string source_code) {
+    line = which_line[pos];
+    source_code = lines[which_line[pos] - 1];
+
+    int real_pos = 0;
+    for (int i = 0; i < line - 1; ++i) real_pos += lines[i].size() + 1;
+    pos -= real_pos;
     std::string res;
-    res += "line ";
-    res += std::to_string(line);
-    res += ": ";
+    res += "Err at line ";
+    res += std::to_string(line) + " ";
+    res += "| ";
     size_t offset = res.size();
     res += source_code;
     res += "\n";
-    res += std::string(offset + pos, ' ');
-    if (end_pos) res += std::string(end_pos - pos, ' ');
+    res += std::string(offset - 2, ' ');
+    res += "| ";
+    res += std::string(pos, ' ');
+    if (len) res += std::string(len, '^');
+    else res += "^";
     res += "\n";
-    res += "Err: ";
     res += message;
     res += "\n";
     return res;
@@ -50,11 +67,11 @@ namespace ExpParser {
     if (auto op = dynamic_cast<IdLiteral*>(exp)) {
       node->data = "'" + op->val + "' idL,";
     }
-    
+
     if (auto t = dynamic_cast<Tuple*>(exp)) {
       node->data = "tuple";
       for (auto& i : t->content) {
-        node->branches.push_back(toGenericTree(i)); 
+        node->branches.push_back(toGenericTree(i));
       }
     }
 
@@ -97,12 +114,13 @@ namespace ExpParser {
   std::unordered_map<std::string, double> postfix_operators = { {"++", 2},
                                                                     {"--", 2} };
 
+
   Exp* build_exp(const std::vector<Exp*>::iterator begin,
     const std::vector<Exp*>::iterator end, int depth = 0) {
     if (distance(begin, end) == 0)
       throw ParserError(0, "Unknown error (empty build_exp range)");
     if (auto op = dynamic_cast<FlowOperator*>(*begin)) {
-      if (distance(begin, end) != 1) 
+      if (distance(begin, end) != 1)
         op->operand = build_exp(begin + 1, end);
       return op;
     }
@@ -139,19 +157,19 @@ namespace ExpParser {
         } else {
           if (bin_operators.count(op->val)) {
             true_priority +=
-                (op->spl + op->spr) * priority_offset + bin_operators[op->val];
+              (op->spl + op->spr) * priority_offset + bin_operators[op->val];
           } else {
             true_priority = -INF;
           }
         }
-        if (true_priority > max_priority) {
+        if (true_priority >= max_priority) {
           max_priority = true_priority;
           pos = i;
         }
       }
     }
     if (pos == end) throw ParserError((*begin)->pos, "Expected operator");
-    else if (!dynamic_cast<Operator*>(*pos)){
+    else if (!dynamic_cast<Operator*>(*pos)) {
       throw ParserError((*pos)->pos, "Unknown binary operator");
     }
     auto op = static_cast<Operator*>(*pos);
@@ -167,8 +185,7 @@ namespace ExpParser {
         build_exp(pos + 1, end, depth + 1));
     }
   }
-  std::vector<Exp*> preprocess(std::vector<Token>::iterator begin,
-    std::vector<Token>::iterator end) {
+  std::vector<Exp*> preprocess(tokeniter begin, tokeniter end) {
     auto res = std::vector<Exp*>{};
     int pcount = 0;
 
@@ -180,7 +197,7 @@ namespace ExpParser {
       ++begin;
     }
     for (auto i = begin; i != end; ++i) {
-      if (i->token == "id") if(operators.count(i->val)) i->token = "operator";
+      if (i->token == "id") if (operators.count(i->val)) i->token = "operator";
     }
     for (auto i = begin; i != end; ++i) {
       if (i == begin) {
@@ -208,7 +225,7 @@ namespace ExpParser {
         }
         if (operators.count(i->val)) rhs = false;
       }
-     
+
       if (i->token == "p(") {
         ++pcount;
       } else if (i->token == "p)") {
@@ -241,10 +258,10 @@ namespace ExpParser {
     }
     if (pcount) {
       if (pcount > 0)
-        throw ParserError((begin + std::distance(begin, end) - 1)->pos,
+        throw ParserError((end - 1)->pos,
           "Not enought ')'");
       else
-        throw ParserError((begin + std::distance(begin, end) - 1)->pos,
+        throw ParserError((end - 1)->pos,
           "Too many ')'");
     }
     return res;
@@ -276,59 +293,80 @@ namespace ExpParser {
     }
     return -666;
   }
-  template<class... args>
-  struct OD {
-    std::string val;
-    std::tuple<args...> types;
-    bool operator< (const OD& od) {
-      if (val == od.val) {
+  std::map<std::tuple<std::string, int, int>, int> B_OD = tables::B_OD;
+  std::map<std::tuple<std::string, int>, int> PR_OD{
+    {{"++", intT}, intT},
+    {{"--", intT}, intT},
+  };
+  std::map<std::tuple<std::string, int>, int> PO_OD{
+    {{"++", intT}, intT},
+    {{"--", intT}, intT},
+  };
+  enum expected_val { undef, var, id, val };
 
+
+  Type parseType(Exp* exp, ScopeInfo& scope_info) {
+    if (auto id = dynamic_cast<IdLiteral*>(exp)) {
+      if (prim_types.count(id->val)) {
+        return Type(prim_types[id->val]);
       } else {
-        return val < od.val;
+        throw ParserError(exp->pos, id->val.size(), "Unknown type");
       }
+    } else {
+      throw ParserError(exp->pos, "Expected type name");
     }
-  };
-  std::map<std::tuple<std::string, std::string, std::string>, std::string> B_OD = tables::B_OD;
-  std::map<std::tuple<std::string, std::string>, std::string> PR_OD{
-    {{"++", "int"}, "int"},
-    {{"--", "int"}, "int"},
-  };
-  std::map<std::tuple<std::string, std::string>, std::string> PO_OD{
-    {{"++", "int"}, "int"},
-    {{"--", "int"}, "int"},
-  };
-  enum expected_val {undef, var, id, val};
-  Exp* postprocess(Exp* exp, ScopeInfo& scope_info, ScopeInfo& cur_scope, expected_val eval = undef, Type varT = {}){
+  }
+  std::string parseName(Exp* exp) {
+    if (auto id = dynamic_cast<IdLiteral*>(exp)) {
+      return id->val;
+    } else {
+      throw ParserError(0, "Expected name");
+    }
+  }
+  VarDecl* parseVarDecl(Exp* exp, ScopeInfo& scope_info) {
+    auto ret = new VarDecl;
+
+    if (auto tp = dynamic_cast<Tuple*>(exp)) {
+      if (tp->content.size() != 2) throw ParserError(0, "Expected typed variable");
+      ret->type = parseType(tp->content[0], scope_info);
+      ret->name = parseName(tp->content[1]);
+      delete tp->content[0];
+      delete tp->content[1];
+    } else {
+      ret->type = Type(undefT);
+      ret->name = parseName(exp);
+      delete exp;
+    }
+    return ret;
+
+  }
+  Exp* postprocess(Exp* exp, ScopeInfo& scope_info, ScopeInfo& cur_scope, expected_val eval = undef) {
     if (auto op = dynamic_cast<FlowOperator*>(exp)) {
-      exp->type.type = "flow control";
+      exp->type.type = ctrfT;
+      if (op->val == "#") {
+
+      }
       postprocess(op->operand, scope_info, cur_scope, val);
     }
     if (auto op = dynamic_cast<IntLiteral*>(exp)) {
-      exp->type.type = "int";
+      exp->type.type = intT;
       exp->type.is_const = true;
     }
     if (auto op = dynamic_cast<StrLiteral*>(exp)) {
-      exp->type.type = "str";
+      exp->type.type = strT;
       exp->type.is_const = true;
     }
     if (auto op = dynamic_cast<IdLiteral*>(exp)) {
       if (eval == id or eval == undef) {
-        exp->type.type = "id";
+        exp->type.type = idT;
         exp->type.is_const = true;
       } else if (eval == var) {
         if (scope_info.vars.count(op->val)) {
           exp->type = scope_info.vars[op->val];
-          if (exp->type.is_const)
-            throw ParserError(0, "Cannot modify const variable");
-          if (exp->type.type != varT.type)
-            throw ParserError(0, "Type for '=' are different");
         } else {
-          exp->type = varT;
-          exp->type.is_const = false;
-          cur_scope.vars.insert({op->val, exp->type});
-          scope_info.vars.insert({op->val, exp->type});
+          throw ParserError(0, "Unknown variable");
         }
-      } else if (eval == val){
+      } else if (eval == val) {
         if (scope_info.vars.count(op->val)) {
           exp->type = scope_info.vars[op->val];
         } else throw ParserError(0, "'" + op->val + "' is undefined");
@@ -341,10 +379,10 @@ namespace ExpParser {
         op->rhs = postprocess(op->rhs, scope_info, cur_scope);
 
         bool b = true;
-        if (auto t = dynamic_cast<Tuple*>(op->rhs)) {
+        if (auto t = dynamic_cast<Tuple*>(op->lhs)) {
           if (t->priority == op->priority) {
-            t->content.insert(t->content.begin(), op->lhs);
-            t->type.is_const = t->type.is_const and op->lhs->type.is_const;
+            t->content.insert(t->content.end(), op->rhs);
+            t->type.is_const = t->type.is_const and op->rhs->type.is_const;
             delete exp;
             exp = t;
             b = false;
@@ -353,34 +391,63 @@ namespace ExpParser {
         if (b) {
           auto t = new Tuple;
           t->priority = op->priority;
-          t->content = {op->lhs, op->rhs};
+          t->content = { op->lhs, op->rhs };
           if (op->lhs->type.is_const and op->rhs->type.is_const) {
             t->type.is_const = true;
           }
           delete exp;
           exp = t;
-          exp->type.type = "tuple";
+          exp->type.type = tupleT;
         }
       } else if (op->val == "=") {
+        op->lhs = postprocess(op->lhs, scope_info, cur_scope, var);
         op->rhs = postprocess(op->rhs, scope_info, cur_scope, val);
-        op->lhs = postprocess(op->lhs, scope_info, cur_scope, var, op->rhs->type);
+
+        auto vard = parseVarDecl(op->lhs, scope_info);
+
+
+        if (vard->type.type == undefT) {
+          // just '=' operator like: a = 2
+          if (scope_info.vars.count(vard->name) == 0)
+            throw ParserError(0, "Unknown variable lol");
+          if (op->lhs->type.type != op->rhs->type.type)
+            throw ParserError(op->pos, "Types (" + op->lhs->type.toString() + ", " + op->rhs->type.toString() + ") for '=' are different");
+
+          vard->type = op->rhs->type;
+          op->type = vard->type;
+        } else {
+          // var creation: int a = 2
+          if (cur_scope.vars.count(vard->name)) {
+            throw ParserError(0, "Variable '" + vard->name + "' is alveady declareted");
+          }
+          if (vard->type.type == autoT)
+            vard->type.type = op->rhs->type.type;
+          if (vard->type.type != op->rhs->type.type)
+            throw ParserError(op->pos, "Types (" + vard->type.toString() + ", " + op->rhs->type.toString() + ") for '=' are different");
+
+          cur_scope.vars[vard->name] = vard->type;
+          scope_info.vars[vard->name] = vard->type;
+          op->type = vard->type;
+        }
+        auto new_lhs = new IdLiteral(op->lhs->pos, vard->name);
+        new_lhs->type = vard->type;
+        delete op->lhs;
+        op->lhs = new_lhs;
       } else {
         op->lhs = postprocess(op->lhs, scope_info, cur_scope, val);
         op->rhs = postprocess(op->rhs, scope_info, cur_scope, val);
-        if (B_OD.count({op->val, op->lhs->type.type, op->rhs->type.type})) {
+        if (B_OD.count({ op->val, op->lhs->type.type, op->rhs->type.type })) {
           exp->type.type =
-              B_OD[{op->val, op->lhs->type.type, op->rhs->type.type}];
+            B_OD[{op->val, op->lhs->type.type, op->rhs->type.type}];
         } else
           throw ParserError(
-              op->pos, "There is no instance of binary operator '" + op->val +
-                           "' for types: " + op->lhs->type.type + ", " +
-                           op->rhs->type.type);
+            op->pos, "There is no instance of binary operator '" + op->val +
+            "' for types: " + type_names[op->lhs->type.type] + ", " +
+            type_names[op->rhs->type.type]);
         if (op->lhs->type.is_const and op->rhs->type.is_const) {
           exp->type.is_const = true;
         }
       }
-
-      
     }
 
     if (auto op = dynamic_cast<PostfixOperator*>(exp)) {
@@ -392,8 +459,8 @@ namespace ExpParser {
         }
       } else
         throw ParserError(
-            op->pos, "There is no instance of postfix operator '" + op->val +
-                         "' for type: " + op->child->type.type);
+          op->pos, "There is no instance of postfix operator '" + op->val +
+          "' for type: " + type_names[op->child->type.type]);
     }
 
     if (auto op = dynamic_cast<PrefixOperator*>(exp)) {
@@ -405,14 +472,15 @@ namespace ExpParser {
         }
       } else
         throw ParserError(op->pos, "There is no instance of prefix operator '" +
-                                       op->val +
-                                       "' for type: " + op->child->type.type);
+          op->val +
+          "' for type: " + type_names[op->child->type.type]);
     }
     return exp;
   }
   Exp* parse(std::vector<Token>::iterator begin, std::vector<Token>::iterator end, ScopeInfo& scope_info, ScopeInfo& cur_scope) {
     auto exp_res = preprocess(begin, end);
     Exp* exp = build_exp(exp_res.begin(), exp_res.end());
+    printCompact(ExpParser::toGenericTree(exp));
     exp = postprocess(exp, scope_info, cur_scope);
     return exp;
   }

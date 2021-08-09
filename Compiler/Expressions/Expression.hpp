@@ -4,12 +4,15 @@
 struct Exp {
   int pos;
   Type type;
-  Exp(int new_pos = 0) { pos = new_pos; }
+  Exp(int new_pos = 666) : pos(new_pos) {}
   virtual ~Exp() {}
 };
 struct Tuple : public Exp {
   double priority;
   std::vector<Exp*> content;
+  Tuple() {}
+  Tuple(double new_priority, std::vector<Exp*> new_content) :
+    priority(new_priority), content(new_content) {}
 };
 struct Literal : public Exp {};
 struct IntLiteral : public Literal {
@@ -49,7 +52,7 @@ struct Operator : public Exp {
   size_t spl = 0, spr = 0;
   Operator() {}
   Operator(int new_pos, std::string new_val, double new_priority,
-           size_t new_spl, size_t new_spr) {
+    size_t new_spl, size_t new_spr) {
     pos = new_pos;
     val = new_val;
     priority = new_priority;
@@ -61,7 +64,7 @@ struct BinOperator : public Operator {
   Exp* lhs;
   Exp* rhs;
   BinOperator(int new_pos, std::string new_val, double new_priority,
-              Exp* new_lhs, Exp* new_rhs) {
+    Exp* new_lhs, Exp* new_rhs) {
     pos = new_pos;
     val = new_val;
     priority = new_priority;
@@ -72,7 +75,7 @@ struct BinOperator : public Operator {
 struct UnaryOperator : public Operator {
   Exp* child;
   UnaryOperator(int new_pos, std::string new_val, double new_priority,
-                Exp* new_child) {
+    Exp* new_child) {
     pos = new_pos;
     val = new_val;
     priority = new_priority;
@@ -81,11 +84,24 @@ struct UnaryOperator : public Operator {
 };
 struct PrefixOperator : public UnaryOperator {
   PrefixOperator(int new_pos, std::string new_val, double new_priority,
-                 Exp* new_child)
-      : UnaryOperator(new_pos, new_val, new_priority, new_child) {}
+    Exp* new_child)
+    : UnaryOperator(new_pos, new_val, new_priority, new_child) {}
 };
 struct PostfixOperator : public UnaryOperator {
   PostfixOperator(int new_pos, std::string new_val, double new_priority,
-                  Exp* new_child)
-      : UnaryOperator(new_pos, new_val, new_priority, new_child) {}
+    Exp* new_child)
+    : UnaryOperator(new_pos, new_val, new_priority, new_child) {}
+};
+
+Tuple* castToTuple(Exp* exp) {
+  if (exp) {
+    if (auto tuple = dynamic_cast<Tuple*>(exp)) return tuple;
+    Operator* op = dynamic_cast<Operator*>(exp);
+    return new Tuple(op->priority, { op });
+  }
+  return nullptr;
+}
+
+struct VarDecl : public Exp {
+  std::string name;
 };

@@ -1,5 +1,5 @@
 #pragma once
-// #include "ExpressionParser.hpp"
+#include "..\Expressions/Expression.hpp"
 #include "..\Lang\Scope.hpp"
 #include "..\Lexer.hpp"
 #include "..\OperatorTables.hpp"
@@ -8,8 +8,9 @@
 #include <sstream>
 #include <utility>
 #include <stack>
+#include <unordered_map>
 
-typedef std::vector<Token>::iterator tokeniter;
+
 
 struct ASTNode {
   virtual ~ASTNode() = default;
@@ -23,7 +24,7 @@ struct ASTBlock : public ASTNode {
   size_t offset = 0;
   bool undef_offset = false;
   size_t line;
-  enum block_type {newB, nextB, finB};
+  enum block_type { newB, nextB, finB };
   block_type btype = newB;
   ScopeInfo scope_info;
   ASTBlock(size_t new_offset = 0, bool new_undef_offset = false,
@@ -80,11 +81,11 @@ namespace ASTParser {
           exit = true;
           break;
         }
-        if (cur->token == "new block") 
+        if (cur->token == "new block")
           break;
-        if (cur->token == "next block") 
+        if (cur->token == "next block")
           break;
-        if (cur->token == "fin block") 
+        if (cur->token == "fin block")
           break;
         if (cur->token == "line end") {
           break;
@@ -140,6 +141,17 @@ namespace ASTParser {
   }
 
   ASTBlock* parse(tokeniter begin, tokeniter end) {
+    int line = 1;
+    which_line.clear();
+    lines.clear();
+    lines.resize(1);
+
+    for (auto i = begin; i != end; ++i) {
+      which_line[i->pos] = line;
+      if (i->token == "line end") ++line, lines.push_back("");
+      else lines[line - 1] += i->val;
+    }
+
     return parseBlock(begin, end);
   }
 };

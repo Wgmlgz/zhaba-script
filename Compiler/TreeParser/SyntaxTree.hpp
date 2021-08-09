@@ -4,6 +4,7 @@
 #include "..\Lang\Scope.hpp"
 #include "AbstractSyntaxTree.hpp"
 #include "..\Lang\Scope.hpp"
+#include "..\Lang\Types.hpp"
 
 struct STNode {
   virtual ~STNode() {}
@@ -31,23 +32,23 @@ TreeNode<std::string>* toGenericTree(STBlock* block) {
   auto node = new TreeNode<std::string>;
   node->data = "<block>";
   auto vars = new TreeNode<std::string>("<vars>");
-  for (auto i :  block->scope_info.vars) {
-    vars->branches.push_back(new TreeNode<std::string> (i.first,
-                   {new TreeNode<std::string>(i.second.toString())}));
+  for (auto i : block->scope_info.vars) {
+    vars->branches.push_back(new TreeNode<std::string>(i.first,
+      { new TreeNode<std::string>(i.second.toString()) }));
   }
   node->branches.push_back(vars);
-  for (auto i :  block->nodes) {
+  for (auto i : block->nodes) {
     if (auto ifs = dynamic_cast<STIf*>(i)) {
       auto tmp = new TreeNode<std::string>("<if>");
       tmp->branches.push_back(
         new TreeNode<std::string>("<contition>", {
           ExpParser::toGenericTree(ifs->contition)
-        })
+          })
       );
       tmp->branches.push_back(
         new TreeNode<std::string>("<body>", {
           toGenericTree(ifs->body)
-        })
+          })
       );
       // tmp->branches.push_back(toGenericTree(ifs->body));
       for (auto& i : ifs->elseif_body) {
@@ -58,12 +59,12 @@ TreeNode<std::string>* toGenericTree(STBlock* block) {
           new TreeNode<std::string>("<body>", {
             toGenericTree(i.second)
           })
-        }
+          }
         ));
       }
       if (ifs->else_body) {
-        tmp->branches.push_back(new TreeNode<std::string>("<else>", 
-        {toGenericTree(ifs->else_body)}));
+        tmp->branches.push_back(new TreeNode<std::string>("<else>",
+          { toGenericTree(ifs->else_body) }));
       }
       node->branches.push_back(tmp);
     }
@@ -83,28 +84,29 @@ STBlock* parseAST(ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo& parent_s
       // std::cout << "da" <<std::endl;
       // std::cout << "line:'"<<ASTParser::lineToStr(line->begin, line->end) << "'\n";
       auto exp =
-          ExpParser::parse(line->begin, line->end, cur_scope, res->scope_info);
+        ExpParser::parse(line->begin, line->end, cur_scope, res->scope_info);
+      // printCompact(ExpParser::toGenericTree(exp));
       if (auto ctr = dynamic_cast<FlowOperator*>(exp)) {
         // if statement
         if (ctr->val == "?") {
-          if (ctr->operand->type.type == "bool") {
+          if (ctr->operand->type.type == blT) {
             auto tmp_if = new STIf;
             tmp_if->contition = ctr->operand;
             if (i + 1 != main_block->nodes.end()) {
-              if (auto body = dynamic_cast<ASTBlock*>(*(i+1))) {
+              if (auto body = dynamic_cast<ASTBlock*>(*(i + 1))) {
                 tmp_if->body = parseAST(body, cur_scope, res->scope_info);
                 ++i;
                 while (i + 1 != main_block->nodes.end()) {
-                  if (auto elseif_body = dynamic_cast<ASTBlock*>(*(i+1))) {
+                  if (auto elseif_body = dynamic_cast<ASTBlock*>(*(i + 1))) {
                     if (elseif_body->btype != ASTBlock::nextB) break;
                     if (elseif_body->nodes.size() == 2) {
                       if (auto line = dynamic_cast<ASTLine*>(elseif_body->nodes[0])) {
                         auto exp =
-                            ExpParser::parse(line->begin, line->end, cur_scope,
-                                             main_block->scope_info);
+                          ExpParser::parse(line->begin, line->end, cur_scope,
+                            main_block->scope_info);
                         if (auto block = dynamic_cast<ASTBlock*>(elseif_body->nodes[1])) {
                           tmp_if->elseif_body.emplace_back(
-                              exp, parseAST(block, cur_scope, res->scope_info));
+                            exp, parseAST(block, cur_scope, res->scope_info));
                         } else throw ParserError(0, "Exprected block in '|(else if)' statement");
                       } else throw ParserError(0, "Expected expression in '|(else if)' statement");
                     } else {
@@ -114,9 +116,9 @@ STBlock* parseAST(ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo& parent_s
                   } else break;
                 }
                 if (i + 1 != main_block->nodes.end()) {
-                  if (auto else_body = dynamic_cast<ASTBlock*>(*(i+1))) {
+                  if (auto else_body = dynamic_cast<ASTBlock*>(*(i + 1))) {
                     tmp_if->else_body =
-                        parseAST(else_body, cur_scope, res->scope_info);
+                      parseAST(else_body, cur_scope, res->scope_info);
                     ++i;
                   }
                 }
