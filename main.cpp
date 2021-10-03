@@ -6,8 +6,17 @@
 #include "Compiler\TreeParser\SyntaxTreeParser.hpp"
 auto programm = R"(
 
-int sum = int a int b: 2 + 3
-int mult = int aa int aa: a * b
+int sum = int a int b:
+  < 2 + 3
+  1 + 3
+
+int out = int a:
+  #std::cout << a << std::endl;
+  < 0
+
+int main:
+  int a = 54;
+  out a
 
 )";
 

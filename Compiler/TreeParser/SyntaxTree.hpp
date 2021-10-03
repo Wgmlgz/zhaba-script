@@ -28,6 +28,10 @@ struct STIf : STNode {
   STBlock* else_body = nullptr;
 };
 
+struct STRet : STNode {
+  Exp* exp = nullptr;
+};
+
 struct STLoop : ASTNode {
   Exp* exp;
   STBlock* body;
@@ -72,6 +76,11 @@ TreeNode<std::string>* STBlock::toGenericTree() {
             { ifs->else_body->toGenericTree() }));
         }
         node->branches.push_back(tmp);
+      }
+      if (auto exp = dynamic_cast<STRet*>(i)) {
+        node->branches.push_back(new TreeNode<std::string>("<ret>", {
+          ExpParser::toGenericTree(exp->exp)
+        }));
       }
       if (auto exp = dynamic_cast<STExp*>(i)) {
         node->branches.push_back(ExpParser::toGenericTree(exp->exp));

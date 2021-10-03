@@ -44,6 +44,9 @@ std::string expToCpp(Exp* exp) {
 
   std::string res;
   // if (!dynamic_cast<Literal*>(exp)) res += "(";
+  if (auto op = dynamic_cast<CppCode*>(exp)) {
+    res += op->code;
+  }
   if (auto op = dynamic_cast<IntLiteral*>(exp)) {
     res += std::to_string(op->val);
   }
@@ -121,6 +124,8 @@ std::string nodeToCpp(STNode* node, size_t depth) {
       res += " else ";
       res += blockToCpp(nd->else_body, depth);
     }
+  } else if (auto exp = dynamic_cast<STRet*>(node)) {
+    res += "return " + expToCpp(exp->exp); 
   } else if (auto exp = dynamic_cast<STExp*>(node)) {
     res += expToCpp(exp->exp);
   }
@@ -130,7 +135,7 @@ std::string nodeToCpp(STNode* node, size_t depth) {
 std::string funcToCpp(Function* func) {
   std::string str;
   str += func->type.toCppString() + " ";
-  str += poopToCpp(func->name) + "(";
+  str += (func->name == "main" ? "main" : poopToCpp(func->name)) + "(";
   bool start = true;
   for (auto& [name, type] : func->args) {
     if (!start) str += ", ";

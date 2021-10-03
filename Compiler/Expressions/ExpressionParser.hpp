@@ -12,6 +12,9 @@
 namespace ExpParser {
   TreeNode<std::string>* toGenericTree(Exp* exp) {
     auto node = new TreeNode<std::string>;
+    if (auto op = dynamic_cast<CppCode*>(exp)) {
+      node->data = "cpp: '" + op->code + "'";
+    }
     if (auto op = dynamic_cast<FlowOperator*>(exp)) {
       node->data = "'" + op->val + "'";
       node->branches.push_back(toGenericTree(op->operand));
@@ -76,6 +79,9 @@ namespace ExpParser {
     const std::vector<Exp*>::iterator end, int depth = 0) {
     if (distance(begin, end) == 0)
       throw ParserError(0, "Unknown error (empty build_exp range)");
+    if (auto op = dynamic_cast<CppCode*>(*begin)) {
+      return op;
+    }
     if (auto op = dynamic_cast<FlowOperator*>(*begin)) {
       if (distance(begin, end) != 1)
         op->operand = build_exp(begin + 1, end);
@@ -149,7 +155,15 @@ namespace ExpParser {
     if (std::distance(begin, end) < 1) {
       throw ParserError(0, "Empty expression");
     }
-    if (begin->token == "id" and std::set<std::string>{"?", "#", "@", "??", "$$"}.count(begin->val)) {
+    // cpp code injection
+    if (begin->token == "id" and begin->val == "#") {
+      std::string code;
+      for (auto i = begin + 1; i != end; ++i) {
+        code += i->val;
+      }
+      return {new CppCode(code)};
+    }
+    if (begin->token == "id" and std::set<std::string>{"?", "@", "<"}.count(begin->val)) {
       res.push_back(new FlowOperator(begin->pos, begin->val, nullptr));
       ++begin;
     }
@@ -261,7 +275,6 @@ namespace ExpParser {
   };
   enum expected_val { undef, var, id, val };
 
-
   Type parseType(Exp* exp, ScopeInfo& scope_info) {
     if (auto id = dynamic_cast<IdLiteral*>(exp)) {
       if (prim_types.count(id->val)) {
@@ -298,11 +311,14 @@ namespace ExpParser {
 
   }
   Exp* postprocess(Exp* exp, ScopeInfo& scope_info, ScopeInfo& cur_scope, expected_val eval = undef) {
+    if (auto op = dynamic_cast<CppCode*>(exp)) {
+      return op;
+    }
     if (auto op = dynamic_cast<FlowOperator*>(exp)) {
       exp->type.type = ctrfT;
-      if (op->val == "#") {
+      // if (op->val == "#") {
 
-      }
+      // }
       postprocess(op->operand, scope_info, cur_scope, val);
     }
     if (auto op = dynamic_cast<IntLiteral*>(exp)) {

@@ -45,7 +45,12 @@ struct FlowOperator : public Exp {
     operand = new_operand;
   }
 };
-
+struct CppCode : public Exp {
+  std::string code;
+  CppCode(std::string new_code) {
+    code = new_code;
+  }
+};
 struct Operator : public Exp {
   std::string val;
   double priority;

@@ -4,7 +4,7 @@
 #include "DefinitionsParser.hpp"
 
 
-STBlock* parseASTblock(ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo& parent_scope) {
+STBlock* parseASTblock(ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo& parent_scope, Type retT) {
   auto res = new STBlock;
   for (auto i = main_block->nodes.begin(); i != main_block->nodes.end(); ++i) {
     if (auto line = dynamic_cast<ASTLine*>(*i)) {
@@ -19,7 +19,7 @@ STBlock* parseASTblock(ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo& par
             tmp_if->contition = ctr->operand;
             if (i + 1 != main_block->nodes.end()) {
               if (auto body = dynamic_cast<ASTBlock*>(*(i + 1))) {
-                tmp_if->body = parseASTblock(body, cur_scope, res->scope_info);
+                tmp_if->body = parseASTblock(body, cur_scope, res->scope_info, retT);
                 ++i;
                 while (i + 1 != main_block->nodes.end()) {
                   if (auto elseif_body = dynamic_cast<ASTBlock*>(*(i + 1))) {
@@ -31,7 +31,7 @@ STBlock* parseASTblock(ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo& par
                             main_block->scope_info);
                         if (auto block = dynamic_cast<ASTBlock*>(elseif_body->nodes[1])) {
                           tmp_if->elseif_body.emplace_back(
-                            exp, parseASTblock(block, cur_scope, res->scope_info));
+                            exp, parseASTblock(block, cur_scope, res->scope_info, retT));
                         } else throw ParserError(0, "Exprected block in '|(else if)' statement");
                       } else throw ParserError(0, "Expected expression in '|(else if)' statement");
                     } else {
@@ -43,7 +43,7 @@ STBlock* parseASTblock(ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo& par
                 if (i + 1 != main_block->nodes.end()) {
                   if (auto else_body = dynamic_cast<ASTBlock*>(*(i + 1))) {
                     tmp_if->else_body =
-                      parseASTblock(else_body, cur_scope, res->scope_info);
+                      parseASTblock(else_body, cur_scope, res->scope_info, retT);
                     ++i;
                   }
                 }
@@ -57,6 +57,15 @@ STBlock* parseASTblock(ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo& par
           } else {
             throw ParserError(ctr->pos, "Expected bool expression in '?(if)' contition");
           }
+        
+        
+        } else if (ctr->val == "<") {
+          auto tmp_ret = new STRet;
+          tmp_ret->exp = ctr->operand;
+          if (tmp_ret->exp->type.type != retT.type) {
+            throw ParserError(ctr->pos, "Return must be '" + retT.toString() + "'");
+          }
+          res->nodes.push_back(tmp_ret);
         } else {
           throw ParserError(0, "Random error lol (unknown flow control operator)");
         }
@@ -72,11 +81,6 @@ STBlock* parseASTblock(ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo& par
     }
   }
   return res;
-}
-
-STBlock* parseASTblock(ASTBlock* block) {
-  auto res = new STBlock;
-  return parseASTblock(block, res->scope_info, res->scope_info);
 }
 
 struct STTree {
@@ -124,7 +128,7 @@ STTree* parseAST(ASTBlock* main_block) {
       if (cur == main_block->nodes.end())
         throw ParserError(line->end->pos, "Expected function body");
       if (auto block = dynamic_cast<ASTBlock*>(*cur)) {
-        res->functions.back()->body = parseASTblock(block, scope, main_scope);
+        res->functions.back()->body = parseASTblock(block, scope, main_scope, func->type);
       } else {
         throw ParserError(line->end->pos, "Expected function body");
       }
