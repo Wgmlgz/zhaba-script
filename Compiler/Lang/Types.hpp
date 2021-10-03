@@ -6,6 +6,7 @@
 #include "..\OperatorTables.hpp"
 #include <queue>
 
+#define voidT   -1
 #define undefT  0
 #define ctrfT   1
 #define idT     2
@@ -14,30 +15,6 @@
 #define intT    101
 #define blT     102
 #define strT    103
-
-std::unordered_map<int, std::vector<int>> cast_table{
-  //  {"",{""}},
-   {autoT, {intT, strT, blT}},
-   {intT, {blT}},
-   {strT, {blT}},
-};
-// bool canCast(std::string from, std::string to) {
-//   std::unordered_set<std::string> can;
-//   can.insert(from);
-//   std::queue<std::string> q;
-//   q.push(from);
-//   while (!q.empty()) {
-//     auto t = q.front();
-//     q.pop();
-//     if (can.count(t)) continue;
-//     if (to == t) return true;
-//     can.insert(t);
-//     q.push(t);
-//   }
-//   return false;
-// }
-
-
 
 std::unordered_map<int, std::string> type_names{
   {undefT, "undef"},
@@ -59,43 +36,29 @@ struct Type {
   bool is_const;
   bool is_ref;
   int type;
-  // std::vector<Type> template_args;
 
   std::string toString() {
     std::string res;
     if (is_const) res += "const ";
     res += type_names[type];
-    // if (template_args.size()) {
-    //   res += "<";
-    //   for (auto i = template_args.begin(); i != template_args.end(); ++i) {
-    //     if (i != template_args.begin()) res += ",";
-    //     res += i->toString();
-    //   }
-    //   res += ">";
-    // }
+
     return res;
   }
   std::string toCppString() {
     std::string res;
-    // if (is_const) res += "const ";
     res += type_names[type];
-    // if (template_args.size()) {
-    //   res += "<";
-    //   for (auto i = template_args.begin(); i != template_args.end(); ++i) {
-    //     if (i != template_args.begin()) res += ",";
-    //     res += i->toString();
-    //   }
-    //   res += ">";
-    // }
+  
     return res;
   }
 
   Type(const int& new_type = 0, const bool& new_is_const = false)
     : type(new_type), is_const(new_is_const) {}
-  // Type(const int& new_type, const std::vector<Type>& new_template_args,
-  //   const bool& new_is_const = false)
-  //   : type(new_type),
-  //   template_args(new_template_args),
-  //   is_const(new_is_const) {}
+
   virtual ~Type() {}
+
+  static Type parse(const std::string& str) {
+    if (prim_types.count(str)) {
+      return Type(prim_types[str]);
+    } else throw std::runtime_error("type parsing failed");
+  }
 };

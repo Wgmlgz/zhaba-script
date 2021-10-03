@@ -3,6 +3,7 @@
 #include "..\Lang\Scope.hpp"
 #include "..\Lexer.hpp"
 #include "..\OperatorTables.hpp"
+#include "ParserError.hpp"
 #include <string>
 #include <vector>
 #include <sstream>
@@ -10,15 +11,15 @@
 #include <stack>
 #include <unordered_map>
 
-
-
 struct ASTNode {
   virtual ~ASTNode() = default;
 };
+
 struct ASTLine : public ASTNode {
   tokeniter begin, end;
   ASTLine(tokeniter new_begin, tokeniter new_end) : begin{ new_begin }, end{ new_end } {}
 };
+
 struct ASTBlock : public ASTNode {
   std::vector<ASTNode*> nodes;
   size_t offset = 0;
@@ -142,14 +143,14 @@ namespace ASTParser {
 
   ASTBlock* parse(tokeniter begin, tokeniter end) {
     int line = 1;
-    which_line.clear();
-    lines.clear();
-    lines.resize(1);
+    ParserError::which_line.clear();
+    ParserError::lines.clear();
+    ParserError::lines.resize(1);
 
     for (auto i = begin; i != end; ++i) {
-      which_line[i->pos] = line;
-      if (i->token == "line end") ++line, lines.push_back("");
-      else lines[line - 1] += i->val;
+      ParserError::which_line[i->pos] = line;
+      if (i->token == "line end") ++line, ParserError::lines.push_back("");
+      else ParserError::lines[line - 1] += i->val;
     }
 
     return parseBlock(begin, end);

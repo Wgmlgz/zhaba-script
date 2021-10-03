@@ -2,55 +2,13 @@
 #include <set>
 #include <utility>
 
+#include "../TreeParser/ParserError.hpp"
 #include "..\Lexer.hpp"
 #include "..\OperatorTables.hpp"
 #include "Expression.hpp"
 #include "..\Lang\Scope.hpp"
 #include "..\..\TreeLib/TreePrinterASCII.hpp"
 
-std::unordered_map<int, int> which_line;
-std::vector<std::string> lines;
-
-size_t current_line = 0;
-struct ParserError {
-  size_t pos = 0;
-  size_t len = 0;
-  std::string message;
-  size_t line = 666;
-  ParserError(size_t new_pos, size_t new_len, std::string new_message) {
-    pos = new_pos;
-    len = new_len;
-    message = new_message;
-  }
-  ParserError(size_t new_pos, std::string new_message) {
-    pos = new_pos;
-    message = new_message;
-  }
-  std::string toString(std::string source_code) {
-    line = which_line[pos];
-    source_code = lines[which_line[pos] - 1];
-
-    int real_pos = 0;
-    for (int i = 0; i < line - 1; ++i) real_pos += lines[i].size() + 1;
-    pos -= real_pos;
-    std::string res;
-    res += "Err at line ";
-    res += std::to_string(line) + " ";
-    res += "| ";
-    size_t offset = res.size();
-    res += source_code;
-    res += "\n";
-    res += std::string(offset - 2, ' ');
-    res += "| ";
-    res += std::string(pos, ' ');
-    if (len) res += std::string(len, '^');
-    else res += "^";
-    res += "\n";
-    res += message;
-    res += "\n";
-    return res;
-  }
-};
 namespace ExpParser {
   TreeNode<std::string>* toGenericTree(Exp* exp) {
     auto node = new TreeNode<std::string>;
@@ -113,7 +71,6 @@ namespace ExpParser {
   std::unordered_map<std::string, double> prefix_operators = tables::prefix_operators;
   std::unordered_map<std::string, double> postfix_operators = { {"++", 2},
                                                                     {"--", 2} };
-
 
   Exp* build_exp(const std::vector<Exp*>::iterator begin,
     const std::vector<Exp*>::iterator end, int depth = 0) {
@@ -294,13 +251,13 @@ namespace ExpParser {
     return -666;
   }
   std::map<std::tuple<std::string, int, int>, int> B_OD = tables::B_OD;
-  std::map<std::tuple<std::string, int>, int> PR_OD{
-    {{"++", intT}, intT},
-    {{"--", intT}, intT},
+  std::map<std::tuple<std::string, std::vector<int>>, int> PR_OD{
+    {{"++", {intT}}, intT},
+    {{"--", {intT}}, intT},
   };
-  std::map<std::tuple<std::string, int>, int> PO_OD{
-    {{"++", intT}, intT},
-    {{"--", intT}, intT},
+  std::map<std::tuple<std::string, std::vector<int>>, int> PO_OD{
+    {{"++", {intT}}, intT},
+    {{"--", {intT}}, intT},
   };
   enum expected_val { undef, var, id, val };
 
@@ -369,7 +326,7 @@ namespace ExpParser {
       } else if (eval == val) {
         if (scope_info.vars.count(op->val)) {
           exp->type = scope_info.vars[op->val];
-        } else throw ParserError(0, "'" + op->val + "' is undefined");
+        } else throw ParserError(op->pos, "'" + op->val + "' is undefined");
       }
     }
 
@@ -452,8 +409,16 @@ namespace ExpParser {
 
     if (auto op = dynamic_cast<PostfixOperator*>(exp)) {
       op->child = postprocess(op->child, scope_info, cur_scope, val);
-      if (PO_OD.count({ op->val, op->child->type.type })) {
-        exp->type.type = PO_OD[{op->val, op->child->type.type}];
+      std::vector<int> types;
+      if (auto tuple = dynamic_cast<Tuple*>(op->child)) {
+        for (auto exp : tuple->content) {
+          types.push_back(exp->type.type);
+        }
+      } else {
+        types.push_back(op->child->type.type);
+      }
+      if (PO_OD.count({ op->val, types })) {
+        exp->type.type = PO_OD[{op->val,types}];
         if (op->child->type.is_const) {
           exp->type.is_const = true;
         }
@@ -465,8 +430,16 @@ namespace ExpParser {
 
     if (auto op = dynamic_cast<PrefixOperator*>(exp)) {
       op->child = postprocess(op->child, scope_info, cur_scope, val);
-      if (PR_OD.count({ op->val, op->child->type.type })) {
-        exp->type.type = PR_OD[{op->val, op->child->type.type}];
+      std::vector<int> types;
+      if (auto tuple = dynamic_cast<Tuple*>(op->child)) {
+        for (auto exp : tuple->content) {
+          types.push_back(exp->type.type);
+        }
+      } else {
+        types.push_back(op->child->type.type);
+      }
+      if (PR_OD.count({ op->val, types })) {
+        exp->type.type = PR_OD[{op->val, types}];
         if (op->child->type.is_const) {
           exp->type.is_const = true;
         }
@@ -480,7 +453,7 @@ namespace ExpParser {
   Exp* parse(std::vector<Token>::iterator begin, std::vector<Token>::iterator end, ScopeInfo& scope_info, ScopeInfo& cur_scope) {
     auto exp_res = preprocess(begin, end);
     Exp* exp = build_exp(exp_res.begin(), exp_res.end());
-    printCompact(ExpParser::toGenericTree(exp));
+    // printCompact(ExpParser::toGenericTree(exp));
     exp = postprocess(exp, scope_info, cur_scope);
     return exp;
   }
