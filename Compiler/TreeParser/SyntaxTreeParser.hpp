@@ -14,7 +14,7 @@ STBlock* parseASTblock(ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo& par
       if (auto ctr = dynamic_cast<FlowOperator*>(exp)) {
         // if statement
         if (ctr->val == "?") {
-          if (ctr->operand->type.type == blT) {
+          if (ctr->operand->type.getType() == TYPE::blT) {
             auto tmp_if = new STIf;
             tmp_if->contition = ctr->operand;
             if (i + 1 != main_block->nodes.end()) {
@@ -62,8 +62,14 @@ STBlock* parseASTblock(ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo& par
         } else if (ctr->val == "<") {
           auto tmp_ret = new STRet;
           tmp_ret->exp = ctr->operand;
-          if (tmp_ret->exp->type.type != retT.type) {
-            throw ParserError(ctr->pos, "Return must be '" + retT.toString() + "'");
+          if (retT.getType() == TYPE::voidT) {
+            if (tmp_ret->exp)
+              throw ParserError(ctr->pos, "You cannot return something becouse return type is 'void'");
+          } else {
+            if (!tmp_ret->exp)
+              throw ParserError(ctr->pos, "Expected return value");
+            if (tmp_ret->exp->type != retT)
+              throw ParserError(ctr->pos, "Return must be '" + retT.toString() + "'");
           }
           res->nodes.push_back(tmp_ret);
         } else {
@@ -114,11 +120,11 @@ STTree* parseAST(ASTBlock* main_block) {
       auto& func = res->functions.back();
       ExpParser::prefix_operators[func->name] = func->priority;
       ExpParser::operators.insert(func->name);
-      std::vector<int> types;
+      std::vector<Type> types;
       for (auto& [_, type] : func->args) {
-        types.push_back(type.type);
+        types.push_back(type);
       }
-      ExpParser::PR_OD[{func->name, types}] = func->type.type;
+      ExpParser::PR_OD[{func->name, types}] = func->type;
       ++cur;
       ScopeInfo scope;
       for (auto& [name, type] : func->args) {

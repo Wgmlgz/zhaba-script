@@ -79,7 +79,7 @@ TreeNode<std::string>* STBlock::toGenericTree() {
       }
       if (auto exp = dynamic_cast<STRet*>(i)) {
         node->branches.push_back(new TreeNode<std::string>("<ret>", {
-          ExpParser::toGenericTree(exp->exp)
+          exp->exp ? ExpParser::toGenericTree(exp->exp) : new TreeNode<std::string>("void")
         }));
       }
       if (auto exp = dynamic_cast<STExp*>(i)) {

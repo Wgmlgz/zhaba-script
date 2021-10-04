@@ -32,36 +32,36 @@ namespace tables {
         {"p)", R"(((\))))"},
     };
 
-    std::map<std::tuple<std::string, int, int>, int> B_OD{
-        {{"+", intT, intT}, intT},
-        {{"+", blT, intT}, intT},
-        {{"+", intT, blT}, intT},
-        {{"+", blT, blT}, intT},
-        {{"+", intT, blT}, intT},
+    // std::map<std::tuple<std::string, int, int>, int> B_OD{
+    //     {{"+", intT, intT}, intT},
+    //     {{"+", blT, intT}, intT},
+    //     {{"+", intT, blT}, intT},
+    //     {{"+", blT, blT}, intT},
+    //     {{"+", intT, blT}, intT},
 
-        {{"+", strT, strT}, strT},
+    //     {{"+", strT, strT}, strT},
 
-        {{"-", intT, intT}, intT},
-        {{"-", blT, intT}, intT},
-        {{"-", intT, blT}, intT},
-        {{"-", blT, blT}, intT},
+    //     {{"-", intT, intT}, intT},
+    //     {{"-", blT, intT}, intT},
+    //     {{"-", intT, blT}, intT},
+    //     {{"-", blT, blT}, intT},
 
-        {{"*", intT, intT}, intT},
-        {{"*", blT, intT}, intT},
-        {{"*", intT, blT}, intT},
-        {{"*", blT, blT}, intT},
+    //     {{"*", intT, intT}, intT},
+    //     {{"*", blT, intT}, intT},
+    //     {{"*", intT, blT}, intT},
+    //     {{"*", blT, blT}, intT},
 
-        {{"%%", intT, intT}, blT},
+    //     {{"%%", intT, intT}, blT},
 
-        // {{"=", "id", "type"}, blT},
+    //     // {{"=", "id", "type"}, blT},
 
-        {{"==", strT, strT}, blT},
-        {{"==", intT, intT}, blT},
-        {{"==", blT, intT}, blT},
-        {{"==", intT, blT}, blT},
-        {{"==", blT, blT}, blT},
+    //     {{"==", strT, strT}, blT},
+    //     {{"==", intT, intT}, blT},
+    //     {{"==", blT, intT}, blT},
+    //     {{"==", intT, blT}, blT},
+    //     {{"==", blT, blT}, blT},
 
-        // {{"<::>", intT, intT}, "int range"}, {{"::", intT, "int range"}, "int
-        // range"}
-    };
+    //     // {{"<::>", intT, intT}, "int range"}, {{"::", intT, "int range"}, "int
+    //     // range"}
+    // };
 }

@@ -3,7 +3,7 @@
 
 struct Exp {
   int pos;
-  Type type;
+  Type type = Type(TYPE::voidT);
   Exp(int new_pos = 666) : pos(new_pos) {}
   virtual ~Exp() {}
 };
@@ -38,7 +38,7 @@ struct IdLiteral : public Literal {
 };
 struct FlowOperator : public Exp {
   std::string val;
-  Exp* operand;
+  Exp* operand = nullptr;
   FlowOperator(int new_pos, std::string new_val, Exp* new_operand) {
     pos = new_pos;
     val = new_val;

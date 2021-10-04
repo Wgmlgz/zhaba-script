@@ -37,7 +37,8 @@ struct Function {
 Function* parseFunctionHeader(std::vector<Token>::iterator begin, std::vector<Token>::iterator end) {
   if (begin >= end) throw ParserError(begin->pos, "Expected operator declaration");
   auto func = new Function;
-  func->type = Type(intT);
+  // implicit void type
+  func->type = Type(TYPE::voidT);
   auto cur = begin;
 
   // parse priority
@@ -52,11 +53,12 @@ Function* parseFunctionHeader(std::vector<Token>::iterator begin, std::vector<To
     throw ParserError(cur->pos, "Expected type or operator name");
   } else {
     try {
-      func->type = Type::parse(cur->val);
+      func->type = Type::parse(cur);
       ++cur;
       if (cur != end and cur->token == "space") ++cur;
     } catch (...) {
-      throw ParserError(cur->pos, "Expected return type");
+      // implicit void type 
+      //   throw ParserError(cur->pos, "Expected return type");
     }
   }
 
@@ -69,9 +71,9 @@ Function* parseFunctionHeader(std::vector<Token>::iterator begin, std::vector<To
     if (cur != end and cur->token == "space") ++cur;
   }
 
-  // int sum = int a int b:
+  // int sum :: int a int b:
   //        ^^^ if have this just ignore
-  if (cur != end and cur->val == "=") {
+  if (cur != end and cur->val == "::") {
     ++cur;
     if (cur != end and cur->token == "space") ++cur;
   }
@@ -81,7 +83,7 @@ Function* parseFunctionHeader(std::vector<Token>::iterator begin, std::vector<To
   while (cur != end) {
     func->args.emplace_back();
     try {
-      func->args.back().type = Type::parse(cur->val);
+      func->args.back().type = Type::parse(cur);
       ++cur;
       if (cur != end and cur->token == "space") ++cur;
     } catch (...) {

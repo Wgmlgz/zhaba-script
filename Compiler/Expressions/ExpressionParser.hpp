@@ -83,7 +83,7 @@ namespace ExpParser {
       return op;
     }
     if (auto op = dynamic_cast<FlowOperator*>(*begin)) {
-      if (distance(begin, end) != 1)
+      if (begin + 1 < end)
         op->operand = build_exp(begin + 1, end);
       return op;
     }
@@ -264,16 +264,10 @@ namespace ExpParser {
     }
     return -666;
   }
-  std::map<std::tuple<std::string, int, int>, int> B_OD = tables::B_OD;
-  std::map<std::tuple<std::string, std::vector<int>>, int> PR_OD{
-    {{"++", {intT}}, intT},
-    {{"--", {intT}}, intT},
-  };
-  std::map<std::tuple<std::string, std::vector<int>>, int> PO_OD{
-    {{"++", {intT}}, intT},
-    {{"--", {intT}}, intT},
-  };
-  enum expected_val { undef, var, id, val };
+  std::map<std::tuple<std::string, Type, Type>, Type> B_OD;
+  std::map<std::pair<std::string, std::vector<Type>>, Type> PR_OD;
+  std::map<std::pair<std::string, std::vector<Type>>, Type> PO_OD;
+  // enum expected_val { undef, var, id, val };
 
   Type parseType(Exp* exp, ScopeInfo& scope_info) {
     if (auto id = dynamic_cast<IdLiteral*>(exp)) {
@@ -293,57 +287,54 @@ namespace ExpParser {
       throw ParserError(0, "Expected name");
     }
   }
-  VarDecl* parseVarDecl(Exp* exp, ScopeInfo& scope_info) {
-    auto ret = new VarDecl;
+  // VarDecl* parseVarDecl(Exp* exp, ScopeInfo& scope_info) {
+  //   auto ret = new VarDecl;
 
-    if (auto tp = dynamic_cast<Tuple*>(exp)) {
-      if (tp->content.size() != 2) throw ParserError(0, "Expected typed variable");
-      ret->type = parseType(tp->content[0], scope_info);
-      ret->name = parseName(tp->content[1]);
-      delete tp->content[0];
-      delete tp->content[1];
-    } else {
-      ret->type = Type(undefT);
-      ret->name = parseName(exp);
-      delete exp;
-    }
-    return ret;
+  //   if (auto tp = dynamic_cast<Tuple*>(exp)) {
+  //     if (tp->content.size() != 2) throw ParserError(0, "Expected typed variable");
+  //     ret->type = parseType(tp->content[0], scope_info);
+  //     ret->name = parseName(tp->content[1]);
+  //     delete tp->content[0];
+  //     delete tp->content[1];
+  //   } else {
+  //     ret->type = Type(undefT);
+  //     ret->name = parseName(exp);
+  //     delete exp;
+  //   }
+  //   return ret;
 
-  }
-  Exp* postprocess(Exp* exp, ScopeInfo& scope_info, ScopeInfo& cur_scope, expected_val eval = undef) {
+  // }
+  Exp* postprocess(Exp* exp, ScopeInfo& scope_info, ScopeInfo& cur_scope/*, expected_val eval = undef*/) {
     if (auto op = dynamic_cast<CppCode*>(exp)) {
       return op;
     }
     if (auto op = dynamic_cast<FlowOperator*>(exp)) {
-      exp->type.type = ctrfT;
-      // if (op->val == "#") {
-
-      // }
-      postprocess(op->operand, scope_info, cur_scope, val);
+      exp->type = Type(TYPE::voidT);
+      if (op->operand) postprocess(op->operand, scope_info, cur_scope);
     }
     if (auto op = dynamic_cast<IntLiteral*>(exp)) {
-      exp->type.type = intT;
+      exp->type = Type(TYPE::intT, true);
       exp->type.is_const = true;
     }
     if (auto op = dynamic_cast<StrLiteral*>(exp)) {
-      exp->type.type = strT;
+      exp->type = Type(TYPE::strT, true);
       exp->type.is_const = true;
     }
     if (auto op = dynamic_cast<IdLiteral*>(exp)) {
-      if (eval == id or eval == undef) {
-        exp->type.type = idT;
-        exp->type.is_const = true;
-      } else if (eval == var) {
-        if (scope_info.vars.count(op->val)) {
-          exp->type = scope_info.vars[op->val];
-        } else {
-          throw ParserError(0, "Unknown variable");
-        }
-      } else if (eval == val) {
-        if (scope_info.vars.count(op->val)) {
-          exp->type = scope_info.vars[op->val];
-        } else throw ParserError(op->pos, "'" + op->val + "' is undefined");
+      // if (eval == id or eval == undef) {
+      //   exp->type.type = idT;
+      //   exp->type.is_const = true;
+      // } else if (eval == var) {
+      if (scope_info.vars.count(op->val)) {
+        exp->type = scope_info.vars[op->val];
+      } else {
+        throw ParserError(op->pos, "Unknown variable '" + op->val + "'");
       }
+      // } else if (eval == val) {
+      //   if (scope_info.vars.count(op->val)) {
+      //     exp->type = scope_info.vars[op->val];
+      //   } else throw ParserError(op->pos, "'" + op->val + "' is undefined");
+      // }
     }
 
     if (auto op = dynamic_cast<BinOperator*>(exp)) {
@@ -370,99 +361,97 @@ namespace ExpParser {
           }
           delete exp;
           exp = t;
-          exp->type.type = tupleT;
+          exp->type = Type(TYPE::voidT);
         }
       } else if (op->val == "=") {
-        op->lhs = postprocess(op->lhs, scope_info, cur_scope, var);
-        op->rhs = postprocess(op->rhs, scope_info, cur_scope, val);
+        // TODO: assignment
+        // op->lhs = postprocess(op->lhs, scope_info, cur_scope);
+        // op->rhs = postprocess(op->rhs, scope_info, cur_scope);
 
-        auto vard = parseVarDecl(op->lhs, scope_info);
+        // auto vard = parseVarDecl(op->lhs, scope_info);
 
 
-        if (vard->type.type == undefT) {
-          // just '=' operator like: a = 2
-          if (scope_info.vars.count(vard->name) == 0)
-            throw ParserError(0, "Unknown variable lol");
-          if (op->lhs->type.type != op->rhs->type.type)
-            throw ParserError(op->pos, "Types (" + op->lhs->type.toString() + ", " + op->rhs->type.toString() + ") for '=' are different");
+        // if (vard->type.type == undefT) {
+        //   // just '=' operator like: a = 2
+        //   if (scope_info.vars.count(vard->name) == 0)
+        //     throw ParserError(0, "Unknown variable lol");
+        //   if (op->lhs->type.type != op->rhs->type.type)
+        //     throw ParserError(op->pos, "Types (" + op->lhs->type.toString() + ", " + op->rhs->type.toString() + ") for '=' are different");
 
-          vard->type = op->rhs->type;
-          op->type = vard->type;
-        } else {
-          // var creation: int a = 2
-          if (cur_scope.vars.count(vard->name)) {
-            throw ParserError(0, "Variable '" + vard->name + "' is alveady declareted");
-          }
-          if (vard->type.type == autoT)
-            vard->type.type = op->rhs->type.type;
-          if (vard->type.type != op->rhs->type.type)
-            throw ParserError(op->pos, "Types (" + vard->type.toString() + ", " + op->rhs->type.toString() + ") for '=' are different");
+        //   vard->type = op->rhs->type;
+        //   op->type = vard->type;
+        // } else {
+        //   // var creation: int a = 2
+        //   if (cur_scope.vars.count(vard->name)) {
+        //     throw ParserError(0, "Variable '" + vard->name + "' is alveady declareted");
+        //   }
+        //   if (vard->type.type == autoT)
+        //     vard->type.type = op->rhs->type.type;
+        //   if (vard->type.type != op->rhs->type.type)
+        //     throw ParserError(op->pos, "Types (" + vard->type.toString() + ", " + op->rhs->type.toString() + ") for '=' are different");
 
-          cur_scope.vars[vard->name] = vard->type;
-          scope_info.vars[vard->name] = vard->type;
-          op->type = vard->type;
-        }
-        auto new_lhs = new IdLiteral(op->lhs->pos, vard->name);
-        new_lhs->type = vard->type;
-        delete op->lhs;
-        op->lhs = new_lhs;
+        //   cur_scope.vars[vard->name] = vard->type;
+        //   scope_info.vars[vard->name] = vard->type;
+        //   op->type = vard->type;
+        // }
+        // auto new_lhs = new IdLiteral(op->lhs->pos, vard->name);
+        // new_lhs->type = vard->type;
+        // delete op->lhs;
+        // op->lhs = new_lhs;
       } else {
-        op->lhs = postprocess(op->lhs, scope_info, cur_scope, val);
-        op->rhs = postprocess(op->rhs, scope_info, cur_scope, val);
-        if (B_OD.count({ op->val, op->lhs->type.type, op->rhs->type.type })) {
-          exp->type.type =
-            B_OD[{op->val, op->lhs->type.type, op->rhs->type.type}];
-        } else
+        op->lhs = postprocess(op->lhs, scope_info, cur_scope);
+        op->rhs = postprocess(op->rhs, scope_info, cur_scope);
+        if (B_OD.count({ op->val, op->lhs->type, op->rhs->type})) {
+          exp->type =
+            B_OD[{op->val, op->lhs->type, op->rhs->type}];
+        } else {
           throw ParserError(
             op->pos, "There is no instance of binary operator '" + op->val +
-            "' for types: " + type_names[op->lhs->type.type] + ", " +
-            type_names[op->rhs->type.type]);
-        if (op->lhs->type.is_const and op->rhs->type.is_const) {
-          exp->type.is_const = true;
+            "' for types: " + op->lhs->type.toString() + ", " +
+            op->rhs->type.toString());
         }
       }
     }
 
     if (auto op = dynamic_cast<PostfixOperator*>(exp)) {
-      op->child = postprocess(op->child, scope_info, cur_scope, val);
-      std::vector<int> types;
+      op->child = postprocess(op->child, scope_info, cur_scope);
+      std::vector<Type> types;
       if (auto tuple = dynamic_cast<Tuple*>(op->child)) {
         for (auto exp : tuple->content) {
-          types.push_back(exp->type.type);
+          types.push_back(exp->type);
         }
       } else {
-        types.push_back(op->child->type.type);
+        types.push_back(op->child->type);
       }
       if (PO_OD.count({ op->val, types })) {
-        exp->type.type = PO_OD[{op->val,types}];
-        if (op->child->type.is_const) {
-          exp->type.is_const = true;
-        }
+        exp->type = PO_OD[{op->val,types}];
       } else
         throw ParserError(
           op->pos, "There is no instance of postfix operator '" + op->val +
-          "' for type: " + type_names[op->child->type.type]);
+          "' for type: " + op->child->type.toString());
     }
 
     if (auto op = dynamic_cast<PrefixOperator*>(exp)) {
-      op->child = postprocess(op->child, scope_info, cur_scope, val);
-      std::vector<int> types;
+      op->child = postprocess(op->child, scope_info, cur_scope);
+      std::vector<Type> types;
       if (auto tuple = dynamic_cast<Tuple*>(op->child)) {
         for (auto exp : tuple->content) {
-          types.push_back(exp->type.type);
+          types.push_back(exp->type);
         }
       } else {
-        types.push_back(op->child->type.type);
+        types.push_back(op->child->type);
       }
       if (PR_OD.count({ op->val, types })) {
-        exp->type.type = PR_OD[{op->val, types}];
-        if (op->child->type.is_const) {
-          exp->type.is_const = true;
+        exp->type = PR_OD[{op->val, types}];
+      } else {
+        std::string types_str;
+        for (auto& i : types) {
+          types_str += i.toString() + " ";
         }
-      } else
         throw ParserError(op->pos, "There is no instance of prefix operator '" +
           op->val +
-          "' for type: " + type_names[op->child->type.type]);
+          "' for types: " + types_str);
+      }
     }
     return exp;
   }
