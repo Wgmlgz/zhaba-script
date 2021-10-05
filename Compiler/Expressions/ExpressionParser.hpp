@@ -25,6 +25,7 @@ namespace ExpParser {
   std::unordered_map<std::string, double> postfix_operators;
 
   TreeNode<std::string>* toGenericTree(Exp* exp) {
+    if (!exp) return new TreeNode<std::string>("<nullptr>");
     auto node = new TreeNode<std::string>;
     if (auto op = dynamic_cast<CppCode*>(exp)) {
       node->data = "cpp: '" + op->code + "'";
@@ -303,7 +304,7 @@ namespace ExpParser {
     }
     if (auto op = dynamic_cast<FlowOperator*>(exp)) {
       exp->type = Type(TYPE::voidT);
-      if (op->operand) postprocess(op->operand, scope_info);
+      if (op->operand) op->operand = postprocess(op->operand, scope_info);
     }
     if (auto op = dynamic_cast<IntLiteral*>(exp)) {
       exp->type = Type(TYPE::intT);
@@ -329,7 +330,6 @@ namespace ExpParser {
         if (auto t = dynamic_cast<Tuple*>(op->lhs)) {
           if (t->priority == op->priority) {
             t->content.insert(t->content.end(), op->rhs);
-            delete exp;
             exp = t;
             b = false;
           }
@@ -338,7 +338,6 @@ namespace ExpParser {
           auto t = new Tuple;
           t->priority = op->priority;
           t->content = { op->lhs, op->rhs };
-          delete exp;
           exp = t;
           exp->type = Type(TYPE::voidT);
         }
@@ -428,11 +427,12 @@ namespace ExpParser {
     }
     return exp;
   }
-  
+
   Exp* parse(std::vector<Token>::iterator begin, std::vector<Token>::iterator end, ScopeInfo& scope_info) {
     auto exp_res = preprocess(begin, end);
     Exp* exp = buildExp(exp_res.begin(), exp_res.end());
     exp = postprocess(exp, scope_info);
+    // printExpTree(exp);
     return exp;
   }
 };

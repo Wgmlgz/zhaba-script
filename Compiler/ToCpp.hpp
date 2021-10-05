@@ -47,7 +47,7 @@ std::string expToCpp(Exp* exp) {
     /* if string literal provided remove ''*/
     if (op->code.front() == '\'' and op->code.back() == '\'') {
       op->code.front() = ' ';
-      op->code.back() == ' ';
+      op->code.pop_back();
     }
     res += op->code;
   }
@@ -157,7 +157,7 @@ std::string funcToCpp(Function* func) {
 }
 
 std::string toCpp(STTree* block) {
-  std::string res;
+  std::string res = "#include <bits/stdc++.h>\n\n";
 
   for (auto i : block->functions) {
     res += funcToCpp(i);

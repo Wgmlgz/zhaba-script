@@ -1,0 +1,4 @@
+out _ str s: #'printf("%s\n",s.c_str());'
+
+int main
+  out 'goodbye world!'

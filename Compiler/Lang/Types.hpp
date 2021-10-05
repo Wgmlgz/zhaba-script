@@ -49,7 +49,7 @@ struct Type {
   std::string toCppString() {
     std::string res;
     // if (is_const) res += "const ";
-    res += type_names[type];
+    res += cpp_type_names[type];
   
     return res;
   }

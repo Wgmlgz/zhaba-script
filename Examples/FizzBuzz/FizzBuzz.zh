@@ -1,0 +1,30 @@
+comment:
+  #' /**                                                '
+  #'   * This is the first actual zhaba_script program  '
+  #'   *                                                '
+  #'   * wacky standart lib                             '
+  #'   * even no comments                               '
+  #'   * but finally works                              '
+  #'   *                                                '
+  #'   * by Wgmlgz                                      '
+  #'  */                                                '
+
+5 int %% ___ int a int b: #return !(a % b);
+6 int +  ___ int a int b: #return a + b;
+6 int -  ___ int a int b: #return a - b;
+9  int <= ___ int a int b: #return a <= b;
+14 int && ___ int a int b: #return a && b;
+out _ int x: #'printf("%d\n",x);'
+out _ str s: #'printf("%s\n",s.c_str());'
+
+
+fizz_buzz _ int mx
+  int i
+  @ i=1 i<=mx i=i+1 
+    ? i %% 3 && i %% 5: out 'FizzBuzz'
+    | i %% 3: out 'Fizz'
+    | i %% 5: out 'Buzz'
+    \ out i
+
+int main
+  fizz_buzz 50

@@ -98,28 +98,32 @@ struct PostfixOperator : public UnaryOperator {
     : UnaryOperator(new_pos, new_val, new_priority, new_child) {}
 };
 
-struct Assign : public BinOperator {};
-
-void castToPlainTupleDfs(Exp* exp, Tuple*& tuple) {
+void castTreeToTupleDfs(Exp* exp, Tuple*& tuple) {
   if (auto op = dynamic_cast<BinOperator*>(exp)) {
     if (op->val == ",") {
-      castToPlainTupleDfs(op->lhs, tuple);
-      castToPlainTupleDfs(op->rhs, tuple);
+      castTreeToTupleDfs(op->lhs, tuple);
+      castTreeToTupleDfs(op->rhs, tuple);
       return;
     }
   }
   tuple->content.push_back(exp);
 }
 
-Tuple* castToPlainTuple(Exp* exp) {
+Tuple* castTreeToTuple(Exp* exp) {
   if (exp) {
     auto tuple = new Tuple;
-    castToPlainTupleDfs(exp, tuple);
+    castTreeToTupleDfs(exp, tuple);
     return tuple;
   }
   return nullptr;
 }
 
-struct VarDecl : public Exp {
-  std::string name;
-};
+Tuple* castToTuple(Exp* exp) {
+  if (exp) {
+    if (auto tuple = dynamic_cast<Tuple*>(exp)) return tuple;
+    Operator* op = dynamic_cast<Operator*>(exp);
+    return new Tuple(op->priority, { op });
+  }
+  return nullptr;
+}
+

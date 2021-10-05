@@ -23,7 +23,7 @@ STBlock* parseASTblock(ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo& par
         /* if line is variable declaration */
         auto exp_res = ExpParser::preprocess(line->begin, line->end);
         auto exp = ExpParser::buildExp(exp_res.begin(), exp_res.end());
-        auto tuple = castToPlainTuple(exp);
+        auto tuple = castTreeToTuple(exp);
 
         for (auto i : tuple->content) {
           if (auto id = dynamic_cast<IdLiteral*>(i)) {
@@ -53,7 +53,7 @@ STBlock* parseASTblock(ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo& par
                 cur_scope.vars[id->val].setLval(true);
 
                 /* push assignment expression */
-                ExpParser::postprocess(assign->lhs, cur_scope);
+                assign->lhs = ExpParser::postprocess(assign->lhs, cur_scope);
                 auto tmp = new STExp;
                 tmp->exp = assign;
                 res->nodes.push_back(tmp);
@@ -67,7 +67,7 @@ STBlock* parseASTblock(ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo& par
         /* not variable declaration so normal parsing */
         auto exp = ExpParser::parse(line->begin, line->end, cur_scope);
         if (auto ctr = dynamic_cast<FlowOperator*>(exp)) {
-          /* ?(if) statement parsing */
+          /* "?" (if) statement parsing */
           if (ctr->val == "?") {
             if (ctr->operand->type.getType() == TYPE::intT) {
               auto tmp_if = new STIf;
@@ -110,22 +110,55 @@ STBlock* parseASTblock(ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo& par
               throw ParserError(ctr->pos, "Expected int expression in '?(if)' contition");
             }
           }
-          /* @(while) statement parsing */
+          /* "@" (for) statement parsing */
           else if (ctr->val == "@") {
-            if (ctr->operand->type.getType() == TYPE::intT) {
+            auto tuple = castToTuple(ctr->operand);
+
+            if (tuple->content.size() < 1) {
+              throw ParserError(0, "Empty '@(while)' statement");
+            }
+
+            if (tuple->content.size() > 3) {
+              throw ParserError(ctr->pos,
+                "You can privide max 3 expressions (init condition iteration) '@(for)' in statement");
+            }
+
+            /* for (;condition;) */
+            if (tuple->content.size() == 1) {
+              tuple->content.insert(tuple->content.begin(), nullptr);
+              tuple->content.insert(tuple->content.end(), nullptr);
+            }
+            /* for (init; condition;) */
+            else if (tuple->content.size() == 2) {
+              tuple->content.insert(tuple->content.end(), nullptr);
+            }
+
+            if (tuple->content[1]->type.getType() == TYPE::intT) {
+              if (tuple->content[0]) {
+                auto init = new STExp;
+                init->exp = tuple->content[0];
+                res->nodes.push_back(init);
+              }
               auto tmp_while = new STWhile;
-              tmp_while->contition = ctr->operand;
+              tmp_while->contition = tuple->content[1];
               if (i + 1 != main_block->nodes.end()) {
                 if (auto body = dynamic_cast<ASTBlock*>(*(i + 1))) {
                   tmp_while->body = parseASTblock(body, cur_scope, res->scope_info, retT);
-                  ++i;
+                  if (tuple->content[2]) {
+                    auto iter = new STExp;
+                    iter->exp = tuple->content[2];
+                    tmp_while->body->nodes.push_back(iter);
+                  }
                   res->nodes.push_back(tmp_while);
+                  ++i;
                 } else {
-                  throw ParserError(0, "Expected block after '@(while)' statement");
+                  throw ParserError(0, "Expected block after '@(for)' statement");
                 }
               }
             } else {
-              throw ParserError(ctr->pos, "Expected int expression in '@(while)' contition");
+              throw ParserError(ctr->pos,
+                "Expected int expression in '@(for)' contition, but '" +
+                tuple->content[1]->type.toString() + "' found");
             }
           }
           /* <(return) statement parsing */
@@ -190,7 +223,6 @@ STTree* parseAST(ASTBlock* main_block) {
       /* parse function header */
       res->functions.push_back(parseFunctionHeader(line->begin, line->end));
       auto& func = res->functions.back();
-      ExpParser::prefix_operators[func->name] = func->priority;
       ExpParser::operators.insert(func->name);
       std::vector<Type> types;
       for (auto& [_, type] : func->args) {
@@ -198,10 +230,13 @@ STTree* parseAST(ASTBlock* main_block) {
       }
         if (func->op_type == OpType::bin) {
         ExpParser::B_OD[{func->name, types[0], types[1]}] = func->type;
+        ExpParser::bin_operators[func->name] = func->priority;
       } else if (func->op_type == OpType::lhs) {
         ExpParser::PR_OD[{func->name, types}] = func->type;
+        ExpParser::prefix_operators[func->name] = func->priority;
       } else if (func->op_type == OpType::rhs) {
         ExpParser::PO_OD[{func->name, types}] = func->type;
+        ExpParser::postfix_operators[func->name] = func->priority;
       }
       ++cur;
       ScopeInfo scope;

@@ -1,0 +1,17 @@
+3 int - _ int a: #return -a;
+5 int /  ___ int a int b: #return a / b;
+5 int %  ___ int a int b: #return a % b;
+5 int *  ___ int a int b: #return a * b;
+5 int %% ___ int a int b: #return !(a % b);
+6 int +  ___ int a int b: #return a + b;
+6 int -  ___ int a int b: #return a - b;
+9  int <  ___ int a int b: #return a < b;
+9  int >  ___ int a int b: #return a > b;
+9  int <= ___ int a int b: #return a <= b;
+9  int >= ___ int a int b: #return a >= b;
+10 int == ___ int a int b: #return a == b;
+10 int != ___ int a int b: #return a != b;
+14 int && ___ int a int b: #return a && b;
+15 int || ___ int a int b: #return a || b;
+out _ int x: #'printf("%d\n",x);'
+out _ str s: #'printf("%s\n",s.c_str());'
