@@ -7,14 +7,18 @@
 #include "../Lexer.hpp"
 #include <queue>
 
-enum class TYPE {voidT, blT, intT, strT};
+enum class TYPE {voidT, intT, strT};
 
 std::unordered_map<TYPE, std::string> type_names{
-  {TYPE::voidT  , "int"},
-  {TYPE::intT  , "int"},
-  {TYPE::blT   , "bl"},
-  {TYPE::strT  , "str"},
   {TYPE::voidT  , "void"},
+  {TYPE::intT  , "int"},
+  {TYPE::strT  , "str"},
+};
+
+std::unordered_map<TYPE, std::string> cpp_type_names{
+  {TYPE::voidT  , "void"},
+  {TYPE::intT  , "int"},
+  {TYPE::strT  , "std::string"},
 };
 
 struct Type {
@@ -77,7 +81,6 @@ bool operator!=(const Type& lhs, const Type& rhs) {
 std::unordered_map<std::string, TYPE> prim_types{
   { "void", TYPE::voidT},
   { "int" , TYPE::intT },
-  { "bl"  , TYPE::blT  },
   { "str" , TYPE::strT },
 };
 

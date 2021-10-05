@@ -10,6 +10,20 @@
 #include "../../TreeLib/TreePrinterASCII.hpp"
 
 namespace ExpParser {
+  std::unordered_map<std::string, bool> settings = {
+      {"DEBUG", true}, {"SHOW_TREE", true}, {"SHOW_ERROR", true}
+  };
+
+  const double INF = 1000000000000.0;
+  const double priority_offset = 100;
+  const double parentheses_offset = 1000000;
+
+  std::set<std::string> flow_ops = {"?", "@", "<"};
+  std::unordered_map<std::string, double> bin_operators = {{"=", 10}};
+  std::unordered_set<std::string> operators = {"="};
+  std::unordered_map<std::string, double> prefix_operators;
+  std::unordered_map<std::string, double> postfix_operators;
+
   TreeNode<std::string>* toGenericTree(Exp* exp) {
     auto node = new TreeNode<std::string>;
     if (auto op = dynamic_cast<CppCode*>(exp)) {
@@ -62,18 +76,6 @@ namespace ExpParser {
     printCompact(tree);
     deleteTree(tree);
   }
-
-  std::unordered_map<std::string, bool> settings = {
-      {"DEBUG", true}, {"SHOW_TREE", true}, {"SHOW_ERROR", true} };
-
-  const double INF = 1000000000000.0;
-  const double priority_offset = 100;
-  const double parentheses_offset = 1000000;
-  std::unordered_map<std::string, double> bin_operators = tables::bin_operators;
-  std::unordered_set<std::string> operators = tables::operators;
-  std::unordered_map<std::string, double> prefix_operators = tables::prefix_operators;
-  std::unordered_map<std::string, double> postfix_operators = { {"++", 2},
-                                                                    {"--", 2} };
 
   /**
    * @brief Converts expression to expression tree
@@ -169,7 +171,7 @@ namespace ExpParser {
       }
       return {new CppCode(code)};
     }
-    if (begin->token == "id" and std::set<std::string>{"?", "@", "<"}.count(begin->val)) {
+    if (begin->token == "id" and flow_ops.count(begin->val)) {
       res.push_back(new FlowOperator(begin->pos, begin->val, nullptr));
       ++begin;
     }
@@ -356,41 +358,11 @@ namespace ExpParser {
         } else {
           throw ParserError(op->lhs->pos, op->pos - op->lhs->pos, "Left operant for '=' must be lval");
         }
-        // auto vard = parseVarDecl(op->lhs, scope_info);
-
-
-        // if (vard->type.type == undefT) {
-        //   // just '=' operator like: a = 2
-        //   if (scope_info.vars.count(vard->name) == 0)
-        //     throw ParserError(0, "Unknown variable lol");
-        //   if (op->lhs->type.type != op->rhs->type.type)
-        //     throw ParserError(op->pos, "Types (" + op->lhs->type.toString() + ", " + op->rhs->type.toString() + ") for '=' are different");
-
-        //   vard->type = op->rhs->type;
-        //   op->type = vard->type;
-        // } else {
-        //   // var creation: int a = 2
-        //   if (cur_scope.vars.count(vard->name)) {
-        //     throw ParserError(0, "Variable '" + vard->name + "' is alveady declareted");
-        //   }
-        //   if (vard->type.type == autoT)
-        //     vard->type.type = op->rhs->type.type;
-        //   if (vard->type.type != op->rhs->type.type)
-        //     throw ParserError(op->pos, "Types (" + vard->type.toString() + ", " + op->rhs->type.toString() + ") for '=' are different");
-
-        //   cur_scope.vars[vard->name] = vard->type;
-        //   scope_info.vars[vard->name] = vard->type;
-        //   op->type = vard->type;
-        // }
-        // auto new_lhs = new IdLiteral(op->lhs->pos, vard->name);
-        // new_lhs->type = vard->type;
-        // delete op->lhs;
-        // op->lhs = new_lhs;
       } else {
         op->lhs = postprocess(op->lhs, scope_info);
         op->rhs = postprocess(op->rhs, scope_info);
         
-        // implicit lval to rval conversion
+        /* implicit lval to rval conversion */
         op->lhs->type.setLval(false);
         op->rhs->type.setLval(false);
         
@@ -417,7 +389,7 @@ namespace ExpParser {
         types.push_back(op->child->type);
       }
 
-      // implicit lval to rval conversion
+      /* implicit lval to rval conversion */
       for (auto& i : types) i.setLval(false);
       
       if (PO_OD.count({ op->val, types })) {
@@ -456,45 +428,11 @@ namespace ExpParser {
     }
     return exp;
   }
+  
   Exp* parse(std::vector<Token>::iterator begin, std::vector<Token>::iterator end, ScopeInfo& scope_info) {
     auto exp_res = preprocess(begin, end);
     Exp* exp = buildExp(exp_res.begin(), exp_res.end());
     exp = postprocess(exp, scope_info);
     return exp;
   }
-  // int calc(const std::string& str) {
-  //   try {
-  //     Lexer parser(tables::lexer_tokens);
-  //     auto parse_res = parser.parse(str, settings["DEBUG"]);
-  //     auto exp_res = preprocess(parse_res.begin(), parse_res.end());
-
-  //     // for (auto exp : exp_res) {
-  //     //   if (IntLiteral* op = dynamic_cast<IntLiteral*>(exp)) {
-  //     //     std::cout << "'" + std::to_string(op->val) + "' int";
-  //     //   }
-
-  //     //   if (BinOperator* op = dynamic_cast<BinOperator*>(exp)) {
-  //     //     std::cout << "'" + op->val + "' bin " + std::to_string((int)op->priority);
-  //     //   }
-  //     //   if (UnaryOperator* op = dynamic_cast<UnaryOperator*>(exp)) {
-  //     //     std::cout << "'" + op->val +
-  //     //       (dynamic_cast<PrefixOperator*>(op) ? "' pref " : "' post ") +
-  //     //       std::to_string((int)op->priority);
-  //     //   }
-  //     // }
-  //     // std::cout << std::endl;
-  //     Exp* exp = buildExp(exp_res.begin(), exp_res.end());
-  //     exp = postprocess(exp, );
-  //     if (settings["SHOW_TREE"]) printExpTree(exp);
-  //     if (settings["SHOW_COOL_TREE"]) printGenericTree(exp);
-
-  //     return calcExp(exp);
-  //   }
-  //   catch (ParserError error) {
-  //     std::cout << str << std::endl;
-  //     std::cout << std::string(error.pos, ' ') << "^" << std::endl;
-  //     std::cout << error.message << std::endl;
-  //   }
-  //   return -1;
-  // }
 };

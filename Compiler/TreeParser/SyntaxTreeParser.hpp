@@ -9,7 +9,7 @@ STBlock* parseASTblock(ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo& par
   auto res = new STBlock;
   for (auto i = main_block->nodes.begin(); i != main_block->nodes.end(); ++i) {
     if (auto line = dynamic_cast<ASTLine*>(*i)) {
-      /* if line is variable declaration */
+      /* decide if current line is line declaration or something */
       bool is_var_decl = true;
       bool autoT = line->begin->val == "auto";
       Type type;
@@ -20,6 +20,7 @@ STBlock* parseASTblock(ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo& par
         is_var_decl = false;
       }
       if (is_var_decl) {
+        /* if line is variable declaration */
         auto exp_res = ExpParser::preprocess(line->begin, line->end);
         auto exp = ExpParser::buildExp(exp_res.begin(), exp_res.end());
         auto tuple = castToPlainTuple(exp);
@@ -66,9 +67,9 @@ STBlock* parseASTblock(ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo& par
         /* not variable declaration so normal parsing */
         auto exp = ExpParser::parse(line->begin, line->end, cur_scope);
         if (auto ctr = dynamic_cast<FlowOperator*>(exp)) {
-          /* if statement parsing */
+          /* ?(if) statement parsing */
           if (ctr->val == "?") {
-            if (ctr->operand->type.getType() == TYPE::blT) {
+            if (ctr->operand->type.getType() == TYPE::intT) {
               auto tmp_if = new STIf;
               tmp_if->contition = ctr->operand;
               if (i + 1 != main_block->nodes.end()) {
@@ -105,14 +106,30 @@ STBlock* parseASTblock(ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo& par
                   throw ParserError(0, "Expected block after '?(if)' statement");
                 }
               }
-
-              // res->nodes.push_back(tmp);
             } else {
-              throw ParserError(ctr->pos, "Expected bool expression in '?(if)' contition");
+              throw ParserError(ctr->pos, "Expected int expression in '?(if)' contition");
             }
-          
-          
-          } else if (ctr->val == "<") {
+          }
+          /* @(while) statement parsing */
+          else if (ctr->val == "@") {
+            if (ctr->operand->type.getType() == TYPE::intT) {
+              auto tmp_while = new STWhile;
+              tmp_while->contition = ctr->operand;
+              if (i + 1 != main_block->nodes.end()) {
+                if (auto body = dynamic_cast<ASTBlock*>(*(i + 1))) {
+                  tmp_while->body = parseASTblock(body, cur_scope, res->scope_info, retT);
+                  ++i;
+                  res->nodes.push_back(tmp_while);
+                } else {
+                  throw ParserError(0, "Expected block after '@(while)' statement");
+                }
+              }
+            } else {
+              throw ParserError(ctr->pos, "Expected int expression in '@(while)' contition");
+            }
+          }
+          /* <(return) statement parsing */
+          else if (ctr->val == "<") {
             auto tmp_ret = new STRet;
             tmp_ret->exp = ctr->operand;
             if (retT.getType() == TYPE::voidT) {
@@ -129,6 +146,7 @@ STBlock* parseASTblock(ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo& par
             throw ParserError(0, "Random error lol (unknown flow control operator)");
           }
         } else {
+          /* just normal expression */
           auto tmp = new STExp;
           tmp->exp = exp;
           res->nodes.push_back(tmp);
@@ -169,7 +187,7 @@ STTree* parseAST(ASTBlock* main_block) {
   ScopeInfo main_scope;
   while (cur != main_block->nodes.end()) {
     if (auto line = dynamic_cast<ASTLine*>(*cur)) {
-      // parse function header
+      /* parse function header */
       res->functions.push_back(parseFunctionHeader(line->begin, line->end));
       auto& func = res->functions.back();
       ExpParser::prefix_operators[func->name] = func->priority;
@@ -191,7 +209,7 @@ STTree* parseAST(ASTBlock* main_block) {
         scope.vars[name] = type;
         scope.vars[name].setLval(true);
       }
-      // and then parse body
+      /* and then parse body */
       if (cur == main_block->nodes.end())
         throw ParserError(line->end->pos, "Expected function body");
       if (auto block = dynamic_cast<ASTBlock*>(*cur)) {
@@ -203,7 +221,6 @@ STTree* parseAST(ASTBlock* main_block) {
     } else {
       throw ParserError(1, "Random error lol (cannot cast ast node)");
     }
-    // auto function_header = parseFunctionHeader(cur->);
   }
   return res;
 }

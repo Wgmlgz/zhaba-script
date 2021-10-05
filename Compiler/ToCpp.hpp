@@ -115,28 +115,21 @@ std::string nodeToCpp(STNode* node, size_t depth) {
   res += std::string(depth * tab_size, ' ');
 
   if (auto nd = dynamic_cast<STIf*>(node)) {
-    res += "if ";
-    if (dynamic_cast<Literal*>(nd->contition)) res += "(";
-    res += expToCpp(nd->contition);
-    if (dynamic_cast<Literal*>(nd->contition)) res += ")";
-
-    res += " ";
+    res += "if (" + expToCpp(nd->contition) + ") ";
     res += blockToCpp(nd->body, depth);
     for (auto& i : nd->elseif_body) {
-      res += " else if ";
-      if (dynamic_cast<Literal*>(i.first)) res += "(";
-      res += expToCpp(i.first);
-      if (dynamic_cast<Literal*>(i.first)) res += ")";
-
-      res += " ";
+      res += " else if (" + expToCpp(i.first) + ") ";
       res += blockToCpp(i.second, depth);
     }
     if (nd->else_body) {
       res += " else ";
       res += blockToCpp(nd->else_body, depth);
     }
-  } else if (auto exp = dynamic_cast<STRet*>(node)) {
-    res += "return " + expToCpp(exp->exp); 
+  } else if (auto nd = dynamic_cast<STWhile*>(node)) {
+    res += "while (" + expToCpp(nd->contition) + ") ";
+    res += blockToCpp(nd->body, depth);
+  } else if (auto nd = dynamic_cast<STRet*>(node)) {
+    res += "return (" + expToCpp(nd->exp) + ")"; 
   } else if (auto exp = dynamic_cast<STExp*>(node)) {
     res += expToCpp(exp->exp);
   }

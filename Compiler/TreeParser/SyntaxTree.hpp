@@ -28,6 +28,12 @@ struct STIf : STNode {
   STBlock* else_body = nullptr;
 };
 
+struct STWhile : STNode {
+  Exp* contition = nullptr;
+  STBlock* body = nullptr;
+};
+
+
 struct STRet : STNode {
   Exp* exp = nullptr;
 };
@@ -47,20 +53,19 @@ TreeNode<std::string>* STBlock::toGenericTree() {
     }
     node->branches.push_back(vars);
     for (auto i : nodes) {
-      if (auto ifs = dynamic_cast<STIf*>(i)) {
+      if (auto if_statement = dynamic_cast<STIf*>(i)) {
         auto tmp = new TreeNode<std::string>("<if>");
         tmp->branches.push_back(
           new TreeNode<std::string>("<contition>", {
-            ExpParser::toGenericTree(ifs->contition)
+            ExpParser::toGenericTree(if_statement->contition)
             })
         );
         tmp->branches.push_back(
           new TreeNode<std::string>("<body>", {
-            ifs->body->toGenericTree()
+            if_statement->body->toGenericTree()
             })
         );
-        // tmp->branches.push_back(toGenericTree(ifs->body));
-        for (auto& i : ifs->elseif_body) {
+        for (auto& i : if_statement->elseif_body) {
           tmp->branches.push_back(new TreeNode<std::string>("<elif>", {
             new TreeNode<std::string>("<contition>", {
             ExpParser::toGenericTree(i.first)
@@ -71,13 +76,25 @@ TreeNode<std::string>* STBlock::toGenericTree() {
             }
           ));
         }
-        if (ifs->else_body) {
+        if (if_statement->else_body) {
           tmp->branches.push_back(new TreeNode<std::string>("<else>",
-            { ifs->else_body->toGenericTree() }));
+            { if_statement->else_body->toGenericTree() }));
         }
         node->branches.push_back(tmp);
-      }
-      if (auto exp = dynamic_cast<STRet*>(i)) {
+      } else if (auto while_statement = dynamic_cast<STWhile*>(i)) {
+        auto tmp = new TreeNode<std::string>("<while>");
+        tmp->branches.push_back(
+          new TreeNode<std::string>("<contition>", {
+            ExpParser::toGenericTree(while_statement->contition)
+            })
+        );
+        tmp->branches.push_back(
+          new TreeNode<std::string>("<body>", {
+            while_statement->body->toGenericTree()
+            })
+        );
+        node->branches.push_back(tmp);
+      } else if (auto exp = dynamic_cast<STRet*>(i)) {
         node->branches.push_back(new TreeNode<std::string>("<ret>", {
           exp->exp ? ExpParser::toGenericTree(exp->exp) : new TreeNode<std::string>("void")
         }));

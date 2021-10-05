@@ -12,25 +12,34 @@
 
 */
 auto programm = R"(
-int +  ___ int a int b: #return a + b;
-int -  ___ int a int b: #return a - b;
-int /  ___ int a int b: #return a / b;
-int %  ___ int a int b: #return a % b;
-int *  ___ int a int b: #return a * b;
-int %% ___ int a int b: #return !(a % b);
 
-int <  ___ int a int b: #return a < b;
-int >  ___ int a int b: #return a > b;
-int == ___ int a int b: #return a == b;
-int != ___ int a int b: #return a != b;
-int <= ___ int a int b: #return a <= b;
-int >= ___ int a int b: #return a >= b;
+3 int - _ int a: #return -a;
+
+5 int /  ___ int a int b: #return a / b;
+5 int %  ___ int a int b: #return a % b;
+5 int *  ___ int a int b: #return a * b;
+5 int %% ___ int a int b: #return !(a % b);
+
+6 int +  ___ int a int b: #return a + b;
+6 int -  ___ int a int b: #return a - b;
+
+
+9  int <  ___ int a int b: #return a < b;
+9  int >  ___ int a int b: #return a > b;
+9  int <= ___ int a int b: #return a <= b;
+9  int >= ___ int a int b: #return a >= b;
+10 int == ___ int a int b: #return a == b;
+10 int != ___ int a int b: #return a != b;
+
+14 int && ___ int a int b: #return a && b;
+15 int || ___ int a int b: #return a || b;
 
 int out _ int x: #'printf("%d\n",x)'
 
-int test _ int a int b:
-  ? a == b
-    out 6
+int fizz_buzz _ int a int b:
+  int i = 1
+  @ 1 < 100
+    i = i + 1
 
 )";
 
