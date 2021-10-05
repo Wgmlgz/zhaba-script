@@ -171,8 +171,10 @@ STBlock* parseASTblock(ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo& par
             } else {
               if (!tmp_ret->exp)
                 throw ParserError(ctr->pos, "Expected return value");
-              if (tmp_ret->exp->type != retT)
-                throw ParserError(ctr->pos, "Return must be '" + retT.toString() + "'");
+              if (tmp_ret->exp->type.getType() != retT.getType())
+                throw ParserError(ctr->pos,
+                  "Return type must be '" + retT.toString() + "', but '" +
+                  tmp_ret->exp->type.toString() + "' found");
             }
             res->nodes.push_back(tmp_ret);
           } else {

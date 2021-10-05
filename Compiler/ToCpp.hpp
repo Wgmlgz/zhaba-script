@@ -138,19 +138,24 @@ std::string nodeToCpp(STNode* node, size_t depth) {
 
 std::string funcToCpp(Function* func) {
   std::string str;
-  str += func->type.toCppString() + " ";
-  str += (func->name == "main" ? "main" : (
-    func->op_type == OpType::bin ? bopToCpp(func->name) : (
-    func->op_type == OpType::lhs ? lopToCpp(func->name) : ropToCpp(func->name)
-  ))) + "(";
-  bool start = true;
-  for (auto& [name, type] : func->args) {
-    if (!start) str += ", ";
-    str += type.toCppString() + " ";
-    str += name;
-    start = false;
+  if (func->name == "main") {
+    str += "int main(int argc, char *argv[]) ";
+  } else {
+    str += func->type.toCppString() + " ";
+    str +=  (
+      func->op_type == OpType::bin ? bopToCpp(func->name) : (
+      func->op_type == OpType::lhs ? lopToCpp(func->name) : ropToCpp(func->name)
+    )) + "(";
+    bool start = true;
+    for (auto& [name, type] : func->args) {
+      if (!start) str += ", ";
+      str += type.toCppString() + " ";
+      str += name;
+      start = false;
+    }
+    str += ") ";
   }
-  str += ") ";
+  
   str += blockToCpp(func->body);
   str += "\n";
   return str;

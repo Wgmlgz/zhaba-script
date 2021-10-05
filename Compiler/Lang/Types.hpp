@@ -7,18 +7,28 @@
 #include "../Lexer.hpp"
 #include <queue>
 
-enum class TYPE {voidT, intT, strT};
+enum class TYPE {voidT, intT, int32T, strT};
+
+std::unordered_map<std::string, TYPE> prim_types{
+  {"void", TYPE::voidT},
+  {"i32", TYPE::int32T},
+  {"int", TYPE::intT},
+  {"i64", TYPE::intT},
+  {"str", TYPE::strT},
+};
 
 std::unordered_map<TYPE, std::string> type_names{
   {TYPE::voidT  , "void"},
-  {TYPE::intT  , "int"},
-  {TYPE::strT  , "str"},
+  {TYPE::intT   , "int"},
+  {TYPE::int32T , "i32"},
+  {TYPE::strT   , "str"},
 };
 
 std::unordered_map<TYPE, std::string> cpp_type_names{
   {TYPE::voidT  , "void"},
-  {TYPE::intT  , "int"},
-  {TYPE::strT  , "std::string"},
+  {TYPE::int32T , "int"},
+  {TYPE::intT   , "int64_t"},
+  {TYPE::strT   , "std::string"},
 };
 
 struct Type {
@@ -77,12 +87,6 @@ bool operator==(const Type& lhs, const Type& rhs) {
 bool operator!=(const Type& lhs, const Type& rhs) {
   return !(lhs == rhs);
 }
-
-std::unordered_map<std::string, TYPE> prim_types{
-  { "void", TYPE::voidT},
-  { "int" , TYPE::intT },
-  { "str" , TYPE::strT },
-};
 
 // Type Type::parse(const std::string& str) {
 //   if (prim_types.count(str)) {
