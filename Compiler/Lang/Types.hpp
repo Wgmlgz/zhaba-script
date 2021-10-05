@@ -8,34 +8,26 @@
 #include <queue>
 
 enum class TYPE {voidT, blT, intT, strT};
-// #define voidT   -1
-// #define undefT  0
-// #define ctrfT   1
-// #define idT     2
-// #define tupleT  3
-// #define autoT   100
-// #define intT    101
-// #define blT     102
-// #define strT    103
 
 std::unordered_map<TYPE, std::string> type_names{
   {TYPE::voidT  , "int"},
   {TYPE::intT  , "int"},
   {TYPE::blT   , "bl"},
   {TYPE::strT  , "str"},
+  {TYPE::voidT  , "void"},
 };
-
-
-
 
 struct Type {
  private:
   TYPE type = TYPE::voidT;
- public:
-  bool is_const = false;
   bool lval = false;
 
+ public:
+  // bool is_const = false;
+
   TYPE getType() { return type; }
+  bool isLval() { return lval; }
+  void setLval(bool f) { lval = f; }
   void setType(TYPE type_) { type = type_; }
 
   friend bool operator<(const Type& lhs, const Type& rhs);
@@ -44,21 +36,22 @@ struct Type {
 
   std::string toString() {
     std::string res;
-    if (is_const) res += "=";
+    // if (is_const) res += "=";
     res += type_names[type];
+    if (lval) res += "&";
 
     return res;
   }
   std::string toCppString() {
     std::string res;
-    if (is_const) res += "const ";
+    // if (is_const) res += "const ";
     res += type_names[type];
   
     return res;
   }
 
-  Type(const TYPE& new_type = TYPE::voidT, const bool& new_is_const = false)
-    : type(new_type), is_const(new_is_const) {}
+  Type(const TYPE& new_type = TYPE::voidT, const bool is_lval = false/*, const bool& new_is_const = false*/)
+    : type(new_type), lval(is_lval) /*, is_const(new_is_const)*/ {}
 
   virtual ~Type() {}
 
@@ -67,14 +60,14 @@ struct Type {
 };
 
 bool operator<(const Type& lhs, const Type& rhs) {
-  int a = ((int)lhs.type << 2) | (lhs.is_const << 1) | lhs.lval;
-  int b = ((int)rhs.type << 2) | (rhs.is_const << 1) | rhs.lval;
+  int a = ((int)lhs.type << 2) /*| (lhs.is_const << 1)*/ | lhs.lval;
+  int b = ((int)rhs.type << 2) /*| (rhs.is_const << 1)*/ | rhs.lval;
   return a < b;
 }
 
 bool operator==(const Type& lhs, const Type& rhs) {
-  int a = ((int)lhs.type << 2) | (lhs.is_const << 1) | lhs.lval;
-  int b = ((int)rhs.type << 2) | (rhs.is_const << 1) | rhs.lval;
+  int a = ((int)lhs.type << 2) /*| (lhs.is_const << 1)*/ | lhs.lval;
+  int b = ((int)rhs.type << 2) /*| (rhs.is_const << 1)*/ | rhs.lval;
   return a == b;
 }
 bool operator!=(const Type& lhs, const Type& rhs) {
@@ -96,10 +89,10 @@ std::unordered_map<std::string, TYPE> prim_types{
 
 Type Type::parse(tokeniter& token) {
   Type type;
-  if (token->val == "=") {
-    type.is_const = true;
-    ++token;
-  }
+  // if (token->val == "=") {
+  //   type.is_const = true;
+  //   ++token;
+  // }
   if (prim_types.count(token->val)) {
     type.setType(prim_types[(token++)->val]);
     return type;

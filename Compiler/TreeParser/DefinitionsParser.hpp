@@ -6,13 +6,15 @@
 #include "SyntaxTree.hpp"
 #include "ParserError.hpp"
 
+enum class OpType {lhs, rhs, bin};
+
 struct Function {
 
   struct Arg {
     std::string name;
     Type type;
   };
-
+  OpType op_type;
   std::string name;
   Type type;
   double priority;
@@ -39,6 +41,7 @@ Function* parseFunctionHeader(std::vector<Token>::iterator begin, std::vector<To
   auto func = new Function;
   // implicit void type
   func->type = Type(TYPE::voidT);
+  func->op_type = OpType::lhs;
   auto cur = begin;
 
   // parse priority
@@ -58,7 +61,6 @@ Function* parseFunctionHeader(std::vector<Token>::iterator begin, std::vector<To
       if (cur != end and cur->token == "space") ++cur;
     } catch (...) {
       // implicit void type 
-      //   throw ParserError(cur->pos, "Expected return type");
     }
   }
 
@@ -71,14 +73,35 @@ Function* parseFunctionHeader(std::vector<Token>::iterator begin, std::vector<To
     if (cur != end and cur->token == "space") ++cur;
   }
 
-  // int sum :: int a int b:
-  //        ^^^ if have this just ignore
-  if (cur != end and cur->val == "::") {
+  /**
+   * int sum _ int a int b:
+   *         ^op()
+   */
+  if (cur != end and cur->val == "_") {
     ++cur;
+    if (cur != end and cur->token == "space") ++cur;
+  } else
+  /**
+   * int sum __ int a int b:
+   *         ^^ ()op
+   */
+  if (cur != end and cur->val == "__") {
+    ++cur;
+    func->op_type = OpType::rhs;
+    if (cur != end and cur->token == "space") ++cur;
+  } else
+  /**
+   * int sum ___ int a int b:
+   *         ^^^ ()op()
+   */
+  if (cur != end and cur->val == "___") {
+    ++cur;
+    func->op_type = OpType::bin;
     if (cur != end and cur->token == "space") ++cur;
   }
 
   // parse args
+  int start_pos = cur->pos;
   std::unordered_set<std::string> used_vars;
   while (cur != end) {
     func->args.emplace_back();
@@ -102,6 +125,9 @@ Function* parseFunctionHeader(std::vector<Token>::iterator begin, std::vector<To
       if (cur != end and cur->token == "space") ++cur;
     }
   }
-
+  if (func->op_type == OpType::bin and func->args.size() != 2) {
+    throw ParserError(start_pos, cur->pos - start_pos,
+    "Expected 2 arguments in binary operator");
+  }
   return func;
 }

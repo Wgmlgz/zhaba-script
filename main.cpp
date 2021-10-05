@@ -4,21 +4,34 @@
 #include "Compiler\ToCpp.hpp"
 #include "Compiler\TreeParser\AbstractSyntaxTree.hpp"
 #include "Compiler\TreeParser\SyntaxTreeParser.hpp"
+
+/*
+
+
+
+
+*/
 auto programm = R"(
+int +  ___ int a int b: #return a + b;
+int -  ___ int a int b: #return a - b;
+int /  ___ int a int b: #return a / b;
+int %  ___ int a int b: #return a % b;
+int *  ___ int a int b: #return a * b;
+int %% ___ int a int b: #return !(a % b);
 
-=int add :: =int a =int b:
-  # return a+b;
+int <  ___ int a int b: #return a < b;
+int >  ___ int a int b: #return a > b;
+int == ___ int a int b: #return a == b;
+int != ___ int a int b: #return a != b;
+int <= ___ int a int b: #return a <= b;
+int >= ___ int a int b: #return a >= b;
 
-=int sum :: =int a =int b:
-  < add (2 3)
+int out _ int x: #'printf("%d\n",x)'
 
-void out :: =int a:
-  #std::cout << a << std::endl;
-  <
-  
-int main:
-  out 54
-  
+int test _ int a int b:
+  ? a == b
+    out 6
+
 )";
 
 int main() {

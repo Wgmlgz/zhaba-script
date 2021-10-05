@@ -98,11 +98,24 @@ struct PostfixOperator : public UnaryOperator {
     : UnaryOperator(new_pos, new_val, new_priority, new_child) {}
 };
 
-Tuple* castToTuple(Exp* exp) {
+struct Assign : public BinOperator {};
+
+void castToPlainTupleDfs(Exp* exp, Tuple*& tuple) {
+  if (auto op = dynamic_cast<BinOperator*>(exp)) {
+    if (op->val == ",") {
+      castToPlainTupleDfs(op->lhs, tuple);
+      castToPlainTupleDfs(op->rhs, tuple);
+      return;
+    }
+  }
+  tuple->content.push_back(exp);
+}
+
+Tuple* castToPlainTuple(Exp* exp) {
   if (exp) {
-    if (auto tuple = dynamic_cast<Tuple*>(exp)) return tuple;
-    Operator* op = dynamic_cast<Operator*>(exp);
-    return new Tuple(op->priority, { op });
+    auto tuple = new Tuple;
+    castToPlainTupleDfs(exp, tuple);
+    return tuple;
   }
   return nullptr;
 }
