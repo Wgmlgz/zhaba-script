@@ -5,7 +5,7 @@ std::string expToCpp(zhexp::Exp* exp);
 std::string blockToCpp(STBlock* exp, size_t depth = 0);
 std::string nodeToCpp(STNode* node, size_t depth = 0);
 
-std::string opToCpp(const std::string& str) {
+std::string idToCpp(const std::string& str) {
   std::string ans;
   for (auto ch : str) {
     if (isalpha(ch)) ans += ch;
@@ -34,13 +34,13 @@ std::string opToCpp(const std::string& str) {
   return ans;
 }
 
-std::string bopToCpp(const std::string& str) { return "__zhbop_" + opToCpp(str); }
-std::string lopToCpp(const std::string& str) { return "__zhlop_" + opToCpp(str); }
-std::string ropToCpp(const std::string& str) { return "__zhrop_" + opToCpp(str); }
+std::string bopToCpp(const std::string& str) { return "__zhbop_" + idToCpp(str); }
+std::string lopToCpp(const std::string& str) { return "__zhlop_" + idToCpp(str); }
+std::string ropToCpp(const std::string& str) { return "__zhrop_" + idToCpp(str); }
 // std::string typesToCpp(std::vector<Type>& types) {
 //   std::string str;
 //   for (auto &i : types) {
-//     str += std::to_string(static_cast<int>(i.getType()));
+//     str += std::to_string(static_cast<int>(i.getTypeId()));
 //   }
 // }
 
@@ -67,7 +67,7 @@ std::string expToCpp(zhexp::Exp* exp) {
   if (auto op = dynamic_cast<zhexp::Variable*>(exp)) {
     res += op->name;
   } else if (auto op = dynamic_cast<zhexp::IdLiteral*>(exp)) {
-    throw ParserError(op->pos, "IdLiteral unreacheable: '" + op->val + "'");
+    res += op->val;
   }
   if (auto tuple = dynamic_cast<zhexp::Tuple*>(exp)) {
     bool start = 1;
@@ -80,6 +80,8 @@ std::string expToCpp(zhexp::Exp* exp) {
   if (auto op = dynamic_cast<zhexp::BinOperator*>(exp)) {
     if (op->val == "=") {
       res += "(" + expToCpp(op->lhs) + ") = (" + expToCpp(op->rhs) + ")";
+    } else if (op->val == ".") {
+      res += "(" + expToCpp(op->lhs) + ")." + static_cast<zhexp::IdLiteral*>(op->rhs)->val;
     } else {
       res += bopToCpp(op->val) + "(" + expToCpp(op->lhs) + ", " + expToCpp(op->rhs) + ")";
     }
@@ -168,15 +170,37 @@ std::string funcHeadToCpp(Function* func) {
 }
 
 std::string funcToCpp(Function* func) {
-  std::string str;
-  str += funcHeadToCpp(func) + " ";
-  str += blockToCpp(func->body);
-  str += "\n";
-  return str;
+  return funcHeadToCpp(func) + " " + blockToCpp(func->body) + "\n";
+}
+
+std::string structHeadToCpp(int id) {
+  return "struct __zhstruct_" + idToCpp(types::struct_names[id]);
+}
+
+std::string structToCpp(int id) {
+  std::string res = structHeadToCpp(id);
+  res += " {\n";
+  for (const auto& [name, type] : types::structs[id].members) {
+    res += "  " + type.toCppString() + " " + idToCpp(name) + ";\n";
+  }
+  res += "};\n";
+  return res;
 }
 
 std::string toCpp(STTree* block) {
   std::string res = "#include <bits/stdc++.h>\n\n";
+
+  for (int i = types::first_struct_id; i < types::last_struct_id; ++i) {
+    res += structHeadToCpp(i);
+    res += ";\n";
+  }
+
+  res += "\n";
+
+  for (int i = types::first_struct_id; i < types::last_struct_id; ++i) {
+    res += structToCpp(i);
+    res += "\n";
+  }
 
   for (auto i : block->functions) {
     res += funcHeadToCpp(i);

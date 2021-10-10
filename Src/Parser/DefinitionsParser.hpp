@@ -6,52 +6,22 @@
 #include "TypeParser.hpp"
 #include "ParserError.hpp"
 
-enum class OpType {lhs, rhs, bin};
-
-struct Function {
-
-  struct Arg {
-    std::string name;
-    types::Type type;
-  };
-  OpType op_type;
-  std::string name;
-  types::Type type;
-  double priority;
-
-  std::vector<Arg> args;
-
-  STBlock* body;
-
-  std::string headToStr() {
-    std::string str;
-    str += type.toString() + " ";
-    str += name + " =";
-    for (auto& arg : args) {
-      str += " ";
-      str += arg.type.toString() + " ";
-      str += arg.name;
-    } 
-    return str;
-  }
-};
-
 Function* parseFunctionHeader(std::vector<Token>::iterator begin, std::vector<Token>::iterator end) {
   if (begin >= end) throw ParserError(begin->pos, "Expected operator declaration");
   auto func = new Function;
-  // implicit void type
+  /* implicit void type */
   func->type = types::Type(types::TYPE::voidT);
   func->op_type = OpType::lhs;
   auto cur = begin;
 
-  // parse priority
+  /* parse priority */
   if (cur->token == "int") {
     func->priority = std::stoi(cur->val);
     ++cur;
     if (cur != end and cur->token == "space") ++cur;
   }
 
-  // parse return type
+  /* parse return type */
   if (cur == end or cur->token != "id") {
     throw ParserError(cur->pos, "Expected type or operator name");
   } else {
@@ -60,11 +30,11 @@ Function* parseFunctionHeader(std::vector<Token>::iterator begin, std::vector<To
       ++cur;
       if (cur != end and cur->token == "space") ++cur;
     } catch (...) {
-      // implicit void type 
+      /* implicit void type */ 
     }
   }
 
-  // parse name
+  /* parse name */
   if (cur == end or cur->token != "id") {
     throw ParserError(cur->pos, "Expected operator name");
   } else {
@@ -100,7 +70,7 @@ Function* parseFunctionHeader(std::vector<Token>::iterator begin, std::vector<To
     if (cur != end and cur->token == "space") ++cur;
   }
 
-  // parse args
+  /* parse args */
   int start_pos = cur->pos;
   std::unordered_set<std::string> used_vars;
   while (cur != end) {

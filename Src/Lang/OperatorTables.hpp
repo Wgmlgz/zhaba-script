@@ -3,6 +3,7 @@
 #include <utility>
 #include <string>
 #include <map>
+#include <set>
 #include "Types.hpp"
 
 namespace tables {
@@ -15,4 +16,16 @@ namespace tables {
     {"p(", R"(((\()))"},
     {"p)", R"(((\))))"},
   };
+  
+  std::unordered_set<std::string> flow_ops = {
+    "?", "@", "<"
+  };
+  std::unordered_map<std::string, int64_t> bin_operators = {
+    {".", 2}, {"=", 10}, {",", 17}, 
+  };
+  std::unordered_set<std::string> operators = {
+    ".", "=", ",",
+  };
+  std::unordered_map<std::string, int64_t> prefix_operators = {};
+  std::unordered_map<std::string, int64_t> postfix_operators = {};
 }

@@ -16,11 +16,11 @@ namespace zhexp {
   const int64_t priority_offset = 100;
   const int64_t parentheses_offset = 1000000;
 
-  std::set<std::string> flow_ops = {"?", "@", "<"};
-  std::unordered_map<std::string, int64_t> bin_operators = {{",", 17}, {"=", 10}};
-  std::unordered_set<std::string> operators = {",", "="};
-  std::unordered_map<std::string, int64_t> prefix_operators;
-  std::unordered_map<std::string, int64_t> postfix_operators;
+  std::unordered_set<std::string> flow_ops                   = tables::flow_ops;
+  std::unordered_map<std::string, int64_t> bin_operators     = tables::bin_operators;
+  std::unordered_set<std::string> operators                  = tables::operators;
+  std::unordered_map<std::string, int64_t> prefix_operators  = tables::prefix_operators;
+  std::unordered_map<std::string, int64_t> postfix_operators = tables::postfix_operators;
 
   /**
    * @brief Converts expression to expression tree
@@ -48,16 +48,16 @@ namespace zhexp {
         throw ParserError(op->pos, "Expected int literal");
     }
 
-    int64_t max_priority = -INF;
+    int64_t max_priority = -INF, true_priority = 0;
     bool is_bin = false;
     auto pos = end;
-    int64_t true_priority = 0;
+
     for (auto i = begin; i != end; ++i) {
       if (Operator* op = dynamic_cast<Operator*>(*i)) {
         true_priority = op->priority;
         if (i == begin) {
           if (!prefix_operators.count(op->val))
-            throw ParserError(op->pos, "Unknown prefix operator");
+            throw ParserError(op->pos, "Unknown prefix operator '" + op->val + "'");
 
           true_priority +=
             2 * op->spr * priority_offset + prefix_operators[op->val];
@@ -84,8 +84,10 @@ namespace zhexp {
         }
       }
     }
-    if (pos == end) throw ParserError((*begin)->pos, "Expected operator");
-    else if (!dynamic_cast<Operator*>(*pos)) {
+
+    if (pos == end) {
+      throw ParserError((*begin)->pos, "Expected operator");
+    } else if (!dynamic_cast<Operator*>(*pos)) {
       throw ParserError((*pos)->pos, "Unknown binary operator");
     }
     auto op = static_cast<Operator*>(*pos);
@@ -101,6 +103,7 @@ namespace zhexp {
         buildExp(pos + 1, end, depth + 1));
     }
   }
+
   std::vector<Exp*> preprocess(tokeniter begin, tokeniter end) {
     auto res = std::vector<Exp*>{};
     int pcount = 0;
@@ -108,7 +111,7 @@ namespace zhexp {
     if (std::distance(begin, end) < 1) {
       throw ParserError(0, "Empty expression");
     }
-    // cpp code injection
+    /* cpp code injection */
     if (begin->token == "id" and begin->val == "#") {
       std::string code;
       for (auto i = begin + 1; i != end; ++i) {
@@ -191,33 +194,6 @@ namespace zhexp {
     return res;
   }
 
-  int calcExp(Exp* exp) {
-    if (IntLiteral* op = dynamic_cast<IntLiteral*>(exp)) return op->val;
-
-    if (BinOperator* op = dynamic_cast<BinOperator*>(exp)) {
-      int lhs = calcExp(op->lhs);
-      int rhs = calcExp(op->rhs);
-
-      if (op->val == "+") return lhs + rhs;
-      if (op->val == "-") return lhs - rhs;
-      if (op->val == "*") return lhs * rhs;
-      if (op->val == "/") return lhs / rhs;
-      if (op->val == "%") return lhs % rhs;
-      if (op->val == "%%") return (lhs % rhs) == 0;
-      if (op->val == "&&") return lhs && rhs;
-      if (op->val == "||") return lhs || rhs;
-      if (op->val == "==") return lhs == rhs;
-    }
-
-    if (UnaryOperator* op = dynamic_cast<UnaryOperator*>(exp)) {
-      if (op->val == "++") return calcExp(op->child) + 1;
-      if (op->val == "--") return calcExp(op->child) - 1;
-      if (op->val == "-") return -calcExp(op->child);
-      if (op->val == "!") return !calcExp(op->child);
-    }
-    return -666;
-  }
- 
   std::map<std::tuple<std::string, types::Type, types::Type>, types::Type> B_OD;
   std::map<std::pair<std::string, std::vector<types::Type>>, types::Type> PR_OD;
   std::map<std::pair<std::string, std::vector<types::Type>>, types::Type> PO_OD;
@@ -296,7 +272,7 @@ namespace zhexp {
         op->lhs = postprocess(op->lhs, scope_info);
         op->rhs = postprocess(op->rhs, scope_info);
 
-        if (op->lhs->type.getType() != op->rhs->type.getType()) {
+        if (op->lhs->type.getTypeId() != op->rhs->type.getTypeId()) {
           throw ParserError(op->pos, "Types (" +
             op->lhs->type.toString() + " " +
             op->rhs->type.toString() +
@@ -308,11 +284,27 @@ namespace zhexp {
         } else {
           throw ParserError(op->lhs->pos, op->pos - op->lhs->pos, "Left operant for '=' must be lval");
         }
+      } else if (op->val == ".") {
+        op->lhs = postprocess(op->lhs, scope_info);
+        if (auto id = dynamic_cast<IdLiteral*>(op->rhs)) {
+          if (static_cast<int>(op->lhs->type.getTypeId()) >= types::first_struct_id) {
+            if (types::structs[static_cast<int>(op->lhs->type.getTypeId())].members.count(id->val)) {
+              op->type = types::structs[static_cast<int>(op->lhs->type.getTypeId())].members[id->val];
+              op->type.setLval(op->lhs->type.isLval());
+            } else {
+              throw ParserError(op->pos, "Type '" + op->lhs->type.toString() + "' doesn't have '" + id->val + "' member");
+            }
+          } else {
+            throw ParserError(op->pos, "Expression type can't be '" + op->lhs->type.toString() + "'");
+          }
+        } else {
+          throw ParserError(op->pos, "Expected identifier near '" + op->val + "'");
+        }
       } else {
         op->lhs = postprocess(op->lhs, scope_info);
         op->rhs = postprocess(op->rhs, scope_info);
         
-        /* implicit lval to rval conversion */
+        /** Implicit lval to rval conversion */
         op->lhs->type.setLval(false);
         op->rhs->type.setLval(false);
         
