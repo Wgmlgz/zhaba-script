@@ -9,7 +9,7 @@
 #include "../Lang/Scope.hpp"
 #include "../../TreeLib/TreePrinterASCII.hpp"
 
-namespace ExpParser {
+namespace zhexp {
   std::unordered_map<std::string, bool> settings = {
       {"DEBUG", true}, {"SHOW_TREE", true}, {"SHOW_ERROR", true}
   };
@@ -24,59 +24,7 @@ namespace ExpParser {
   std::unordered_map<std::string, double> prefix_operators;
   std::unordered_map<std::string, double> postfix_operators;
 
-  TreeNode<std::string>* toGenericTree(Exp* exp) {
-    if (!exp) return new TreeNode<std::string>("<nullptr>");
-    auto node = new TreeNode<std::string>;
-    if (auto op = dynamic_cast<CppCode*>(exp)) {
-      node->data = "cpp: '" + op->code + "'";
-    }
-    if (auto op = dynamic_cast<FlowOperator*>(exp)) {
-      node->data = "'" + op->val + "'";
-      node->branches.push_back(toGenericTree(op->operand));
-    }
-    if (auto op = dynamic_cast<IntLiteral*>(exp)) {
-      node->data = "'" + std::to_string(op->val) + "' iL";
-    }
-    if (auto op = dynamic_cast<StrLiteral*>(exp)) {
-      node->data = "'" + op->val + "' sL";
-    }
-    if (auto op = dynamic_cast<IdLiteral*>(exp)) {
-      node->data = "'" + op->val + "' idL,";
-    }
-
-    if (auto t = dynamic_cast<Tuple*>(exp)) {
-      node->data = "tuple";
-      for (auto& i : t->content) {
-        node->branches.push_back(toGenericTree(i));
-      }
-    }
-
-    if (BinOperator* op = dynamic_cast<BinOperator*>(exp)) {
-      node->data = "'" + op->val + "'b" + std::to_string((int)op->priority);
-      node->branches.push_back(toGenericTree(op->lhs));
-      node->branches.push_back(toGenericTree(op->rhs));
-    }
-    if (UnaryOperator* op = dynamic_cast<UnaryOperator*>(exp)) {
-      node->data = "'" + op->val +
-        (dynamic_cast<PrefixOperator*>(op) ? "'pr" : "'po") +
-        std::to_string((int)op->priority);
-      node->branches.push_back(toGenericTree(op->child));
-    }
-    node->data += "," + exp->type.toString();
-    return node;
-  }
-  void printGenericTree(Exp* exp) {
-    auto tree = toGenericTree(exp);
-    std::cout << "ascii:" << std::endl;
-    printASCII(tree);
-    deleteTree(tree);
-  }
-  void printExpTree(Exp* exp, std::string prefix = "") {
-    auto tree = toGenericTree(exp);
-    std::cout << "ascii:" << std::endl;
-    printCompact(tree);
-    deleteTree(tree);
-  }
+  
 
   /**
    * @brief Converts expression to expression tree
@@ -315,8 +263,15 @@ namespace ExpParser {
       // exp->type.is_const = true;
     }
     if (auto op = dynamic_cast<IdLiteral*>(exp)) {
-      if (scope_info.vars.count(op->val))
-        exp->type = scope_info.vars[op->val];
+      if (scope_info.vars.count(op->val)) {
+        auto tmp = new Variable;
+        tmp->name = op->val;
+        tmp->type = scope_info.vars[op->val];
+        exp = tmp;
+        // exp->type = scope_info.vars[op->val];
+        
+        // exp = reinterpret_cast<Variable*>(exp);
+      }
       else
         throw ParserError(op->pos, "Unknown variable '" + op->val + "'");
     }

@@ -2,7 +2,7 @@
 #include "Expressions\ExpressionParser.hpp"
 #include "TreeParser\SyntaxTreeParser.hpp"
 
-std::string expToCpp(Exp* exp);
+std::string expToCpp(zhexp::Exp* exp);
 std::string blockToCpp(STBlock* exp, size_t depth = 0);
 std::string nodeToCpp(STNode* node, size_t depth = 0);
 
@@ -38,12 +38,20 @@ std::string opToCpp(const std::string& str) {
 std::string bopToCpp(const std::string& str) { return "__zhbop_" + opToCpp(str); }
 std::string lopToCpp(const std::string& str) { return "__zhlop_" + opToCpp(str); }
 std::string ropToCpp(const std::string& str) { return "__zhrop_" + opToCpp(str); }
+// std::string typesToCpp(std::vector<Type>& types) {
+//   std::string str;
+//   for (auto &i : types) {
+//     str += std::to_string(static_cast<int>(i.getType()));
+//   }
+// }
 
-std::string expToCpp(Exp* exp) {
+std::string expToCpp(zhexp::Exp* exp);
+
+std::string expToCpp(zhexp::Exp* exp) {
   // it filally works!!!
   std::string res;
   // if (!dynamic_cast<Literal*>(exp)) res += "(";
-  if (auto op = dynamic_cast<CppCode*>(exp)) {
+  if (auto op = dynamic_cast<zhexp::CppCode*>(exp)) {
     /* if string literal provided remove ''*/
     if (op->code.front() == '\'' and op->code.back() == '\'') {
       op->code.front() = ' ';
@@ -51,16 +59,18 @@ std::string expToCpp(Exp* exp) {
     }
     res += op->code;
   }
-  if (auto op = dynamic_cast<IntLiteral*>(exp)) {
+  if (auto op = dynamic_cast<zhexp::IntLiteral*>(exp)) {
     res += std::to_string(op->val);
   }
-  if (auto op = dynamic_cast<StrLiteral*>(exp)) {
+  if (auto op = dynamic_cast<zhexp::StrLiteral*>(exp)) {
     res += "\"" + op->val + "\"";
   }
-  if (auto op = dynamic_cast<IdLiteral*>(exp)) {
-    res += op->val;
+  if (auto op = dynamic_cast<zhexp::Variable*>(exp)) {
+    res += op->name;
+  } else if (auto op = dynamic_cast<zhexp::IdLiteral*>(exp)) {
+    throw ParserError(op->pos, "IdLiteral unreacheable: '" + op->val + "'");
   }
-  if (auto tuple = dynamic_cast<Tuple*>(exp)) {
+  if (auto tuple = dynamic_cast<zhexp::Tuple*>(exp)) {
     bool start = 1;
     for (auto i : tuple->content) {
       if (!start) res += ", ";
@@ -68,17 +78,17 @@ std::string expToCpp(Exp* exp) {
       start = false;
     }
   }
-  if (auto op = dynamic_cast<BinOperator*>(exp)) {
+  if (auto op = dynamic_cast<zhexp::BinOperator*>(exp)) {
     if (op->val == "=") {
       res += "(" + expToCpp(op->lhs) + ") = (" + expToCpp(op->rhs) + ")";
     } else {
       res += bopToCpp(op->val) + "(" + expToCpp(op->lhs) + ", " + expToCpp(op->rhs) + ")";
     }
   }
-  if (auto op = dynamic_cast<PrefixOperator*>(exp)) {
+  if (auto op = dynamic_cast<zhexp::PrefixOperator*>(exp)) {
     res += lopToCpp(op->val) + "(" + expToCpp(op->child) + ")";
   }
-  if (auto op = dynamic_cast<PostfixOperator*>(exp)) {
+  if (auto op = dynamic_cast<zhexp::PostfixOperator*>(exp)) {
     res += ropToCpp(op->val) + "(" + expToCpp(op->child) + ")";
   }
   // if (!dynamic_cast<Literal*>(exp)) res += ")";
@@ -136,7 +146,7 @@ std::string nodeToCpp(STNode* node, size_t depth) {
   return res;
 };
 
-std::string funcToCpp(Function* func) {
+std::string funcHeadToCpp(Function* func) {
   std::string str;
   if (func->name == "main") {
     str += "int main(int argc, char *argv[]) ";
@@ -153,9 +163,14 @@ std::string funcToCpp(Function* func) {
       str += name;
       start = false;
     }
-    str += ") ";
+    str += ")";
   }
-  
+  return str;
+}
+
+std::string funcToCpp(Function* func) {
+  std::string str;
+  str += funcHeadToCpp(func) + " ";
   str += blockToCpp(func->body);
   str += "\n";
   return str;
@@ -163,6 +178,13 @@ std::string funcToCpp(Function* func) {
 
 std::string toCpp(STTree* block) {
   std::string res = "#include <bits/stdc++.h>\n\n";
+
+  for (auto i : block->functions) {
+    res += funcHeadToCpp(i);
+    res += ";\n";
+  }
+
+  res += "\n";
 
   for (auto i : block->functions) {
     res += funcToCpp(i);

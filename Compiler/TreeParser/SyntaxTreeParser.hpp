@@ -4,9 +4,9 @@
 #include "../../TreeLib/Tree.hpp"
 #include "DefinitionsParser.hpp"
 
-
 STBlock* parseASTblock(ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo& parent_scope, Type retT) {
   auto res = new STBlock;
+  
   for (auto i = main_block->nodes.begin(); i != main_block->nodes.end(); ++i) {
     if (auto line = dynamic_cast<ASTLine*>(*i)) {
       /* decide if current line is line declaration or something */
@@ -21,12 +21,12 @@ STBlock* parseASTblock(ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo& par
       }
       if (is_var_decl) {
         /* if line is variable declaration */
-        auto exp_res = ExpParser::preprocess(line->begin, line->end);
-        auto exp = ExpParser::buildExp(exp_res.begin(), exp_res.end());
+        auto exp_res = zhexp::preprocess(line->begin, line->end);
+        auto exp = zhexp::buildExp(exp_res.begin(), exp_res.end());
         auto tuple = castTreeToTuple(exp);
 
         for (auto i : tuple->content) {
-          if (auto id = dynamic_cast<IdLiteral*>(i)) {
+          if (auto id = dynamic_cast<zhexp::IdLiteral*>(i)) {
             /* just plane variable */
             if (autoT) throw ParserError(i->pos, "Cannot decide type for '" + id->val + "'");
             res->scope_info.vars[id->val] = type;
@@ -36,11 +36,11 @@ STBlock* parseASTblock(ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo& par
             cur_scope.vars[id->val].setLval(true);
           } else {
             /* variable with assignment */ 
-            if (auto assign = dynamic_cast<BinOperator*>(i)) {
+            if (auto assign = dynamic_cast<zhexp::BinOperator*>(i)) {
               if (assign->val != "=")
                 throw ParserError(i->pos, "Expected assignment, but '" + assign->val + "' found");
-              if (auto id = dynamic_cast<IdLiteral*>(assign->lhs)) {
-                ExpParser::postprocess(assign->rhs, cur_scope);
+              if (auto id = dynamic_cast<zhexp::IdLiteral*>(assign->lhs)) {
+                zhexp::postprocess(assign->rhs, cur_scope);
                 /* push variable */
                 if (autoT) {
                   res->scope_info.vars[id->val] = assign->rhs->type;
@@ -53,7 +53,7 @@ STBlock* parseASTblock(ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo& par
                 cur_scope.vars[id->val].setLval(true);
 
                 /* push assignment expression */
-                assign->lhs = ExpParser::postprocess(assign->lhs, cur_scope);
+                assign->lhs = zhexp::postprocess(assign->lhs, cur_scope);
                 auto tmp = new STExp;
                 tmp->exp = assign;
                 res->nodes.push_back(tmp);
@@ -65,8 +65,8 @@ STBlock* parseASTblock(ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo& par
         }
       } else { 
         /* not variable declaration so normal parsing */
-        auto exp = ExpParser::parse(line->begin, line->end, cur_scope);
-        if (auto ctr = dynamic_cast<FlowOperator*>(exp)) {
+        auto exp = zhexp::parse(line->begin, line->end, cur_scope);
+        if (auto ctr = dynamic_cast<zhexp::FlowOperator*>(exp)) {
           /* "?" (if) statement parsing */
           if (ctr->val == "?") {
             if (ctr->operand->type.getType() == TYPE::intT) {
@@ -82,7 +82,7 @@ STBlock* parseASTblock(ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo& par
                       if (elseif_body->nodes.size() == 2) {
                         if (auto line = dynamic_cast<ASTLine*>(elseif_body->nodes[0])) {
                           auto exp =
-                            ExpParser::parse(line->begin, line->end, cur_scope);
+                            zhexp::parse(line->begin, line->end, cur_scope);
                           if (auto block = dynamic_cast<ASTBlock*>(elseif_body->nodes[1])) {
                             tmp_if->elseif_body.emplace_back(
                               exp, parseASTblock(block, cur_scope, res->scope_info, retT));
@@ -225,20 +225,20 @@ STTree* parseAST(ASTBlock* main_block) {
       /* parse function header */
       res->functions.push_back(parseFunctionHeader(line->begin, line->end));
       auto& func = res->functions.back();
-      ExpParser::operators.insert(func->name);
+      zhexp::operators.insert(func->name);
       std::vector<Type> types;
       for (auto& [_, type] : func->args) {
         types.push_back(type);
       }
         if (func->op_type == OpType::bin) {
-        ExpParser::B_OD[{func->name, types[0], types[1]}] = func->type;
-        ExpParser::bin_operators[func->name] = func->priority;
+        zhexp::B_OD[{func->name, types[0], types[1]}] = func->type;
+        zhexp::bin_operators[func->name] = func->priority;
       } else if (func->op_type == OpType::lhs) {
-        ExpParser::PR_OD[{func->name, types}] = func->type;
-        ExpParser::prefix_operators[func->name] = func->priority;
+        zhexp::PR_OD[{func->name, types}] = func->type;
+        zhexp::prefix_operators[func->name] = func->priority;
       } else if (func->op_type == OpType::rhs) {
-        ExpParser::PO_OD[{func->name, types}] = func->type;
-        ExpParser::postfix_operators[func->name] = func->priority;
+        zhexp::PO_OD[{func->name, types}] = func->type;
+        zhexp::postfix_operators[func->name] = func->priority;
       }
       ++cur;
       ScopeInfo scope;

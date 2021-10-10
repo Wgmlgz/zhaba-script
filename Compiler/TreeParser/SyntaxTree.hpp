@@ -1,5 +1,6 @@
 #pragma once
 #include "..\Expressions\ExpressionParser.hpp"
+#include "..\Expressions\Expression.hpp"
 #include "..\Lang\Scope.hpp"
 #include "..\..\TreeLib/Tree.hpp"
 #include "AbstractSyntaxTree.hpp"
@@ -18,28 +19,28 @@ struct STBlock {
 };
 
 struct STExp : public STNode {
-  Exp* exp;
+  zhexp::Exp* exp;
 };
 
 struct STIf : STNode {
-  Exp* contition = nullptr;
+  zhexp::Exp* contition = nullptr;
   STBlock* body = nullptr;
-  std::vector<std::pair<Exp*, STBlock*>> elseif_body;
+  std::vector<std::pair<zhexp::Exp*, STBlock*>> elseif_body;
   STBlock* else_body = nullptr;
 };
 
 struct STWhile : STNode {
-  Exp* contition = nullptr;
+  zhexp::Exp* contition = nullptr;
   STBlock* body = nullptr;
 };
 
 
 struct STRet : STNode {
-  Exp* exp = nullptr;
+  zhexp::Exp* exp = nullptr;
 };
 
 struct STLoop : ASTNode {
-  Exp* exp;
+  zhexp::Exp* exp;
   STBlock* body;
 };
 
@@ -57,7 +58,7 @@ TreeNode<std::string>* STBlock::toGenericTree() {
         auto tmp = new TreeNode<std::string>("<if>");
         tmp->branches.push_back(
           new TreeNode<std::string>("<contition>", {
-            ExpParser::toGenericTree(if_statement->contition)
+            zhexp::toGenericTree(if_statement->contition)
             })
         );
         tmp->branches.push_back(
@@ -68,7 +69,7 @@ TreeNode<std::string>* STBlock::toGenericTree() {
         for (auto& i : if_statement->elseif_body) {
           tmp->branches.push_back(new TreeNode<std::string>("<elif>", {
             new TreeNode<std::string>("<contition>", {
-            ExpParser::toGenericTree(i.first)
+            zhexp::toGenericTree(i.first)
             }),
             new TreeNode<std::string>("<body>", {
               i.second->toGenericTree()
@@ -85,7 +86,7 @@ TreeNode<std::string>* STBlock::toGenericTree() {
         auto tmp = new TreeNode<std::string>("<while>");
         tmp->branches.push_back(
           new TreeNode<std::string>("<contition>", {
-            ExpParser::toGenericTree(while_statement->contition)
+            zhexp::toGenericTree(while_statement->contition)
             })
         );
         tmp->branches.push_back(
@@ -96,11 +97,11 @@ TreeNode<std::string>* STBlock::toGenericTree() {
         node->branches.push_back(tmp);
       } else if (auto exp = dynamic_cast<STRet*>(i)) {
         node->branches.push_back(new TreeNode<std::string>("<ret>", {
-          exp->exp ? ExpParser::toGenericTree(exp->exp) : new TreeNode<std::string>("void")
+          exp->exp ? zhexp::toGenericTree(exp->exp) : new TreeNode<std::string>("void")
         }));
       }
       if (auto exp = dynamic_cast<STExp*>(i)) {
-        node->branches.push_back(ExpParser::toGenericTree(exp->exp));
+        node->branches.push_back(zhexp::toGenericTree(exp->exp));
       }
     }
     return node;
