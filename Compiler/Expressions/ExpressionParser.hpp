@@ -14,15 +14,15 @@ namespace zhexp {
       {"DEBUG", true}, {"SHOW_TREE", true}, {"SHOW_ERROR", true}
   };
 
-  const double INF = 1000000000000.0;
-  const double priority_offset = 100;
-  const double parentheses_offset = 1000000;
+  const int64_t INF = 1000000000000.0;
+  const int64_t priority_offset = 100;
+  const int64_t parentheses_offset = 1000000;
 
   std::set<std::string> flow_ops = {"?", "@", "<"};
-  std::unordered_map<std::string, double> bin_operators = {{",", 17}, {"=", 10}};
+  std::unordered_map<std::string, int64_t> bin_operators = {{",", 17}, {"=", 10}};
   std::unordered_set<std::string> operators = {",", "="};
-  std::unordered_map<std::string, double> prefix_operators;
-  std::unordered_map<std::string, double> postfix_operators;
+  std::unordered_map<std::string, int64_t> prefix_operators;
+  std::unordered_map<std::string, int64_t> postfix_operators;
 
   
 
@@ -52,10 +52,10 @@ namespace zhexp {
         throw ParserError(op->pos, "Expected int literal");
     }
 
-    double max_priority = -INF;
+    int64_t max_priority = -INF;
     bool is_bin = false;
     auto pos = end;
-    double true_priority = 0;
+    int64_t true_priority = 0;
     for (auto i = begin; i != end; ++i) {
       if (Operator* op = dynamic_cast<Operator*>(*i)) {
         true_priority = op->priority;
@@ -164,7 +164,7 @@ namespace zhexp {
 
       if (i->token == "operator") {
         // get spaces
-        double spaces_lhs = 0, spaces_rhs = 0;
+        int64_t spaces_lhs = 0, spaces_rhs = 0;
         if (i != begin) {
           if ((i - 1)->token == "space") spaces_lhs = (i - 1)->val.size();
         } else {
