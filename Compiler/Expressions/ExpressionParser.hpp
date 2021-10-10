@@ -19,8 +19,8 @@ namespace zhexp {
   const double parentheses_offset = 1000000;
 
   std::set<std::string> flow_ops = {"?", "@", "<"};
-  std::unordered_map<std::string, double> bin_operators = {{"=", 10}};
-  std::unordered_set<std::string> operators = {"="};
+  std::unordered_map<std::string, double> bin_operators = {{",", 17}, {"=", 10}};
+  std::unordered_set<std::string> operators = {",", "="};
   std::unordered_map<std::string, double> prefix_operators;
   std::unordered_map<std::string, double> postfix_operators;
 
@@ -143,13 +143,13 @@ namespace zhexp {
           if (std::set<std::string>{"p(", "int", "str", "id"}.count((i + 1)->token))
             rhs = true;
         if (lhs and rhs) {
-          res.push_back(new Operator(i->pos, ",", bin_operators[","], 0, i->val.size()));
+          res.push_back(new Operator(i->pos, ",", -parentheses_offset * pcount, 0, i->val.size()));
         }
       } else {
         if (i != begin) if (std::set<std::string>{"p)", "int", "str", "id"}.count((i - 1)->token))
           lhs = true;
         if (lhs and rhs) {
-          res.push_back(new Operator(i->pos, ",", bin_operators[","], 0, 0));
+          res.push_back(new Operator(i->pos, ",", -parentheses_offset * pcount, 0, 0));
         }
         if (operators.count(i->val)) rhs = false;
       }
@@ -356,6 +356,7 @@ namespace zhexp {
 
     if (auto op = dynamic_cast<PrefixOperator*>(exp)) {
       op->child = postprocess(op->child, scope_info);
+      // zhexp::printExpTree(op->child);
       std::vector<Type> types;
       if (auto tuple = dynamic_cast<Tuple*>(op->child)) {
         for (auto exp : tuple->content) {
@@ -386,6 +387,8 @@ namespace zhexp {
   Exp* parse(std::vector<Token>::iterator begin, std::vector<Token>::iterator end, ScopeInfo& scope_info) {
     auto exp_res = preprocess(begin, end);
     Exp* exp = buildExp(exp_res.begin(), exp_res.end());
+    zhexp::printExpTree(exp);
+
     exp = postprocess(exp, scope_info);
     // printExpTree(exp);
     return exp;
