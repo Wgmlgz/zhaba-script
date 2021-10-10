@@ -1,11 +1,7 @@
 #pragma once
-#include "..\Expressions\ExpressionParser.hpp"
-#include "..\Expressions\Expression.hpp"
-#include "..\Lang\Scope.hpp"
-#include "..\..\TreeLib/Tree.hpp"
-#include "AbstractSyntaxTree.hpp"
-#include "..\Lang\Scope.hpp"
-#include "..\Lang\Types.hpp"
+#include "AST.hpp"
+#include "Expression.hpp"
+#include "../TreeLib/Tree.hpp"
 
 struct STNode {
   virtual ~STNode() {}
@@ -39,7 +35,7 @@ struct STRet : STNode {
   zhexp::Exp* exp = nullptr;
 };
 
-struct STLoop : ASTNode {
+struct STLoop : STNode {
   zhexp::Exp* exp;
   STBlock* body;
 };

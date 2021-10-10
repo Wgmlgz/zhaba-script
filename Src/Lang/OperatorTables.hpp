@@ -3,7 +3,7 @@
 #include <utility>
 #include <string>
 #include <map>
-#include "Lang\Types.hpp"
+#include "Types.hpp"
 
 namespace tables {
   const std::vector<std::pair<std::string, std::string>> lexer_tokens = {

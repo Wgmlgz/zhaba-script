@@ -1,11 +1,11 @@
 #pragma once
-#include "..\Lang\Types.hpp"
-#include "../../TreeLib/TreePrinterASCII.hpp"
+#include "Types.hpp"
+#include "../TreeLib/TreeLib.hpp"
 
 namespace zhexp {
 struct Exp {
   int pos;
-  Type type = Type(TYPE::voidT);
+  types::Type type = types::Type(types::TYPE::voidT);
   Exp(int new_pos = 666) : pos(new_pos) {}
   virtual ~Exp() {}
 };

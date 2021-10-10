@@ -1,9 +1,9 @@
 #pragma once
 #include <string>
 #include <vector>
-#include "../Lexer.hpp"
-#include "../Lang/Types.hpp"
-#include "SyntaxTree.hpp"
+#include "Lexer.hpp"
+#include "../Lang/Lang.hpp"
+#include "TypeParser.hpp"
 #include "ParserError.hpp"
 
 enum class OpType {lhs, rhs, bin};
@@ -12,11 +12,11 @@ struct Function {
 
   struct Arg {
     std::string name;
-    Type type;
+    types::Type type;
   };
   OpType op_type;
   std::string name;
-  Type type;
+  types::Type type;
   double priority;
 
   std::vector<Arg> args;
@@ -40,7 +40,7 @@ Function* parseFunctionHeader(std::vector<Token>::iterator begin, std::vector<To
   if (begin >= end) throw ParserError(begin->pos, "Expected operator declaration");
   auto func = new Function;
   // implicit void type
-  func->type = Type(TYPE::voidT);
+  func->type = types::Type(types::TYPE::voidT);
   func->op_type = OpType::lhs;
   auto cur = begin;
 
@@ -56,7 +56,7 @@ Function* parseFunctionHeader(std::vector<Token>::iterator begin, std::vector<To
     throw ParserError(cur->pos, "Expected type or operator name");
   } else {
     try {
-      func->type = Type::parse(cur);
+      func->type = types::parse(cur);
       ++cur;
       if (cur != end and cur->token == "space") ++cur;
     } catch (...) {
@@ -106,7 +106,7 @@ Function* parseFunctionHeader(std::vector<Token>::iterator begin, std::vector<To
   while (cur != end) {
     func->args.emplace_back();
     try {
-      func->args.back().type = Type::parse(cur);
+      func->args.back().type = types::parse(cur);
       ++cur;
       if (cur != end and cur->token == "space") ++cur;
     } catch (...) {

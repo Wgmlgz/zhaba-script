@@ -5,5 +5,5 @@
 #include "Types.hpp"
 
 struct ScopeInfo {
-  std::unordered_map<std::string, Type> vars;
+  std::unordered_map<std::string, types::Type> vars;
 };

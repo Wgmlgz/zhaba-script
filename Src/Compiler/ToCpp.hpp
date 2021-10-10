@@ -1,6 +1,5 @@
 #pragma once 
-#include "Expressions\ExpressionParser.hpp"
-#include "TreeParser\SyntaxTreeParser.hpp"
+#include "../Lang/Lang.hpp"
 
 std::string expToCpp(zhexp::Exp* exp);
 std::string blockToCpp(STBlock* exp, size_t depth = 0);

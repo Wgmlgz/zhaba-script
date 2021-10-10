@@ -3,17 +3,16 @@
 #include <fstream>
 #include <sstream>
 
-#include "Compiler\Expressions\ExpressionParser.hpp"
-#include "Compiler\ToCpp.hpp"
-#include "Compiler\TreeParser\AbstractSyntaxTree.hpp"
-#include "Compiler\TreeParser\SyntaxTreeParser.hpp"
+#include "Src/Parser/Parser.hpp"
+#include "Src/Compiler/Compiler.hpp"
+#include "Src/TreeLib/TreeLib.hpp"
 
 int main() {
   try {
     /* read file name */
     std::cout << "Enter file to compile (without .zh): ";
-    std::string file_name;
-    std::cin >> file_name;
+    std::string file_name = "test";
+    // std::cin >> file_name; 
 
     /* read thing */
     auto fin = std::ifstream(file_name + ".zh");
@@ -26,8 +25,8 @@ int main() {
     /* compiling */
     Lexer parser(tables::lexer_tokens);
     auto parse_res = parser.parse(programm, false);
-    ASTBlock* ast = ASTParser::parse(parse_res.begin(), parse_res.end());
-    auto ast_generic = ASTParser::toGenericTree(ast);
+    auto ast = ast::parse(parse_res.begin(), parse_res.end());
+    auto ast_generic = ast::toGenericTree(ast);
 
     std::cout << "ast:\n";
     printCompact(ast_generic);

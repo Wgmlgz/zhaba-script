@@ -2,12 +2,10 @@
 #include <set>
 #include <utility>
 
-#include "../TreeParser/ParserError.hpp"
-#include "../Lexer.hpp"
-#include "../OperatorTables.hpp"
-#include "Expression.hpp"
-#include "../Lang/Scope.hpp"
-#include "../../TreeLib/TreePrinterASCII.hpp"
+#include "ParserError.hpp"
+#include "Lexer.hpp"
+#include "../Lang/Lang.hpp"
+#include "../TreeLib/TreeLib.hpp"
 
 namespace zhexp {
   std::unordered_map<std::string, bool> settings = {
@@ -23,8 +21,6 @@ namespace zhexp {
   std::unordered_set<std::string> operators = {",", "="};
   std::unordered_map<std::string, int64_t> prefix_operators;
   std::unordered_map<std::string, int64_t> postfix_operators;
-
-  
 
   /**
    * @brief Converts expression to expression tree
@@ -222,14 +218,14 @@ namespace zhexp {
     return -666;
   }
  
-  std::map<std::tuple<std::string, Type, Type>, Type> B_OD;
-  std::map<std::pair<std::string, std::vector<Type>>, Type> PR_OD;
-  std::map<std::pair<std::string, std::vector<Type>>, Type> PO_OD;
+  std::map<std::tuple<std::string, types::Type, types::Type>, types::Type> B_OD;
+  std::map<std::pair<std::string, std::vector<types::Type>>, types::Type> PR_OD;
+  std::map<std::pair<std::string, std::vector<types::Type>>, types::Type> PO_OD;
 
-  Type parseType(Exp* exp, ScopeInfo& scope_info) {
+  types::Type parseType(Exp* exp, ScopeInfo& scope_info) {
     if (auto id = dynamic_cast<IdLiteral*>(exp)) {
-      if (prim_types.count(id->val)) {
-        return Type(prim_types[id->val]);
+      if (types::prim_types.count(id->val)) {
+        return types::Type(types::prim_types[id->val]);
       } else {
         throw ParserError(exp->pos, id->val.size(), "Unknown type");
       }
@@ -251,15 +247,15 @@ namespace zhexp {
       return op;
     }
     if (auto op = dynamic_cast<FlowOperator*>(exp)) {
-      exp->type = Type(TYPE::voidT);
+      exp->type = types::Type(types::TYPE::voidT);
       if (op->operand) op->operand = postprocess(op->operand, scope_info);
     }
     if (auto op = dynamic_cast<IntLiteral*>(exp)) {
-      exp->type = Type(TYPE::intT);
+      exp->type = types::Type(types::TYPE::intT);
       // exp->type.is_const = true;
     }
     if (auto op = dynamic_cast<StrLiteral*>(exp)) {
-      exp->type = Type(TYPE::strT);
+      exp->type = types::Type(types::TYPE::strT);
       // exp->type.is_const = true;
     }
     if (auto op = dynamic_cast<IdLiteral*>(exp)) {
@@ -294,7 +290,7 @@ namespace zhexp {
           t->priority = op->priority;
           t->content = { op->lhs, op->rhs };
           exp = t;
-          exp->type = Type(TYPE::voidT);
+          exp->type = types::Type(types::TYPE::voidT);
         }
       } else if (op->val == "=") {
         op->lhs = postprocess(op->lhs, scope_info);
@@ -334,7 +330,7 @@ namespace zhexp {
 
     if (auto op = dynamic_cast<PostfixOperator*>(exp)) {
       op->child = postprocess(op->child, scope_info);
-      std::vector<Type> types;
+      std::vector<types::Type> types;
       if (auto tuple = dynamic_cast<Tuple*>(op->child)) {
         for (auto exp : tuple->content) {
           types.push_back(exp->type);
@@ -357,7 +353,7 @@ namespace zhexp {
     if (auto op = dynamic_cast<PrefixOperator*>(exp)) {
       op->child = postprocess(op->child, scope_info);
       // zhexp::printExpTree(op->child);
-      std::vector<Type> types;
+      std::vector<types::Type> types;
       if (auto tuple = dynamic_cast<Tuple*>(op->child)) {
         for (auto exp : tuple->content) {
           types.push_back(exp->type);

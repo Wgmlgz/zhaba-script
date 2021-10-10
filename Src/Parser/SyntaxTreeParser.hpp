@@ -1,20 +1,19 @@
 #pragma once
-#include "../Lang/Types.hpp"
-#include "SyntaxTree.hpp"
-#include "../../TreeLib/Tree.hpp"
+#include "../Lang/Lang.hpp"
+#include "../TreeLib/Tree.hpp"
 #include "DefinitionsParser.hpp"
 
-STBlock* parseASTblock(ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo& parent_scope, Type retT) {
+STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo& parent_scope, types::Type retT) {
   auto res = new STBlock;
   
   for (auto i = main_block->nodes.begin(); i != main_block->nodes.end(); ++i) {
-    if (auto line = dynamic_cast<ASTLine*>(*i)) {
+    if (auto line = dynamic_cast<ast::ASTLine*>(*i)) {
       /* decide if current line is line declaration or something */
       bool is_var_decl = true;
       bool autoT = line->begin->val == "auto";
-      Type type;
+      types::Type type;
       try {
-        if (!autoT) type = Type::parse(line->begin);
+        if (!autoT) type = types::parse(line->begin);
         else ++line->begin;
       }  catch (...) { 
         is_var_decl = false;
@@ -69,21 +68,21 @@ STBlock* parseASTblock(ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo& par
         if (auto ctr = dynamic_cast<zhexp::FlowOperator*>(exp)) {
           /* "?" (if) statement parsing */
           if (ctr->val == "?") {
-            if (ctr->operand->type.getType() == TYPE::intT) {
+            if (ctr->operand->type.getType() == types::TYPE::intT) {
               auto tmp_if = new STIf;
               tmp_if->contition = ctr->operand;
               if (i + 1 != main_block->nodes.end()) {
-                if (auto body = dynamic_cast<ASTBlock*>(*(i + 1))) {
+                if (auto body = dynamic_cast<ast::ASTBlock*>(*(i + 1))) {
                   tmp_if->body = parseASTblock(body, cur_scope, res->scope_info, retT);
                   ++i;
                   while (i + 1 != main_block->nodes.end()) {
-                    if (auto elseif_body = dynamic_cast<ASTBlock*>(*(i + 1))) {
-                      if (elseif_body->btype != ASTBlock::nextB) break;
+                    if (auto elseif_body = dynamic_cast<ast::ASTBlock*>(*(i + 1))) {
+                      if (elseif_body->btype != ast::ASTBlock::nextB) break;
                       if (elseif_body->nodes.size() == 2) {
-                        if (auto line = dynamic_cast<ASTLine*>(elseif_body->nodes[0])) {
+                        if (auto line = dynamic_cast<ast::ASTLine*>(elseif_body->nodes[0])) {
                           auto exp =
                             zhexp::parse(line->begin, line->end, cur_scope);
-                          if (auto block = dynamic_cast<ASTBlock*>(elseif_body->nodes[1])) {
+                          if (auto block = dynamic_cast<ast::ASTBlock*>(elseif_body->nodes[1])) {
                             tmp_if->elseif_body.emplace_back(
                               exp, parseASTblock(block, cur_scope, res->scope_info, retT));
                           } else throw ParserError(0, "Exprected block in '|(else if)' statement");
@@ -95,7 +94,7 @@ STBlock* parseASTblock(ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo& par
                     } else break;
                   }
                   if (i + 1 != main_block->nodes.end()) {
-                    if (auto else_body = dynamic_cast<ASTBlock*>(*(i + 1))) {
+                    if (auto else_body = dynamic_cast<ast::ASTBlock*>(*(i + 1))) {
                       tmp_if->else_body =
                         parseASTblock(else_body, cur_scope, res->scope_info, retT);
                       ++i;
@@ -133,7 +132,7 @@ STBlock* parseASTblock(ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo& par
               tuple->content.insert(tuple->content.end(), nullptr);
             }
 
-            if (tuple->content[1]->type.getType() == TYPE::intT) {
+            if (tuple->content[1]->type.getType() == types::TYPE::intT) {
               if (tuple->content[0]) {
                 auto init = new STExp;
                 init->exp = tuple->content[0];
@@ -142,7 +141,7 @@ STBlock* parseASTblock(ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo& par
               auto tmp_while = new STWhile;
               tmp_while->contition = tuple->content[1];
               if (i + 1 != main_block->nodes.end()) {
-                if (auto body = dynamic_cast<ASTBlock*>(*(i + 1))) {
+                if (auto body = dynamic_cast<ast::ASTBlock*>(*(i + 1))) {
                   tmp_while->body = parseASTblock(body, cur_scope, res->scope_info, retT);
                   if (tuple->content[2]) {
                     auto iter = new STExp;
@@ -165,7 +164,7 @@ STBlock* parseASTblock(ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo& par
           else if (ctr->val == "<") {
             auto tmp_ret = new STRet;
             tmp_ret->exp = ctr->operand;
-            if (retT.getType() == TYPE::voidT) {
+            if (retT.getType() == types::TYPE::voidT) {
               if (tmp_ret->exp)
                 throw ParserError(ctr->pos, "You cannot return something becouse return type is 'void'");
             } else {
@@ -187,7 +186,7 @@ STBlock* parseASTblock(ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo& par
           res->nodes.push_back(tmp);
         }
       }
-    } else if (auto block = dynamic_cast<ASTBlock*>(*i)) {
+    } else if (auto block = dynamic_cast<ast::ASTBlock*>(*i)) {
       throw ParserError(0, "Unexprected block");
     } else {
       throw ParserError(0, "Random error lol (cannot cast ast node)");
@@ -216,17 +215,17 @@ struct STTree {
   };
 };
 
-STTree* parseAST(ASTBlock* main_block) {
+STTree* parseAST(ast::ASTBlock* main_block) {
   STTree* res = new STTree;
   auto cur = main_block->nodes.begin();
   ScopeInfo main_scope;
   while (cur != main_block->nodes.end()) {
-    if (auto line = dynamic_cast<ASTLine*>(*cur)) {
+    if (auto line = dynamic_cast<ast::ASTLine*>(*cur)) {
       /* parse function header */
       res->functions.push_back(parseFunctionHeader(line->begin, line->end));
       auto& func = res->functions.back();
       zhexp::operators.insert(func->name);
-      std::vector<Type> types;
+      std::vector<types::Type> types;
       for (auto& [_, type] : func->args) {
         types.push_back(type);
       }
@@ -249,7 +248,7 @@ STTree* parseAST(ASTBlock* main_block) {
       /* and then parse body */
       if (cur == main_block->nodes.end())
         throw ParserError(line->end->pos, "Expected function body");
-      if (auto block = dynamic_cast<ASTBlock*>(*cur)) {
+      if (auto block = dynamic_cast<ast::ASTBlock*>(*cur)) {
         res->functions.back()->body = parseASTblock(block, scope, main_scope, func->type);
       } else {
         throw ParserError(line->end->pos, "Expected function body");
