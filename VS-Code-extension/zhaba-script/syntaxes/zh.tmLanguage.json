@@ -1,0 +1,36 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "zhaba script",
+  "patterns": [
+    {
+      "match": "#.*",
+      "name": "string.other.cpp"
+    },
+    {
+      "begin": "'",
+      "end": "'",
+      "name": "string.quoted.single"
+    },
+    {
+      "match": "[0-9]+",
+      "name": "constant.int"
+    },
+    {
+      "match": "\\:|\\?|\\@|\\\\",
+      "name": "keyword.nextblock"
+    },
+    {
+      "match": "int|auto|str",
+      "name": "support.type"
+    },
+    {
+      "match": "type",
+      "name": "keyword.struct"
+    },
+    {
+      "match": "[\\,\\.\\+\\-\\*\\\\\\%\\<\\>\\=\\^\\&\\:\\|\\/\\!\\#]+",
+      "name": "keyword.operator"
+    }
+  ],
+  "scopeName": "source.zh"
+}
