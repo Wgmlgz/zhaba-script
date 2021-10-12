@@ -8,7 +8,7 @@
 
 #include "Expression.hpp"
 #include "Scope.hpp"
-#include "OperatorTables.hpp"
+#include "LangTables.hpp"
 
 namespace ast {
 struct ASTNode {

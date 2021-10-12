@@ -114,7 +114,7 @@ struct Function {
   OpType op_type;
   std::string name;
   types::Type type;
-  double priority;
+  int64_t priority = -1;
 
   std::vector<Arg> args;
 

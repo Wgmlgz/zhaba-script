@@ -1,0 +1,35 @@
+type arr
+  int head 
+  int size 
+
+arr_set arr ar int pos int val
+  int ptr = ar.head + pos * 8
+  ptr_set(ptr val)
+
+int arr_get arr ar int pos
+  < _ptr_get(ar.head + pos * 8)
+
+arr new_arr int size int val
+  arr ar
+  ar.size = size
+  ar.head = malloc(size * 8)
+  int i
+  @ i=0 i<size i=i+1
+    arr_set(ar i val)
+  < ar
+
+out arr ar
+  int i
+  @ i=0 i<ar.size i=i+1
+    outs arr_get(ar i)
+  out ''
+
+iota arr ar int start
+  int i
+  @ i=0 i<ar.size i=i+1
+    arr_set(ar, i, start+i)
+
+main
+  auto array = new_arr 10 0
+  iota array 1
+  out array

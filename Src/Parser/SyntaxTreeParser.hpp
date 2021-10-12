@@ -65,6 +65,11 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
       } else { 
         /* not variable declaration so normal parsing */
         auto exp = zhexp::parse(line->begin, line->end, cur_scope);
+        if (parser_settings::bools["show_exp_tmp_tree"]) {
+          std::cout << "tmp_tree:\n";
+          zhexp::printExpTree(exp);
+        }
+
         if (auto ctr = dynamic_cast<zhexp::FlowOperator*>(exp)) {
           /* "?" (if) statement parsing */
           if (ctr->val == "?") {

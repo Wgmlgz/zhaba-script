@@ -4,14 +4,11 @@
 
 #include "ParserError.hpp"
 #include "Lexer.hpp"
+#include "ParserSettings.hpp"
 #include "../Lang/Lang.hpp"
 #include "../TreeLib/TreeLib.hpp"
 
 namespace zhexp {
-  std::unordered_map<std::string, bool> settings = {
-      {"DEBUG", true}, {"SHOW_TREE", true}, {"SHOW_ERROR", true}
-  };
-
   const int64_t INF = 1000000000000.0;
   const int64_t priority_offset = 100;
   const int64_t parentheses_offset = 1000000;
@@ -21,6 +18,10 @@ namespace zhexp {
   std::unordered_set<std::string> operators                  = tables::operators;
   std::unordered_map<std::string, int64_t> prefix_operators  = tables::prefix_operators;
   std::unordered_map<std::string, int64_t> postfix_operators = tables::postfix_operators;
+
+  std::map<std::tuple<std::string, types::Type, types::Type>, types::Type> B_OD;
+  std::map<std::pair <std::string, std::vector<types::Type>>, types::Type> PR_OD;
+  std::map<std::pair <std::string, std::vector<types::Type>>, types::Type> PO_OD;
 
   /**
    * @brief Converts expression to expression tree
@@ -84,7 +85,12 @@ namespace zhexp {
         }
       }
     }
-
+    if (parser_settings::bools["exp_parser_logs"]) {
+      for (auto i = begin; i != end; ++i) {
+        std::cout << (*i)->toString() << ",";
+      }
+      std::cout << "\n";
+    }
     if (pos == end) {
       throw ParserError((*begin)->pos, "Expected operator");
     } else if (!dynamic_cast<Operator*>(*pos)) {
@@ -194,10 +200,6 @@ namespace zhexp {
     return res;
   }
 
-  std::map<std::tuple<std::string, types::Type, types::Type>, types::Type> B_OD;
-  std::map<std::pair<std::string, std::vector<types::Type>>, types::Type> PR_OD;
-  std::map<std::pair<std::string, std::vector<types::Type>>, types::Type> PO_OD;
-
   types::Type parseType(Exp* exp, ScopeInfo& scope_info) {
     if (auto id = dynamic_cast<IdLiteral*>(exp)) {
       if (types::prim_types.count(id->val)) {
@@ -228,11 +230,9 @@ namespace zhexp {
     }
     if (auto op = dynamic_cast<IntLiteral*>(exp)) {
       exp->type = types::Type(types::TYPE::intT);
-      // exp->type.is_const = true;
     }
     if (auto op = dynamic_cast<StrLiteral*>(exp)) {
       exp->type = types::Type(types::TYPE::strT);
-      // exp->type.is_const = true;
     }
     if (auto op = dynamic_cast<IdLiteral*>(exp)) {
       if (scope_info.vars.count(op->val)) {
@@ -240,9 +240,6 @@ namespace zhexp {
         tmp->name = op->val;
         tmp->type = scope_info.vars[op->val];
         exp = tmp;
-        // exp->type = scope_info.vars[op->val];
-        
-        // exp = reinterpret_cast<Variable*>(exp);
       }
       else
         throw ParserError(op->pos, "Unknown variable '" + op->val + "'");
@@ -331,7 +328,7 @@ namespace zhexp {
         types.push_back(op->child->type);
       }
 
-      /* implicit lval to rval conversion */
+      /** Implicit lval to rval conversion */
       for (auto& i : types) i.setLval(false);
       
       if (PO_OD.count({ op->val, types })) {
@@ -344,7 +341,6 @@ namespace zhexp {
 
     if (auto op = dynamic_cast<PrefixOperator*>(exp)) {
       op->child = postprocess(op->child, scope_info);
-      // zhexp::printExpTree(op->child);
       std::vector<types::Type> types;
       if (auto tuple = dynamic_cast<Tuple*>(op->child)) {
         for (auto exp : tuple->content) {
@@ -375,10 +371,9 @@ namespace zhexp {
   Exp* parse(std::vector<Token>::iterator begin, std::vector<Token>::iterator end, ScopeInfo& scope_info) {
     auto exp_res = preprocess(begin, end);
     Exp* exp = buildExp(exp_res.begin(), exp_res.end());
-    zhexp::printExpTree(exp);
-
+    if (parser_settings::bools["exp_parser_logs"]) zhexp::printExpTree(exp);
     exp = postprocess(exp, scope_info);
-    // printExpTree(exp);
+    if (parser_settings::bools["exp_parser_logs"]) zhexp::printExpTree(exp);
     return exp;
   }
 };

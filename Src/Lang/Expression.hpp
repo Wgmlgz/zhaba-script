@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 #include "Types.hpp"
 #include "../TreeLib/TreeLib.hpp"
 
@@ -8,18 +9,33 @@ struct Exp {
   types::Type type = types::Type(types::TYPE::voidT);
   Exp(int new_pos = 666) : pos(new_pos) {}
   virtual ~Exp() {}
+  virtual std::string toString() {
+    return "<empty>";
+  }
 };
 
 struct Tuple : public Exp {
-  double priority;
+  int64_t priority;
   std::vector<Exp*> content;
   Tuple() {}
-  Tuple(double new_priority, std::vector<Exp*> new_content) :
+  Tuple(int64_t new_priority, std::vector<Exp*> new_content) :
     priority(new_priority), content(new_content) {}
+  virtual std::string toString() override {
+    std::string res="<tuple{";
+    for (auto& i : content) {
+      res += i->toString() + " ";
+    }
+    res += ">";
+    return res;
+  }
 };
 
 struct Variable : public Exp {
   std::string name;
+  virtual std::string toString() override {
+    std::string res="<variable'" + name + "'>";
+    return res;
+  }
 };
 
 struct Literal : public Exp {};
@@ -30,6 +46,10 @@ struct IntLiteral : public Literal {
     pos = new_pos;
     val = new_val;
   }
+  virtual std::string toString() override {
+    std::string res="<int'" + std::to_string(val) + "'>";
+    return res;
+  }
 };
 
 struct StrLiteral : public Literal {
@@ -38,6 +58,10 @@ struct StrLiteral : public Literal {
     pos = new_pos;
     val = new_val;
   }
+  virtual std::string toString() override {
+    std::string res="<str'" + val + "'>";
+    return res;
+  }
 };
 
 struct IdLiteral : public Literal {
@@ -45,6 +69,10 @@ struct IdLiteral : public Literal {
   IdLiteral(int new_pos, std::string new_val) {
     pos = new_pos;
     val = new_val;
+  }
+  virtual std::string toString() override {
+    std::string res="<id'" + val + "'>";
+    return res;
   }
 };
 
@@ -67,10 +95,10 @@ struct CppCode : public Exp {
 
 struct Operator : public Exp {
   std::string val;
-  double priority;
+  int64_t priority = -666;
   size_t spl = 0, spr = 0;
   Operator() {}
-  Operator(int new_pos, std::string new_val, double new_priority,
+  Operator(int new_pos, std::string new_val, int64_t new_priority,
     size_t new_spl, size_t new_spr) {
     pos = new_pos;
     val = new_val;
@@ -78,12 +106,16 @@ struct Operator : public Exp {
     spl = new_spl;
     spr = new_spr;
   }
+  virtual std::string toString() override {
+    std::string res="<operator'" + val + "'>";
+    return res;
+  }
 };
 
 struct BinOperator : public Operator {
   Exp* lhs;
   Exp* rhs;
-  BinOperator(int new_pos, std::string new_val, double new_priority,
+  BinOperator(int new_pos, std::string new_val, int64_t new_priority,
     Exp* new_lhs, Exp* new_rhs) {
     pos = new_pos;
     val = new_val;
@@ -95,7 +127,7 @@ struct BinOperator : public Operator {
 
 struct UnaryOperator : public Operator {
   Exp* child;
-  UnaryOperator(int new_pos, std::string new_val, double new_priority,
+  UnaryOperator(int new_pos, std::string new_val, int64_t new_priority,
     Exp* new_child) {
     pos = new_pos;
     val = new_val;
@@ -105,13 +137,13 @@ struct UnaryOperator : public Operator {
 };
 
 struct PrefixOperator : public UnaryOperator {
-  PrefixOperator(int new_pos, std::string new_val, double new_priority,
+  PrefixOperator(int new_pos, std::string new_val, int64_t new_priority,
     Exp* new_child)
     : UnaryOperator(new_pos, new_val, new_priority, new_child) {}
 };
 
 struct PostfixOperator : public UnaryOperator {
-  PostfixOperator(int new_pos, std::string new_val, double new_priority,
+  PostfixOperator(int new_pos, std::string new_val, int64_t new_priority,
     Exp* new_child)
     : UnaryOperator(new_pos, new_val, new_priority, new_child) {}
 };

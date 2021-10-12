@@ -188,7 +188,7 @@ std::string structToCpp(int id) {
 }
 
 std::string toCpp(STTree* block) {
-  std::string res = "#include <bits/stdc++.h>\n\n";
+  std::string res = "#include <stdlib.h>\n#include<string>\n\n";
 
   for (int i = types::first_struct_id; i < types::last_struct_id; ++i) {
     res += structHeadToCpp(i);

@@ -99,5 +99,14 @@ Function* parseFunctionHeader(std::vector<Token>::iterator begin, std::vector<To
     throw ParserError(start_pos, cur->pos - start_pos,
     "Expected 2 arguments in binary operator");
   }
+
+  if (func->priority < 0) {
+    if (func->op_type == OpType::rhs) func->priority = 2;
+    if (func->op_type == OpType::rhs) func->priority = 3;
+    if (func->op_type == OpType::bin)
+      throw ParserError(begin->pos, end->pos + end->val.size() - begin->pos,
+      "Binary operator priority is not defined");
+  }
+  
   return func;
 }
