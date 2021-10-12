@@ -1,0 +1,65 @@
+type vec
+  int head
+  int size
+  int capacity
+
+vec_set vec v int pos int val
+  int ptr = v.head + pos * 8
+  ptr_set(ptr val)
+
+int vec_get vec v int pos
+  < ptr_get(v.head + pos * 8)
+
+vec new_vec int size int val
+  vec v
+  v.size = size
+  v.capacity = size
+  ? size: v.head = malloc(size * 8)
+  \ v.head = 0
+  int i
+  @ i=0 i<size i=i+1: vec_set(v i val)
+  < v
+
+vec vec_double vec v
+  int new_capacity = v.capacity * 2
+  ? new_capacity == 0: new_capacity = 1
+  vec tmp = new_vec(new_capacity 0)
+  int i
+  @ i=0 i<v.size i=i+1:
+    int t = vec_get(v i)
+    vec_set(tmp i t)
+  < tmp
+  
+vec push vec v int val
+  int pos = v.size
+  ? v.size == v.capacity: v = vec_double v
+  vec_set(v pos val)
+  v.size = pos + 1
+  < v
+
+vec pop vec v
+  ? v.size > 0: v.size = v.size-1
+  < v
+
+out vec v
+  int i
+  @ i=0 i<v.size i=i+1
+    outs vec_get(v i)
+  out ''  
+
+main
+  vec v = new_vec 0 0
+
+  v = push v 1
+  v = push v 2
+  v = push v 3
+  v = push v 4
+  v = push v 5
+  v = pop v
+  out v
+
+  vec_set(v, 0, 5)
+  vec_set(v, 1, 4)
+  out v
+
+  out 'wow vector'

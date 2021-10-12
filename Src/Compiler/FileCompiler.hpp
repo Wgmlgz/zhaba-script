@@ -28,7 +28,7 @@ out str s: #'printf("%s\n",s.c_str());'
 outs int i: #'printf("%d ", i);'
 
 ptr_set int ptr int val: #'*((int64_t*)(ptr))=val;'
-int _ptr_get int ptr: #return *(int64_t*)(ptr);
+int ptr_get int ptr: #return *(int64_t*)(ptr);
 int malloc int size: #return (int64_t)(malloc(size));
 free int p: #free((void*)p);
 )";
