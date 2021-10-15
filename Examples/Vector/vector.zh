@@ -4,11 +4,10 @@ type vec
   int capacity
 
 vec_set vec v int pos int val
-  int ptr = v.head + pos * 8
-  ptr_set(ptr val)
+  v.head+pos*8 .= val
 
 int vec_get vec v int pos
-  < ptr_get(v.head + pos * 8)
+  <<< ptr_get(v.head + pos * 8)
 
 vec new_vec int size int val
   vec v
@@ -18,7 +17,7 @@ vec new_vec int size int val
   \ v.head = 0
   int i
   @ i=0 i<size i=i+1: vec_set(v i val)
-  < v
+  <<< v
 
 vec vec_double vec v
   int new_capacity = v.capacity * 2
@@ -28,38 +27,34 @@ vec vec_double vec v
   @ i=0 i<v.size i=i+1:
     int t = vec_get(v i)
     vec_set(tmp i t)
-  < tmp
-  
-vec push vec v int val
-  int pos = v.size
-  ? v.size == v.capacity: v = vec_double v
-  vec_set(v pos val)
-  v.size = pos + 1
-  < v
+  <<< tmp
 
-vec pop vec v
-  ? v.size > 0: v.size = v.size-1
-  < v
+push vecP v int val
+  int pos = (*v).size
+  ? (*v).size == (*v).capacity: *v = vec_double *v
+  vec_set(*v pos val)
+  (*v).size = pos + 1
+
+pop vecP v
+  ? (*v).size > 0: (*v).size = (*v).size-1
 
 out vec v
   int i
-  @ i=0 i<v.size i=i+1
-    outs vec_get(v i)
-  out ''  
+  @ i=0 i<v.size i=i+1: outs vec_get(v i)
+  out ''
 
 main
   vec v = new_vec 0 0
 
-  v = push v 1
-  v = push v 2
-  v = push v 3
-  v = push v 4
-  v = push v 5
-  v = pop v
+  push &v 1
+  push &v 2
+  push &v 3
+  push &v 4
+  push &v 5
+  pop &v
+
   out v
 
-  vec_set(v, 0, 5)
-  vec_set(v, 1, 4)
+  vec_set(v 0 5)
+  vec_set(v 1 4)
   out v
-
-  out 'wow vector'
