@@ -166,7 +166,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
             }
           }
           /* <(return) statement parsing */
-          else if (ctr->val == "<") {
+          else if (ctr->val == "<<<") {
             auto tmp_ret = new STRet;
             tmp_ret->exp = ctr->operand;
             if (retT.getTypeId() == types::TYPE::voidT) {

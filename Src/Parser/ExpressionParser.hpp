@@ -200,18 +200,6 @@ namespace zhexp {
     return res;
   }
 
-  types::Type parseType(Exp* exp, ScopeInfo& scope_info) {
-    if (auto id = dynamic_cast<IdLiteral*>(exp)) {
-      if (types::prim_types.count(id->val)) {
-        return types::Type(types::prim_types[id->val]);
-      } else {
-        throw ParserError(exp->pos, id->val.size(), "Unknown type");
-      }
-    } else {
-      throw ParserError(exp->pos, "Expected type name");
-    }
-  }
-
   std::string parseName(Exp* exp) {
     if (auto id = dynamic_cast<IdLiteral*>(exp)) {
       return id->val;
@@ -269,14 +257,15 @@ namespace zhexp {
         op->lhs = postprocess(op->lhs, scope_info);
         op->rhs = postprocess(op->rhs, scope_info);
 
-        if (op->lhs->type.getTypeId() != op->rhs->type.getTypeId()) {
+        // op->lhs->type.
+        if (op->lhs->type.rvalClone() <=> op->rhs->type.rvalClone() != 0) {
           throw ParserError(op->pos, "Types (" +
             op->lhs->type.toString() + " " +
             op->rhs->type.toString() +
           ") for '=' are different");
         }
 
-        if (op->lhs->type.isLval()) {
+        if (op->lhs->type.getLval()) {
           op->type = op->lhs->type;
         } else {
           throw ParserError(op->lhs->pos, op->pos - op->lhs->pos, "Left operant for '=' must be lval");
@@ -287,7 +276,7 @@ namespace zhexp {
           if (static_cast<int>(op->lhs->type.getTypeId()) >= types::first_struct_id) {
             if (types::structs[static_cast<int>(op->lhs->type.getTypeId())].members.count(id->val)) {
               op->type = types::structs[static_cast<int>(op->lhs->type.getTypeId())].members[id->val];
-              op->type.setLval(op->lhs->type.isLval());
+              op->type.setLval(op->lhs->type.getLval());
             } else {
               throw ParserError(op->pos, "Type '" + op->lhs->type.toString() + "' doesn't have '" + id->val + "' member");
             }
@@ -341,6 +330,25 @@ namespace zhexp {
 
     if (auto op = dynamic_cast<PrefixOperator*>(exp)) {
       op->child = postprocess(op->child, scope_info);
+      
+      if (op->val == "&") {
+        if (!op->child->type.getLval())
+          throw ParserError(op->pos, "Cannot get ptr of rval");
+        exp->type = op->child->type;
+        exp->type.setPtr(op->child->type.getPtr() + 1);
+        exp->type.setLval(false);
+        
+        return exp;
+      } else if (op->val == "*") {
+        if (op->child->type.getPtr() == 0)
+          throw ParserError(op->pos, "Cannot dereference non ptr");
+        exp->type = op->child->type;
+        exp->type.setPtr(op->child->type.getPtr() - 1);
+        exp->type.setLval(true);
+        
+        return exp;
+      }
+      
       std::vector<types::Type> types;
       if (auto tuple = dynamic_cast<Tuple*>(op->child)) {
         for (auto exp : tuple->content) {

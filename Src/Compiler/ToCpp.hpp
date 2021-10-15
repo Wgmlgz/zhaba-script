@@ -29,6 +29,7 @@ std::string idToCpp(const std::string& str) {
     else if (ch == '$')  ans += "dollar";
     else if (ch == '@')  ans += "at";
     else if (ch == '?')  ans += "question";
+    else if (ch == '~')  ans += "tilda";
     else throw std::runtime_error(std::string("cannot use '") + ch + "'");
   }
   return ans;
@@ -87,7 +88,11 @@ std::string expToCpp(zhexp::Exp* exp) {
     }
   }
   if (auto op = dynamic_cast<zhexp::PrefixOperator*>(exp)) {
-    res += lopToCpp(op->val) + "(" + expToCpp(op->child) + ")";
+    if (op->val == "&" or op->val == "*") {
+      res += "(" +op->val + "(" + expToCpp(op->child) + "))";
+    } else {
+      res += lopToCpp(op->val) + "(" + expToCpp(op->child) + ")";
+    }
   }
   if (auto op = dynamic_cast<zhexp::PostfixOperator*>(exp)) {
     res += ropToCpp(op->val) + "(" + expToCpp(op->child) + ")";

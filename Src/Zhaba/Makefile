@@ -1,10 +1,10 @@
 build:
-	g++ zhaba.cpp --std=c++17 -o zhaba
+	g++ zhaba.cpp --std=c++20 -o zhaba
 
 test:
-	.\zhaba.exe test.zh
+	.\zhaba test.zh
 
 build_test:
-	g++ zhaba.cpp --std=c++17 -o zhaba
-	.\zhaba.exe test.zh
+	g++ zhaba.cpp --std=c++20 -o zhaba
+	.\zhaba test.zh
 	

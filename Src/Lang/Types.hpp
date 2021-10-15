@@ -6,7 +6,7 @@
 #include <vector>
 
 namespace types {
-enum class TYPE : int64_t { voidT, intT, int32T, strT };
+enum class TYPE : int32_t { voidT, intT, int32T, strT };
 
 std::unordered_map<std::string, TYPE> prim_types{
     {"void", TYPE::voidT}, {"i32", TYPE::int32T}, {"int", TYPE::intT},
@@ -30,59 +30,66 @@ std::unordered_map<TYPE, std::string> cpp_type_names{
 std::unordered_map<std::string, int> struct_ids;
 std::unordered_map<int, std::string> struct_names;
 
-struct Type {
+class Type {
  public:
-  TYPE getTypeId() const { return type; }
-  bool isLval() const { return lval; }
-  void setLval(bool f) { lval = f; }
-  void setType(TYPE type_) { type = type_; }
+  /* Ctor Dtor */
+  Type(const TYPE& type = TYPE::voidT, uint8_t ptr = 0, bool lval = false) :
+    typeid_(type), ptr_(ptr), lval_(lval) {}
+  virtual ~Type() {}
 
-  friend bool operator<(const Type& lhs, const Type& rhs);
-  friend bool operator==(const Type& lhs, const Type& rhs);
-  friend bool operator!=(const Type& lhs, const Type& rhs);
+  /* Getters */
+  auto getTypeId() const { return typeid_; }
+  auto getLval() const { return lval_; }
+  auto getPtr() const { return ptr_; }
+
+  /* Setters */
+  void setLval(bool f) { lval_ = f; }
+  void setType(TYPE type_) { typeid_ = type_; }
+  void setPtr(bool val) { ptr_ = val; }
+
+  /* Bitmask layout: lval<1> ptr<8> typeid<other> */
+  uint64_t getMask() const { return (static_cast<int>(typeid_) << 9) | (ptr_ << 1) | lval_; }
+
+  const friend auto operator<=>(const Type& lhs, const Type& rhs) {
+    /** Bitmask comparison mask: lval<1> ptr<8> typeid<other> */
+    return lhs.getMask() <=> rhs.getMask();
+  }
+
+  Type rvalClone() { return Type(typeid_, ptr_); }
 
   std::string toString() const {
     std::string res;
-    if (static_cast<int>(type) < 50)
-      res += type_names[type];
+    if (static_cast<int>(typeid_) < 50)
+      res += type_names[typeid_];
     else 
-      res += struct_names[static_cast<int>(type)];
+      res += struct_names[static_cast<int>(typeid_)];
 
-    if (lval) res += "&";
+    res += std::string(ptr_, 'P');
+    if (lval_) res += "&";
 
     return res;
   }
+
   std::string toCppString() const {
     std::string res;
-    if (static_cast<int>(type) < 50)
-      res += cpp_type_names[type];
+    if (static_cast<int>(typeid_) < 50)
+      res += cpp_type_names[typeid_];
     else 
-      res += "__zhstruct_" + struct_names[static_cast<int>(type)];
+      res += "__zhstruct_" + struct_names[static_cast<int>(typeid_)];
 
+    res += std::string(ptr_, '*');
     return res;
   }
 
-  Type(const TYPE& new_type = TYPE::voidT, const bool is_lval = false)
-      : type(new_type), lval(is_lval) {}
-
-  virtual ~Type() {}
  private:
-  TYPE type = TYPE::voidT;
-  bool lval = false;
+  TYPE typeid_ = TYPE::voidT;
+  bool lval_ = false;
+  uint8_t ptr_ = 0;
 };
 
-bool operator<(const Type& lhs, const Type& rhs) {
-  int a = (static_cast<int>(lhs.getTypeId()) << 2) | lhs.lval;
-  int b = (static_cast<int>(rhs.getTypeId()) << 2) | rhs.lval;
-  return a < b;
-}
 
-bool operator==(const Type& lhs, const Type& rhs) {
-  int a = (static_cast<int>(lhs.getTypeId()) << 2) | lhs.lval;
-  int b = (static_cast<int>(rhs.getTypeId()) << 2) | rhs.lval;
-  return a == b;
-}
-bool operator!=(const Type& lhs, const Type& rhs) { return !(lhs == rhs); }
+
+
 
 struct StructInfo {
   std::unordered_map<std::string, Type> members;

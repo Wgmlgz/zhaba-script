@@ -24,11 +24,13 @@ int main(int argc, char **argv) {
   } else if (cmd.size() == 1) {
     std::string file_name = cmd.getCmdOption(0);
     try {
+      auto start_time = clock();
       auto compiled = compileFile(file_name);
+      std::cout << "[INFO] compiling complete in " + std::to_string((clock() - start_time) * 1.0 / CLOCKS_PER_SEC) << std::endl;
+
       auto tmp_file = std::ofstream("zhaba_tmp.cpp");
       tmp_file << compiled;
       tmp_file.close();
-
       system("g++ zhaba_tmp.cpp -o zhaba_tmp");
       system(".\\zhaba_tmp.exe");
     }
@@ -36,7 +38,7 @@ int main(int argc, char **argv) {
       std::cout << error.toString();
     }
     catch (...) {
-      std::cout << "Random error lol" << std::endl;
+      std::cout << "Uncaught error :(" << std::endl;
     }
   } else {
     std::cout << "Wrong usage :(\n";

@@ -37,7 +37,7 @@ public:
   Lexer(const std::vector<std::pair<std::string, std::string>>& new_tokens) { tokens = new_tokens; }
   std::vector<Token> parse(const std::string& str, const bool DEBUG = false) {
     std::string tokens_str = std::accumulate(tokens.begin(), tokens.end(), std::string(),
-      [](std::string& ss, std::pair<std::string, std::string>& s) {
+      [](const std::string& ss, const std::pair<std::string, std::string>& s) {
         return ss.empty() ? s.second : ss + "|" + s.second;
       });
 

@@ -6,6 +6,22 @@
 #include "TypeParser.hpp"
 #include "ParserError.hpp"
 
+void validateFunction(const Function& func, int begin, int end) {
+  if (func.op_type == OpType::bin) {
+    
+  } else if (func.op_type == OpType::lhs) {
+    if (func.name == "&") {
+      throw ParserError(begin, end,
+        "You cannot overload prefix '&' operator");
+    } else if (func.name == "*") {
+      throw ParserError(begin, end,
+        "You cannot overload prefix '*' operator");
+    }
+  } else if (func.op_type == OpType::rhs) {
+  
+  }
+}
+
 Function* parseFunctionHeader(std::vector<Token>::iterator begin, std::vector<Token>::iterator end) {
   if (begin >= end) throw ParserError(begin->pos, "Expected operator declaration");
   auto func = new Function;
@@ -100,13 +116,15 @@ Function* parseFunctionHeader(std::vector<Token>::iterator begin, std::vector<To
     "Expected 2 arguments in binary operator");
   }
 
+  if (func->op_type == OpType::rhs) func->priority = 2;
+  if (func->op_type == OpType::rhs) func->priority = 3;
+
   if (func->priority < 0) {
-    if (func->op_type == OpType::rhs) func->priority = 2;
-    if (func->op_type == OpType::rhs) func->priority = 3;
     if (func->op_type == OpType::bin)
       throw ParserError(begin->pos, end->pos + end->val.size() - begin->pos,
       "Binary operator priority is not defined");
   }
-  
+
+  validateFunction(*func, start_pos, cur->pos - start_pos);
   return func;
 }

@@ -27,7 +27,7 @@ out int x: #'printf("%d\n",x);'
 out str s: #'printf("%s\n",s.c_str());'
 outs int i: #'printf("%d ", i);'
 
-ptr_set int ptr int val: #'*((int64_t*)(ptr))=val;'
+10 .= ___ int ptr int val: #'*((int64_t*)(ptr))=val;'
 int ptr_get int ptr: #return *(int64_t*)(ptr);
 int malloc int size: #return (int64_t)(malloc(size));
 free int p: #free((void*)p);
@@ -63,6 +63,10 @@ std::string compileFile(std::string file_name) {
   if (parser_settings::bools["show_st"]) {
     std::cout << "st:\n";
     printCompact(st_generic);
+  }
+  if (parser_settings::bools["show_st_cool"]) {
+    std::cout << "st:\n";
+    printASCII(st_generic);
   }
 
   std::string cpp_code = toCpp(stree);

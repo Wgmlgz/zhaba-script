@@ -7,6 +7,7 @@ namespace parser_settings {
     {"exp_parser_logs",   false},
     {"show_ast",          false},
     {"show_st",           false},
+    {"show_st_cool",      false},
     {"show_err",          false},
     {"show_cpp",          false},
     {"show_original",     false},
