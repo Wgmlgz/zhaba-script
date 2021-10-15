@@ -6,5 +6,5 @@ fizz_buzz _ int mx
     | i %% 5: out 'Buzz'
     \ out i
 
-int main
+main
   fizz_buzz 50

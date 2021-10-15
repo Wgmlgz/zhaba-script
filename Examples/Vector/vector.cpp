@@ -29,7 +29,7 @@ int64_t __zhbop_pipepipe(int64_t a, int64_t b);
 void __zhlop_out(int64_t x);
 void __zhlop_out(std::string s);
 void __zhlop_outs(int64_t i);
-void __zhlop_ptr_set(int64_t ptr, int64_t val);
+void __zhbop_dotequal(int64_t ptr, int64_t val);
 int64_t __zhlop_ptr_get(int64_t ptr);
 int64_t __zhlop_malloc(int64_t size);
 void __zhlop_free(int64_t p);
@@ -37,8 +37,8 @@ void __zhlop_vec_set(__zhstruct_vec v, int64_t pos, int64_t val);
 int64_t __zhlop_vec_get(__zhstruct_vec v, int64_t pos);
 __zhstruct_vec __zhlop_new_vec(int64_t size, int64_t val);
 __zhstruct_vec __zhlop_vec_double(__zhstruct_vec v);
-__zhstruct_vec __zhlop_push(__zhstruct_vec v, int64_t val);
-__zhstruct_vec __zhlop_pop(__zhstruct_vec v);
+void __zhlop_push(__zhstruct_vec* v, int64_t val);
+void __zhlop_pop(__zhstruct_vec* v);
 void __zhlop_out(__zhstruct_vec v);
 int main(int argc, char *argv[]) ;
 
@@ -122,7 +122,7 @@ void __zhlop_outs(int64_t i) {
    printf("%d ", i);;
 }
 
-void __zhlop_ptr_set(int64_t ptr, int64_t val) {
+void __zhbop_dotequal(int64_t ptr, int64_t val) {
    *((int64_t*)(ptr))=val;;
 }
 
@@ -139,9 +139,7 @@ void __zhlop_free(int64_t p) {
 }
 
 void __zhlop_vec_set(__zhstruct_vec v, int64_t pos, int64_t val) {
-  int64_t ptr;
-  (ptr) = (__zhbop_plus((v).head, __zhbop_asterisk(pos, 8)));
-  __zhlop_ptr_set(ptr, val);
+  __zhbop_dotequal(__zhbop_plus((v).head, __zhbop_asterisk(pos, 8)), val);
 }
 
 int64_t __zhlop_vec_get(__zhstruct_vec v, int64_t pos) {
@@ -185,22 +183,20 @@ __zhstruct_vec __zhlop_vec_double(__zhstruct_vec v) {
   return (tmp);
 }
 
-__zhstruct_vec __zhlop_push(__zhstruct_vec v, int64_t val) {
+void __zhlop_push(__zhstruct_vec* v, int64_t val) {
   int64_t pos;
-  (pos) = ((v).size);
-  if (__zhbop_equalequal((v).size, (v).capacity)) {
-    (v) = (__zhlop_vec_double(v));
+  (pos) = (((*(v))).size);
+  if (__zhbop_equalequal(((*(v))).size, ((*(v))).capacity)) {
+    ((*(v))) = (__zhlop_vec_double((*(v))));
   }
-  __zhlop_vec_set(v, pos, val);
-  ((v).size) = (__zhbop_plus(pos, 1));
-  return (v);
+  __zhlop_vec_set((*(v)), pos, val);
+  (((*(v))).size) = (__zhbop_plus(pos, 1));
 }
 
-__zhstruct_vec __zhlop_pop(__zhstruct_vec v) {
-  if (__zhbop_greater((v).size, 0)) {
-    ((v).size) = (__zhbop_minus((v).size, 1));
+void __zhlop_pop(__zhstruct_vec* v) {
+  if (__zhbop_greater(((*(v))).size, 0)) {
+    (((*(v))).size) = (__zhbop_minus(((*(v))).size, 1));
   }
-  return (v);
 }
 
 void __zhlop_out(__zhstruct_vec v) {
@@ -216,16 +212,15 @@ void __zhlop_out(__zhstruct_vec v) {
 int main(int argc, char *argv[])  {
   __zhstruct_vec v;
   (v) = (__zhlop_new_vec(0, 0));
-  (v) = (__zhlop_push(v, 1));
-  (v) = (__zhlop_push(v, 2));
-  (v) = (__zhlop_push(v, 3));
-  (v) = (__zhlop_push(v, 4));
-  (v) = (__zhlop_push(v, 5));
-  (v) = (__zhlop_pop(v));
+  __zhlop_push((&(v)), 1);
+  __zhlop_push((&(v)), 2);
+  __zhlop_push((&(v)), 3);
+  __zhlop_push((&(v)), 4);
+  __zhlop_push((&(v)), 5);
+  __zhlop_pop((&(v)));
   __zhlop_out(v);
   __zhlop_vec_set(v, 0, 5);
   __zhlop_vec_set(v, 1, 4);
   __zhlop_out(v);
-  __zhlop_out("wow vector");
 }
 
