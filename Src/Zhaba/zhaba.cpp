@@ -22,7 +22,10 @@ int main(int argc, char **argv) {
   } else if (cmd.cmdOptionEqual(0, "compile") and cmd.size() == 3) {
 
   } else if (cmd.size() == 1) {
-    std::string file_name = cmd.getCmdOption(0);
+    std::string file_name =
+      cmd.getCmdOption(0);
+      // R"(test.zh)";
+
     try {
       auto start_time = clock();
       auto compiled = compileFile(file_name);

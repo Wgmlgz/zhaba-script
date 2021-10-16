@@ -1,4 +1,5 @@
 #pragma once
+#include "ZHDATA.hpp"
 #include "AST.hpp"
 #include "Expression.hpp"
 #include "LangTables.hpp"

@@ -22,8 +22,8 @@ int64_t __zhbop_pipepipe(int64_t a, int64_t b);
 void __zhlop_out(int64_t x);
 void __zhlop_out(std::string s);
 void __zhlop_outs(int64_t i);
-void __zhlop_ptr_set(int64_t ptr, int64_t val);
-int64_t __zhlop__ptr_get(int64_t ptr);
+void __zhbop_dotequal(int64_t ptr, int64_t val);
+int64_t __zhlop_ptr_get(int64_t ptr);
 int64_t __zhlop_malloc(int64_t size);
 void __zhlop_free(int64_t p);
 int main(int argc, char *argv[]) ;
@@ -108,11 +108,11 @@ void __zhlop_outs(int64_t i) {
    printf("%d ", i);;
 }
 
-void __zhlop_ptr_set(int64_t ptr, int64_t val) {
+void __zhbop_dotequal(int64_t ptr, int64_t val) {
    *((int64_t*)(ptr))=val;;
 }
 
-int64_t __zhlop__ptr_get(int64_t ptr) {
+int64_t __zhlop_ptr_get(int64_t ptr) {
   return *(int64_t*)(ptr);
 }
 

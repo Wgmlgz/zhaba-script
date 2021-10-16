@@ -16,6 +16,8 @@ struct Token {
   std::string token;
   std::string val;
   size_t pos;
+  std::string* file = nullptr;
+
   Token(std::string new_token, std::string new_type, size_t new_pos) :
     token(new_token),
     val(new_type),
@@ -25,14 +27,6 @@ struct Token {
 typedef std::vector<Token>::iterator tokeniter;
 class Lexer {
   std::vector<std::pair<std::string, std::string>> tokens;
-  void defineFlowTokens(std::vector<Token>& tokens) {
-    for (auto i = tokens.begin(); i != tokens.end(); ++i) {
-      if (i->token == "id") if (i->val == ":") i->token = "new block";
-      if (i->token == "id") if (i->val == "|") i->token = "next block";
-      if (i->token == "id") if (i->val == "\\") i->token = "fin block";
-    }
-  }
-
 public:
   Lexer(const std::vector<std::pair<std::string, std::string>>& new_tokens) { tokens = new_tokens; }
   std::vector<Token> parse(const std::string& str, const bool DEBUG = false) {
@@ -68,7 +62,6 @@ public:
 
       if (DEBUG) std::cout << log_str << std::endl;
     }
-    defineFlowTokens(parse_res);
     return parse_res;
   }
 };

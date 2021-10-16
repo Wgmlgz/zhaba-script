@@ -6,10 +6,10 @@
 struct ParserError {
   static std::unordered_map<int, int> which_line;
   static std::vector<std::string> lines;
-  size_t pos = 0;
-  size_t len = 0;
+  int pos = 0;
+  int len = 0;
   std::string message;
-  size_t line = 666;
+  int line = 666;
   ParserError(size_t new_pos, size_t new_len, std::string new_message) {
     pos = new_pos;
     len = new_len;
@@ -20,13 +20,21 @@ struct ParserError {
     message = new_message;
   }
   std::string toString() {
+    std::string res;
+
+    if (pos < 0) {
+      res += "Err:\n";
+      res += message;
+      res += "\n";
+      return res;
+    }
+
     line = ParserError::which_line[pos];
     std::string source_code = lines[ParserError::which_line[pos] - 1];
 
     int real_pos = 0;
     for (int i = 0; i < line - 1; ++i) real_pos += lines[i].size() + 1;
     pos -= real_pos;
-    std::string res;
     res += "Err at line ";
     res += std::to_string(line) + " ";
     res += "| ";

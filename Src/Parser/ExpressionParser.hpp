@@ -4,25 +4,10 @@
 
 #include "ParserError.hpp"
 #include "Lexer.hpp"
-#include "ParserSettings.hpp"
 #include "../Lang/Lang.hpp"
 #include "../TreeLib/TreeLib.hpp"
 
 namespace zhexp {
-  const int64_t INF = 1000000000000.0;
-  const int64_t priority_offset = 100;
-  const int64_t parentheses_offset = 1000000;
-
-  std::unordered_set<std::string> flow_ops                   = tables::flow_ops;
-  std::unordered_map<std::string, int64_t> bin_operators     = tables::bin_operators;
-  std::unordered_set<std::string> operators                  = tables::operators;
-  std::unordered_map<std::string, int64_t> prefix_operators  = tables::prefix_operators;
-  std::unordered_map<std::string, int64_t> postfix_operators = tables::postfix_operators;
-
-  std::map<std::tuple<std::string, types::Type, types::Type>, types::Type> B_OD;
-  std::map<std::pair <std::string, std::vector<types::Type>>, types::Type> PR_OD;
-  std::map<std::pair <std::string, std::vector<types::Type>>, types::Type> PO_OD;
-
   /**
    * @brief Converts expression to expression tree
    */
@@ -49,7 +34,7 @@ namespace zhexp {
         throw ParserError(op->pos, "Expected int literal");
     }
 
-    int64_t max_priority = -INF, true_priority = 0;
+    int64_t max_priority = -zhdata.INF, true_priority = 0;
     bool is_bin = false;
     auto pos = end;
 
@@ -57,23 +42,23 @@ namespace zhexp {
       if (Operator* op = dynamic_cast<Operator*>(*i)) {
         true_priority = op->priority;
         if (i == begin) {
-          if (!prefix_operators.count(op->val))
+          if (!zhdata.prefix_operators.count(op->val))
             throw ParserError(op->pos, "Unknown prefix operator '" + op->val + "'");
 
           true_priority +=
-            2 * op->spr * priority_offset + prefix_operators[op->val];
+            2 * op->spr * zhdata.priority_offset + zhdata.prefix_operators[op->val];
         } else if (i == end - 1) {
-          if (!postfix_operators.count(op->val))
+          if (!zhdata.postfix_operators.count(op->val))
             throw ParserError(op->pos, "Unknown postfix operator");
 
           true_priority +=
-            2 * op->spl * priority_offset + postfix_operators[op->val];
+            2 * op->spl * zhdata.priority_offset + zhdata.postfix_operators[op->val];
         } else {
-          if (bin_operators.count(op->val)) {
+          if (zhdata.bin_operators.count(op->val)) {
             true_priority +=
-              (op->spl + op->spr) * priority_offset + bin_operators[op->val];
+              (op->spl + op->spr) * zhdata.priority_offset + zhdata.bin_operators[op->val];
           } else {
-            true_priority = -INF;
+            true_priority = -zhdata.INF;
           }
         }
         if (op->val == "=" ?
@@ -85,7 +70,7 @@ namespace zhexp {
         }
       }
     }
-    if (parser_settings::bools["exp_parser_logs"]) {
+    if (zhdata.bools["exp_parser_logs"]) {
       for (auto i = begin; i != end; ++i) {
         std::cout << (*i)->toString() << ",";
       }
@@ -125,12 +110,12 @@ namespace zhexp {
       }
       return {new CppCode(code)};
     }
-    if (begin->token == "id" and flow_ops.count(begin->val)) {
+    if (begin->token == "id" and zhdata.flow_ops.count(begin->val)) {
       res.push_back(new FlowOperator(begin->pos, begin->val, nullptr));
       ++begin;
     }
     for (auto i = begin; i != end; ++i) {
-      if (i->token == "id") if (operators.count(i->val)) i->token = "operator";
+      if (i->token == "id") if (zhdata.operators.count(i->val)) i->token = "operator";
     }
     for (auto i = begin; i != end; ++i) {
       if (i == begin) {
@@ -148,15 +133,15 @@ namespace zhexp {
           if (std::set<std::string>{"p(", "int", "str", "id"}.count((i + 1)->token))
             rhs = true;
         if (lhs and rhs) {
-          res.push_back(new Operator(i->pos, ",", -parentheses_offset * pcount, 0, i->val.size()));
+          res.push_back(new Operator(i->pos, ",", -zhdata.parentheses_offset * pcount, 0, i->val.size()));
         }
       } else {
         if (i != begin) if (std::set<std::string>{"p)", "int", "str", "id"}.count((i - 1)->token))
           lhs = true;
         if (lhs and rhs) {
-          res.push_back(new Operator(i->pos, ",", -parentheses_offset * pcount, 0, 0));
+          res.push_back(new Operator(i->pos, ",", -zhdata.parentheses_offset * pcount, 0, 0));
         }
-        if (operators.count(i->val)) rhs = false;
+        if (zhdata.operators.count(i->val)) rhs = false;
       }
 
       if (i->token == "p(") {
@@ -165,7 +150,7 @@ namespace zhexp {
         --pcount;
       }
       if (pcount < 0) throw ParserError(i->pos, "Too many ')'");
-      int bpriority = -parentheses_offset * pcount;
+      int bpriority = -zhdata.parentheses_offset * pcount;
 
       if (i->token == "operator") {
         // get spaces
@@ -173,12 +158,12 @@ namespace zhexp {
         if (i != begin) {
           if ((i - 1)->token == "space") spaces_lhs = (i - 1)->val.size();
         } else {
-          spaces_lhs = INF;
+          spaces_lhs = zhdata.INF;
         }
         if (i != end - 1) {
           if ((i + 1)->token == "space") spaces_rhs = (i + 1)->val.size();
         } else {
-          spaces_rhs = INF;
+          spaces_rhs = zhdata.INF;
         }
         res.push_back(new Operator(i->pos, i->val, bpriority, spaces_lhs, spaces_rhs));
       } else if (i->token == "int") {
@@ -294,9 +279,9 @@ namespace zhexp {
         op->lhs->type.setLval(false);
         op->rhs->type.setLval(false);
         
-        if (B_OD.count({ op->val, op->lhs->type, op->rhs->type})) {
+        if (zhdata.B_OD.count({ op->val, op->lhs->type, op->rhs->type})) {
           exp->type =
-            B_OD[{op->val, op->lhs->type, op->rhs->type}];
+            zhdata.B_OD[{op->val, op->lhs->type, op->rhs->type}];
         } else {
           throw ParserError(
             op->pos, "There is no instance of binary operator '" + op->val +
@@ -320,8 +305,8 @@ namespace zhexp {
       /** Implicit lval to rval conversion */
       for (auto& i : types) i.setLval(false);
       
-      if (PO_OD.count({ op->val, types })) {
-        exp->type = PO_OD[{op->val,types}];
+      if (zhdata.PO_OD.count({ op->val, types })) {
+        exp->type = zhdata.PO_OD[{op->val,types}];
       } else
         throw ParserError(
           op->pos, "There is no instance of postfix operator '" + op->val +
@@ -361,8 +346,8 @@ namespace zhexp {
       /* implicit lval to rval conversion */
       for (auto& i : types) i.setLval(false);
 
-      if (PR_OD.count({ op->val, types })) {
-        exp->type = PR_OD[{op->val, types}];
+      if (zhdata.PR_OD.count({ op->val, types })) {
+        exp->type = zhdata.PR_OD[{op->val, types}];
       } else {
         std::string types_str;
         for (auto& i : types) {
@@ -379,9 +364,9 @@ namespace zhexp {
   Exp* parse(std::vector<Token>::iterator begin, std::vector<Token>::iterator end, ScopeInfo& scope_info) {
     auto exp_res = preprocess(begin, end);
     Exp* exp = buildExp(exp_res.begin(), exp_res.end());
-    if (parser_settings::bools["exp_parser_logs"]) zhexp::printExpTree(exp);
+    if (zhdata.bools["exp_parser_logs"]) zhexp::printExpTree(exp);
     exp = postprocess(exp, scope_info);
-    if (parser_settings::bools["exp_parser_logs"]) zhexp::printExpTree(exp);
+    if (zhdata.bools["exp_parser_logs"]) zhexp::printExpTree(exp);
     return exp;
   }
 };

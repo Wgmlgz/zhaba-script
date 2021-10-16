@@ -8,6 +8,8 @@
 
 namespace tables {
   const std::vector<std::pair<std::string, std::string>> lexer_tokens = {
+    {"comment.block", R"(((\/\*[\s\S]*?\*\/)))"},
+    {"comment.line", R"((((\/\/.*))))"},
     {"str", R"((\'(\\.|[^'\\])*\'))"},
     {"int", R"((([0-9]+)))"},
     {"space", R"(((\ +)))"},

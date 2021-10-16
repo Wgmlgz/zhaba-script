@@ -65,7 +65,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
       } else { 
         /* not variable declaration so normal parsing */
         auto exp = zhexp::parse(line->begin, line->end, cur_scope);
-        if (parser_settings::bools["show_exp_tmp_tree"]) {
+        if (zhdata.bools["show_exp_tmp_tree"]) {
           std::cout << "tmp_tree:\n";
           zhexp::printExpTree(exp);
         }
@@ -270,20 +270,20 @@ STTree* parseAST(ast::ASTBlock* main_block) {
         /** Parse function header */
         res->functions.push_back(parseFunctionHeader(line->begin, line->end));
         auto& func = res->functions.back();
-        zhexp::operators.insert(func->name);
+        zhdata.operators.insert(func->name);
         std::vector<types::Type> types;
         for (auto& [_, type] : func->args) {
           types.push_back(type);
         }
           if (func->op_type == OpType::bin) {
-          zhexp::B_OD[{func->name, types[0], types[1]}] = func->type;
-          zhexp::bin_operators[func->name] = func->priority;
+          zhdata.B_OD[{func->name, types[0], types[1]}] = func->type;
+          zhdata.bin_operators[func->name] = func->priority;
         } else if (func->op_type == OpType::lhs) {
-          zhexp::PR_OD[{func->name, types}] = func->type;
-          zhexp::prefix_operators[func->name] = func->priority;
+          zhdata.PR_OD[{func->name, types}] = func->type;
+          zhdata.prefix_operators[func->name] = func->priority;
         } else if (func->op_type == OpType::rhs) {
-          zhexp::PO_OD[{func->name, types}] = func->type;
-          zhexp::postfix_operators[func->name] = func->priority;
+          zhdata.PO_OD[{func->name, types}] = func->type;
+          zhdata.postfix_operators[func->name] = func->priority;
         }
         ++cur;
         ScopeInfo scope;

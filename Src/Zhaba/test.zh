@@ -1,2 +1,7 @@
+include 'std.zh'
+
+/*
+  block comment
+*/
 main
-  out 'Hello world!'
+  out 'Hello world!' // line comment

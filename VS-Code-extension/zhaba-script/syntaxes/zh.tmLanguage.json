@@ -7,6 +7,15 @@
       "name": "string.other.cpp"
     },
     {
+      "begin": "\\/\\*",
+      "end": "\\*\\/",
+      "name": "comment.block"
+    },
+    {
+      "match": "\\/\\/.*",
+      "name": "comment.line"
+    },
+    {
       "begin": "'",
       "end": "'",
       "name": "string.quoted.single"
