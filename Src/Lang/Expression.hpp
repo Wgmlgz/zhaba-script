@@ -40,6 +40,19 @@ struct Variable : public Exp {
 
 struct Literal : public Exp {};
 
+struct TypeLiteral : public Literal {
+  types::Type literal_type; 
+  TypeLiteral(int new_pos, types::Type new_type) {
+    pos = new_pos;
+    literal_type = new_type;
+    type = types::TYPE::voidT;
+  }
+  virtual std::string toString() override {
+    std::string res="<typeL'" + literal_type.toString() + "'>";
+    return res;
+  }
+};
+
 struct IntLiteral : public Literal {
   int64_t val;
   IntLiteral(int new_pos, int64_t new_val) {

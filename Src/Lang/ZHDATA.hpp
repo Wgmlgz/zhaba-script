@@ -10,6 +10,7 @@ struct ZHDATA {
   const int64_t INF = 1000000000000.0;
   const int64_t priority_offset = 100;
   const int64_t parentheses_offset = 1000000;
+  const bool USE_SPACES_OFFSET = false;
 
   std::unordered_set<std::string> flow_ops                   = tables::flow_ops;
   std::unordered_map<std::string, int64_t> bin_operators     = tables::bin_operators;
@@ -25,7 +26,7 @@ struct ZHDATA {
 
   std::vector<std::string> included_files;
 
-  std::unordered_map<std::string, bool> bools = {
+  std::unordered_map<std::string, bool> bools {
     {"exp_parser_logs",   false},
     {"show_ast",          false},
     {"show_st",           false},

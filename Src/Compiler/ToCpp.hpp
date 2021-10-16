@@ -79,7 +79,12 @@ std::string expToCpp(zhexp::Exp* exp) {
     }
   }
   if (auto op = dynamic_cast<zhexp::BinOperator*>(exp)) {
-    if (op->val == "=") {
+    if (op->val == "as") {
+      res += "(";
+      res += "(" + static_cast<zhexp::TypeLiteral*>(op->rhs)->literal_type.toCppString() + ")";
+      res += "(" + expToCpp(op->lhs) + ")";
+      res += ")";
+    } else if (op->val == "=") {
       res += "(" + expToCpp(op->lhs) + ") = (" + expToCpp(op->rhs) + ")";
     } else if (op->val == ".") {
       res += "(" + expToCpp(op->lhs) + ")." + static_cast<zhexp::IdLiteral*>(op->rhs)->val;

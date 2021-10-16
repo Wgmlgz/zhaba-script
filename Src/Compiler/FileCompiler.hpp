@@ -4,9 +4,9 @@
 #include "ToCpp.hpp"
 #include <fstream>
 
-std::string compileFile(std::string file_name) {
+std::string compileFile(std::filesystem::path file_path) {
   std::vector<Token> tokens;
-  preprocess(file_name, tokens);
+  preprocess(file_path, tokens);
 
   if (zhdata.bools["show_preprocessed"]) {
     std::cout << "preprocessed:\n";

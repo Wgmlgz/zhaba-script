@@ -87,10 +87,6 @@ class Type {
   uint8_t ptr_ = 0;
 };
 
-
-
-
-
 struct StructInfo {
   std::unordered_map<std::string, Type> members;
 };

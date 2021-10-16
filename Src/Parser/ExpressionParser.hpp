@@ -30,8 +30,10 @@ namespace zhexp {
         return op;
       else if (auto op = dynamic_cast<IdLiteral*>(*begin))
         return op;
+      else if (auto op = dynamic_cast<TypeLiteral*>(*begin))
+        return op;
       else
-        throw ParserError(op->pos, "Expected int literal");
+        throw ParserError(op->pos, "Expected literal");
     }
 
     int64_t max_priority = -zhdata.INF, true_priority = 0;
@@ -44,19 +46,18 @@ namespace zhexp {
         if (i == begin) {
           if (!zhdata.prefix_operators.count(op->val))
             throw ParserError(op->pos, "Unknown prefix operator '" + op->val + "'");
-
-          true_priority +=
-            2 * op->spr * zhdata.priority_offset + zhdata.prefix_operators[op->val];
+          if (zhdata.USE_SPACES_OFFSET) true_priority += 2 * op->spr * zhdata.priority_offset;
+          true_priority += zhdata.prefix_operators[op->val];
         } else if (i == end - 1) {
           if (!zhdata.postfix_operators.count(op->val))
             throw ParserError(op->pos, "Unknown postfix operator");
 
-          true_priority +=
-            2 * op->spl * zhdata.priority_offset + zhdata.postfix_operators[op->val];
+          if (zhdata.USE_SPACES_OFFSET) true_priority += 2 * op->spl * zhdata.priority_offset;
+          true_priority += zhdata.postfix_operators[op->val];
         } else {
           if (zhdata.bin_operators.count(op->val)) {
-            true_priority +=
-              (op->spl + op->spr) * zhdata.priority_offset + zhdata.bin_operators[op->val];
+            if (zhdata.USE_SPACES_OFFSET) true_priority += (op->spl + op->spr) * zhdata.priority_offset;
+            true_priority += zhdata.bin_operators[op->val];
           } else {
             true_priority = -zhdata.INF;
           }
@@ -110,13 +111,16 @@ namespace zhexp {
       }
       return {new CppCode(code)};
     }
+   
     if (begin->token == "id" and zhdata.flow_ops.count(begin->val)) {
       res.push_back(new FlowOperator(begin->pos, begin->val, nullptr));
       ++begin;
     }
+    
     for (auto i = begin; i != end; ++i) {
       if (i->token == "id") if (zhdata.operators.count(i->val)) i->token = "operator";
     }
+
     for (auto i = begin; i != end; ++i) {
       if (i == begin) {
         if (i->token == "space") continue;
@@ -124,6 +128,15 @@ namespace zhexp {
       if (i + 1 == end) {
         if (i->token == "space") continue;
       }
+
+      try {
+        auto pos = i->pos;
+        auto type = types::parse(i);
+        res.push_back(new TypeLiteral(i->pos, type));
+        --i;
+        continue;
+      } catch (...) {}
+
       bool lhs = false, rhs = false;
       if (i->token == "space") {
         if (i != begin)
@@ -185,13 +198,13 @@ namespace zhexp {
     return res;
   }
 
-  std::string parseName(Exp* exp) {
-    if (auto id = dynamic_cast<IdLiteral*>(exp)) {
-      return id->val;
-    } else {
-      throw ParserError(0, "Expected name");
-    }
-  }
+  // std::string parseName(Exp* exp) {
+  //   if (auto id = dynamic_cast<IdLiteral*>(exp)) {
+  //     return id->val;
+  //   } else {
+  //     throw ParserError(0, "Expected name");
+  //   }
+  // }
 
   Exp* postprocess(Exp* exp, ScopeInfo& scope_info) {
     if (auto op = dynamic_cast<CppCode*>(exp)) {
@@ -200,14 +213,11 @@ namespace zhexp {
     if (auto op = dynamic_cast<FlowOperator*>(exp)) {
       exp->type = types::Type(types::TYPE::voidT);
       if (op->operand) op->operand = postprocess(op->operand, scope_info);
-    }
-    if (auto op = dynamic_cast<IntLiteral*>(exp)) {
+    } else if (auto op = dynamic_cast<IntLiteral*>(exp)) {
       exp->type = types::Type(types::TYPE::intT);
-    }
-    if (auto op = dynamic_cast<StrLiteral*>(exp)) {
+    } else if (auto op = dynamic_cast<StrLiteral*>(exp)) {
       exp->type = types::Type(types::TYPE::strT);
-    }
-    if (auto op = dynamic_cast<IdLiteral*>(exp)) {
+    } else if (auto op = dynamic_cast<IdLiteral*>(exp)) {
       if (scope_info.vars.count(op->val)) {
         auto tmp = new Variable;
         tmp->name = op->val;
@@ -216,9 +226,7 @@ namespace zhexp {
       }
       else
         throw ParserError(op->pos, "Unknown variable '" + op->val + "'");
-    }
-
-    if (auto op = dynamic_cast<BinOperator*>(exp)) {
+    } else if (auto op = dynamic_cast<BinOperator*>(exp)) {
       if (op->val == ",") {
         op->lhs = postprocess(op->lhs, scope_info);
         op->rhs = postprocess(op->rhs, scope_info);
@@ -271,6 +279,13 @@ namespace zhexp {
         } else {
           throw ParserError(op->pos, "Expected identifier near '" + op->val + "'");
         }
+      } else if (op->val == "as") {
+        op->lhs = postprocess(op->lhs, scope_info);
+        if (auto type_l = dynamic_cast<TypeLiteral*>(op->rhs)) {
+          op->type = type_l->literal_type;
+        } else {
+          throw ParserError(op->pos, "Expected type literal");
+        }
       } else {
         op->lhs = postprocess(op->lhs, scope_info);
         op->rhs = postprocess(op->rhs, scope_info);
@@ -289,9 +304,7 @@ namespace zhexp {
             op->rhs->type.toString());
         }
       }
-    }
-
-    if (auto op = dynamic_cast<PostfixOperator*>(exp)) {
+    } else if (auto op = dynamic_cast<PostfixOperator*>(exp)) {
       op->child = postprocess(op->child, scope_info);
       std::vector<types::Type> types;
       if (auto tuple = dynamic_cast<Tuple*>(op->child)) {
@@ -311,9 +324,7 @@ namespace zhexp {
         throw ParserError(
           op->pos, "There is no instance of postfix operator '" + op->val +
           "' for type: " + op->child->type.toString());
-    }
-
-    if (auto op = dynamic_cast<PrefixOperator*>(exp)) {
+    } else if (auto op = dynamic_cast<PrefixOperator*>(exp)) {
       op->child = postprocess(op->child, scope_info);
       
       if (op->val == "&") {

@@ -125,6 +125,8 @@ void __zhlop_free(int64_t p) {
 }
 
 int main(int argc, char *argv[])  {
+  int64_t* ptr;
+  (ptr) = (((int64_t*)(__zhlop_malloc(8))));
   __zhlop_out("Hello world!");
 }
 

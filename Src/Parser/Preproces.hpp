@@ -13,12 +13,12 @@ void defineFlowTokens(std::vector<Token>& tokens) {
   }
 }
 
-void preprocess(std::string& file_name, std::vector<Token>& res, int depth = 0) {
-  zhdata.included_files.push_back(file_name);
-  auto fin = std::ifstream(file_name);
+void preprocess(std::filesystem::path file_path, std::vector<Token>& res, int depth = 0) {
+  zhdata.included_files.push_back(file_path.string());
+  auto fin = std::ifstream(file_path);
   if (fin.fail()) {
     // fin.close();
-    throw ParserError(-1, "Cannot open file '" + file_name + "' ");
+    throw ParserError(-1, "Cannot open file '" + file_path.string() + "' ");
   }
   std::stringstream ss;
   ss << fin.rdbuf();
@@ -38,17 +38,19 @@ void preprocess(std::string& file_name, std::vector<Token>& res, int depth = 0) 
       if (depth >= 16)
         throw ParserError(0, "Maximum file include depth reached");
         
-      std::string path;
+      std::string path_str;
       do {
         ++i;
       } while (i->token == "space");
       if (i->token == "str") {
-        path = i->val;
-        path.erase(path.begin());
-        path.pop_back();
+        path_str = i->val;
+        path_str.erase(path_str.begin());
+        path_str.pop_back();
       } else {
-        path = i->val;
+        path_str = i->val;
       }
+      std::filesystem::path path = path_str;
+      if (path.is_relative()) path = file_path.parent_path() / path;
       preprocess(path, res, depth + 1);
     } else {
       res.push_back(*i);
