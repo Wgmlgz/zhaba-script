@@ -6,25 +6,27 @@
 #include <vector>
 
 namespace types {
-enum class TYPE : int32_t { voidT, intT, int32T, strT };
+enum class TYPE : int32_t { voidT, charT, intT, int32T, strT };
 
 std::unordered_map<std::string, TYPE> prim_types{
-    {"void", TYPE::voidT}, {"i32", TYPE::int32T}, {"int", TYPE::intT},
-    {"i64", TYPE::intT},   {"str", TYPE::strT},
+  {"void", TYPE::voidT}, {"i32", TYPE::int32T}, {"int", TYPE::intT},
+  {"i64", TYPE::intT}, {"char", TYPE::charT},   {"str", TYPE::strT},
 };
 
 std::unordered_map<TYPE, std::string> type_names{
-    {TYPE::voidT, "void"},
-    {TYPE::intT, "int"},
-    {TYPE::int32T, "i32"},
-    {TYPE::strT, "str"},
+  {TYPE::voidT, "void"},
+  {TYPE::charT, "char"},
+  {TYPE::intT, "int"},
+  {TYPE::int32T, "i32"},
+  {TYPE::strT, "str"},
 };
 
 std::unordered_map<TYPE, std::string> cpp_type_names{
-    {TYPE::voidT, "void"},
-    {TYPE::int32T, "int"},
-    {TYPE::intT, "int64_t"},
-    {TYPE::strT, "std::string"},
+  {TYPE::voidT, "void"},
+  {TYPE::charT, "char"},
+  {TYPE::intT, "int64_t"},
+  {TYPE::int32T, "int"},
+  {TYPE::strT, "std::string"},
 };
 
 std::unordered_map<std::string, int> struct_ids;

@@ -16,7 +16,6 @@ struct Token {
   std::string token;
   std::string val;
   size_t pos;
-  std::string* file = nullptr;
 
   Token(std::string new_token, std::string new_type, size_t new_pos) :
     token(new_token),
@@ -24,12 +23,13 @@ struct Token {
     pos(new_pos)
   {}
 };
+
 typedef std::vector<Token>::iterator tokeniter;
 class Lexer {
   std::vector<std::pair<std::string, std::string>> tokens;
 public:
   Lexer(const std::vector<std::pair<std::string, std::string>>& new_tokens) { tokens = new_tokens; }
-  std::vector<Token> parse(const std::string& str, const bool DEBUG = false) {
+  std::vector<Token> parse(const std::string& str, int& pos, const bool DEBUG = false) {
     std::string tokens_str = std::accumulate(tokens.begin(), tokens.end(), std::string(),
       [](const std::string& ss, const std::pair<std::string, std::string>& s) {
         return ss.empty() ? s.second : ss + "|" + s.second;
@@ -58,8 +58,8 @@ public:
       index /= 2;
       log_str += std::to_string(index);
 
-      parse_res.push_back(Token(tokens[index].first, token_val, m.position()));
-
+      parse_res.push_back(Token(tokens[index].first, token_val, pos));
+      pos += token_val.size();
       if (DEBUG) std::cout << log_str << std::endl;
     }
     return parse_res;

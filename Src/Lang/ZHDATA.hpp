@@ -22,8 +22,10 @@ struct ZHDATA {
   std::map<std::pair <std::string, std::vector<types::Type>>, types::Type> PR_OD;
   std::map<std::pair <std::string, std::vector<types::Type>>, types::Type> PO_OD;
 
+  int file_offset = 0;
   Lexer lexer = tables::lexer_tokens;
 
+  std::vector<std::string> included_files_names;
   std::vector<std::string> included_files;
 
   std::unordered_map<std::string, bool> bools {

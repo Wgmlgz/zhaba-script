@@ -24,6 +24,9 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
         auto exp = zhexp::buildExp(exp_res.begin(), exp_res.end());
         auto tuple = castTreeToTuple(exp);
 
+        if (zhdata.bools["exp_parser_logs"]) {
+          zhexp::printExpTree(tuple);
+        }
         for (auto i : tuple->content) {
           if (auto id = dynamic_cast<zhexp::IdLiteral*>(i)) {
             /* just plane variable */
@@ -65,10 +68,10 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
       } else { 
         /* not variable declaration so normal parsing */
         auto exp = zhexp::parse(line->begin, line->end, cur_scope);
-        if (zhdata.bools["show_exp_tmp_tree"]) {
-          std::cout << "tmp_tree:\n";
-          zhexp::printExpTree(exp);
-        }
+        // if (zhdata.bools["show_exp_tmp_tree"]) {
+        //   std::cout << "tmp_tree:\n";
+        //   zhexp::printExpTree(exp);
+        // }
 
         if (auto ctr = dynamic_cast<zhexp::FlowOperator*>(exp)) {
           /* "?" (if) statement parsing */

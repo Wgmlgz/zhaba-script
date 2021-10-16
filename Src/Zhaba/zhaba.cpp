@@ -1,3 +1,5 @@
+#define THROW(exceptionClass, message) throw exceptionClass(__FILE__, __LINE__, (message) )
+
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -30,13 +32,8 @@ int main(int argc, char **argv) {
     printUsage();
   } else if (cmd.cmdOptionEqual(0, "compile") and cmd.size() == 3) {
 
-  } else if (cmd.size() >= 1
-  or 1
-  ) {
-    std::filesystem::path file_path =
-      // cmd.getCmdOption(0);
-      R"(C:\Code\Zhaba-script-lang\Src\Zhaba\test.zh)";
-
+  } else if (cmd.size() >= 1) {
+    std::filesystem::path file_path = cmd.getCmdOption(0);
     try {
       auto start_time = clock();
       auto compiled = compileFile(file_path);
@@ -45,7 +42,7 @@ int main(int argc, char **argv) {
       auto tmp_file = std::ofstream("zhaba_tmp.cpp");
       tmp_file << compiled;
       tmp_file.close();
-      system("g++ zhaba_tmp.cpp -o zhaba_tmp");
+      system("g++ zhaba_tmp.cpp -o zhaba_tmp -O3");
       system(".\\zhaba_tmp.exe");
     }
     catch (ParserError error) {

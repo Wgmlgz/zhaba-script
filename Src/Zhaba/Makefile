@@ -1,6 +1,9 @@
 build:
 	g++ zhaba.cpp --std=c++20 -o zhaba
 
+build_fast:
+	g++ zhaba.cpp --std=c++20 -o zhaba -O3
+
 test:
 	.\zhaba test.zh
 

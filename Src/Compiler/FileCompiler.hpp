@@ -6,7 +6,8 @@
 
 std::string compileFile(std::filesystem::path file_path) {
   std::vector<Token> tokens;
-  preprocess(file_path, tokens);
+  int offset = 0;
+  preprocess(file_path, tokens, offset);
 
   if (zhdata.bools["show_preprocessed"]) {
     std::cout << "preprocessed:\n";

@@ -17,6 +17,7 @@ ASTBlock* parseBlock(tokeniter begin, tokeniter end) {
       line_offset = cur->val.size();
       ++cur;
     }
+    if (cur == end) break;
     if (cur->token == "line end") {
       ++cur;
       ++line_n;
