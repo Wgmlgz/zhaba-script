@@ -1,0 +1,43 @@
+include 'std.zh'
+include 'canvas.zh'
+
+main
+  int w = 20 h = 20
+  auto c = new_canvas(w h)
+  int r = 54
+  int i j k
+  auto dead = aschar('.') live = aschar('#')
+  canvas_fill(&c, aschar('.'))
+
+  /* fill with random stuff */
+  @ i=0 i<c.h i=i+1
+    @ j=0 j<c.w j=j+1
+      r = rng r 
+      ? r % 2
+        *canvas_at(&c i j) = aschar '#'
+
+  @ k=0 k<50 k=k+1
+    auto nc = new_canvas(w h)
+    canvas_fill(&nc, aschar('.'))
+    
+    @ i=1 i<c.h-1 i=i+1
+      @ j=1 j<c.w-1 j=j+1
+        int near = 0
+        ? canvas_get(&c i-1 j  ) == live: near = near + 1
+        ? canvas_get(&c i   j-1) == live: near = near + 1
+        ? canvas_get(&c i+1 j  ) == live: near = near + 1
+        ? canvas_get(&c i   j+1) == live: near = near + 1
+        ? canvas_get(&c i-1 j-1) == live: near = near + 1
+        ? canvas_get(&c i-1 j+1) == live: near = near + 1
+        ? canvas_get(&c i+1 j-1) == live: near = near + 1
+        ? canvas_get(&c i+1 j+1) == live: near = near + 1
+
+        ? *canvas_at(&c i j) == live
+          ? near == 2 || near == 3: *canvas_at(&nc i j) = live as char
+        \ ? near == 3: *canvas_at(&nc i j) = live as char
+
+    c = nc
+
+    put '\033[2J'
+    out &c
+    sleep 600

@@ -1,0 +1,30 @@
+type canvas
+  charP head
+  int w h
+
+canvas new_canvas int w int h
+  canvas res
+  res.w = w
+  res.h = h
+  res.head = malloc(w * h) as charP
+  <<< res
+
+charP canvas_at canvasP c int x int y
+  <<< (((*c).head as int) + (*c).w * y + x) as charP
+
+char canvas_get canvasP c int x int y
+  <<< *canvas_at(c x y)
+
+canvas_fill canvasP c char ch
+  int i j 
+  @ i=0 i<(*c).h i=i+1
+    @ j=0 j<(*c).w j=j+1
+      *canvas_at(c i j) = ch
+
+out canvasP c
+  int i j
+  @ i=0 i<(*c).h i=i+1
+    @ j=0 j<(*c).w j=j+1
+      out(*canvas_at(c i j))
+      out(32 as char)
+    out ''
