@@ -33,7 +33,7 @@
       "name": "support.type"
     },
     {
-      "match": "type",
+      "match": "type|lop|rop|op|fn|impl|struct",
       "name": "keyword.struct"
     },
     {

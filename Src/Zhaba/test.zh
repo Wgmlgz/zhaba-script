@@ -1,9 +1,9 @@
 include 'std.zh'
 
-/*
-  block comment
-*/
-main
-  intP ptr
-  ptr = malloc(8) as intP
-  out 'Hello world!' // line comment
+fn int da int a
+  <<< a * a
+
+fn main
+  auto i = 1
+  i = da(i)
+  out i

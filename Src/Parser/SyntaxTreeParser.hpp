@@ -209,7 +209,8 @@ STTree* parseAST(ast::ASTBlock* main_block) {
   ScopeInfo main_scope;
   while (cur != main_block->nodes.end()) {
     if (auto line = dynamic_cast<ast::ASTLine*>(*cur)) {
-      if (line->begin->val == "type") {
+      const auto& id = line->begin->val;
+      if (id == "type") {
         /* struct declaration */
         if (line->end - line->begin != 3)
           throw ParserError(line->end->pos, "Expected type name and nothing else");
@@ -269,25 +270,35 @@ STTree* parseAST(ast::ASTBlock* main_block) {
           throw ParserError(line->end->pos, "Expected type body");
         }
         ++cur;
-      } else {
+      } else if (id == "impl") {
+
+      } else if (id == "op" or id == "lop" or id == "rop" or id == "fn") {
         /** Parse function header */
-        res->functions.push_back(parseFunctionHeader(line->begin, line->end));
+        res->functions.push_back(parseOpHeader(line->begin, line->end));
         auto& func = res->functions.back();
-        zhdata.operators.insert(func->name);
+
+        /** Regiester function */
         std::vector<types::Type> types;
         for (auto& [_, type] : func->args) {
           types.push_back(type);
         }
+        if (func->is_fn) {
+          zhdata.functions.insert(func->name);
+          zhdata.FN_OD[{func->name, types}] = func->type;
+        } else {
+          zhdata.operators.insert(func->name);
           if (func->op_type == OpType::bin) {
-          zhdata.B_OD[{func->name, types[0], types[1]}] = func->type;
-          zhdata.bin_operators[func->name] = func->priority;
-        } else if (func->op_type == OpType::lhs) {
-          zhdata.PR_OD[{func->name, types}] = func->type;
-          zhdata.prefix_operators[func->name] = func->priority;
-        } else if (func->op_type == OpType::rhs) {
-          zhdata.PO_OD[{func->name, types}] = func->type;
-          zhdata.postfix_operators[func->name] = func->priority;
+            zhdata.B_OD[{func->name, types[0], types[1]}] = func->type;
+            zhdata.bin_operators[func->name] = func->priority;
+          } else if (func->op_type == OpType::lhs) {
+            zhdata.PR_OD[{func->name, types}] = func->type;
+            zhdata.prefix_operators[func->name] = func->priority;
+          } else if (func->op_type == OpType::rhs) {
+            zhdata.PO_OD[{func->name, types}] = func->type;
+            zhdata.postfix_operators[func->name] = func->priority;
+          }
         }
+
         ++cur;
         ScopeInfo scope;
         for (auto& [name, type] : func->args) {
@@ -303,6 +314,8 @@ STTree* parseAST(ast::ASTBlock* main_block) {
           throw ParserError(line->end->pos, "Expected function body");
         }
         ++cur;
+      } else {
+        throw ParserError(line->begin->pos, "Exptected declaratiion");
       }
     } else {
       throw ParserError(0, "Random error lol (cannot cast ast node)");

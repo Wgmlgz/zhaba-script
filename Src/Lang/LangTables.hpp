@@ -30,6 +30,9 @@ namespace tables {
   std::unordered_set<std::string> operators {
     ".", "=", ",", "*", "&", "as"
   };
+  std::unordered_set<std::string> functions {
+    
+  };
   std::unordered_map<std::string, int64_t> prefix_operators {
     {"*", 3},
     {"&", 3},

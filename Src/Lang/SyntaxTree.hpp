@@ -106,20 +106,20 @@ TreeNode<std::string>* STBlock::toGenericTree() {
 enum class OpType {lhs, rhs, bin};
 
 struct Function {
-
   struct Arg {
     std::string name;
     types::Type type;
   };
-  OpType op_type;
   std::string name;
   types::Type type;
-  int64_t priority = -1;
-
   std::vector<Arg> args;
-
   STBlock* body;
 
+  OpType op_type;
+  int64_t priority = -1;
+
+  bool is_fn = false;
+  
   std::string headToStr() {
     std::string str;
     str += type.toString() + " ";

@@ -22,22 +22,42 @@ void validateFunction(const Function& func, int begin, int end) {
   }
 }
 
-Function* parseFunctionHeader(std::vector<Token>::iterator begin, std::vector<Token>::iterator end) {
+Function* parseOpHeader(std::vector<Token>::iterator begin, std::vector<Token>::iterator end) {
   if (begin >= end) throw ParserError(begin->pos, "Expected operator declaration");
   auto func = new Function;
-  /* implicit void type */
+  auto cur = begin;
+  bool is_fn = false;
+
+  /* Implicit void type */
   func->type = types::Type(types::TYPE::voidT);
   func->op_type = OpType::lhs;
-  auto cur = begin;
 
-  /* parse priority */
-  if (cur->token == "int") {
+  if (cur->val == "op") {
+    func->op_type = OpType::bin;
+    ++cur;
+    if (cur != end and cur->token == "space") ++cur;
+  } else if (cur->val == "lop") {
+    ++cur;
+    if (cur != end and cur->token == "space") ++cur;
+  } else if (cur->val == "rop") {
+    func->op_type = OpType::rhs;
+    ++cur;
+    if (cur != end and cur->token == "space") ++cur;
+  } else if (cur->val == "fn") {
+    is_fn = true;
+    func->is_fn = true;
+    ++cur;
+    if (cur != end and cur->token == "space") ++cur;
+  }
+
+  /* Parse priority */
+  if (!is_fn and cur->token == "int") {
     func->priority = std::stoi(cur->val);
     ++cur;
     if (cur != end and cur->token == "space") ++cur;
   }
 
-  /* parse return type */
+  /* Parse return type */
   if (cur == end or cur->token != "id") {
     throw ParserError(cur->pos, "Expected type or operator name");
   } else {
@@ -46,7 +66,7 @@ Function* parseFunctionHeader(std::vector<Token>::iterator begin, std::vector<To
       ++cur;
       if (cur != end and cur->token == "space") ++cur;
     } catch (...) {
-      /* implicit void type */ 
+      /* Implicit void type */ 
     }
   }
 
@@ -56,33 +76,6 @@ Function* parseFunctionHeader(std::vector<Token>::iterator begin, std::vector<To
   } else {
     func->name = cur->val;
     ++cur;
-    if (cur != end and cur->token == "space") ++cur;
-  }
-
-  /**
-   * int sum _ int a int b:
-   *         ^op()
-   */
-  if (cur != end and cur->val == "_") {
-    ++cur;
-    if (cur != end and cur->token == "space") ++cur;
-  } else
-  /**
-   * int sum __ int a int b:
-   *         ^^ ()op
-   */
-  if (cur != end and cur->val == "__") {
-    ++cur;
-    func->op_type = OpType::rhs;
-    if (cur != end and cur->token == "space") ++cur;
-  } else
-  /**
-   * int sum ___ int a int b:
-   *         ^^^ ()op()
-   */
-  if (cur != end and cur->val == "___") {
-    ++cur;
-    func->op_type = OpType::bin;
     if (cur != end and cur->token == "space") ++cur;
   }
 

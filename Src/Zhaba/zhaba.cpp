@@ -1,5 +1,3 @@
-#define THROW(exceptionClass, message) throw exceptionClass(__FILE__, __LINE__, (message) )
-
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -20,6 +18,10 @@ void printUsage() {
   }
 }
 
+const bool deb = 
+// true
+false
+;
 int main(int argc, char **argv) {
   CmdParser cmd(argc, argv);
 
@@ -32,8 +34,10 @@ int main(int argc, char **argv) {
     printUsage();
   } else if (cmd.cmdOptionEqual(0, "compile") and cmd.size() == 3) {
 
-  } else if (cmd.size() >= 1) {
-    std::filesystem::path file_path = cmd.getCmdOption(0);
+  } else if (deb or cmd.size() >= 1) {
+    std::filesystem::path file_path =
+        deb ? R"(C:\Code\Zhaba-script-lang\Src\Zhaba\test.zh)"
+            : cmd.getCmdOption(0);
     try {
       auto start_time = clock();
       auto compiled = compileFile(file_path);

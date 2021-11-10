@@ -44,18 +44,18 @@ namespace zhexp {
       if (Operator* op = dynamic_cast<Operator*>(*i)) {
         true_priority = op->priority;
         if (i == begin) {
-          if (!zhdata.prefix_operators.count(op->val))
+          if (!zhdata.prefix_operators.contains(op->val) and !zhdata.functions.contains(op->val))
             throw ParserError(op->pos, "Unknown prefix operator '" + op->val + "'");
           if (zhdata.USE_SPACES_OFFSET) true_priority += 2 * op->spr * zhdata.priority_offset;
           true_priority += zhdata.prefix_operators[op->val];
         } else if (i == end - 1) {
-          if (!zhdata.postfix_operators.count(op->val))
+          if (!zhdata.postfix_operators.contains(op->val))
             throw ParserError(op->pos, "Unknown postfix operator");
 
           if (zhdata.USE_SPACES_OFFSET) true_priority += 2 * op->spl * zhdata.priority_offset;
           true_priority += zhdata.postfix_operators[op->val];
         } else {
-          if (zhdata.bin_operators.count(op->val)) {
+          if (zhdata.bin_operators.contains(op->val)) {
             if (zhdata.USE_SPACES_OFFSET) true_priority += (op->spl + op->spr) * zhdata.priority_offset;
             true_priority += zhdata.bin_operators[op->val];
           } else {
@@ -117,8 +117,19 @@ namespace zhexp {
       ++begin;
     }
     
+    /** Find which tokens are operators */
     for (auto i = begin; i != end; ++i) {
-      if (i->token == "id") if (zhdata.operators.count(i->val)) i->token = "operator";
+      if (i->token == "id") {
+        if (zhdata.operators.count(i->val)) {
+          i->token = "operator";
+        } else if (zhdata.functions.count(i->val)) {
+            auto next = i + 1;
+            if (next == end) continue;
+            if (next->token == "p(") {
+              i->token = "operator";
+            }
+          }
+      }
     }
 
     for (auto i = begin; i != end; ++i) {
@@ -250,7 +261,6 @@ namespace zhexp {
         op->lhs = postprocess(op->lhs, scope_info);
         op->rhs = postprocess(op->rhs, scope_info);
 
-        // op->lhs->type.
         if (op->lhs->type.rvalClone() <=> op->rhs->type.rvalClone() != 0) {
           throw ParserError(op->pos, "Types (" +
             op->lhs->type.toString() + " " +
@@ -263,11 +273,18 @@ namespace zhexp {
         } else {
           throw ParserError(op->lhs->pos, op->pos - op->lhs->pos, "Left operant for '=' must be lval");
         }
-      } else if (op->val == ".") {
+      }
+      /** Member acces */
+      else if (op->val == ".") {
         op->lhs = postprocess(op->lhs, scope_info);
         if (auto id = dynamic_cast<IdLiteral*>(op->rhs)) {
           if (static_cast<int>(op->lhs->type.getTypeId()) >= types::first_struct_id) {
             if (types::structs[static_cast<int>(op->lhs->type.getTypeId())].members.count(id->val)) {
+              if (op->lhs->type.getPtr() > 1) {
+                throw ParserError(op->pos,
+                  "Can't use member access with 2 or more pointer modifiers (" +
+                  std::to_string(op->lhs->type.getPtr()) + " found)");
+              }
               op->type = types::structs[static_cast<int>(op->lhs->type.getTypeId())].members[id->val];
               op->type.setLval(op->lhs->type.getLval());
             } else {
@@ -277,7 +294,7 @@ namespace zhexp {
             throw ParserError(op->pos, "Expression type can't be '" + op->lhs->type.toString() + "'");
           }
         } else {
-          throw ParserError(op->pos, "Expected identifier near '" + op->val + "'");
+          throw ParserError(op->pos, "Expected identifier near '.");
         }
       } else if (op->val == "as") {
         op->lhs = postprocess(op->lhs, scope_info);
@@ -357,8 +374,10 @@ namespace zhexp {
       /* implicit lval to rval conversion */
       for (auto& i : types) i.setLval(false);
 
-      if (zhdata.PR_OD.count({ op->val, types })) {
+      if (zhdata.PR_OD.contains({op->val, types})) {
         exp->type = zhdata.PR_OD[{op->val, types}];
+      } else if (zhdata.FN_OD.contains({op->val, types})) {
+        exp->type = zhdata.FN_OD[{op->val, types}];
       } else {
         std::string types_str;
         for (auto& i : types) {

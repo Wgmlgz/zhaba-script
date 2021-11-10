@@ -15,12 +15,14 @@ struct ZHDATA {
   std::unordered_set<std::string> flow_ops                   = tables::flow_ops;
   std::unordered_map<std::string, int64_t> bin_operators     = tables::bin_operators;
   std::unordered_set<std::string> operators                  = tables::operators;
+  std::unordered_set<std::string> functions                  = tables::functions;
   std::unordered_map<std::string, int64_t> prefix_operators  = tables::prefix_operators;
   std::unordered_map<std::string, int64_t> postfix_operators = tables::postfix_operators;
 
   std::map<std::tuple<std::string, types::Type, types::Type>, types::Type> B_OD;
   std::map<std::pair <std::string, std::vector<types::Type>>, types::Type> PR_OD;
   std::map<std::pair <std::string, std::vector<types::Type>>, types::Type> PO_OD;
+  std::map<std::pair <std::string, std::vector<types::Type>>, types::Type> FN_OD;
 
   int file_offset = 0;
   Lexer lexer = tables::lexer_tokens;

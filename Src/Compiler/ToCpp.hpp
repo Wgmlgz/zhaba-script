@@ -87,7 +87,9 @@ std::string expToCpp(zhexp::Exp* exp) {
     } else if (op->val == "=") {
       res += "(" + expToCpp(op->lhs) + ") = (" + expToCpp(op->rhs) + ")";
     } else if (op->val == ".") {
-      res += "(" + expToCpp(op->lhs) + ")." + static_cast<zhexp::IdLiteral*>(op->rhs)->val;
+      res += "(" + expToCpp(op->lhs) + ")";
+      res += op->lhs->type.getPtr() ? "->" : ".";
+      res += static_cast<zhexp::IdLiteral*>(op->rhs)->val;
     } else {
       res += bopToCpp(op->val) + "(" + expToCpp(op->lhs) + ", " + expToCpp(op->rhs) + ")";
     }
