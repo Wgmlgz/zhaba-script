@@ -1,9 +1,20 @@
 include 'std.zh'
 
-fn int da int a
-  <<< a * a
+type Vec
+  int val
+
+fn Vec newVec
+  Vec v
+  v.val = 0
+  <<< v
+
+fn int vecGet VecP v
+  <<< v.val
+
+fn vecSet VecP v int val
+  v.val = val
 
 fn main
-  auto i = 1
-  i = da(i)
-  out i
+  auto v = newVec()
+  vecSet(&v 2)
+  out vecGet(&v)

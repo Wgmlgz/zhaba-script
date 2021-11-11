@@ -32,8 +32,10 @@ namespace zhexp {
         return op;
       else if (auto op = dynamic_cast<TypeLiteral*>(*begin))
         return op;
+      else if (auto op = dynamic_cast<Tuple*>(*begin))
+        return op;
       else
-        throw ParserError(op->pos, "Expected literal");
+        throw ParserError((*begin)->pos, "Expected literal");
     }
 
     int64_t max_priority = -zhdata.INF, true_priority = 0;
@@ -103,7 +105,9 @@ namespace zhexp {
     if (std::distance(begin, end) < 1) {
       throw ParserError(0, "Empty expression");
     }
-    /* cpp code injection */
+
+
+    /** C++ code injection */
     if (begin->token == "id" and begin->val == "#") {
       std::string code;
       for (auto i = begin + 1; i != end; ++i) {
@@ -123,12 +127,12 @@ namespace zhexp {
         if (zhdata.operators.count(i->val)) {
           i->token = "operator";
         } else if (zhdata.functions.count(i->val)) {
-            auto next = i + 1;
-            if (next == end) continue;
-            if (next->token == "p(") {
-              i->token = "operator";
-            }
+          auto next = i + 1;
+          if (next == end) continue;
+          if (next->token == "p(") {
+            i->token = "operator";
           }
+        }
       }
     }
 
@@ -172,6 +176,10 @@ namespace zhexp {
         ++pcount;
       } else if (i->token == "p)") {
         --pcount;
+        /** () parse and push empty tuple */
+        if (i != begin and (i-1)->token == "p(") {
+          res.push_back(new Tuple());
+        }
       }
       if (pcount < 0) throw ParserError(i->pos, "Too many ')'");
       int bpriority = -zhdata.parentheses_offset * pcount;

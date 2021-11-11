@@ -190,56 +190,56 @@ Tuple* castToTuple(Exp* exp) {
 }
 
 TreeNode<std::string>* toGenericTree(Exp* exp) {
-    if (!exp) return new TreeNode<std::string>("<nullptr>");
-    auto node = new TreeNode<std::string>;
-    if (auto op = dynamic_cast<CppCode*>(exp)) {
-      node->data = "cpp: '" + op->code + "'";
-    }
-    if (auto op = dynamic_cast<FlowOperator*>(exp)) {
-      node->data = "'" + op->val + "'";
-      node->branches.push_back(toGenericTree(op->operand));
-    }
-    if (auto op = dynamic_cast<IntLiteral*>(exp)) {
-      node->data = "'" + std::to_string(op->val) + "' iL";
-    }
-    if (auto op = dynamic_cast<StrLiteral*>(exp)) {
-      node->data = "'" + op->val + "' sL";
-    }
-    if (auto op = dynamic_cast<IdLiteral*>(exp)) {
-      node->data = "'" + op->val + "' idL,";
-    }
+  if (!exp) return new TreeNode<std::string>("<nullptr>");
+  auto node = new TreeNode<std::string>;
+  if (auto op = dynamic_cast<CppCode*>(exp)) {
+    node->data = "cpp: '" + op->code + "'";
+  }
+  if (auto op = dynamic_cast<FlowOperator*>(exp)) {
+    node->data = "'" + op->val + "'";
+    node->branches.push_back(toGenericTree(op->operand));
+  }
+  if (auto op = dynamic_cast<IntLiteral*>(exp)) {
+    node->data = "'" + std::to_string(op->val) + "' iL";
+  }
+  if (auto op = dynamic_cast<StrLiteral*>(exp)) {
+    node->data = "'" + op->val + "' sL";
+  }
+  if (auto op = dynamic_cast<IdLiteral*>(exp)) {
+    node->data = "'" + op->val + "' idL,";
+  }
 
-    if (auto t = dynamic_cast<Tuple*>(exp)) {
-      node->data = "tuple";
-      for (auto& i : t->content) {
-        node->branches.push_back(toGenericTree(i));
-      }
+  if (auto t = dynamic_cast<Tuple*>(exp)) {
+    node->data = "tuple";
+    for (auto& i : t->content) {
+      node->branches.push_back(toGenericTree(i));
     }
+  }
 
-    if (BinOperator* op = dynamic_cast<BinOperator*>(exp)) {
-      node->data = "'" + op->val + "'b" + std::to_string((int)op->priority);
-      node->branches.push_back(toGenericTree(op->lhs));
-      node->branches.push_back(toGenericTree(op->rhs));
-    }
-    if (UnaryOperator* op = dynamic_cast<UnaryOperator*>(exp)) {
-      node->data = "'" + op->val +
-        (dynamic_cast<PrefixOperator*>(op) ? "'pr" : "'po") +
-        std::to_string((int)op->priority);
-      node->branches.push_back(toGenericTree(op->child));
-    }
-    node->data += "," + exp->type.toString();
-    return node;
+  if (BinOperator* op = dynamic_cast<BinOperator*>(exp)) {
+    node->data = "'" + op->val + "'b" + std::to_string((int)op->priority);
+    node->branches.push_back(toGenericTree(op->lhs));
+    node->branches.push_back(toGenericTree(op->rhs));
   }
-  void printGenericTree(Exp* exp) {
-    auto tree = toGenericTree(exp);
-    std::cout << "ascii:" << std::endl;
-    printASCII(tree);
-    deleteTree(tree);
+  if (UnaryOperator* op = dynamic_cast<UnaryOperator*>(exp)) {
+    node->data = "'" + op->val +
+      (dynamic_cast<PrefixOperator*>(op) ? "'pr" : "'po") +
+      std::to_string((int)op->priority);
+    node->branches.push_back(toGenericTree(op->child));
   }
-  void printExpTree(Exp* exp, std::string prefix = "") {
-    auto tree = toGenericTree(exp);
-    std::cout << "ascii:" << std::endl;
-    printCompact(tree);
-    deleteTree(tree);
-  }
+  node->data += "," + exp->type.toString();
+  return node;
+}
+void printGenericTree(Exp* exp) {
+  auto tree = toGenericTree(exp);
+  std::cout << "ascii:" << std::endl;
+  printASCII(tree);
+  deleteTree(tree);
+}
+void printExpTree(Exp* exp, std::string prefix = "") {
+  auto tree = toGenericTree(exp);
+  std::cout << "ascii:" << std::endl;
+  printCompact(tree);
+  deleteTree(tree);
+}
 }

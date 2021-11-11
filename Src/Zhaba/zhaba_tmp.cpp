@@ -1,6 +1,11 @@
 #include <stdlib.h>
 #include<string>
 
+struct __zhstruct_Vec;
+
+struct __zhstruct_Vec {
+  int64_t val;
+};
 
 int64_t __zhlop_minus(int64_t a);
 int64_t __zhlop_plus(int64_t a);
@@ -26,7 +31,9 @@ void __zhbop_dotequal(int64_t ptr, int64_t val);
 int64_t __zhlop_ptr_get(int64_t ptr);
 int64_t __zhlop_malloc(int64_t size);
 void __zhlop_free(int64_t p);
-int64_t __zhlop_da(int64_t a);
+__zhstruct_Vec __zhlop_newVec();
+int64_t __zhlop_vecGet(__zhstruct_Vec* v);
+void __zhlop_vecSet(__zhstruct_Vec* v, int64_t val);
 int main(int argc, char *argv[]) ;
 
 int64_t __zhlop_minus(int64_t a) {
@@ -125,14 +132,24 @@ void __zhlop_free(int64_t p) {
   free((void*)p);
 }
 
-int64_t __zhlop_da(int64_t a) {
-  return (__zhbop_asterisk(a, a));
+__zhstruct_Vec __zhlop_newVec() {
+  __zhstruct_Vec v;
+  ((v).val) = (0);
+  return (v);
+}
+
+int64_t __zhlop_vecGet(__zhstruct_Vec* v) {
+  return ((v)->val);
+}
+
+void __zhlop_vecSet(__zhstruct_Vec* v, int64_t val) {
+  ((v)->val) = (val);
 }
 
 int main(int argc, char *argv[])  {
-  int64_t i;
-  (i) = (1);
-  (i) = (__zhlop_da(i));
-  __zhlop_out(i);
+  __zhstruct_Vec v;
+  (v) = (__zhlop_newVec());
+  __zhlop_vecSet((&(v)), 2);
+  __zhlop_out(__zhlop_vecGet((&(v))));
 }
 
