@@ -13,7 +13,7 @@ void defineFlowTokens(std::vector<Token>& tokens) {
   }
 }
 
-void preprocess(std::filesystem::path file_path, std::vector<Token>& res, int& offset, int depth = 0) {
+void preprocess(std::filesystem::path file_path, std::vector<Token>& res, int depth = 0) {
   zhdata.included_files_names.push_back(file_path.string());
   auto fin = std::ifstream(file_path);
   if (fin.fail()) {
@@ -27,11 +27,11 @@ void preprocess(std::filesystem::path file_path, std::vector<Token>& res, int& o
   fin.close();
   zhdata.included_files.push_back(file_data);
 
-  std::vector<Token> tokens = zhdata.lexer.parse(file_data, zhdata.file_offset);
+  std::vector<Token> tokens = zhdata.lexer.parse(
+      file_data, zhdata.included_files_names.back(), zhdata.files_lines);
   // for (auto& i : tokens) i.file_ptr = &zhdata.included_files.back();
 
-  for (auto i = tokens.begin(); i != tokens.end(); ++i, offset += i->val.size()) {
-    i->pos = offset;
+  for (auto i = tokens.begin(); i != tokens.end(); ++i) {
     /* include <filename>*/
     if (i->token == "comment.block" or i->token == "comment.line") continue;
     if (i->val == "include") {
@@ -53,7 +53,7 @@ void preprocess(std::filesystem::path file_path, std::vector<Token>& res, int& o
       }
       std::filesystem::path path = path_str;
       if (path.is_relative()) path = file_path.parent_path() / path;
-      preprocess(path, res, offset, depth + 1);
+      preprocess(path, res, depth + 1);
     } else {
       res.push_back(*i);
     }

@@ -93,10 +93,10 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
                           if (auto block = dynamic_cast<ast::ASTBlock*>(elseif_body->nodes[1])) {
                             tmp_if->elseif_body.emplace_back(
                               exp, parseASTblock(block, cur_scope, res->scope_info, retT));
-                          } else throw ParserError(0, "Exprected block in '|(else if)' statement");
-                        } else throw ParserError(0, "Expected expression in '|(else if)' statement");
+                          } else throw ParserError("Exprected block in '|(else if)' statement");
+                        } else throw ParserError("Expected expression in '|(else if)' statement");
                       } else {
-                        throw ParserError(0, "Expected condition and block in '|(else if)' statement");
+                        throw ParserError("Expected condition and block in '|(else if)' statement");
                       }
                       ++i;
                     } else break;
@@ -110,7 +110,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
                   }
                   res->nodes.push_back(tmp_if);
                 } else {
-                  throw ParserError(0, "Expected block after '?(if)' statement");
+                  throw ParserError("Expected block after '?(if)' statement");
                 }
               }
             } else {
@@ -122,7 +122,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
             auto tuple = castToTuple(ctr->operand);
 
             if (tuple->content.size() < 1) {
-              throw ParserError(0, "Empty '@(while)' statement");
+              throw ParserError("Empty '@(while)' statement");
             }
 
             if (tuple->content.size() > 3) {
@@ -185,7 +185,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
             }
             res->nodes.push_back(tmp_ret);
           } else {
-            throw ParserError(0, "Random error lol (unknown flow control operator)");
+            throw ParserError("Random error lol (unknown flow control operator)");
           }
         } else {
           /* just normal expression */
@@ -195,9 +195,9 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
         }
       }
     } else if (auto block = dynamic_cast<ast::ASTBlock*>(*i)) {
-      throw ParserError(0, "Unexprected block");
+      throw ParserError("Unexprected block");
     } else {
-      throw ParserError(0, "Random error lol (cannot cast ast node)");
+      throw ParserError("Random error lol (cannot cast ast node)");
     }
   }
   return res;
@@ -213,13 +213,13 @@ STTree* parseAST(ast::ASTBlock* main_block) {
       if (id == "type") {
         /* struct declaration */
         if (line->end - line->begin != 3)
-          throw ParserError(line->end->pos, "Expected type name and nothing else");
+          throw ParserError(*line->end, "Expected type name and nothing else");
         if ((line->begin + 1)->token != "space" or (line->begin + 2)->token != "id")
-          throw ParserError(line->end->pos, "Expected identifier token for struct type name");
+          throw ParserError(*line->end, "Expected identifier token for struct type name");
 
         std::string name = (line->begin + 2)->val;
         if (types::getStructId(name) != -1) {
-          throw ParserError(line->begin->pos, line->end->pos + line->end->val.size() - line->begin->pos,
+          throw ParserError(*line->begin, *line->end,
             "Type '" + name + "'already exist");
         }
         ++cur;
@@ -227,13 +227,13 @@ STTree* parseAST(ast::ASTBlock* main_block) {
         /* parse struct body */
         types::StructInfo struct_info;
         if (cur == main_block->nodes.end())
-          throw ParserError(line->end->pos, "Expected type body");
+          throw ParserError(*line->end, "Expected type body");
         if (auto block = dynamic_cast<ast::ASTBlock*>(*cur)) {
           for (auto node : block->nodes) {
             if (auto line = dynamic_cast<ast::ASTLine*>(node)) {
               /** Members line parsing */
               if (line->end - line->begin < 2) {
-                throw ParserError(line->begin->pos, line->end->pos + line->end->val.size() - line->begin->pos,
+                throw ParserError(*line->begin, *line->end,
                   "Expected memeber type with names like 'int a b c'");
               }
 
@@ -242,7 +242,7 @@ STTree* parseAST(ast::ASTBlock* main_block) {
               try {
                 cur_type = types::parse(cur);
               } catch (...) {
-                throw ParserError(line->begin->pos, line->begin->val.size(), "Expected valid type");
+                throw ParserError(*line->begin, "Expected valid type");
               }
               cur_type.setLval(true);
 
@@ -253,21 +253,21 @@ STTree* parseAST(ast::ASTBlock* main_block) {
 
                 /** TODO: proper member name validation */
                 if (i->token != "id") {
-                  throw ParserError(i->pos, i->val.size(), "Expected member name as identifier");
+                  throw ParserError(*i, "Expected member name as identifier");
                 }
                 if (struct_info.members.count(i->val)) {
-                  throw ParserError(i->pos, i->val.size(), "Member '" + i->val + "'already exist");
+                  throw ParserError(*i, "Member '" + i->val + "'already exist");
                 }
                 struct_info.members[i->val] = cur_type;
               }
             } else {
-              throw ParserError(0, "Unexprected block");
+              throw ParserError("Unexprected block");
             }
           }
           /** Push declarated struct */
           types::pushStruct(name, struct_info);
         } else {
-          throw ParserError(line->end->pos, "Expected type body");
+          throw ParserError(*line->end, "Expected type body");
         }
         ++cur;
       } else if (id == "impl") {
@@ -307,18 +307,18 @@ STTree* parseAST(ast::ASTBlock* main_block) {
         }
         /** And then parse body */
         if (cur == main_block->nodes.end())
-          throw ParserError(line->end->pos, "Expected function body");
+          throw ParserError(*line->end, "Expected function body");
         if (auto block = dynamic_cast<ast::ASTBlock*>(*cur)) {
           res->functions.back()->body = parseASTblock(block, scope, main_scope, func->type);
         } else {
-          throw ParserError(line->end->pos, "Expected function body");
+          throw ParserError(*line->end, "Expected function body");
         }
         ++cur;
       } else {
-        throw ParserError(line->begin->pos, "Exptected declaratiion");
+        throw ParserError(*line->begin, "Exptected declaratiion");
       }
     } else {
-      throw ParserError(0, "Random error lol (cannot cast ast node)");
+      throw ParserError("Random error lol (cannot cast ast node)");
     }
   }
   return res;

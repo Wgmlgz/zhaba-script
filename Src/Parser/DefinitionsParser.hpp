@@ -6,15 +6,15 @@
 #include "TypeParser.hpp"
 #include "ParserError.hpp"
 
-void validateFunction(const Function& func, int begin, int end) {
+void validateFunction(const Function& func, tokeniter begin, tokeniter end) {
   if (func.op_type == OpType::bin) {
     
   } else if (func.op_type == OpType::lhs) {
     if (func.name == "&") {
-      throw ParserError(begin, end,
+      throw ParserError(*begin, *end,
         "You cannot overload prefix '&' operator");
     } else if (func.name == "*") {
-      throw ParserError(begin, end,
+      throw ParserError(*begin, *end,
         "You cannot overload prefix '*' operator");
     }
   } else if (func.op_type == OpType::rhs) {
@@ -22,8 +22,8 @@ void validateFunction(const Function& func, int begin, int end) {
   }
 }
 
-Function* parseOpHeader(std::vector<Token>::iterator begin, std::vector<Token>::iterator end) {
-  if (begin >= end) throw ParserError(begin->pos, "Expected operator declaration");
+Function* parseOpHeader(tokeniter begin, tokeniter end) {
+  if (begin >= end) throw ParserError(*begin, "Expected operator declaration");
   auto func = new Function;
   auto cur = begin;
   bool is_fn = false;
@@ -59,7 +59,7 @@ Function* parseOpHeader(std::vector<Token>::iterator begin, std::vector<Token>::
 
   /* Parse return type */
   if (cur == end or cur->token != "id") {
-    throw ParserError(cur->pos, "Expected type or operator name");
+    throw ParserError(*cur, "Expected type or operator name");
   } else {
     try {
       func->type = types::parse(cur);
@@ -72,7 +72,7 @@ Function* parseOpHeader(std::vector<Token>::iterator begin, std::vector<Token>::
 
   /* parse name */
   if (cur == end or cur->token != "id") {
-    throw ParserError(cur->pos, "Expected operator name");
+    throw ParserError(*cur, "Expected operator name");
   } else {
     func->name = cur->val;
     ++cur;
@@ -80,7 +80,7 @@ Function* parseOpHeader(std::vector<Token>::iterator begin, std::vector<Token>::
   }
 
   /* parse args */
-  int start_pos = cur->pos;
+  auto start_token = cur;
   std::unordered_set<std::string> used_vars;
   while (cur != end) {
     func->args.emplace_back();
@@ -89,14 +89,14 @@ Function* parseOpHeader(std::vector<Token>::iterator begin, std::vector<Token>::
       ++cur;
       if (cur != end and cur->token == "space") ++cur;
     } catch (...) {
-      throw ParserError(cur->pos, "Expected argument type");
+      throw ParserError(*cur, "Expected argument type");
     }
 
     if (cur == end or cur->token != "id") {
-      throw ParserError(cur->pos, "Expected argument name");
+      throw ParserError(*cur, "Expected argument name");
     } else {
       if (used_vars.count(cur->val)) {
-        throw ParserError(cur->pos, cur->val.size(), "Duplicate argument name");
+        throw ParserError(*cur, "Duplicate argument name");
       }
       func->args.back().name = cur->val;
       used_vars.insert(cur->val);
@@ -105,7 +105,7 @@ Function* parseOpHeader(std::vector<Token>::iterator begin, std::vector<Token>::
     }
   }
   if (func->op_type == OpType::bin and func->args.size() != 2) {
-    throw ParserError(start_pos, cur->pos - start_pos,
+    throw ParserError(*start_token, *cur,
     "Expected 2 arguments in binary operator");
   }
 
@@ -114,10 +114,10 @@ Function* parseOpHeader(std::vector<Token>::iterator begin, std::vector<Token>::
 
   if (func->priority < 0) {
     if (func->op_type == OpType::bin)
-      throw ParserError(begin->pos, end->pos + end->val.size() - begin->pos,
-      "Binary operator priority is not defined");
+      throw ParserError(*begin, *end,
+        "Binary operator priority is not defined");
   }
 
-  validateFunction(*func, start_pos, cur->pos - start_pos);
+  validateFunction(*func, start_token, cur);
   return func;
 }

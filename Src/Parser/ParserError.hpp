@@ -4,19 +4,39 @@
 #include <string>
 
 struct ParserError {
-  static std::unordered_map<int, int> which_line;
-  static std::vector<std::string> lines;
+  // static std::unordered_map<int, int> which_line;
+  // static std::vector<std::string> lines;
   int pos = 0;
   int len = 0;
+  std::string filename = "unknown file";
   std::string message;
-  int line = 666;
+  int line = -1;
   ParserError(size_t new_pos, size_t new_len, std::string new_message) {
-    pos = new_pos;
+    // pos = new_pos;
     len = new_len;
     message = new_message;
   }
   ParserError(size_t new_pos, std::string new_message) {
-    pos = new_pos;
+    // pos = new_pos;
+    message = new_message;
+  }
+  ParserError(const Token& token, const std::string& new_message) {
+    pos = token.pos;
+    len = token.val.size();
+    message = new_message;
+    line = token.line;
+    filename = token.filename;
+  }
+  ParserError(const Token& begin, const Token& end, const std::string& new_message) {
+    pos = begin.pos;
+    len = end.pos + end.val.size() - begin.pos;
+    message = new_message;
+    line = begin.line;
+    filename = begin.filename;
+  }
+  ParserError(const std::string& new_message) {
+    pos = 0;
+    len = 1;
     message = new_message;
   }
   std::string toString() {
@@ -29,28 +49,20 @@ struct ParserError {
       return res;
     }
 
-    line = ParserError::which_line[pos];
-    std::string source_code = lines[ParserError::which_line[pos] - 1];
-
-    int real_pos = 0;
-    for (int i = 0; i < line - 1; ++i) real_pos += lines[i].size() + 1;
-    pos -= real_pos;
-    res += "Err at line ";
-    res += std::to_string(line) + " ";
-    res += "| ";
-    size_t offset = res.size();
-    res += source_code;
-    res += "\n";
-    res += std::string(offset - 2, ' ');
-    res += "| ";
-    res += std::string(pos, ' ');
-    if (len) res += std::string(len, '^');
-    else res += "^";
-    res += "\n";
-    res += message;
-    res += "\n";
+    /**
+     * error :( -> /file/name.zh:42:6
+     * 42 | fn errror
+     *    |    ^^^^^ Error message
+     */
+    std::string source = "cannot show source code";
+    if (line != -1) source = zhdata.files_lines[filename][line - 1];
+    auto sline = std::to_string(line);
+    auto spos = std::to_string(pos);
+    res += "error :( -> " + filename + ':' + sline + ':' + spos + '\n';
+    res += sline + " | " + source + '\n';
+    res += std::string(sline.size(), ' ') + " | " + 
+           std::string(pos, ' ') + std::string(std::max<int>(len, 1), '^') + " " +
+           message + "\n";
     return res;
   }
 };
-std::unordered_map<int, int> ParserError::which_line = {};
-std::vector<std::string> ParserError::lines = {};

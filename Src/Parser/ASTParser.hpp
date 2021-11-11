@@ -87,18 +87,18 @@ ASTBlock* parseBlock(tokeniter begin, tokeniter end) {
 }
 
 ASTBlock* parse(tokeniter begin, tokeniter end) {
-  int line = 1;
-  ParserError::which_line.clear();
-  ParserError::lines.clear();
-  ParserError::lines.resize(1);
+  // int line = 1;
+  // ParserError::which_line.clear();
+  // ParserError::lines.clear();
+  // ParserError::lines.resize(1);
 
-  for (auto i = begin; i != end; ++i) {
-    ParserError::which_line[i->pos] = line;
-    if (i->token == "line end")
-      ++line, ParserError::lines.push_back("");
-    else
-      ParserError::lines[line - 1] += i->val;
-  }
+  // for (auto i = begin; i != end; ++i) {
+  //   ParserError::which_line[i->pos] = line;
+  //   if (i->token == "line end")
+  //     ++line, ParserError::lines.push_back("");
+  //   else
+  //     ParserError::lines[line - 1] += i->val;
+  // }
 
   return parseBlock(begin, end);
 }

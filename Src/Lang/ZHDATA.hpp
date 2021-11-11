@@ -3,6 +3,7 @@
 #include <unordered_set>
 #include <string>
 #include <map>
+#include <list>
 #include "Types.hpp"
 #include "LangTables.hpp"
 
@@ -27,8 +28,10 @@ struct ZHDATA {
   int file_offset = 0;
   Lexer lexer = tables::lexer_tokens;
 
-  std::vector<std::string> included_files_names;
+  /** std::list because need valid iterator */
+  std::list<std::string> included_files_names;
   std::vector<std::string> included_files;
+  std::map<std::string, std::vector<std::string>> files_lines;
 
   std::unordered_map<std::string, bool> bools {
     {"exp_parser_logs",   false},

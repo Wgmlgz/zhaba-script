@@ -2,10 +2,13 @@
 #include <string>
 #include "Types.hpp"
 #include "../TreeLib/TreeLib.hpp"
+#include "../Parser/Parser.hpp"
 
 namespace zhexp {
 struct Exp {
   int pos;
+  // const Token& begin; 
+  // const Token& end; 
   types::Type type = types::Type(types::TYPE::voidT);
   Exp(int new_pos = 666) : pos(new_pos) {}
   virtual ~Exp() {}
