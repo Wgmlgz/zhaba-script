@@ -1,20 +1,40 @@
 include 'std.zh'
 
 type Vec
-  int val
+  int x y
 
 fn Vec newVec
   Vec v
-  v.val = 0
+  v.x = 0
   <<< v
 
+impl Vec
+  fn int getX
+    <<< self.x
+  fn int getY
+    <<< self.y
+  fn setX int x
+    self.x = x
+  fn setY int y
+    self.y = y
+  
 fn int vecGet VecP v
-  <<< v.val
+  <<< v.x
 
 fn vecSet VecP v int val
-  v.val = val
+  v.x = val
+
+op 2 memCall Vec v int a int b
+  out 'wow member call!!!'
+
 
 fn main
   auto v = newVec()
-  vecSet(&v 2)
-  out vecGet(&v)
+  auto ptr = &v;
+  auto setX = 2
+  ptr.setX(54)
+  ptr.setY(228)
+  out ptr.getX()
+  out ptr.getY()
+  out setX
+  

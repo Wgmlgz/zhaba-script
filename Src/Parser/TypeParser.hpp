@@ -16,7 +16,7 @@ Type parse(tokeniter& token) {
   if (prim_types.count(str)) {
     type.setType(prim_types[str]);
   } else if (getStructId(str) != -1) {
-    type.setType(static_cast<TYPE>(getStructId(str )));
+    type.setType(static_cast<TYPE>(getStructId(str)));
   } else {
     throw std::runtime_error("Type parsing failed");
   }

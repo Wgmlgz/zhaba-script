@@ -4,7 +4,8 @@
 struct __zhstruct_Vec;
 
 struct __zhstruct_Vec {
-  int64_t val;
+  int64_t y;
+  int64_t x;
 };
 
 int64_t __zhlop_minus(int64_t a);
@@ -32,8 +33,13 @@ int64_t __zhlop_ptr_get(int64_t ptr);
 int64_t __zhlop_malloc(int64_t size);
 void __zhlop_free(int64_t p);
 __zhstruct_Vec __zhlop_newVec();
+int64_t __zhbop_dotgetX(__zhstruct_Vec* self);
+int64_t __zhbop_dotgetY(__zhstruct_Vec* self);
+void __zhbop_dotsetX(__zhstruct_Vec* self, int64_t x);
+void __zhbop_dotsetY(__zhstruct_Vec* self, int64_t y);
 int64_t __zhlop_vecGet(__zhstruct_Vec* v);
 void __zhlop_vecSet(__zhstruct_Vec* v, int64_t val);
+void __zhbop_memCall(__zhstruct_Vec v, int64_t a, int64_t b);
 int main(int argc, char *argv[]) ;
 
 int64_t __zhlop_minus(int64_t a) {
@@ -134,22 +140,49 @@ void __zhlop_free(int64_t p) {
 
 __zhstruct_Vec __zhlop_newVec() {
   __zhstruct_Vec v;
-  ((v).val) = (0);
+  ((v).x) = (0);
   return (v);
 }
 
+int64_t __zhbop_dotgetX(__zhstruct_Vec* self) {
+  return ((self)->x);
+}
+
+int64_t __zhbop_dotgetY(__zhstruct_Vec* self) {
+  return ((self)->y);
+}
+
+void __zhbop_dotsetX(__zhstruct_Vec* self, int64_t x) {
+  ((self)->x) = (x);
+}
+
+void __zhbop_dotsetY(__zhstruct_Vec* self, int64_t y) {
+  ((self)->y) = (y);
+}
+
 int64_t __zhlop_vecGet(__zhstruct_Vec* v) {
-  return ((v)->val);
+  return ((v)->x);
 }
 
 void __zhlop_vecSet(__zhstruct_Vec* v, int64_t val) {
-  ((v)->val) = (val);
+  ((v)->x) = (val);
+}
+
+void __zhbop_memCall(__zhstruct_Vec v, int64_t a, int64_t b) {
+  __zhlop_out("wow member call!!!");
 }
 
 int main(int argc, char *argv[])  {
+  int64_t setX;
+  __zhstruct_Vec* ptr;
   __zhstruct_Vec v;
   (v) = (__zhlop_newVec());
-  __zhlop_vecSet((&(v)), 2);
-  __zhlop_out(__zhlop_vecGet((&(v))));
+  (ptr) = ((&(v)));
+  (setX) = (2);
+  __zhbop_dotsetX(ptr, 54);
+  __zhbop_dotsetY(ptr, 228);
+  __zhlop_out(__zhbop_dotgetX(ptr));
+  __zhlop_out(__zhbop_dotgetY(ptr));
+  __zhlop_out(setX);
 }
 

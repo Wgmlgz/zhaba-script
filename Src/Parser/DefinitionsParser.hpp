@@ -104,13 +104,13 @@ Function* parseOpHeader(tokeniter begin, tokeniter end) {
       if (cur != end and cur->token == "space") ++cur;
     }
   }
-  if (func->op_type == OpType::bin and func->args.size() != 2) {
+  if (func->op_type == OpType::bin and func->args.size() < 2) {
     throw ParserError(*start_token, *cur,
-    "Expected 2 arguments in binary operator");
+    "Expected at least 2 arguments in binary operator");
   }
 
   if (func->op_type == OpType::rhs) func->priority = 2;
-  if (func->op_type == OpType::rhs) func->priority = 3;
+  if (func->op_type == OpType::lhs) func->priority = 3;
 
   if (func->priority < 0) {
     if (func->op_type == OpType::bin)

@@ -185,7 +185,7 @@ namespace zhexp {
       int bpriority = -zhdata.parentheses_offset * pcount;
 
       if (i->token == "operator") {
-        // get spaces
+        /* Get spaces */
         int64_t spaces_lhs = 0, spaces_rhs = 0;
         if (i != begin) {
           if ((i - 1)->token == "space") spaces_lhs = (i - 1)->val.size();
@@ -197,7 +197,18 @@ namespace zhexp {
         } else {
           spaces_rhs = zhdata.INF;
         }
-        res.push_back(new Operator(i->pos, i->val, bpriority, spaces_lhs, spaces_rhs));
+        /** Member call */
+        if (i->val == "." and
+          i != end - 1 and
+          i != end - 2 and
+          (i + 1)->token == "id" and
+          (i + 2)->token == "p("
+        ) {
+          ++i;
+          res.push_back(new Operator(i->pos, "." + i->val, bpriority, spaces_lhs, spaces_rhs));
+        } else {
+          res.push_back(new Operator(i->pos, i->val, bpriority, spaces_lhs, spaces_rhs));
+        }
       } else if (i->token == "int") {
         res.push_back(new IntLiteral(i->pos, std::stoll(i->val)));
       } else if (i->token == "str") {
@@ -318,10 +329,20 @@ namespace zhexp {
         /** Implicit lval to rval conversion */
         op->lhs->type.setLval(false);
         op->rhs->type.setLval(false);
-        
-        if (zhdata.B_OD.count({ op->val, op->lhs->type, op->rhs->type})) {
+
+        std::vector<types::Type> types;
+        types.push_back(op->lhs->type);
+        if (auto tuple = dynamic_cast<Tuple*>(op->rhs)) {
+          for (auto exp : tuple->content) {
+            types.push_back(exp->type);
+          }
+        } else {
+          types.push_back(op->rhs->type);
+        }
+
+        if (zhdata.B_OD.count({ op->val, types})) {
           exp->type =
-            zhdata.B_OD[{op->val, op->lhs->type, op->rhs->type}];
+            zhdata.B_OD[{op->val, types}];
         } else {
           throw ParserError(
             op->pos, "There is no instance of binary operator '" + op->val +

@@ -211,7 +211,7 @@ STTree* parseAST(ast::ASTBlock* main_block) {
     if (auto line = dynamic_cast<ast::ASTLine*>(*cur)) {
       const auto& id = line->begin->val;
       if (id == "type") {
-        /* struct declaration */
+        /** Struct declaration */
         if (line->end - line->begin != 3)
           throw ParserError(*line->end, "Expected type name and nothing else");
         if ((line->begin + 1)->token != "space" or (line->begin + 2)->token != "id")
@@ -224,7 +224,7 @@ STTree* parseAST(ast::ASTBlock* main_block) {
         }
         ++cur;
 
-        /* parse struct body */
+        /** Parse struct body */
         types::StructInfo struct_info;
         if (cur == main_block->nodes.end())
           throw ParserError(*line->end, "Expected type body");
@@ -271,7 +271,73 @@ STTree* parseAST(ast::ASTBlock* main_block) {
         }
         ++cur;
       } else if (id == "impl") {
+        /** Struct implementation declaration */
+        if (line->end - line->begin != 3)
+          throw ParserError(*line->end, "Expected type name and nothing else");
+        if ((line->begin + 1)->token != "space" or
+            (line->begin + 2)->token != "id")
+          throw ParserError(*line->end, "Expected identifier token for type implementation name");
 
+        std::string name = (line->begin + 2)->val;
+        if (types::getStructId(name) == -1) {
+          throw ParserError(*line->begin, *line->end,
+                            "Type '" + name + "'doens't exist");
+        }
+        ++cur;
+        // ++cur;
+
+        auto block = dynamic_cast<ast::ASTBlock*>(*cur);
+        if (!block) throw ParserError("Expected block");
+
+        for (auto i = block->nodes.begin(); i != block->nodes.end(); ++i) {
+          auto line = dynamic_cast<ast::ASTLine*>(*i);
+          if (!line) throw ParserError("Expected function decl");
+
+          res->functions.push_back(parseOpHeader(line->begin, line->end));
+          ++i;
+          if (i == block->nodes.end()) throw ParserError("Expected block");
+
+          auto& func = res->functions.back();
+          auto block = dynamic_cast<ast::ASTBlock*>(*i);
+          if (!block) throw ParserError("Expected block");
+
+          func->args.insert(
+            func->args.begin(),
+            {"self", types::Type(
+              static_cast<types::TYPE>(types::getStructId(name)), 1, true
+            )}
+          );
+          func->op_type = OpType::bin;
+          func->name = "." + func->name;
+          ScopeInfo scope;
+          std::vector<types::Type> types;
+          for (auto& [name, type] : func->args) {
+            scope.vars[name] = type;
+            scope.vars[name].setLval(true);
+            types.push_back(type);
+            types.back().setLval(false);
+          }
+          std::cout << func->headToStr() << std::endl;
+          // for (auto& [name, type] : types::structs[types::getStructId(name)].members) {
+          //   scope.vars[name] = type;
+          //   scope.vars[name].setLval(true);
+          // }
+          func->body = parseASTblock(block, scope, main_scope, func->type);
+          zhdata.B_OD[{func->name, types}] = func->type;
+          /** '.' priority */
+          zhdata.bin_operators[func->name] = 2;
+          zhdata.operators.insert(func->name);
+        }
+        
+          /** Push declarated struct */
+          // types::pushStruct(name, struct_info);
+        // } else {
+        //   throw ParserError(*line->end, "Expected type body");
+        // }
+        // res->functions.push_back(parseOpHeader(line->begin, line->end));
+        // auto& func = res->functions.back();
+
+        ++cur;
       } else if (id == "op" or id == "lop" or id == "rop" or id == "fn") {
         /** Parse function header */
         res->functions.push_back(parseOpHeader(line->begin, line->end));
@@ -288,7 +354,7 @@ STTree* parseAST(ast::ASTBlock* main_block) {
         } else {
           zhdata.operators.insert(func->name);
           if (func->op_type == OpType::bin) {
-            zhdata.B_OD[{func->name, types[0], types[1]}] = func->type;
+            zhdata.B_OD[{func->name, types}] = func->type;
             zhdata.bin_operators[func->name] = func->priority;
           } else if (func->op_type == OpType::lhs) {
             zhdata.PR_OD[{func->name, types}] = func->type;

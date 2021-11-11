@@ -91,7 +91,10 @@ std::string expToCpp(zhexp::Exp* exp) {
       res += op->lhs->type.getPtr() ? "->" : ".";
       res += static_cast<zhexp::IdLiteral*>(op->rhs)->val;
     } else {
-      res += bopToCpp(op->val) + "(" + expToCpp(op->lhs) + ", " + expToCpp(op->rhs) + ")";
+      res += bopToCpp(op->val) + "(" + expToCpp(op->lhs);
+      auto rhs = expToCpp(op->rhs);
+      if (rhs.size()) res += ", " + rhs;
+      res += ")";
     }
   }
   if (auto op = dynamic_cast<zhexp::PrefixOperator*>(exp)) {
