@@ -4,7 +4,7 @@
 
   "patterns": [
     {
-      "match": "(impl)\\s+([a-zA-Z0-9]+)",
+      "match": "(impl)\\s+([_a-zA-Z0-9]+)",
       "captures": {
         "1": {
           "name": "keyword"
@@ -26,7 +26,7 @@
       }
     },
     {
-      "match": "(type)\\s+([a-zA-Z0-9]+)",
+      "match": "(type)\\s+([_a-zA-Z0-9]+)",
       "captures": {
         "1": {
           "name": "keyword"
@@ -37,7 +37,7 @@
       }
     },
     {
-      "match": "^\\s*(fn)\\s+([a-zA-Z0-9]+)((\\s+[a-zA-Z0-9]+\\s+[a-zA-Z0-9]+)*)\\s*$",
+      "match": "^\\s*(fn)\\s+([_a-zA-Z0-9]+)((\\s+[_a-zA-Z0-9]+\\s+[_a-zA-Z0-9]+)*)\\s*$",
       "captures": {
         "1": {
           "name": "keyword"
@@ -55,7 +55,7 @@
       }
     },
     {
-      "match": "^\\s*(fn)\\s+([a-zA-Z0-9]+)\\s+([a-zA-Z0-9]+)((\\s+[a-zA-Z0-9]+\\s+[a-zA-Z0-9]+)*)\\s*$",
+      "match": "^\\s*(fn)\\s+([_a-zA-Z0-9]+)\\s+([_a-zA-Z0-9]+)((\\s+[_a-zA-Z0-9]+\\s+[_a-zA-Z0-9]+)*)\\s*$",
       "captures": {
         "1": {
           "name": "keyword"
@@ -76,7 +76,7 @@
       }
     },
     {
-      "match": "([a-zA-Z0-9]+)\\(",
+      "match": "([_a-zA-Z0-9]+)\\(",
       "captures": {
         "1": {
           "name": "entity.name.function"
@@ -84,7 +84,7 @@
       }
     },
     {
-      "match": "\\.([a-zA-Z0-9]+)\\(",
+      "match": "\\.([_a-zA-Z0-9]+)\\(",
       "captures": {
         "1": {
           "name": "entity.name.function"
@@ -92,7 +92,7 @@
       }
     },
     {
-      "match": "(\\.)([a-zA-Z0-9]+)",
+      "match": "(\\.)([_a-zA-Z0-9]+)",
       "captures": {
         "1": {
           "name": "constant.character.escape"
@@ -140,7 +140,7 @@
       "name": "constant.character.escape"
     },
     {
-      "match": "[a-zA-Z0-9]+",
+      "match": "[_a-zA-Z0-9]+",
       "name": "variable"
     }
   ],
@@ -150,7 +150,7 @@
       "name": "storage.type"
     },
     "type" :{
-      "match": "(([A-Z]([a-z-A-OQ-Z]+)(P+([a-z-A-OQ-Z]+))*)|int|auto|char|str|bool|i32|i64|u32|u64)(P*)",
+      "match": "(([A-Z]([_0-9a-z-A-OQ-Z]+)(P+([a-z-A-OQ-Z]+))*)|int|auto|char|str|bool|i32|i64|u32|u64)(P*)",
       "captures": {
         "1": {
           "patterns": [
@@ -169,7 +169,7 @@
       }
     },
     "func-arg": {
-      "match": "\\s+([a-zA-Z0-9]+)\\s+([a-zA-Z0-9]+)",
+      "match": "\\s+([_a-zA-Z0-9]+)\\s+([_a-zA-Z0-9]+)",
       "captures": {
         "1": {
           "patterns": [
