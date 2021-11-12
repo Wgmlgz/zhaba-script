@@ -18,30 +18,16 @@ impl Vec
   fn setY int y
     self.y = y
 
-impl int
-  fn str to_str
-    str s
-    #'s = std::to_string(*self)'
-    <<< s
-
 fn int vecGet VecP v
   <<< v.x
 
 fn vecSet VecP v int val
   v.x = val
 
-op 2 memCall Vec v int a int b
-  out 'wow member call!!!'
-
-
 fn main
-  // auto v = newVec()
-  // auto setX = 2
-  // v.setX(54)
-  // v.setY(228)
-  // out v.getX()
-  // out v.getY()
-  // out setX
-  auto dva = 2
-  out dva.to_str()
+  int i = 0
+  Vec vec
+  @ (i = 0) (i < 10) (i = i + 1)
+    out(rng() % 10)
+
   

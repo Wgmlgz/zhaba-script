@@ -16,10 +16,14 @@ void defineFlowTokens(std::vector<Token>& tokens) {
 void preprocess(std::filesystem::path file_path, std::vector<Token>& res, int depth = 0) {
   zhdata.included_files_names.push_back(file_path.string());
   auto fin = std::ifstream(file_path);
+  
   if (fin.fail()) {
-    // fin.close();
-    throw ParserError(-1, "Cannot open file '" + file_path.string() + "' ");
+    file_path = zhdata.bin_path / file_path;
+    fin = std::ifstream(file_path);
+    if (fin.fail())
+      throw ParserError(-1, "Cannot open file '" + file_path.string() + "' ");
   }
+
   std::stringstream ss;
   ss << fin.rdbuf();
   std::string file_data = ss.str();

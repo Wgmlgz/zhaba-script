@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include "../Parser/Parser.hpp"
-#include "ToCpp.hpp"
+#include "ToC.hpp"
 #include <fstream>
 
 std::string compileFile(std::filesystem::path file_path) {
@@ -41,11 +41,11 @@ std::string compileFile(std::filesystem::path file_path) {
     printASCII(st_generic);
   }
 
-  std::string cpp_code = toCpp(stree);
+  std::string c_code = toC(stree);
 
   if (zhdata.bools["show_cpp"]) {
-    std::cout << "cpp:" << std::endl << cpp_code << std::endl;
+    std::cout << "cpp:" << std::endl << c_code << std::endl;
   }
 
-  return cpp_code;
+  return c_code;
 }

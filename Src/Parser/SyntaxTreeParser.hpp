@@ -30,7 +30,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
         for (auto i : tuple->content) {
           if (auto id = dynamic_cast<zhexp::IdLiteral*>(i)) {
             /* just plane variable */
-            if (autoT) throw ParserError(i->pos, "Cannot decide type for '" + id->val + "'");
+            if (autoT) throw ParserError(i->begin, i->end, "Cannot decide type for '" + id->val + "'");
             res->scope_info.vars[id->val] = type;
             res->scope_info.vars[id->val].setLval(true);
 
@@ -40,7 +40,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
             /* variable with assignment */ 
             if (auto assign = dynamic_cast<zhexp::BinOperator*>(i)) {
               if (assign->val != "=")
-                throw ParserError(i->pos, "Expected assignment, but '" + assign->val + "' found");
+                throw ParserError(i->begin, i->end, "Expected assignment, but '" + assign->val + "' found");
               if (auto id = dynamic_cast<zhexp::IdLiteral*>(assign->lhs)) {
                 zhexp::postprocess(assign->rhs, cur_scope);
                 /* push variable */
@@ -60,7 +60,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
                 tmp->exp = assign;
                 res->nodes.push_back(tmp);
               } else {
-                throw ParserError(i->pos, "Expected variable name");
+                throw ParserError(i->begin, i->end, "Expected variable name");
               }
             }
           }
@@ -76,7 +76,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
         if (auto ctr = dynamic_cast<zhexp::FlowOperator*>(exp)) {
           /* "?" (if) statement parsing */
           if (ctr->val == "?") {
-            if (ctr->operand->type.getTypeId() == types::TYPE::intT) {
+            if (ctr->operand->type.getTypeId() == types::TYPE::i64T) {
               auto tmp_if = new STIf;
               tmp_if->contition = ctr->operand;
               if (i + 1 != main_block->nodes.end()) {
@@ -114,7 +114,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
                 }
               }
             } else {
-              throw ParserError(ctr->pos, "Expected int expression in '?(if)' contition");
+              throw ParserError(ctr->begin, ctr->end, "Expected int expression in '?(if)' contition");
             }
           }
           /* "@" (for) statement parsing */
@@ -126,7 +126,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
             }
 
             if (tuple->content.size() > 3) {
-              throw ParserError(ctr->pos,
+              throw ParserError(ctr->begin, ctr->end,
                 "You can privide max 3 expressions (init condition iteration) '@(for)' in statement");
             }
 
@@ -140,7 +140,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
               tuple->content.insert(tuple->content.end(), nullptr);
             }
 
-            if (tuple->content[1]->type.getTypeId() == types::TYPE::intT) {
+            if (tuple->content[1]->type.getTypeId() == types::TYPE::i64T) {
               if (tuple->content[0]) {
                 auto init = new STExp;
                 init->exp = tuple->content[0];
@@ -163,7 +163,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
                 }
               }
             } else {
-              throw ParserError(ctr->pos,
+              throw ParserError(ctr->begin, ctr->end,
                 "Expected int expression in '@(for)' contition, but '" +
                 tuple->content[1]->type.toString() + "' found");
             }
@@ -174,12 +174,12 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
             tmp_ret->exp = ctr->operand;
             if (retT.getTypeId() == types::TYPE::voidT) {
               if (tmp_ret->exp)
-                throw ParserError(ctr->pos, "You cannot return something becouse return type is 'void'");
+                throw ParserError(ctr->begin, ctr->end, "You cannot return something becouse return type is 'void'");
             } else {
               if (!tmp_ret->exp)
-                throw ParserError(ctr->pos, "Expected return value");
+                throw ParserError(ctr->begin, ctr->end, "Expected return value");
               if (tmp_ret->exp->type.getTypeId() != retT.getTypeId())
-                throw ParserError(ctr->pos,
+                throw ParserError(ctr->begin, ctr->end,
                   "Return type must be '" + retT.toString() + "', but '" +
                   tmp_ret->exp->type.toString() + "' found");
             }
@@ -319,7 +319,7 @@ STTree* parseAST(ast::ASTBlock* main_block) {
             types.push_back(type);
             types.back().setLval(false);
           }
-          std::cout << func->headToStr() << std::endl;
+          // std::cout << func->headToStr() << std::endl;
           // for (auto& [name, type] : types::structs[types::getStructId(name)].members) {
           //   scope.vars[name] = type;
           //   scope.vars[name].setLval(true);

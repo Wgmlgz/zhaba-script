@@ -111,8 +111,8 @@ struct Function {
     types::Type type;
   };
   std::string name;
-  types::Type type;
   std::vector<Arg> args;
+  types::Type type;
   STBlock* body;
 
   OpType op_type;
@@ -131,6 +131,15 @@ struct Function {
     } 
     return str;
   }
+  types::funcHead getHead() {
+    types::funcHead res;
+    res.first = name;
+    for (const auto& [name, type] : args) {
+      res.second.push_back(type);
+      res.second.back().setLval(false);
+    }
+    return res;
+  };
 };
 
 struct STTree {

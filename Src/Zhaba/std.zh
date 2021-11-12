@@ -3,6 +3,7 @@ lop 3  int +  int a:       #return +a;
 lop 3  int !  int a:       #return !a;
 op 5  int /  int a int b: #return a / b;
 op 5  int %  int a int b: #return a % b;
+op 5  int %  u64 a int b: #return a % b;
 op 5  int *  int a int b: #return a * b;
 op 5  int %% int a int b: #return !(a % b);
 op 6  int +  int a int b: #return a + b;
@@ -12,15 +13,37 @@ op 9  int >  int a int b: #return a > b;
 op 9  int <= int a int b: #return a <= b;
 op 9  int >= int a int b: #return a >= b;
 op 10 int == int a int b: #return a == b;
+op 10 int == char a char b: #return a == b;
 op 10 int != int a int b: #return a != b;
 op 14 int && int a int b: #return a && b;
 op 15 int || int a int b: #return a || b;
 
-lop out int x: #'printf("%d\n",x);'
-lop out str s: #'printf("%s\n",s.c_str());'
-lop outs int i: #'printf("%d ", i);'
+// lop put str s: #'printf("%s",s.c_str());'
+// lop put int n: #'printf("%d",n);'
+// lop put char ch: #'printf("%c",ch);'
 
-op 10 .= int ptr int val: #'*((int64_t*)(ptr))=val;'
-lop int ptr_get int ptr: #return *(int64_t*)(ptr);
-lop int malloc int size: #return (int64_t)(malloc(size));
+lop out int x: #'printf("%d\n",x);'
+lop out u64 x: #'printf("%llu\n",x);'
+// // lop out str s: #'printf("%s\n",s.c_str());'
+// lop out char ch: #'putchar(ch);'
+// lop outs int i: #'printf("%d ", i);'
+
+op 10 .= int ptr int val: #'*((i64*)(ptr))=val;'
+lop int ptr_get int ptr: #return *(i64*)(ptr);
+lop int malloc int size: #return (i64)(malloc(size));
 lop free int p: #free((void*)p);
+
+lop sleep int n
+  #unsigned int retTime = clock() + n;
+  #while (clock() < retTime);
+  // lop char aschar str s: #'return (s[0]);'
+  // lop int rng int n
+  //   <<< (n * n + 423342342303 + n) % 99999787
+
+fn u64 rng
+  #static unsigned long long x = 666
+  #x ^= x << 13
+  #x ^= x >> 7
+  #x ^= x << 17
+  #return x
+  
