@@ -1,7 +1,107 @@
 {
   "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
   "name": "zhaba script",
+
   "patterns": [
+    {
+      "match": "(impl)\\s+([a-zA-Z0-9]+)",
+      "captures": {
+        "1": {
+          "name": "keyword"
+        },
+        "2": {
+          "name": "entity.name.class"
+        }
+      }
+    },
+    {
+      "match": "(include)(.*)$",
+      "captures": {
+        "1": {
+          "name": "keyword"
+        },
+        "2": {
+          "name": "string.quoted.triple"
+        }
+      }
+    },
+    {
+      "match": "(type)\\s+([a-zA-Z0-9]+)",
+      "captures": {
+        "1": {
+          "name": "keyword"
+        },
+        "2": {
+          "name": "entity.name.class"
+        }
+      }
+    },
+    {
+      "match": "^\\s*(fn)\\s+([a-zA-Z0-9]+)((\\s+[a-zA-Z0-9]+\\s+[a-zA-Z0-9]+)*)\\s*$",
+      "captures": {
+        "1": {
+          "name": "keyword"
+        },
+        "2": {
+          "name": "entity.name.function"
+        },
+        "3": {
+          "patterns": [
+            {
+              "include": "#func-arg"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "match": "^\\s*(fn)\\s+([a-zA-Z0-9]+)\\s+([a-zA-Z0-9]+)((\\s+[a-zA-Z0-9]+\\s+[a-zA-Z0-9]+)*)\\s*$",
+      "captures": {
+        "1": {
+          "name": "keyword"
+        },
+        "2": {
+          "name": "entity.name.class"
+        },
+        "3": {
+          "name": "entity.name.function"
+        },
+        "4": {
+          "patterns": [
+            {
+              "include": "#func-arg"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "match": "([a-zA-Z0-9]+)\\(",
+      "captures": {
+        "1": {
+          "name": "entity.name.function"
+        }
+      }
+    },
+    {
+      "match": "\\.([a-zA-Z0-9]+)\\(",
+      "captures": {
+        "1": {
+          "name": "entity.name.function"
+        }
+      }
+    },
+    {
+      "match": "(\\.)([a-zA-Z0-9]+)",
+      "captures": {
+        "1": {
+          "name": "constant.character.escape"
+        },
+        "2": {
+          "name": "variable"
+        }
+      }
+    },
     {
       "match": "#.*",
       "name": "string.other.cpp"
@@ -21,6 +121,13 @@
       "name": "string.quoted.single"
     },
     {
+      "include": "#type"
+    },
+    {
+      "match": "self",
+      "name": "variable.language"
+    },
+    {
       "match": "[0-9]+",
       "name": "constant.int"
     },
@@ -29,17 +136,53 @@
       "name": "keyword.nextblock"
     },
     {
-      "match": "int|auto|str",
-      "name": "support.type"
+      "match": "[\\.\\,\\+\\-\\*\\\\\\%\\<\\>\\=\\^\\&\\:\\|\\/\\!\\#]+",
+      "name": "constant.character.escape"
     },
     {
-      "match": "type|lop|rop|op|fn|impl|struct",
-      "name": "keyword.struct"
-    },
-    {
-      "match": "[\\,\\.\\+\\-\\*\\\\\\%\\<\\>\\=\\^\\&\\:\\|\\/\\!\\#]+",
-      "name": "keyword.operator"
+      "match": "[a-zA-Z0-9]+",
+      "name": "variable"
     }
   ],
+  "repository": {
+    "base-type" :{
+      "match": "int|auto|char|str|bool|i32|i64|u32|u64",
+      "name": "storage.type"
+    },
+    "type" :{
+      "match": "(([A-Z]([a-z-A-OQ-Z]+)(P+([a-z-A-OQ-Z]+))*)|int|auto|char|str|bool|i32|i64|u32|u64)(P*)",
+      "captures": {
+        "1": {
+          "patterns": [
+            {
+              "include": "#base-type"
+            },
+            {
+              "match": ".*",
+              "name": "entity.name.class"
+            }
+          ]
+        },
+        "6": {
+          "name": "constant.character.escape"
+        }
+      }
+    },
+    "func-arg": {
+      "match": "\\s+([a-zA-Z0-9]+)\\s+([a-zA-Z0-9]+)",
+      "captures": {
+        "1": {
+          "patterns": [
+            {
+              "include": "#type"
+            }
+          ]
+        },
+        "2": {
+          "name": "variable"
+        }
+      }
+    }
+  },
   "scopeName": "source.zh"
 }

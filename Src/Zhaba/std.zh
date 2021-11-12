@@ -25,8 +25,8 @@ op 15 int || int a int b: #return a || b;
 lop out int x: #'printf("%d\n",x);'
 lop out u64 x: #'printf("%llu\n",x);'
 // // lop out str s: #'printf("%s\n",s.c_str());'
-// lop out char ch: #'putchar(ch);'
-// lop outs int i: #'printf("%d ", i);'
+lop out char ch: #'putchar(ch);'
+lop outs int i: #'printf("%d ", i);'
 
 op 10 .= int ptr int val: #'*((i64*)(ptr))=val;'
 lop int ptr_get int ptr: #return *(i64*)(ptr);

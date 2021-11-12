@@ -3,31 +3,24 @@ include 'std.zh'
 type Vec
   int x y
 
-fn Vec newVec
-  Vec v
-  v.x = 0
-  <<< v
-
 impl Vec
-  fn int getX
-    <<< self.x
-  fn int getY
-    <<< self.y
-  fn setX int x
+  fn set int x int y
     self.x = x
-  fn setY int y
     self.y = y
+  
+  fn int dist 
+    <<< self.x + self.y
 
-fn int vecGet VecP v
-  <<< v.x
-
-fn vecSet VecP v int val
-  v.x = val
+fn Vec newVec int x int y
+  Vec v
+  v.set(x y)
+  <<< v
 
 fn main
   int i = 0
   Vec vec
-  @ (i = 0) (i < 10) (i = i + 1)
-    out(rng() % 10)
-
-  
+  vec.set(2, 3)
+  @ i=0 i<10 i=i+1
+    auto t = newVec(rng() % 10, rng() % 10)
+    ? t.dist() < 5: out 1
+    \ out 0

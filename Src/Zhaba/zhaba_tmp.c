@@ -35,19 +35,17 @@ i64 __ZH_BOP_ampersandampersand_intint(i64 a, i64 b);
 i64 __ZH_BOP_pipepipe_intint(i64 a, i64 b);
 void __ZH_LOP_out_int(i64 x);
 void __ZH_LOP_out_(u64 x);
+void __ZH_LOP_out_char(char ch);
+void __ZH_LOP_outs_int(i64 i);
 void __ZH_BOP_dotequal_intint(i64 ptr, i64 val);
 i64 __ZH_LOP_ptr_get_int(i64 ptr);
 i64 __ZH_LOP_malloc_int(i64 size);
 void __ZH_LOP_free_int(i64 p);
 void __ZH_LOP_sleep_int(i64 n);
 u64 __ZH_LOP_rng_();
-__ZH_TYPE_Vec __ZH_LOP_newVec_();
-i64 __ZH_BOP_dotgetX_VecP(__ZH_TYPE_Vec* self);
-i64 __ZH_BOP_dotgetY_VecP(__ZH_TYPE_Vec* self);
-void __ZH_BOP_dotsetX_VecPint(__ZH_TYPE_Vec* self, i64 x);
-void __ZH_BOP_dotsetY_VecPint(__ZH_TYPE_Vec* self, i64 y);
-i64 __ZH_LOP_vecGet_VecP(__ZH_TYPE_Vec* v);
-void __ZH_LOP_vecSet_VecPint(__ZH_TYPE_Vec* v, i64 val);
+void __ZH_BOP_dotset_VecPintint(__ZH_TYPE_Vec* self, i64 x, i64 y);
+i64 __ZH_BOP_dotdist_VecP(__ZH_TYPE_Vec* self);
+__ZH_TYPE_Vec __ZH_LOP_newVec_intint(i64 x, i64 y);
 int main(int argc, char *argv[]) ;
 
 i64 __ZH_LOP_minus_int(i64 a) {
@@ -113,6 +111,12 @@ void __ZH_LOP_out_int(i64 x) {
 void __ZH_LOP_out_(u64 x) {
    printf("%llu\n",x);;
 }
+void __ZH_LOP_out_char(char ch) {
+   putchar(ch);;
+}
+void __ZH_LOP_outs_int(i64 i) {
+   printf("%d ", i);;
+}
 void __ZH_BOP_dotequal_intint(i64 ptr, i64 val) {
    *((i64*)(ptr))=val;;
 }
@@ -136,36 +140,32 @@ u64 __ZH_LOP_rng_() {
   x ^= x << 17;
   return x;
 }
-__ZH_TYPE_Vec __ZH_LOP_newVec_() {
-  __ZH_TYPE_Vec v;
-  ((v).x) = (0);
-  return (v);
-}
-i64 __ZH_BOP_dotgetX_VecP(__ZH_TYPE_Vec* self) {
-  return ((self)->x);
-}
-i64 __ZH_BOP_dotgetY_VecP(__ZH_TYPE_Vec* self) {
-  return ((self)->y);
-}
-void __ZH_BOP_dotsetX_VecPint(__ZH_TYPE_Vec* self, i64 x) {
+void __ZH_BOP_dotset_VecPintint(__ZH_TYPE_Vec* self, i64 x, i64 y) {
   ((self)->x) = (x);
-}
-void __ZH_BOP_dotsetY_VecPint(__ZH_TYPE_Vec* self, i64 y) {
   ((self)->y) = (y);
 }
-i64 __ZH_LOP_vecGet_VecP(__ZH_TYPE_Vec* v) {
-  return ((v)->x);
+i64 __ZH_BOP_dotdist_VecP(__ZH_TYPE_Vec* self) {
+  return (__ZH_BOP_plus_intint((self)->x, (self)->y));
 }
-void __ZH_LOP_vecSet_VecPint(__ZH_TYPE_Vec* v, i64 val) {
-  ((v)->x) = (val);
+__ZH_TYPE_Vec __ZH_LOP_newVec_intint(i64 x, i64 y) {
+  __ZH_TYPE_Vec v;
+  __ZH_BOP_dotset_VecPintint((&(v)), x, y);
+  return (v);
 }
 int main(int argc, char *argv[])  {
   __ZH_TYPE_Vec vec;
   i64 i;
   (i) = (0);
+  __ZH_BOP_dotset_VecPintint((&(vec)), 2, 3);
   (i) = (0);
   while (__ZH_BOP_less_intint(i, 10)) {
-    __ZH_LOP_out_int(__ZH_BOP_percent_int(__ZH_LOP_rng_(), 10));
+    __ZH_TYPE_Vec t;
+    (t) = (__ZH_LOP_newVec_intint(__ZH_BOP_percent_int(__ZH_LOP_rng_(), 10), __ZH_BOP_percent_int(__ZH_LOP_rng_(), 10)));
+    if (__ZH_BOP_less_intint(__ZH_BOP_dotdist_VecP((&(t))), 5)) {
+      __ZH_LOP_out_int(1);
+    } else {
+      __ZH_LOP_out_int(0);
+    }
     (i) = (__ZH_BOP_plus_intint(i, 1));
   };
 }
