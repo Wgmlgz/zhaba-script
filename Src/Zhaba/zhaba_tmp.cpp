@@ -37,6 +37,7 @@ int64_t __zhbop_dotgetX(__zhstruct_Vec* self);
 int64_t __zhbop_dotgetY(__zhstruct_Vec* self);
 void __zhbop_dotsetX(__zhstruct_Vec* self, int64_t x);
 void __zhbop_dotsetY(__zhstruct_Vec* self, int64_t y);
+std::string __zhbop_dotto_str(int64_t* self);
 int64_t __zhlop_vecGet(__zhstruct_Vec* v);
 void __zhlop_vecSet(__zhstruct_Vec* v, int64_t val);
 void __zhbop_memCall(__zhstruct_Vec v, int64_t a, int64_t b);
@@ -160,6 +161,12 @@ void __zhbop_dotsetY(__zhstruct_Vec* self, int64_t y) {
   ((self)->y) = (y);
 }
 
+std::string __zhbop_dotto_str(int64_t* self) {
+  std::string s;
+   s = std::to_string(*self);
+  return (s);
+}
+
 int64_t __zhlop_vecGet(__zhstruct_Vec* v) {
   return ((v)->x);
 }
@@ -173,16 +180,8 @@ void __zhbop_memCall(__zhstruct_Vec v, int64_t a, int64_t b) {
 }
 
 int main(int argc, char *argv[])  {
-  int64_t setX;
-  __zhstruct_Vec* ptr;
-  __zhstruct_Vec v;
-  (v) = (__zhlop_newVec());
-  (ptr) = ((&(v)));
-  (setX) = (2);
-  __zhbop_dotsetX(ptr, 54);
-  __zhbop_dotsetY(ptr, 228);
-  __zhlop_out(__zhbop_dotgetX(ptr));
-  __zhlop_out(__zhbop_dotgetY(ptr));
-  __zhlop_out(setX);
+  int64_t dva;
+  (dva) = (2);
+  __zhlop_out(__zhbop_dotto_str((&(dva))));
 }
 

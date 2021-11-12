@@ -279,9 +279,10 @@ STTree* parseAST(ast::ASTBlock* main_block) {
           throw ParserError(*line->end, "Expected identifier token for type implementation name");
 
         std::string name = (line->begin + 2)->val;
-        if (types::getStructId(name) == -1) {
+
+        if (types::getStructId(name) == -1 and !types::prim_types.contains(name)) {
           throw ParserError(*line->begin, *line->end,
-                            "Type '" + name + "'doens't exist");
+                            "Type '" + name + "'doesn't exist");
         }
         ++cur;
         // ++cur;
@@ -301,10 +302,11 @@ STTree* parseAST(ast::ASTBlock* main_block) {
           auto block = dynamic_cast<ast::ASTBlock*>(*i);
           if (!block) throw ParserError("Expected block");
 
+
           func->args.insert(
             func->args.begin(),
             {"self", types::Type(
-              static_cast<types::TYPE>(types::getStructId(name)), 1, true
+              types::parse(name).getTypeId(), 1
             )}
           );
           func->op_type = OpType::bin;

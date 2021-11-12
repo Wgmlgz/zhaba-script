@@ -3,11 +3,9 @@
 #include "../Lang/Types.hpp"
 
 namespace types {
-Type parse(tokeniter& token) {
+Type parse(std::string& str) {
   Type type;
-  std::string str = token->val;
   int ptr_c = 0;
-  
   while (str.back() == 'P') {
     ++ptr_c;
     str.pop_back();
@@ -21,7 +19,12 @@ Type parse(tokeniter& token) {
     throw std::runtime_error("Type parsing failed");
   }
   type.setPtr(ptr_c);
-  ++token;
   return type;
+}
+Type parse(tokeniter& token) {
+  std::string str = token->val;
+  auto res = parse(str);
+  ++token;
+  return res;
 }
 };

@@ -326,20 +326,33 @@ namespace zhexp {
         op->lhs = postprocess(op->lhs, scope_info);
         op->rhs = postprocess(op->rhs, scope_info);
         
-        /** Implicit lval to rval conversion */
-        op->lhs->type.setLval(false);
-        op->rhs->type.setLval(false);
+        /** Member call */
+        if (op->val[0] == '.') {
+          if (op->lhs->type.getPtr() == 0) {
+            if (!op->lhs->type.getLval()) {
+              throw ParserError("For now only lval member call");
+            }
+            auto ltype = op->lhs->type;
+            op->lhs = new PrefixOperator(0, "&", 3, op->lhs);
+            op->lhs->type = ltype;
+            op->lhs->type.setLval(false);
+            op->lhs->type.setPtr(1);
+          }
+        }
 
         std::vector<types::Type> types;
         types.push_back(op->lhs->type);
+        types.back().setLval(false);
         if (auto tuple = dynamic_cast<Tuple*>(op->rhs)) {
           for (auto exp : tuple->content) {
             types.push_back(exp->type);
+            types.back().setLval(false);
           }
         } else {
           types.push_back(op->rhs->type);
+          types.back().setLval(false);
         }
-
+        
         if (zhdata.B_OD.count({ op->val, types})) {
           exp->type =
             zhdata.B_OD[{op->val, types}];
