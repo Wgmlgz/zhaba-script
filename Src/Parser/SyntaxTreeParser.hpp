@@ -310,7 +310,7 @@ STTree* parseAST(ast::ASTBlock* main_block) {
             )}
           );
           func->op_type = OpType::bin;
-          func->name = "." + func->name;
+          func->name = ".call." + func->name;
           ScopeInfo scope;
           std::vector<types::Type> types;
           for (auto& [name, type] : func->args) {

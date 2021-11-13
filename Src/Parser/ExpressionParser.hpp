@@ -205,7 +205,7 @@ namespace zhexp {
           (i + 2)->token == "p("
         ) {
           ++i;
-          res.push_back(new Operator(*i, *i, "." + i->val, bpriority, spaces_lhs, spaces_rhs));
+          res.push_back(new Operator(*i, *i, ".call." + i->val, bpriority, spaces_lhs, spaces_rhs));
         } else {
           res.push_back(new Operator(*i, *i, i->val, bpriority, spaces_lhs, spaces_rhs));
         }
@@ -319,6 +319,7 @@ namespace zhexp {
         op->lhs = postprocess(op->lhs, scope_info);
         if (auto type_l = dynamic_cast<TypeLiteral*>(op->rhs)) {
           op->type = type_l->literal_type;
+          op->type.setLval(op->lhs->type.getLval());
         } else {
           throw ParserError(op->begin, op->end, "Expected type literal");
         }
@@ -327,7 +328,7 @@ namespace zhexp {
         op->rhs = postprocess(op->rhs, scope_info);
         
         /** Member call */
-        if (op->val[0] == '.') {
+        if (op->val.size() >= 6 and op->val.substr(0, 6) == ".call.") {
           if (op->lhs->type.getPtr() == 0) {
             if (!op->lhs->type.getLval()) {
               throw ParserError("For now only lval member call");
