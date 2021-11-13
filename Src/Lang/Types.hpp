@@ -37,7 +37,7 @@ std::unordered_map<TYPE, std::string> cpp_type_names{
   {TYPE::i32T, "i32"},
   {TYPE::u64T, "u64"},
   {TYPE::u32T, "u32"},
-  {TYPE::strT, "std::string"},
+  {TYPE::strT, "char*"},
 };
 
 std::unordered_map<std::string, int> struct_ids;
