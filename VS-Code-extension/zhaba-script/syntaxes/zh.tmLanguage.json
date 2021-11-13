@@ -37,7 +37,7 @@
       }
     },
     {
-      "match": "^\\s*(fn)\\s+([_a-zA-Z0-9]+)((\\s+[_a-zA-Z0-9]+\\s+[_a-zA-Z0-9]+)*)\\s*$",
+      "match": "^\\s*(fn|lop|rop)\\s+([_a-zA-Z0-9]+)((\\s+[_a-zA-Z0-9]+\\s+[_a-zA-Z0-9]+)*)\\s*(\\:|$)",
       "captures": {
         "1": {
           "name": "keyword"
@@ -55,7 +55,7 @@
       }
     },
     {
-      "match": "^\\s*(fn)\\s+([_a-zA-Z0-9]+)\\s+([_a-zA-Z0-9]+)((\\s+[_a-zA-Z0-9]+\\s+[_a-zA-Z0-9]+)*)\\s*$",
+      "match": "^\\s*(fn|lop|rop)\\s+([_a-zA-Z0-9]+)\\s+([_a-zA-Z0-9]+)((\\s+[_a-zA-Z0-9]+\\s+[_a-zA-Z0-9]+)*)\\s*(\\:|$)",
       "captures": {
         "1": {
           "name": "keyword"
