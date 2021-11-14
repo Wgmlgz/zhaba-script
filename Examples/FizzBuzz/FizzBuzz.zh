@@ -1,8 +1,10 @@
 include 'std.zh'
+include 'range.zh'
 
 fn fizz_buzz int mx
-  int i
-  @ i=1 i<=mx i=i+1 
+  auto r = 0..mx
+  @ r.nxt()
+    auto i = r.cur 
     ? i %% 3 && i %% 5: out 'FizzBuzz'
     | i %% 3: out 'Fizz'
     | i %% 5: out 'Buzz'
