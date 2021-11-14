@@ -1,34 +1,38 @@
 # Zhaba script
-Zhaba script - is a general purpose, open souce, statically typed, source-to-source compiled 🐸 language.
 
-# Quick start
-Hello world program example:
-```py
-main
-  out 'hi world!'
-```
-## Windows
-To run your first Zhaba script programm you can use [`zhaba.exe`](https://github.com/Wgmlgz/Zhaba-script-lang/blob/main/Bin/zhaba.exe)
-```console
-$ .\zhaba.exe path\to\program.zh
+🐸 Zhaba(Russian: ˈʐabə, жаба(frog)) script - is a general purpose, open source, statically typed, compiled to C frog programming language, focused at minimaizing code size.
+
+Inpired by Rust, C++ and Python🐍
+
+## Hello world
+
+```ruby
+include 'std.zh'
+fn main: out 'hi world!'
 ```
 
-## Other platforms
-You need to build compiler from source
-## Build compiler from source
-To build Zhaba script compiler from source you need to build [./Src/Zhaba/zhaba.cpp](https://github.com/Wgmlgz/Zhaba-script-lang/blob/main/Src/Zhaba/zhaba.cpp). To do this you can use [this Makefile](https://github.com/Wgmlgz/Zhaba-script-lang/blob/main/Src/Zhaba/Makefile):
-```console
-$ make build
-```
-Also you can use your favourite C++ compiler (with C++ 20 standart) 
-# Docs
+## Setup
 
-[`if, else if, else statements`](https://github.com/Wgmlgz/Zhaba-script-lang/blob/main/Docs/if.md)
+- 1 Clone repo
+- 2 Set enviroment variable `zhstd` to `repo_path/std`
+- 3 Compile [repo_path/src/Zhaba/zhaba.cpp](./Src/Zhaba/zhaba.cpp) with C++20 compiler
+- 4 use compiled binary to run your `.zh` files with `./zhaba <filename.zh>`
 
-[`Custom types (structs)`](https://github.com/Wgmlgz/Zhaba-script-lang/blob/main/Docs/struct.md)
+_note_: To build Zhaba script compiler you can also use [this Makefile](./Src/Zhaba/Makefile) `$ make build`
 
-More later...
+## Docs
 
-# Examples
-[exmples folder](https://github.com/Wgmlgz/Zhaba-script-lang/tree/main/Examples)
-(some of them are outdated)
+- [TODO intruduction]()
+- [if, else if, else](./docs/if.md)
+- [expressions](./docs/expressions.md)
+- [functions](./docs/functions.md)
+- [TODO program structure](./docs/program.md)
+- [TODO standart lib](./docs/std.md)
+- [Structs](./docs/struct.md)
+- More later...
+
+## Examples
+
+- [std](./std)
+- [examples](./examples)
+- More later...

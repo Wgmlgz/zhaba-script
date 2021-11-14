@@ -1,2 +1,4 @@
-main
+include 'std.zh'
+
+fn main
   out 'hi world!'
