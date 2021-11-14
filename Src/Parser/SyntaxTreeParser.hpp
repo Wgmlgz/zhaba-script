@@ -305,7 +305,7 @@ STTree* parseAST(ast::ASTBlock* main_block) {
 
           func->args.insert(
             func->args.begin(),
-            {"self", types::Type(
+            {"slf", types::Type(
               types::parse(name).getTypeId(), 1
             )}
           );

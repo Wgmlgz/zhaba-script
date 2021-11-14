@@ -124,7 +124,7 @@
       "include": "#type"
     },
     {
-      "match": "self",
+      "match": "slf",
       "name": "variable.language"
     },
     {

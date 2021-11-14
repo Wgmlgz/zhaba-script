@@ -6,41 +6,41 @@ type VecInt
 
 impl VecInt
   fn free_mem
-    ? self.head as int: free(self.head as int)
-    self.size = 0
-    self.capacity = 0
-    self.head = 0 as intP
+    ? slf.head as int: free(slf.head as int)
+    slf.size = 0
+    slf.capacity = 0
+    slf.head = 0 as intP
   
   fn double_capacity
-    auto new_capacity = self.capacity
+    auto new_capacity = slf.capacity
     ? new_capacity == 0
       new_capacity = 1
-      self.head = malloc(1 * 8) as intP
+      slf.head = malloc(1 * 8) as intP
     \ &new_capacity *= 2
-      self.head = realloc(self.head as int, new_capacity * 8) as intP
-    self.capacity = new_capacity
+      slf.head = realloc(slf.head as int, new_capacity * 8) as intP
+    slf.capacity = new_capacity
 
   fn intP atP int pos
-    <<< (((self.head) as int) + pos * 8) as intP
+    <<< (((slf.head) as int) + pos * 8) as intP
 
   fn int at int pos
-    <<< *self.atP(pos)
+    <<< *slf.atP(pos)
   
   fn push_back int val
-    ? self.size == self.capacity: self.double_capacity()
-    *self.atP(self.size) = val
-    &self.size += 1
+    ? slf.size == slf.capacity: slf.double_capacity()
+    *slf.atP(slf.size) = val
+    &slf.size += 1
   
-  fn intP begin: <<< self.head
-  fn intP end: <<< self.atP(self.size)
+  fn intP begin: <<< slf.head
+  fn intP end: <<< slf.atP(slf.size)
 
 fn VecInt newVecInt int size
-  VecInt self
-  self.head = 0 as intP
-  self.size = 0
-  self.capacity = 0
-  @ self.capacity < size: self.double_capacity()
-  self.size = size
+  VecInt slf
+  slf.head = 0 as intP
+  slf.size = 0
+  slf.capacity = 0
+  @ slf.capacity < size: slf.double_capacity()
+  slf.size = size
 
 fn VecInt newVecInt
   <<< newVecInt(0)
