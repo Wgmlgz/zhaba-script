@@ -1,9 +1,6 @@
-
-
-
 include 'std.zh'
 
-fizz_buzz int mx
+fn fizz_buzz int mx
   int i
   @ i=1 i<=mx i=i+1 
     ? i %% 3 && i %% 5: out 'FizzBuzz'
@@ -11,5 +8,5 @@ fizz_buzz int mx
     | i %% 5: out 'Buzz'
     \ out i
 
-main
-  fizz_buzz 50
+fn main
+  fizz_buzz(50)
