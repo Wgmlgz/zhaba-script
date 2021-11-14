@@ -1,0 +1,9 @@
+// Placeholder while compiler doesn't have this by default
+op 6  intP + intP a int b: <<< (a as int + b * 8) as intP
+op 6  intP + int b intP a: <<< (a as int + b * 8) as intP
+op 6  intP - intP a int b: <<< (a as int - b * 8) as intP
+op 6  intP - int b intP a: <<< (a as int - b * 8) as intP
+
+op 9  int <  intP a intP b: <<< a as int < b as int
+op 10 int == intP a intP b: <<< a as int == b as int
+op 10 int != intP a intP b: <<< a as int != b as int

@@ -1,0 +1,22 @@
+// Range type for loops or something
+type Range
+  int cur begin end init
+
+fn Range newRange int begin int end
+  Range self
+  self.begin = begin
+  self.end = end
+  self.cur = begin
+  self.init = 0
+  <<< self
+
+op 9 Range .. int begin int end: <<< newRange(begin end)
+
+impl Range
+  fn int valid: <<< self.cur != self.end
+  fn int nxt
+    ? self.init
+      ? self.begin < self.end: &self.cur += 1
+      \ &self.cur -= 1
+    \ self.init = 1
+    <<< self.valid()

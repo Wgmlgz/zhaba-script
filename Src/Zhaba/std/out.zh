@@ -1,0 +1,10 @@
+// I believe in printf supremacy
+lop put str s: #'printf("%s",s);'
+lop put int n: #'printf("%d",n);'
+lop put char ch: #'printf("%c",ch);'
+
+lop out int x: #'printf("%d\n",x);'
+lop out u64 x: #'printf("%llu\n",x);'
+lop out str s: #'printf("%s\n",s);'
+lop out char ch: #'putchar(ch);'
+lop outs int i: #'printf("%d ", i);'

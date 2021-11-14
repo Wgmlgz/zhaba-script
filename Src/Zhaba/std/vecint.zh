@@ -1,0 +1,67 @@
+// slassic vector for i64
+type VecInt
+  int size
+  int capacity
+  intP head
+
+impl VecInt
+  fn free_mem
+    ? self.head as int: free(self.head as int)
+    self.size = 0
+    self.capacity = 0
+    self.head = 0 as intP
+  
+  fn double_capacity
+    auto new_capacity = self.capacity
+    ? new_capacity == 0
+      new_capacity = 1
+      self.head = malloc(1 * 8) as intP
+    \ &new_capacity *= 2
+      self.head = realloc(self.head as int, new_capacity * 8) as intP
+    self.capacity = new_capacity
+
+  fn intP atP int pos
+    <<< (((self.head) as int) + pos * 8) as intP
+
+  fn int at int pos
+    <<< *self.atP(pos)
+  
+  fn push_back int val
+    ? self.size == self.capacity: self.double_capacity()
+    *self.atP(self.size) = val
+    &self.size += 1
+  
+  fn intP begin: <<< self.head
+  fn intP end: <<< self.atP(self.size)
+
+fn VecInt newVecInt int size
+  VecInt self
+  self.head = 0 as intP
+  self.size = 0
+  self.capacity = 0
+  @ self.capacity < size: self.double_capacity()
+  self.size = size
+
+fn VecInt newVecInt
+  <<< newVecInt(0)
+
+lop out VecIntP vec
+  int i = 0
+  put('[')
+  @ i=0 i<(vec.size) (&i += 1)
+   ? i: put(' ')
+   put(vec.at(i))
+  out(']')
+
+lop deb VecIntP vec
+  put('size: ')
+  out(vec.size)
+
+  put('capacity: ')
+  out(vec.capacity)
+
+  put('head: ')
+  out(vec.head as u64)
+
+  put('content: ')
+  out(vec)

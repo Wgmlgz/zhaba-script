@@ -1,0 +1,5 @@
+// zhaba-script standart lib!!!
+include 'operators.zh'
+include 'out.zh'
+include 'mem.zh'
+include 'pointers.zh'

@@ -1,0 +1,35 @@
+lop sleep int n
+  #unsigned int retTime = clock() + n;
+  #while (clock() < retTime);
+
+fn u64 rng
+  #static unsigned long long x = 666
+  #x ^= x << 13
+  #x ^= x >> 7
+  #x ^= x << 17
+  #return x
+  
+fn swap intP a intP b
+  int t = *a
+  *a = *b
+  *b = t
+
+// qsort for i64 arrays
+
+fn intP partition intP low intP high
+  intP pivot = high-1 i = low j = low
+  intP i = low
+
+  @ (j = low) (j != pivot) (j = j + 1)
+    ? *j < *pivot
+      swap(i j)
+      i = i + 1
+
+  swap(i  pivot)
+  <<< i
+
+fn qsort intP lhs intP rhs
+  ? rhs as int - lhs as int > 8
+    auto pi = partition(lhs rhs)
+    qsort(lhs pi)
+    qsort(pi+1 rhs)

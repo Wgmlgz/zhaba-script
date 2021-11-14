@@ -1,0 +1,12 @@
+include 'c_operators.zh'
+
+lop 3  int +  int a: <<< a;
+op 5  int %% int a int b: <<< !(a % b);
+op 10 int != int a int b: <<< !(a == b);
+op 10 int != char a char b: <<< !(a == b);
+
+op 16 int += intP a int b: *a = *a + b
+op 16 int -= intP a int b: *a = *a - b
+op 16 int /= intP a int b: *a = *a / b
+op 16 int %= intP a int b: *a = *a % b
+op 16 int *= intP a int b: *a = (*a) * (b)
