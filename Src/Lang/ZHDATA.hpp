@@ -33,7 +33,8 @@ struct ZHDATA {
   std::vector<std::string> included_files;
   std::map<std::string, std::vector<std::string>> files_lines;
   std::filesystem::path bin_path;
-  
+  std::filesystem::path std_path;
+
   std::unordered_map<std::string, bool> bools {
     {"exp_parser_logs",   false},
     {"show_ast",          false},

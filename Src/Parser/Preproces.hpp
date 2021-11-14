@@ -18,7 +18,7 @@ void preprocess(std::filesystem::path file_path, std::vector<Token>& res, int de
   auto fin = std::ifstream(file_path);
   
   if (fin.fail()) {
-    file_path = zhdata.bin_path / file_path;
+    file_path = zhdata.std_path / file_path;
     fin = std::ifstream(file_path);
     if (fin.fail())
       throw ParserError(-1, "Cannot open file '" + file_path.string() + "' ");

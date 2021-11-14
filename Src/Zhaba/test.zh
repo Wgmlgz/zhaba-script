@@ -1,7 +1,7 @@
-include 'std/std.zh'
-include 'std/vecint.zh'
-include 'std/range.zh'
-include 'std/util.zh'
+include 'std.zh'
+include 'vecint.zh'
+include 'range.zh'
+include 'util.zh'
 
 fn main
   auto vec = newVecInt()

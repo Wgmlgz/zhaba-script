@@ -25,6 +25,7 @@ false
 int main(int argc, char **argv) {
   CmdParser cmd(argc, argv);
   zhdata.bin_path = argv[0];
+
   zhdata.bin_path.remove_filename();
   for (auto& [str, val] : zhdata.bools) {
     if (cmd.cmdOptionExists("--" + str))
@@ -40,6 +41,10 @@ int main(int argc, char **argv) {
         deb ? R"(C:\Code\Zhaba-script-lang\Src\Zhaba\test.zh)"
             : cmd.getCmdOption(0);
     try {
+      auto tmp = std::getenv("zhstd");
+      if (!tmp)
+        throw std::runtime_error("Cannot find zhstd environment variable :(");
+      zhdata.std_path = tmp;
       auto start_time = clock();
       auto compiled = compileFile(file_path);
       std::cout << "[INFO] compiling complete in " + std::to_string((clock() - start_time) * 1.0 / CLOCKS_PER_SEC) << std::endl;
@@ -52,8 +57,9 @@ int main(int argc, char **argv) {
     }
     catch (ParserError error) {
       std::cout << error.toString();
-    }
-    catch (...) {
+    } catch (std::runtime_error err) {
+      std::cout << err.what() << std::endl;
+    } catch (...) {
       std::cout << "Uncaught error :(" << std::endl;
     }
   } else {
