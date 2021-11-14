@@ -15,3 +15,5 @@ fn main
   qsort(vec.begin() vec.end())
   put 'after sort:  '
   out &vec
+  out vec.back()
+  vec.dtor()

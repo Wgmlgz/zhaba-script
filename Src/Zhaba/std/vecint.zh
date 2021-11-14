@@ -33,6 +33,12 @@ impl VecInt
   
   fn intP begin: <<< slf.head
   fn intP end: <<< slf.atP(slf.size)
+  fn int front: <<< *slf.head
+  fn int back: <<< *slf.atP(slf.size-1)
+  fn intP frontP: <<< slf.head
+  fn intP backP: <<< slf.atP(slf.size-1)
+
+  fn dtor: slf.free_mem()
 
 fn VecInt newVecInt int size
   VecInt slf
