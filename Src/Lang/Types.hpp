@@ -58,10 +58,16 @@ class Type {
   /* Setters */
   void setLval(bool f) { lval_ = f; }
   void setType(TYPE type_) { typeid_ = type_; }
-  void setPtr(bool val) { ptr_ = val; }
+  void setPtr(uint8_t val) { ptr_ = val; }
+  void setTmpl(std::vector<Type> val) { tmpl_ = val; }
 
   /* Bitmask layout: lval<1> ptr<8> typeid<other> */
-  uint32_t getMask() const { return (static_cast<int>(typeid_) << 9) | (ptr_ << 1) | lval_; }
+  uint32_t getSelfMask() const {
+    return (static_cast<int>(typeid_) << 9) | (ptr_ << 1) | lval_;
+  }
+  std::vector<uint32_t> getMask() const {
+    return {getSelfMask()};
+  }
 
   const friend auto operator<=>(const Type& lhs, const Type& rhs) {
     /** Bitmask comparison mask: lval<1> ptr<8> typeid<other> */
@@ -78,19 +84,35 @@ class Type {
       res += struct_names[static_cast<int>(typeid_)];
 
     res += std::string(ptr_, 'P');
-    if (lval_) res += "&";
 
+    if (tmpl_.size()) {
+      res += "<";
+      bool f = false;
+      for (const auto& i : tmpl_) {
+        if (f) res += " ";
+        else f = true;
+        res += i.toString(); 
+      }
+      res += ">";
+    }
+    if (lval_) res += "&";
     return res;
   }
 
-  std::string toCString() const {
+  std::string toCString(bool plain = false) const {
     std::string res;
     if (static_cast<int>(typeid_) < 50)
       res += cpp_type_names[typeid_];
     else
       res += "__ZH_TYPE_" + struct_names[static_cast<int>(typeid_)];
 
-    res += std::string(ptr_, '*');
+    if (tmpl_.size()) {
+      res += "_TMPL_";
+      for(const auto& i : tmpl_) {
+        res += i.toCString(true);
+      }
+    }
+    res += std::string(ptr_, plain ? 'P' : '*');
     return res;
   }
 
@@ -98,6 +120,7 @@ class Type {
   TYPE typeid_ = TYPE::voidT;
   bool lval_ = false;
   uint8_t ptr_ = 0;
+  std::vector<Type> tmpl_;
 };
 
 typedef std::pair<std::string, std::vector<types::Type>> funcHead;

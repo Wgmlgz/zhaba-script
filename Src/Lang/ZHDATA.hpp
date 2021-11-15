@@ -45,6 +45,7 @@ struct ZHDATA {
     {"show_original",     false},
     {"show_preprocessed", false},
     {"show_exp_tmp_tree", false},
+    {"show_type", false},
   };
 };
 

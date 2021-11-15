@@ -3,6 +3,19 @@ include 'vecint.zh'
 include 'range.zh'
 include 'util.zh'
 
+op 6666  int +  char a char b: #return a + b;
+
+
+// impl VecInt<int>
+//   fn da:
+//     2
+    
+// impl intP
+//   fn up
+//     auto t = &slf
+//     auto tt = slf
+//     // *slf = (slf as int + 8) as intP
+
 fn main
   auto vec = newVecInt()
   
@@ -15,5 +28,17 @@ fn main
   qsort(vec.begin() vec.end())
   put 'after sort:  '
   out &vec
+
   out vec.back()
+  auto t = vec.begin()
+  // out (*t)
+  // (&t).up()
+  // out (*t)
+  // (&t).up()
+  // out (*t)
+  // (&t).up()
+  // out (*t)
   vec.dtor()
+
+  // VecInt<intP VecInt<int> > vvv
+  // qsort(vvv vvv)

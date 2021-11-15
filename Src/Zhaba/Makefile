@@ -1,4 +1,4 @@
-build:
+buildd:
 	g++ zhaba.cpp --std=c++20 -o zhaba
 	./zhaba test.zh
 

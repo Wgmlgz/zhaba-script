@@ -15,7 +15,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
       try {
         if (!autoT) type = types::parse(line->begin);
         else ++line->begin;
-      }  catch (...) { 
+      }  catch (...) {
         is_var_decl = false;
       }
       if (is_var_decl) {
@@ -42,12 +42,19 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
               if (assign->val != "=")
                 throw ParserError(i->begin, i->end, "Expected assignment, but '" + assign->val + "' found");
               if (auto id = dynamic_cast<zhexp::IdLiteral*>(assign->lhs)) {
-                zhexp::postprocess(assign->rhs, cur_scope);
+                assign->rhs = zhexp::postprocess(assign->rhs, cur_scope);
+                assign->rhs->type.setLval(false);
                 /* push variable */
                 if (autoT) {
                   res->scope_info.vars[id->val] = assign->rhs->type;
                   cur_scope.vars[id->val] = assign->rhs->type;
                 } else {
+                  if (type <=> assign->rhs->type != 0) {
+                    throw ParserError(assign->begin, assign->end,
+                      "Types (" + type.toString() +
+                      " " + assign->rhs->type.toString() +
+                      ") for '='(init) are different");
+                  }
                   res->scope_info.vars[id->val] = type;
                   cur_scope.vars[id->val] = type;
                 }
@@ -203,6 +210,47 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
   return res;
 }
 
+types::StructInfo parseStruct(ast::ASTBlock* block) {
+  types::StructInfo struct_info;
+
+  for (auto node : block->nodes) {
+    if (auto line = dynamic_cast<ast::ASTLine*>(node)) {
+      /** Members line parsing */
+      if (line->end - line->begin < 2) {
+        throw ParserError(*line->begin, *line->end,
+                          "Expected memeber type with names like 'int a b c'");
+      }
+
+      types::Type cur_type;
+      auto cur = line->begin;
+      try {
+        cur_type = types::parse(cur);
+      } catch (...) {
+        throw ParserError(*line->begin, "Expected valid type");
+      }
+      cur_type.setLval(true);
+
+      for (auto i = cur; i != line->end; ++i) {
+        if (i->token == "space") {
+          continue;
+        }
+
+        /** TODO: proper member name validation */
+        if (i->token != "id") {
+          throw ParserError(*i, "Expected member name as identifier");
+        }
+        if (struct_info.members.count(i->val)) {
+          throw ParserError(*i, "Member '" + i->val + "'already exist");
+        }
+        struct_info.members[i->val] = cur_type;
+      }
+    } else {
+      throw ParserError("Unexprected block");
+    }
+  }
+  return struct_info;
+}
+
 STTree* parseAST(ast::ASTBlock* main_block) {
   STTree* res = new STTree;
   auto cur = main_block->nodes.begin();
@@ -222,50 +270,17 @@ STTree* parseAST(ast::ASTBlock* main_block) {
           throw ParserError(*line->begin, *line->end,
             "Type '" + name + "'already exist");
         }
+        
+        /** TODO: parse template */
+        bool isTemplate = false;
         ++cur;
 
         /** Parse struct body */
-        types::StructInfo struct_info;
         if (cur == main_block->nodes.end())
           throw ParserError(*line->end, "Expected type body");
         if (auto block = dynamic_cast<ast::ASTBlock*>(*cur)) {
-          for (auto node : block->nodes) {
-            if (auto line = dynamic_cast<ast::ASTLine*>(node)) {
-              /** Members line parsing */
-              if (line->end - line->begin < 2) {
-                throw ParserError(*line->begin, *line->end,
-                  "Expected memeber type with names like 'int a b c'");
-              }
-
-              types::Type cur_type;
-              auto cur = line->begin;
-              try {
-                cur_type = types::parse(cur);
-              } catch (...) {
-                throw ParserError(*line->begin, "Expected valid type");
-              }
-              cur_type.setLval(true);
-
-              for (auto i = cur; i != line->end; ++i) {
-                if (i->token == "space") {
-                  continue;
-                }
-
-                /** TODO: proper member name validation */
-                if (i->token != "id") {
-                  throw ParserError(*i, "Expected member name as identifier");
-                }
-                if (struct_info.members.count(i->val)) {
-                  throw ParserError(*i, "Member '" + i->val + "'already exist");
-                }
-                struct_info.members[i->val] = cur_type;
-              }
-            } else {
-              throw ParserError("Unexprected block");
-            }
-          }
           /** Push declarated struct */
-          types::pushStruct(name, struct_info);
+          types::pushStruct(name, parseStruct(block));
         } else {
           throw ParserError(*line->end, "Expected type body");
         }
@@ -278,12 +293,21 @@ STTree* parseAST(ast::ASTBlock* main_block) {
             (line->begin + 2)->token != "id")
           throw ParserError(*line->end, "Expected identifier token for type implementation name");
 
-        std::string name = (line->begin + 2)->val;
-
-        if (types::getStructId(name) == -1 and !types::prim_types.contains(name)) {
-          throw ParserError(*line->begin, *line->end,
-                            "Type '" + name + "'doesn't exist");
+        // std::string name = (line->begin + 2)->val;
+        auto token = (line->begin + 2);
+        types::Type type;
+        try {
+          type = types::parse(token);
+          // type.setPtr(type.getPtr() + 1);
+        } catch (...) {
+            throw ParserError(*line->begin, *line->end,
+              "Fail to parse impl type");
         }
+
+        // if (types::getStructId(name) == -1 and !types::prim_types.contains(name)) {
+        //   throw ParserError(*line->begin, *line->end,
+        //                     "Type '" + name + "'doesn't exist");
+        // }
         ++cur;
         // ++cur;
 
@@ -302,12 +326,9 @@ STTree* parseAST(ast::ASTBlock* main_block) {
           auto block = dynamic_cast<ast::ASTBlock*>(*i);
           if (!block) throw ParserError("Expected block");
 
-
           func->args.insert(
             func->args.begin(),
-            {"slf", types::Type(
-              types::parse(name).getTypeId(), 1
-            )}
+            {"slf", types::Type(type.getTypeId(), type.getPtr() + 1, 1)}
           );
           func->op_type = OpType::bin;
           func->name = ".call." + func->name;
@@ -324,6 +345,7 @@ STTree* parseAST(ast::ASTBlock* main_block) {
           //   scope.vars[name] = type;
           //   scope.vars[name].setLval(true);
           // }
+
           func->body = parseASTblock(block, scope, main_scope, func->type);
           zhdata.B_OD[{func->name, types}] = func->type;
           /** '.' priority */
@@ -357,7 +379,15 @@ STTree* parseAST(ast::ASTBlock* main_block) {
           zhdata.operators.insert(func->name);
           if (func->op_type == OpType::bin) {
             zhdata.B_OD[{func->name, types}] = func->type;
-            zhdata.bin_operators[func->name] = func->priority;
+            if (zhdata.bin_operators.contains(func->name) and
+              func->priority != zhdata.bin_operators[func->name])
+              throw ParserError(
+                  *line->begin, *line->end,
+                  "Operator priority doesn't match old one (" +
+                      std::to_string(zhdata.bin_operators[func->name]) +
+                      " <- old vs new -> " + std::to_string(func->priority) +
+                      ")");
+                  zhdata.bin_operators[func->name] = func->priority;
           } else if (func->op_type == OpType::lhs) {
             zhdata.PR_OD[{func->name, types}] = func->type;
             zhdata.prefix_operators[func->name] = func->priority;
@@ -373,6 +403,7 @@ STTree* parseAST(ast::ASTBlock* main_block) {
           scope.vars[name] = type;
           scope.vars[name].setLval(true);
         }
+
         /** And then parse body */
         if (cur == main_block->nodes.end())
           throw ParserError(*line->end, "Expected function body");

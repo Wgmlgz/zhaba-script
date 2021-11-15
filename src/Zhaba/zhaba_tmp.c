@@ -384,6 +384,7 @@ void __ZH_LOP_qsort_intPintP(i64* lhs, i64* rhs) {
   }
 }
 int main(int argc, char *argv[])  {
+  i64* t;
   __ZH_TYPE_Range r;
   __ZH_TYPE_VecInt vec;
   (vec) = (__ZH_LOP_newVecInt_());
@@ -397,5 +398,6 @@ int main(int argc, char *argv[])  {
   __ZH_LOP_put_str("after sort:  ");
   __ZH_LOP_out_VecIntP((&(vec)));
   __ZH_LOP_out_int(__ZH_BOP_dotcalldotback_VecIntP((&(vec))));
+  (t) = (__ZH_BOP_dotcalldotbegin_VecIntP((&(vec))));
   __ZH_BOP_dotcalldotdtor_VecIntP((&(vec)));
 }
