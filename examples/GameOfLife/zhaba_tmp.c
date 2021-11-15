@@ -63,12 +63,12 @@ u64 __ZH_LOP_rng_();
 void __ZH_LOP_swap_intPintP(i64* a, i64* b);
 i64* __ZH_LOP_partition_intPintP(i64* low, i64* high);
 void __ZH_LOP_qsort_intPintP(i64* lhs, i64* rhs);
+char __ZH_LOP_aschar_str(char* s);
 __ZH_TYPE_Canvas __ZH_LOP_newCanvas_intint(i64 w, i64 h);
 char* __ZH_BOP_dotcalldotat_CanvasPintint(__ZH_TYPE_Canvas* slf, i64 x, i64 y);
 char __ZH_BOP_dotcalldotget_CanvasPintint(__ZH_TYPE_Canvas* slf, i64 x, i64 y);
 void __ZH_BOP_dotcalldotfill_CanvasPchar(__ZH_TYPE_Canvas* slf, char ch);
 void __ZH_LOP_out_CanvasP(__ZH_TYPE_Canvas* c);
-char __ZH_LOP_aschar_str(char* s);
 int main(int argc, char *argv[]) ;
 
 i64 __ZH_LOP_minus_int(i64 a) {
@@ -244,6 +244,9 @@ void __ZH_LOP_qsort_intPintP(i64* lhs, i64* rhs) {
     __ZH_LOP_qsort_intPintP(__ZH_BOP_plus_intPint(pi, 1), rhs);
   }
 }
+char __ZH_LOP_aschar_str(char* s) {
+  return ((*(((char*)(s)))));
+}
 __ZH_TYPE_Canvas __ZH_LOP_newCanvas_intint(i64 w, i64 h) {
   __ZH_TYPE_Canvas res;
   ((res).w) = (w);
@@ -284,9 +287,6 @@ void __ZH_LOP_out_CanvasP(__ZH_TYPE_Canvas* c) {
     __ZH_LOP_out_str("");
     (i) = (__ZH_BOP_plus_intint(i, 1));
   };
-}
-char __ZH_LOP_aschar_str(char* s) {
-  return ((*(((char*)(s)))));
 }
 int main(int argc, char *argv[])  {
   char live;

@@ -3,42 +3,17 @@ include 'vecint.zh'
 include 'range.zh'
 include 'util.zh'
 
-op 6666  int +  char a char b: #return a + b;
+type Pair T1 T2 
+  T1 first
+  T2 second
 
-
-// impl VecInt<int>
-//   fn da:
-//     2
-    
-// impl intP
-//   fn up
-//     auto t = &slf
-//     auto tt = slf
-//     // *slf = (slf as int + 8) as intP
+fn Pair<int int> gen
+  Pair<int int> p
+  p.first = 228
+  p.second = 322
+  <<< p
 
 fn main
-  auto vec = newVecInt()
-  
-  auto r = 0..10
-  @ r.nxt()
-    vec.push_back(rng() % 100)
-
-  put 'before sort: '
-  out &vec
-  qsort(vec.begin() vec.end())
-  put 'after sort:  '
-  out &vec
-
-  out vec.back()
-  auto t = vec.begin()
-  // out (*t)
-  // (&t).up()
-  // out (*t)
-  // (&t).up()
-  // out (*t)
-  // (&t).up()
-  // out (*t)
-  vec.dtor()
-
-  // VecInt<intP VecInt<int> > vvv
-  // qsort(vvv vvv)
+  auto t = gen()
+  out t.first
+  out t.second

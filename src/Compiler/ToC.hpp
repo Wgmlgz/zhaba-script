@@ -10,7 +10,8 @@ std::string nodeToC(STNode* node, size_t depth = 0);
 std::string idToC(const std::string& str) {
   std::string ans;
   for (auto ch : str) {
-    if (isalpha(ch)) ans += ch;
+    if (std::isalpha(ch)) ans += ch;
+    else if (std::isdigit(ch)) ans += ch;
     else if (ch == '_')  ans += ch;
     else if (ch == '.')  ans += "dot";
     else if (ch == '+')  ans += "plus";
@@ -32,9 +33,29 @@ std::string idToC(const std::string& str) {
     else if (ch == '@')  ans += "at";
     else if (ch == '?')  ans += "question";
     else if (ch == '~')  ans += "tilda";
+    else if (ch == ' ')  ans += "space";
+
+    // else ans += ch;
     else throw std::runtime_error(std::string("cannot use '") + ch + "'");
   }
   return ans;
+}
+
+std::string typeToC(const types::Type& type, bool plain = false) {
+  std::string res;
+  if (static_cast<int>(type.getTypeId()) < 50)
+    res += types::cpp_type_names[type.getTypeId()];
+  else
+    res += idToC("__ZH_TYPE_" + types::struct_names[static_cast<int>(type.getTypeId())]);
+
+  // if (tmpl_.size()) {
+  //   res += "_TMPL_";
+  //   for (const auto& i : tmpl_) {
+  //     res += i.toCString(true);
+  //   }
+  // }
+  res += std::string(type.getPtr(), plain ? 'P' : '*');
+  return res;
 }
 
 template <typename T>
@@ -119,7 +140,7 @@ std::string expToC(zhexp::Exp* exp) {
   if (auto op = dynamic_cast<zhexp::BinOperator*>(exp)) {
     if (op->val == "as") {
       res += "(";
-      res += "(" + static_cast<zhexp::TypeLiteral*>(op->rhs)->literal_type.toCString() + ")";
+      res += "(" + typeToC(static_cast<zhexp::TypeLiteral*>(op->rhs)->literal_type) + ")";
       res += "(" + expToC(op->lhs) + ")";
       res += ")";
     } else if (op->val == "=") {
@@ -157,7 +178,7 @@ std::string blockToC(STBlock* block, size_t depth) {
 
   for (auto& i : block->scope_info.vars) {
     res += std::string((depth+1) * tab_size , ' ');
-    res += i.second.toCString();
+    res += typeToC(i.second);
     res += " ";
     res += i.first;
     res += ";\n";
@@ -205,7 +226,7 @@ std::string funcHeadToC(Function* func) {
   if (func->name == "main") {
     str += "int main(int argc, char *argv[]) ";
   } else {
-    str += func->type.toCString() + " ";
+    str += typeToC(func->type) + " ";
     str +=  (
       func->op_type == OpType::bin ? bopToC(func->getHead()) : (
       func->op_type == OpType::lhs ? lopToC(func->getHead()) : ropToC(func->getHead())
@@ -213,7 +234,7 @@ std::string funcHeadToC(Function* func) {
     bool start = true;
     for (auto& [name, type] : func->args) {
       if (!start) str += ", ";
-      str += type.toCString() + " ";
+      str += typeToC(type) + " ";
       str += name;
       start = false;
     }
@@ -234,7 +255,7 @@ std::string structToC(int id) {
   std::string res = structHeadToC(id);
   res += " {\n";
   for (const auto& [name, type] : types::structs[id].members) {
-    res += "  " + type.toCString() + " " + idToC(name) + ";\n";
+    res += "  " + typeToC(type) + " " + idToC(name) + ";\n";
   }
   res += "};\n";
   return res;

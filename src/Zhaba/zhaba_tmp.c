@@ -11,6 +11,8 @@ struct __PROT_ZH_TYPE_VecInt;
 typedef struct __PROT_ZH_TYPE_VecInt __ZH_TYPE_VecInt;
 struct __PROT_ZH_TYPE_Range;
 typedef struct __PROT_ZH_TYPE_Range __ZH_TYPE_Range;
+struct __PROT_ZH_TYPE_Pairlessintspaceintgreater;
+typedef struct __PROT_ZH_TYPE_Pairlessintspaceintgreater __ZH_TYPE_Pairlessintspaceintgreater;
 
 struct __PROT_ZH_TYPE_VecInt {
   i64* head;
@@ -22,6 +24,10 @@ struct __PROT_ZH_TYPE_Range {
   i64 end;
   i64 begin;
   i64 cur;
+};
+struct __PROT_ZH_TYPE_Pairlessintspaceintgreater {
+  i64 second;
+  i64 first;
 };
 i64 __ZH_LOP_minus_int(i64 a);
 i64 __ZH_LOP_exclamation_int(i64 a);
@@ -91,6 +97,8 @@ u64 __ZH_LOP_rng_();
 void __ZH_LOP_swap_intPintP(i64* a, i64* b);
 i64* __ZH_LOP_partition_intPintP(i64* low, i64* high);
 void __ZH_LOP_qsort_intPintP(i64* lhs, i64* rhs);
+char __ZH_LOP_aschar_str(char* s);
+__ZH_TYPE_Pairlessintspaceintgreater __ZH_LOP_gen_();
 int main(int argc, char *argv[]) ;
 
 i64 __ZH_LOP_minus_int(i64 a) {
@@ -383,21 +391,18 @@ void __ZH_LOP_qsort_intPintP(i64* lhs, i64* rhs) {
     __ZH_LOP_qsort_intPintP(__ZH_BOP_plus_intPint(pi, 1), rhs);
   }
 }
+char __ZH_LOP_aschar_str(char* s) {
+  return ((*(((char*)(s)))));
+}
+__ZH_TYPE_Pairlessintspaceintgreater __ZH_LOP_gen_() {
+  __ZH_TYPE_Pairlessintspaceintgreater p;
+  ((p).first) = (228);
+  ((p).second) = (322);
+  return (p);
+}
 int main(int argc, char *argv[])  {
-  i64* t;
-  __ZH_TYPE_Range r;
-  __ZH_TYPE_VecInt vec;
-  (vec) = (__ZH_LOP_newVecInt_());
-  (r) = (__ZH_BOP_dotdot_intint(0, 10));
-  while (__ZH_BOP_dotcalldotnxt_RangeP((&(r)))) {
-    __ZH_BOP_dotcalldotpush_back_VecIntPint((&(vec)), __ZH_BOP_percent_int(__ZH_LOP_rng_(), 100));
-  };
-  __ZH_LOP_put_str("before sort: ");
-  __ZH_LOP_out_VecIntP((&(vec)));
-  __ZH_LOP_qsort_intPintP(__ZH_BOP_dotcalldotbegin_VecIntP((&(vec))), __ZH_BOP_dotcalldotend_VecIntP((&(vec))));
-  __ZH_LOP_put_str("after sort:  ");
-  __ZH_LOP_out_VecIntP((&(vec)));
-  __ZH_LOP_out_int(__ZH_BOP_dotcalldotback_VecIntP((&(vec))));
-  (t) = (__ZH_BOP_dotcalldotbegin_VecIntP((&(vec))));
-  __ZH_BOP_dotcalldotdtor_VecIntP((&(vec)));
+  __ZH_TYPE_Pairlessintspaceintgreater t;
+  (t) = (__ZH_LOP_gen_());
+  __ZH_LOP_out_int((t).first);
+  __ZH_LOP_out_int((t).second);
 }

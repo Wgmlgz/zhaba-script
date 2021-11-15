@@ -19,6 +19,7 @@ type VecInt
 ```
 
 ### Code style
+
 In zhaba-script code style you should name your custom types in `PascalCase` and members in `snake_case`
 
 # Member functions

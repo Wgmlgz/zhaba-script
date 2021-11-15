@@ -33,3 +33,5 @@ fn qsort intP lhs intP rhs
     auto pi = partition(lhs rhs)
     qsort(lhs pi)
     qsort(pi+1 rhs)
+
+fn char aschar str s: <<< *(s as charP)

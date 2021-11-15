@@ -6,3 +6,4 @@
 #include "Scope.hpp"
 #include "Types.hpp"
 #include "SyntaxTree.hpp"
+#include "Generics.hpp"

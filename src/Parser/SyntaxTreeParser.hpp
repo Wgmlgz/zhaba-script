@@ -2,6 +2,7 @@
 #include "../Lang/Lang.hpp"
 #include "../TreeLib/Tree.hpp"
 #include "DefinitionsParser.hpp"
+#include "TypeParser.hpp"
 
 STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo& parent_scope, types::Type retT) {
   auto res = new STBlock;
@@ -15,7 +16,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
       try {
         if (!autoT) type = types::parse(line->begin);
         else ++line->begin;
-      }  catch (...) {
+      } catch (std::runtime_error err) {
         is_var_decl = false;
       }
       if (is_var_decl) {
@@ -210,47 +211,6 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
   return res;
 }
 
-types::StructInfo parseStruct(ast::ASTBlock* block) {
-  types::StructInfo struct_info;
-
-  for (auto node : block->nodes) {
-    if (auto line = dynamic_cast<ast::ASTLine*>(node)) {
-      /** Members line parsing */
-      if (line->end - line->begin < 2) {
-        throw ParserError(*line->begin, *line->end,
-                          "Expected memeber type with names like 'int a b c'");
-      }
-
-      types::Type cur_type;
-      auto cur = line->begin;
-      try {
-        cur_type = types::parse(cur);
-      } catch (...) {
-        throw ParserError(*line->begin, "Expected valid type");
-      }
-      cur_type.setLval(true);
-
-      for (auto i = cur; i != line->end; ++i) {
-        if (i->token == "space") {
-          continue;
-        }
-
-        /** TODO: proper member name validation */
-        if (i->token != "id") {
-          throw ParserError(*i, "Expected member name as identifier");
-        }
-        if (struct_info.members.count(i->val)) {
-          throw ParserError(*i, "Member '" + i->val + "'already exist");
-        }
-        struct_info.members[i->val] = cur_type;
-      }
-    } else {
-      throw ParserError("Unexprected block");
-    }
-  }
-  return struct_info;
-}
-
 STTree* parseAST(ast::ASTBlock* main_block) {
   STTree* res = new STTree;
   auto cur = main_block->nodes.begin();
@@ -260,8 +220,8 @@ STTree* parseAST(ast::ASTBlock* main_block) {
       const auto& id = line->begin->val;
       if (id == "type") {
         /** Struct declaration */
-        if (line->end - line->begin != 3)
-          throw ParserError(*line->end, "Expected type name and nothing else");
+        if (line->end - line->begin < 3)
+          throw ParserError(*line->end, "Expected type name");
         if ((line->begin + 1)->token != "space" or (line->begin + 2)->token != "id")
           throw ParserError(*line->end, "Expected identifier token for struct type name");
 
@@ -271,18 +231,39 @@ STTree* parseAST(ast::ASTBlock* main_block) {
             "Type '" + name + "'already exist");
         }
         
-        /** TODO: parse template */
-        bool isTemplate = false;
+        bool isGeneric = false;
+        std::vector<std::string> generic;
+
+        auto token = line->begin + 3;
+        while (token->token != "line end") {
+          if (token->token == "space") ++token;
+          else if (token->token == "id") {
+            generic.push_back(token->val);
+            ++token;
+          } else {
+            throw ParserError(*token, "Unexpected token");
+          }
+        }
+        
+        if (generic.size()) isGeneric = true;
+
         ++cur;
 
         /** Parse struct body */
         if (cur == main_block->nodes.end())
           throw ParserError(*line->end, "Expected type body");
-        if (auto block = dynamic_cast<ast::ASTBlock*>(*cur)) {
-          /** Push declarated struct */
-          types::pushStruct(name, parseStruct(block));
+        auto block = dynamic_cast<ast::ASTBlock*>(*cur);
+        if (!block)
+        throw ParserError(*line->end, "Expected type body");
+        if (isGeneric) {
+          try {
+            types::pushGenericType(name, generic, block);
+          } catch (std::runtime_error err) {
+            throw ParserError(*line->begin, *line->end, err.what());
+          }
         } else {
-          throw ParserError(*line->end, "Expected type body");
+          /** Push declarated struct */
+          types::pushStruct(name, types::parseStruct(block));
         }
         ++cur;
       } else if (id == "impl") {
@@ -299,7 +280,7 @@ STTree* parseAST(ast::ASTBlock* main_block) {
         try {
           type = types::parse(token);
           // type.setPtr(type.getPtr() + 1);
-        } catch (...) {
+        } catch (std::runtime_error err) {
             throw ParserError(*line->begin, *line->end,
               "Fail to parse impl type");
         }

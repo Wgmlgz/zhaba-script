@@ -2,8 +2,6 @@ include 'std.zh'
 include 'util.zh'
 include './canvas.zh'
 
-fn char aschar str s: <<< *(s as charP)
-
 fn main
   auto w = 20 h = 20
   auto c = newCanvas(w h)

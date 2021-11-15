@@ -88,7 +88,7 @@ Function* parseOpHeader(tokeniter begin, tokeniter end) {
       func->args.back().type = types::parse(cur);
       ++cur;
       if (cur != end and cur->token == "space") ++cur;
-    } catch (...) {
+    } catch (std::runtime_error err) {
       throw ParserError(*cur, "Expected argument type");
     }
 

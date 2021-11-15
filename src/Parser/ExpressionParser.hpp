@@ -150,7 +150,8 @@ namespace zhexp {
         res.push_back(new TypeLiteral(*i, *i, type));
         --i;
         continue;
-      } catch (...) {}
+      } catch (std::runtime_error err) {
+      }
 
       bool lhs = false, rhs = false;
       if (i->token == "space") {
