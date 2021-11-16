@@ -241,11 +241,13 @@ std::vector<Function*> parseImpl(ast::ASTBlock* block, const types::Type& type,
       types.back().setLval(false);
     }
 
-    func->body = parseASTblock(block, scope, main_scope, func->type);
     zhdata.B_OD[{func->name, types}] = func->type;
     /** '.' priority */
     zhdata.bin_operators[func->name] = 2;
     zhdata.operators.insert(func->name);
+    
+    func->body = parseASTblock(block, scope, main_scope, func->type);
+
     res.push_back(func);
   }
   return res;

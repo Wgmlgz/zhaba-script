@@ -19,8 +19,8 @@ void printUsage() {
 }
 
 const bool deb = 
-true
-// false
+// true
+false
 ;
 int main(int argc, char **argv) {
   CmdParser cmd(argc, argv);

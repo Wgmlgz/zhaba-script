@@ -202,7 +202,7 @@ namespace zhexp {
         if (i->val == "." and
           i != end - 1 and
           i != end - 2 and
-          (i + 1)->token == "id" and
+          ((i + 1)->token == "id" or (i + 1)->token == "operator") and
           (i + 2)->token == "p("
         ) {
           ++i;
@@ -228,14 +228,6 @@ namespace zhexp {
     }
     return res;
   }
-
-  // std::string parseName(Exp* exp) {
-  //   if (auto id = dynamic_cast<IdLiteral*>(exp)) {
-  //     return id->val;
-  //   } else {
-  //     throw ParserError(0, "Expected name");
-  //   }
-  // }
 
   Exp* postprocess(Exp* exp, ScopeInfo& scope_info) {
     if (auto op = dynamic_cast<CCode*>(exp)) {
