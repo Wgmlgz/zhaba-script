@@ -30,14 +30,15 @@ std::string compileFile(std::filesystem::path file_path) {
   }
 
   auto stree = parseAST(ast);
-  auto st_generic = stree->toGenericTree();
 
   if (zhdata.bools["show_st"]) {
     std::cout << "st:\n";
+    auto st_generic = stree->toGenericTree();
     printCompact(st_generic);
   }
   if (zhdata.bools["show_st_cool"]) {
     std::cout << "st:\n";
+    auto st_generic = stree->toGenericTree();
     printASCII(st_generic);
   }
 

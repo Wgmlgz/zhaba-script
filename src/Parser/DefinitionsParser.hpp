@@ -22,7 +22,7 @@ void validateFunction(const Function& func, tokeniter begin, tokeniter end) {
   }
 }
 
-Function* parseOpHeader(tokeniter begin, tokeniter end) {
+Function* parseOpHeader(tokeniter begin, tokeniter end, const ScopeInfo& scope) {
   if (begin >= end) throw ParserError(*begin, "Expected operator declaration");
   auto func = new Function;
   auto cur = begin;
@@ -62,11 +62,11 @@ Function* parseOpHeader(tokeniter begin, tokeniter end) {
     throw ParserError(*cur, "Expected type or operator name");
   } else {
     try {
-      func->type = types::parse(cur);
+      func->type = types::parse(cur, scope);
       ++cur;
       if (cur != end and cur->token == "space") ++cur;
-    } catch (...) {
-      /* Implicit void type */ 
+    } catch (std::runtime_error err) {
+      /* Implicit void type */
     }
   }
 
@@ -85,7 +85,7 @@ Function* parseOpHeader(tokeniter begin, tokeniter end) {
   while (cur != end) {
     func->args.emplace_back();
     try {
-      func->args.back().type = types::parse(cur);
+      func->args.back().type = types::parse(cur, scope);
       ++cur;
       if (cur != end and cur->token == "space") ++cur;
     } catch (std::runtime_error err) {

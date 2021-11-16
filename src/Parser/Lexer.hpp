@@ -13,25 +13,31 @@
 
 /* Token */
 struct Token {
+  const std::string orig_token;
   std::string token;
-  std::string val;
-  size_t pos;
-  size_t line;
+  const std::string val;
+  const size_t pos;
+  const size_t line;
   const std::string& filename;
 
   Token(
-    std::string new_token,
-    std::string new_type,
+    const std::string& new_token,
+    const std::string& new_type,
     size_t new_pos,
     size_t new_line,
     const std::string& new_filename
   ) :
+    orig_token(new_token),
     token(new_token),
     val(new_type),
     pos(new_pos),
     line(new_line),
     filename(new_filename)
   {}
+
+  void reset() {
+    token = orig_token;
+  }
 };
 
 typedef std::vector<Token>::iterator tokeniter;
@@ -100,5 +106,3 @@ public:
     return parse_res;
   }
 };
-
-

@@ -1,0 +1,83 @@
+// slassic vector for i64
+type Vec T
+  int size
+  int capacity
+  TP head
+
+impl Vec
+  fn free_mem
+    ? slf.head as int: free(slf.head as int)
+    slf.size = 0
+    slf.capacity = 0
+    slf.head = 0 as TP
+  
+  fn double_capacity
+    auto new_capacity = slf.capacity
+    T item
+    int item_size
+    #'item_size = sizeof(item)'
+    ? new_capacity == 0
+      new_capacity = 1
+      slf.head = malloc(item_size) as TP
+    \ &new_capacity *= 2
+      slf.head = realloc(slf.head as int, new_capacity * item_size) as TP
+    slf.capacity = new_capacity
+
+  fn TP atP int pos
+    T item
+    int item_size
+    #'item_size = sizeof(item)'
+    <<< (((slf.head) as int) + pos * item_size) as TP
+
+  fn T at int pos
+    <<< *slf.atP(pos)
+  
+  fn push_back T val
+    ? slf.size == slf.capacity: slf.double_capacity()
+    *slf.atP(slf.size) = val
+    &slf.size += 1
+  
+  fn TP begin: <<< slf.head
+  fn TP end: <<< slf.atP(slf.size)
+  fn T front: <<< *slf.head
+  fn T back: <<< *slf.atP(slf.size-1)
+  fn TP frontP: <<< slf.head
+  fn TP backP: <<< slf.atP(slf.size-1)
+
+  fn dtor: slf.free_mem()
+  fn ctor int size
+    slf.head = 0 as TP
+    slf.size = 0
+    slf.capacity = 0
+    @ slf.capacity < size: slf.double_capacity()
+    slf.size = size
+  
+  fn ctor: slf.ctor(0)
+
+  // fn VecInt newVecInt int size
+  //   VecInt slf
+    
+
+  // fn VecInt newVecInt
+  //   <<< newVecInt(0)
+
+  fn print
+    int i = 0
+    put('[')
+    @ i=0 i<(slf.size) (&i += 1)
+     ? i: put(' ')
+     put(slf.at(i))
+    out(']')
+
+  // lop deb VecIntP vec
+  //   put('size: ')
+  //   out(vec.size)
+
+  //   put('capacity: ')
+  //   out(vec.capacity)
+
+  //   put('head: ')
+  //   out(vec.head as u64)
+
+  //   put('content: ')
+  //   out(vec)

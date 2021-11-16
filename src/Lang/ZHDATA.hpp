@@ -5,6 +5,7 @@
 #include <map>
 #include <list>
 #include "Types.hpp"
+#include "SyntaxTree.hpp"
 #include "LangTables.hpp"
 
 struct ZHDATA {
@@ -24,6 +25,9 @@ struct ZHDATA {
   std::map<types::funcHead, types::Type> PR_OD;
   std::map<types::funcHead, types::Type> PO_OD;
   std::map<types::funcHead, types::Type> FN_OD;
+
+  /** main syntax tree */
+  STTree* sttree;
 
   int file_offset = 0;
   Lexer lexer = tables::lexer_tokens;

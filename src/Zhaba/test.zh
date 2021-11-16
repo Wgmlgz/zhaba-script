@@ -1,19 +1,24 @@
 include 'std.zh'
-include 'vecint.zh'
+include 'vec.zh'
 include 'range.zh'
 include 'util.zh'
 
-type Pair T1 T2 
-  T1 first
-  T2 second
-
-fn Pair<int int> gen
-  Pair<int int> p
-  p.first = 228
-  p.second = 322
-  <<< p
-
+impl Vec
+  fn sort
+    
 fn main
-  auto t = gen()
-  out t.first
-  out t.second
+  Vec<int> a
+  a.ctor()
+  a.push_back(1)
+  a.push_back(2)
+  a.push_back(3)
+  a.print()
+  a.dtor()
+
+  Vec<char> b
+  b.ctor()
+  b.push_back(aschar('a'))
+  b.push_back(aschar('b'))
+  b.push_back(aschar('c'))
+  b.print()
+  b.dtor()

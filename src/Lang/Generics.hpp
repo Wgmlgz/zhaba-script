@@ -11,6 +11,7 @@ namespace types {
     std::string name;
     std::vector<std::string> names;
     ast::ASTBlock* block = nullptr;
+    std::vector<ast::ASTBlock*> impl_blocks;
 
     std::string toString() {
       auto res = name;

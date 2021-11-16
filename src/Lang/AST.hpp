@@ -13,12 +13,16 @@
 namespace ast {
 struct ASTNode {
   virtual ~ASTNode() = default;
+  virtual void reset() {};
 };
 
 struct ASTLine : public ASTNode {
-  tokeniter begin, end;
+  const tokeniter begin, end;
   ASTLine(tokeniter new_begin, tokeniter new_end)
       : begin{new_begin}, end{new_end} {}
+  virtual void reset() override {
+    std::for_each(begin, end, [](Token& i) { i.reset(); });
+  }
 };
 
 struct ASTBlock : public ASTNode {
@@ -32,6 +36,12 @@ struct ASTBlock : public ASTNode {
   ASTBlock(size_t new_offset = 0, bool new_undef_offset = false,
            size_t new_line = 0)
       : offset{new_offset}, undef_offset{new_undef_offset}, line{new_line} {}
+
+  virtual void reset() override {
+    for(auto& i : nodes) {
+      i->reset();
+    }
+  }
 };
 
 std::string lineToStr(tokeniter begin, tokeniter end) {

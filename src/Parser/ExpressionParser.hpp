@@ -98,7 +98,7 @@ namespace zhexp {
     }
   }
 
-  std::vector<Exp*> preprocess(tokeniter begin, tokeniter end) {
+  std::vector<Exp*> preprocess(tokeniter begin, tokeniter end, const ScopeInfo& scope) {
     auto res = std::vector<Exp*>{};
     int pcount = 0;
 
@@ -146,7 +146,7 @@ namespace zhexp {
 
       try {
         auto pos = i->pos;
-        auto type = types::parse(i);
+        auto type = types::parse(i, scope);
         res.push_back(new TypeLiteral(*i, *i, type));
         --i;
         continue;
@@ -445,7 +445,7 @@ namespace zhexp {
   }
 
   Exp* parse(std::vector<Token>::iterator begin, std::vector<Token>::iterator end, ScopeInfo& scope_info) {
-    auto exp_res = preprocess(begin, end);
+    auto exp_res = preprocess(begin, end, scope_info);
     Exp* exp = buildExp(exp_res.begin(), exp_res.end());
     if (zhdata.bools["exp_parser_logs"]) zhexp::printExpTree(exp);
     exp = postprocess(exp, scope_info);
