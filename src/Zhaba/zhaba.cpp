@@ -19,8 +19,8 @@ void printUsage() {
 }
 
 const bool deb = 
-// true
-false
+true
+// false
 ;
 int main(int argc, char **argv) {
   CmdParser cmd(argc, argv);
@@ -57,7 +57,7 @@ int main(int argc, char **argv) {
     }
     catch (ParserError error) {
       std::cout << error.toString();
-    } catch (std::runtime_error err) {
+    } catch (const std::exception& err) {
       std::cout << err.what() << std::endl;
     } catch (...) {
       std::cout << "Uncaught error :(" << std::endl;

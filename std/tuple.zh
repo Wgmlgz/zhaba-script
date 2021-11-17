@@ -1,0 +1,73 @@
+type Tp1 T1
+  T1 v1
+type Tp2 T1 T2
+  T1 v1
+  T2 v2
+type Tp3 T1 T2 T3
+  T1 v1
+  T2 v2
+  T3 v3
+type Tp4 T1 T2 T3 T4
+  T1 v1
+  T2 v2
+  T3 v3
+  T4 v4
+type Tp5 T1 T2 T3 T4 T5
+  T1 v1
+  T2 v2
+  T3 v3
+  T4 v4
+  T5 v5
+type Tp6 T1 T2 T3 T4 T5 T6
+  T1 v1
+  T2 v2
+  T3 v3
+  T4 v4
+  T5 v5
+  T6 v6
+type Tp7 T1 T2 T3 T4 T5 T6 T7
+  T1 v1
+  T2 v2
+  T3 v3
+  T4 v4
+  T5 v5
+  T6 v6
+  T7 v7
+type Tp8 T1 T2 T3 T4 T5 T6 T7 T8
+  T1 v1
+  T2 v2
+  T3 v3
+  T4 v4
+  T5 v5
+  T6 v6
+  T7 v7
+  T8 v8
+type Tp9 T1 T2 T3 T4 T5 T6 T7 T8 T9
+  T1 v1
+  T2 v2
+  T3 v3
+  T4 v4
+  T5 v5
+  T6 v6
+  T7 v7
+  T8 v8
+  T9 v9
+
+type Arg1 T1
+  char unused
+type Arg2 T1 T2
+  char unused
+type Arg3 T1 T2 T3
+  char unused
+type Arg4 T1 T2 T3 T4
+  char unused
+type Arg5 T1 T2 T3 T4 T5
+  char unused
+type Arg6 T1 T2 T3 T4 T5 T6
+  char unused
+type Arg7 T1 T2 T3 T4 T5 T6 T7
+  char unused
+type Arg8 T1 T2 T3 T4 T5 T6 T7 T8
+  char unused
+type Arg9 T1 T2 T3 T4 T5 T6 T7 T8 T9
+  char unused

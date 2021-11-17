@@ -1,50 +1,17 @@
-include 'std.zh'
-include 'vec.zh'
-include 'range.zh'
-include 'util.zh'
+use 'std.zh'
+use 'vec.zh'
+use 'range.zh'
+use 'tuple.zh'
+use 'util.zh'
 
-op 9 int < char a char b: <<< a as int < b as int
-
-impl Vec
-  fn swap TP a TP b
-    T t = *a
-    *a = *b
-    *b = t
-
-  fn int get_item_size
-    T item
-    int item_size
-    #'item_size = sizeof(item)'
-    <<< item_size
-
-  fn next_ptr TPP ptr: *ptr = (*ptr as int + slf.get_item_size()) as TP
-  fn prev_ptr TPP ptr: *ptr = (*ptr as int - slf.get_item_size()) as TP
+fn Vec<char> to_vec str s
+  Vec<char> res
   
-  fn int ptr_uneq TP a TP b
-    <<< a as int != b as int
 
-  fn TP partition TP low TP high
-    slf.prev_ptr(&high)
-    TP pivot = high i = low j = low
-    TP i = low
-
-    @ (j = low) (slf.ptr_uneq(j pivot)) (slf.next_ptr(&j))
-      ? *j < *pivot
-        slf.swap(i j)
-        slf.next_ptr(&i)
-
-    slf.swap(i  pivot)
-    <<< i
-
-  fn qsort TP lhs TP rhs
-    ? rhs as int - lhs as int > 8
-      auto pi = slf.partition(lhs rhs)
-      slf.qsort(lhs pi)
-      slf.next_ptr(&pi)
-      slf.qsort(pi rhs)
-  
-  fn sort
-    slf.qsort(slf.begin() slf.end())
+lop out StrP s
+  auto r = 0..s.vec.size
+  @ r.nxt()
+    out s.vec.at(r.cur)
 
 fn main
   Vec<int> a
@@ -55,7 +22,6 @@ fn main
   a.print()
   a.sort()
   a.print()
-  a.dtor()
 
   Vec<char> b
   b.ctor()
@@ -65,4 +31,26 @@ fn main
   b.print()
   b.sort()
   b.print()
+
+  int i1 = 2 i2 = 5
+  
+  Arg1<int> t
+  t.swap(&i1, &i2)
+  outs(i1)
+  out(i2)
+  outs(i1)
+  out(i2)
+
+  out t.sizeof()
+
+  Str s
+  s.ctor()
+  &s += aschar('a')
+  &s += aschar('b')
+  &s += aschar('c')
+  &s += aschar('d')
+  out &s
+
+  a.dtor()
   b.dtor()
+  s.dtor()

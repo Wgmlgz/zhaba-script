@@ -1,6 +1,6 @@
 // Placeholder while compiler doesn't have this by default
-lop 3  int -  int a: #return -a;
-lop 3  int !  int a: #return !a;
+lop int -  int a: #return -a;
+lop int !  int a: #return !a;
 op 5  int /  int a int b: #return a / b;
 op 5  int %  int a int b: #return a % b;
 op 5  int %  u64 a int b: #return a % b;

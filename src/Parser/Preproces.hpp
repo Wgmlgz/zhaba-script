@@ -38,7 +38,7 @@ void preprocess(std::filesystem::path file_path, std::vector<Token>& res, int de
   for (auto i = tokens.begin(); i != tokens.end(); ++i) {
     /* include <filename>*/
     if (i->token == "comment.block" or i->token == "comment.line") continue;
-    if (i->val == "include") {
+    if (i->val == "use") {
       if (i + 1 == tokens.end()) 
         throw ParserError(i->pos, "Expected file path");
       if (depth >= 16)
@@ -55,9 +55,12 @@ void preprocess(std::filesystem::path file_path, std::vector<Token>& res, int de
       } else {
         path_str = i->val;
       }
-      std::filesystem::path path = path_str;
-      if (path.is_relative()) path = file_path.parent_path() / path;
-      preprocess(path, res, depth + 1);
+      if (!zhdata.used_modules.contains(path_str)) {
+        zhdata.used_modules.insert(path_str);
+        std::filesystem::path path = path_str;
+        if (path.is_relative()) path = file_path.parent_path() / path;
+        preprocess(path, res, depth + 1);
+      }
     } else {
       res.push_back(*i);
     }

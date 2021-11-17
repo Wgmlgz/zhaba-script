@@ -33,6 +33,7 @@ struct ZHDATA {
   Lexer lexer = tables::lexer_tokens;
 
   /** std::list because need valid iterator */
+  std::set<std::string> used_modules;
   std::list<std::string> included_files_names;
   std::vector<std::string> included_files;
   std::map<std::string, std::vector<std::string>> files_lines;
