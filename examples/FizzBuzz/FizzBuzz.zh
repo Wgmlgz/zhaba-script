@@ -1,14 +1,11 @@
-include 'std.zh'
-include 'range.zh'
+use 'std.zh'
 
 fn fizz_buzz int mx
-  auto r = 0..mx
-  @ r.nxt()
-    auto i = r.cur 
+  @ i:=1 i<=mx i=i+1
     ? i %% 3 && i %% 5: out 'FizzBuzz'
     | i %% 3: out 'Fizz'
     | i %% 5: out 'Buzz'
     \ out i
 
 fn main
-  fizz_buzz(50)
+  fizz_buzz(20)

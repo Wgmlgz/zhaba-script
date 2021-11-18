@@ -72,6 +72,7 @@ __ZH_TYPE_Range __ZH_BOP_dotdot_intint(i64 begin, i64 end);
 i64 __ZH_BOP_dotcalldotvalid_RangeP(__ZH_TYPE_Range* slf);
 i64 __ZH_BOP_dotcalldotnxt_RangeP(__ZH_TYPE_Range* slf);
 void __ZH_LOP_sleep_int(i64 n);
+void __ZH_LOP_cls_();
 u64 __ZH_LOP_rng_();
 void __ZH_LOP_swap_intPintP(i64* a, i64* b);
 char __ZH_LOP_aschar_str(char* s);
@@ -262,6 +263,9 @@ i64 __ZH_BOP_dotcalldotnxt_RangeP(__ZH_TYPE_Range* slf) {
 void __ZH_LOP_sleep_int(i64 n) {
   unsigned int retTime = clock() + n;
   while (clock() < retTime);
+}
+void __ZH_LOP_cls_() {
+   system("cls");
 }
 u64 __ZH_LOP_rng_() {
   static unsigned long long x = 666;
