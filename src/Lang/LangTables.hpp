@@ -19,16 +19,16 @@ namespace tables {
     {"p)", R"(((\))))"},
   };
   std::unordered_set<std::string> banned_ids {
-    "?", "@", "<<<"
+    "?", "@", "<<<", ":=", "as", "|", "\\"
   };
   std::unordered_set<std::string> flow_ops {
     "?", "@", "<<<"
   };
   std::unordered_map<std::string, int64_t> bin_operators {
-    {".", 2}, {"=", 10}, {",", 17}, {"as", 4}
+    {".", 2}, {"=", 10}, {":=", 10}, {",", 17}, {"as", 4}
   };
   std::unordered_set<std::string> operators {
-    ".", "=", ",", "*", "&", "as"
+    ".", "=", ":=", ",", "*", "&", "as"
   };
   std::unordered_set<std::string> functions {
     

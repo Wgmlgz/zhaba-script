@@ -229,13 +229,13 @@ namespace zhexp {
     return res;
   }
 
-  Exp* postprocess(Exp* exp, ScopeInfo& scope_info) {
+  Exp* postprocess(Exp* exp, ScopeInfo& scope_info, ScopeInfo* block_scope) {
     if (auto op = dynamic_cast<CCode*>(exp)) {
       return op;
     }
     if (auto op = dynamic_cast<FlowOperator*>(exp)) {
       exp->type = types::Type(types::TYPE::voidT);
-      if (op->operand) op->operand = postprocess(op->operand, scope_info);
+      if (op->operand) op->operand = postprocess(op->operand, scope_info, block_scope);
     } else if (auto op = dynamic_cast<IntLiteral*>(exp)) {
       exp->type = types::Type(types::TYPE::i64T);
     } else if (auto op = dynamic_cast<StrLiteral*>(exp)) {
@@ -251,8 +251,8 @@ namespace zhexp {
         throw ParserError(op->begin, op->end, "Unknown variable '" + op->val + "'");
     } else if (auto op = dynamic_cast<BinOperator*>(exp)) {
       if (op->val == ",") {
-        op->lhs = postprocess(op->lhs, scope_info);
-        op->rhs = postprocess(op->rhs, scope_info);
+        op->lhs = postprocess(op->lhs, scope_info, block_scope);
+        op->rhs = postprocess(op->rhs, scope_info, block_scope);
 
         bool b = true;
         if (auto t = dynamic_cast<Tuple*>(op->lhs)) {
@@ -269,9 +269,11 @@ namespace zhexp {
           exp = t;
           exp->type = types::Type(types::TYPE::voidT);
         }
-      } else if (op->val == "=") {
-        op->lhs = postprocess(op->lhs, scope_info);
-        op->rhs = postprocess(op->rhs, scope_info);
+      }
+      /** Regular assignment */
+      else if (op->val == "=") {
+        op->lhs = postprocess(op->lhs, scope_info, block_scope);
+        op->rhs = postprocess(op->rhs, scope_info, block_scope);
 
         if (op->lhs->type.rvalClone() <=> op->rhs->type.rvalClone() != 0) {
           throw ParserError(op->begin, op->end, "Types (" +
@@ -286,9 +288,34 @@ namespace zhexp {
           throw ParserError(op->lhs->begin, op->end, "Left operant for '=' must be lval");
         }
       }
-      /** Member acces */
+      /** Variable creation & assingment */
+      else if (op->val == ":=") {
+        op->rhs = postprocess(op->rhs, scope_info, block_scope);
+        if (auto id_l = dynamic_cast<IdLiteral*>(op->lhs)) {
+          if (op->rhs->type.getTypeId() == types::TYPE::voidT)
+            throw ParserError(op->begin, op->rhs->end, "Variable type cannot be void");
+          
+          scope_info.vars[id_l->val] = op->rhs->type;
+          scope_info.vars[id_l->val].setLval(true);
+
+          if (block_scope) {
+            block_scope->vars[id_l->val] = op->rhs->type;
+            block_scope->vars[id_l->val].setLval(true);
+          }
+
+          auto tmp = new Variable(op->lhs->begin, op->lhs->end);
+          tmp->name = id_l->val;
+          tmp->type = scope_info.vars[id_l->val];
+          op->lhs = tmp;
+          op->val = "=";
+          op->type = op->lhs->type;
+        } else {
+          throw ParserError(op->lhs->begin, op->lhs->end, "Expected id literal");
+        }
+      }
+      /** Member access */
       else if (op->val == ".") {
-        op->lhs = postprocess(op->lhs, scope_info);
+        op->lhs = postprocess(op->lhs, scope_info, block_scope);
         if (auto id = dynamic_cast<IdLiteral*>(op->rhs)) {
           if (static_cast<int>(op->lhs->type.getTypeId()) >= types::first_struct_id) {
             if (types::structs[static_cast<int>(op->lhs->type.getTypeId())].members.count(id->val)) {
@@ -308,8 +335,10 @@ namespace zhexp {
         } else {
           throw ParserError(op->begin, op->end, "Expected identifier near '.");
         }
-      } else if (op->val == "as") {
-        op->lhs = postprocess(op->lhs, scope_info);
+      }
+      /** Type cast */
+      else if (op->val == "as") {
+        op->lhs = postprocess(op->lhs, scope_info, block_scope);
         if (auto type_l = dynamic_cast<TypeLiteral*>(op->rhs)) {
           op->type = type_l->literal_type;
           op->type.setLval(op->lhs->type.getLval());
@@ -317,9 +346,9 @@ namespace zhexp {
           throw ParserError(op->begin, op->end, "Expected type literal");
         }
       } else {
-        op->lhs = postprocess(op->lhs, scope_info);
-        op->rhs = postprocess(op->rhs, scope_info);
-        
+        op->lhs = postprocess(op->lhs, scope_info, block_scope);
+        op->rhs = postprocess(op->rhs, scope_info, block_scope);
+
         /** Member call */
         if (op->val.size() >= 6 and op->val.substr(0, 6) == ".call.") {
           if (op->lhs->type.getPtr() == 0) {
@@ -362,7 +391,7 @@ namespace zhexp {
         }
       }
     } else if (auto op = dynamic_cast<PostfixOperator*>(exp)) {
-      op->child = postprocess(op->child, scope_info);
+      op->child = postprocess(op->child, scope_info, block_scope);
       std::vector<types::Type> types;
       if (auto tuple = dynamic_cast<Tuple*>(op->child)) {
         for (auto exp : tuple->content) {
@@ -384,8 +413,8 @@ namespace zhexp {
           op->begin, op->end, "There is no instance of postfix operator '" + op->val +
           "' for type: " + op->child->type.toString());
     } else if (auto op = dynamic_cast<PrefixOperator*>(exp)) {
-      op->child = postprocess(op->child, scope_info);
-      
+      op->child = postprocess(op->child, scope_info, block_scope);
+
       if (op->val == "&") {
         if (!op->child->type.getLval())
           throw ParserError(op->begin, op->end, "Cannot get ptr of rval");
@@ -436,11 +465,13 @@ namespace zhexp {
     return exp;
   }
 
-  Exp* parse(std::vector<Token>::iterator begin, std::vector<Token>::iterator end, ScopeInfo& scope_info) {
+  Exp* parse(std::vector<Token>::iterator begin,
+             std::vector<Token>::iterator end, ScopeInfo& scope_info,
+             ScopeInfo* block_scope) {
     auto exp_res = preprocess(begin, end, scope_info);
     Exp* exp = buildExp(exp_res.begin(), exp_res.end());
     if (zhdata.bools["exp_parser_logs"]) zhexp::printExpTree(exp);
-    exp = postprocess(exp, scope_info);
+    exp = postprocess(exp, scope_info, block_scope);
     if (zhdata.bools["exp_parser_logs"]) zhexp::printExpTree(exp);
     return exp;
   }

@@ -44,7 +44,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
               if (assign->val != "=")
                 throw ParserError(i->begin, i->end, "Expected assignment, but '" + assign->val + "' found");
               if (auto id = dynamic_cast<zhexp::IdLiteral*>(assign->lhs)) {
-                assign->rhs = zhexp::postprocess(assign->rhs, cur_scope);
+                assign->rhs = zhexp::postprocess(assign->rhs, cur_scope, &res->scope_info);
                 assign->rhs->type.setLval(false);
                 /* push variable */
                 if (autoT) {
@@ -64,7 +64,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
                 cur_scope.vars[id->val].setLval(true);
 
                 /* push assignment expression */
-                assign->lhs = zhexp::postprocess(assign->lhs, cur_scope);
+                assign->lhs = zhexp::postprocess(assign->lhs, cur_scope, &res->scope_info);
                 auto tmp = new STExp;
                 tmp->exp = assign;
                 res->nodes.push_back(tmp);
@@ -76,7 +76,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
         }
       } else {
         /* not variable declaration so normal parsing */
-        auto exp = zhexp::parse(line->begin, line->end, cur_scope);
+        auto exp = zhexp::parse(line->begin, line->end, cur_scope, &res->scope_info);
         // if (zhdata.bools["show_exp_tmp_tree"]) {
         //   std::cout << "tmp_tree:\n";
         //   zhexp::printExpTree(exp);
@@ -98,7 +98,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
                       if (elseif_body->nodes.size() == 2) {
                         if (auto line = dynamic_cast<ast::ASTLine*>(elseif_body->nodes[0])) {
                           auto exp =
-                            zhexp::parse(line->begin, line->end, cur_scope);
+                            zhexp::parse(line->begin, line->end, cur_scope, &res->scope_info);
                           if (auto block = dynamic_cast<ast::ASTBlock*>(elseif_body->nodes[1])) {
                             tmp_if->elseif_body.emplace_back(
                               exp, parseASTblock(block, cur_scope, res->scope_info, retT));

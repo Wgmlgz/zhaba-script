@@ -132,11 +132,15 @@
       "name": "constant.int"
     },
     {
+      "match": ":=",
+      "name": "constant.character.escape"
+    },
+    {
       "match": "\\:|\\?|\\@|\\\\",
       "name": "keyword.nextblock"
     },
     {
-      "match": "[\\.\\,\\+\\-\\*\\\\\\%\\<\\>\\=\\^\\&\\:\\|\\/\\!\\#]+",
+      "match": "[\\.\\,\\+\\-\\*\\\\\\%\\<\\>\\=\\^\\&\\:\\|\\/\\!\\#]+|as",
       "name": "constant.character.escape"
     },
     {
