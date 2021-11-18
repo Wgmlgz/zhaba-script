@@ -11,12 +11,6 @@ struct __PROT_ZH_TYPE_Range;
 typedef struct __PROT_ZH_TYPE_Range __ZH_TYPE_Range;
 struct __PROT_ZH_TYPE_Veclesschargreater;
 typedef struct __PROT_ZH_TYPE_Veclesschargreater __ZH_TYPE_Veclesschargreater;
-struct __PROT_ZH_TYPE_Str;
-typedef struct __PROT_ZH_TYPE_Str __ZH_TYPE_Str;
-struct __PROT_ZH_TYPE_Veclessintgreater;
-typedef struct __PROT_ZH_TYPE_Veclessintgreater __ZH_TYPE_Veclessintgreater;
-struct __PROT_ZH_TYPE_Arg1lessintgreater;
-typedef struct __PROT_ZH_TYPE_Arg1lessintgreater __ZH_TYPE_Arg1lessintgreater;
 
 struct __PROT_ZH_TYPE_Range {
   i64 init;
@@ -28,17 +22,6 @@ struct __PROT_ZH_TYPE_Veclesschargreater {
   char* head;
   i64 capacity;
   i64 size;
-};
-struct __PROT_ZH_TYPE_Str {
-  __ZH_TYPE_Veclesschargreater vec;
-};
-struct __PROT_ZH_TYPE_Veclessintgreater {
-  i64* head;
-  i64 capacity;
-  i64 size;
-};
-struct __PROT_ZH_TYPE_Arg1lessintgreater {
-  char unused;
 };
 i64 __ZH_LOP_minus_int(i64 a);
 i64 __ZH_LOP_exclamation_int(i64 a);
@@ -115,36 +98,8 @@ i64 __ZH_BOP_dotcalldotptr_uneq_VeclesschargreaterPcharPcharP(__ZH_TYPE_Veclessc
 char* __ZH_BOP_dotcalldotpartition_VeclesschargreaterPcharPcharP(__ZH_TYPE_Veclesschargreater* slf, char* low, char* high);
 void __ZH_BOP_dotcalldotqsort_VeclesschargreaterPcharPcharP(__ZH_TYPE_Veclesschargreater* slf, char* lhs, char* rhs);
 void __ZH_BOP_dotcalldotsort_VeclesschargreaterP(__ZH_TYPE_Veclesschargreater* slf);
-void __ZH_BOP_dotcalldotctor_StrP(__ZH_TYPE_Str* slf);
-void __ZH_BOP_dotcalldotdtor_StrP(__ZH_TYPE_Str* slf);
-void __ZH_BOP_plusequal_StrPchar(__ZH_TYPE_Str* slf, char ch);
-void __ZH_LOP_out_StrP(__ZH_TYPE_Str* s);
+__ZH_TYPE_Veclesschargreater __ZH_LOP_to_vec_str(char* s);
 int main(int argc, char *argv[]) ;
-void __ZH_BOP_dotcalldotfree_mem_VeclessintgreaterP(__ZH_TYPE_Veclessintgreater* slf);
-void __ZH_BOP_dotcalldotdouble_capacity_VeclessintgreaterP(__ZH_TYPE_Veclessintgreater* slf);
-i64* __ZH_BOP_dotcalldotatP_VeclessintgreaterPint(__ZH_TYPE_Veclessintgreater* slf, i64 pos);
-i64 __ZH_BOP_dotcalldotat_VeclessintgreaterPint(__ZH_TYPE_Veclessintgreater* slf, i64 pos);
-void __ZH_BOP_dotcalldotpush_back_VeclessintgreaterPint(__ZH_TYPE_Veclessintgreater* slf, i64 val);
-i64* __ZH_BOP_dotcalldotbegin_VeclessintgreaterP(__ZH_TYPE_Veclessintgreater* slf);
-i64* __ZH_BOP_dotcalldotend_VeclessintgreaterP(__ZH_TYPE_Veclessintgreater* slf);
-i64 __ZH_BOP_dotcalldotfront_VeclessintgreaterP(__ZH_TYPE_Veclessintgreater* slf);
-i64 __ZH_BOP_dotcalldotback_VeclessintgreaterP(__ZH_TYPE_Veclessintgreater* slf);
-i64* __ZH_BOP_dotcalldotfrontP_VeclessintgreaterP(__ZH_TYPE_Veclessintgreater* slf);
-i64* __ZH_BOP_dotcalldotbackP_VeclessintgreaterP(__ZH_TYPE_Veclessintgreater* slf);
-void __ZH_BOP_dotcalldotdtor_VeclessintgreaterP(__ZH_TYPE_Veclessintgreater* slf);
-void __ZH_BOP_dotcalldotctor_VeclessintgreaterPint(__ZH_TYPE_Veclessintgreater* slf, i64 size);
-void __ZH_BOP_dotcalldotctor_VeclessintgreaterP(__ZH_TYPE_Veclessintgreater* slf);
-void __ZH_BOP_dotcalldotprint_VeclessintgreaterP(__ZH_TYPE_Veclessintgreater* slf);
-void __ZH_BOP_dotcalldotswap_VeclessintgreaterPintPintP(__ZH_TYPE_Veclessintgreater* slf, i64* a, i64* b);
-i64 __ZH_BOP_dotcalldotget_item_size_VeclessintgreaterP(__ZH_TYPE_Veclessintgreater* slf);
-void __ZH_BOP_dotcalldotnext_ptr_VeclessintgreaterPintPP(__ZH_TYPE_Veclessintgreater* slf, i64** ptr);
-void __ZH_BOP_dotcalldotprev_ptr_VeclessintgreaterPintPP(__ZH_TYPE_Veclessintgreater* slf, i64** ptr);
-i64 __ZH_BOP_dotcalldotptr_uneq_VeclessintgreaterPintPintP(__ZH_TYPE_Veclessintgreater* slf, i64* a, i64* b);
-i64* __ZH_BOP_dotcalldotpartition_VeclessintgreaterPintPintP(__ZH_TYPE_Veclessintgreater* slf, i64* low, i64* high);
-void __ZH_BOP_dotcalldotqsort_VeclessintgreaterPintPintP(__ZH_TYPE_Veclessintgreater* slf, i64* lhs, i64* rhs);
-void __ZH_BOP_dotcalldotsort_VeclessintgreaterP(__ZH_TYPE_Veclessintgreater* slf);
-void __ZH_BOP_dotcalldotswap_Arg1lessintgreaterPintPintP(__ZH_TYPE_Arg1lessintgreater* slf, i64* a, i64* b);
-i64 __ZH_BOP_dotcalldotsizeof_Arg1lessintgreaterP(__ZH_TYPE_Arg1lessintgreater* slf);
 
 i64 __ZH_LOP_minus_int(i64 a) {
   return -a;
@@ -463,212 +418,14 @@ void __ZH_BOP_dotcalldotqsort_VeclesschargreaterPcharPcharP(__ZH_TYPE_Veclesscha
 void __ZH_BOP_dotcalldotsort_VeclesschargreaterP(__ZH_TYPE_Veclesschargreater* slf) {
   __ZH_BOP_dotcalldotqsort_VeclesschargreaterPcharPcharP(slf, __ZH_BOP_dotcalldotbegin_VeclesschargreaterP(slf), __ZH_BOP_dotcalldotend_VeclesschargreaterP(slf));
 }
-void __ZH_BOP_dotcalldotctor_StrP(__ZH_TYPE_Str* slf) {
-  __ZH_BOP_dotcalldotctor_VeclesschargreaterP((&((slf)->vec)));
-}
-void __ZH_BOP_dotcalldotdtor_StrP(__ZH_TYPE_Str* slf) {
-  __ZH_BOP_dotcalldotdtor_VeclesschargreaterP((&((slf)->vec)));
-}
-void __ZH_BOP_plusequal_StrPchar(__ZH_TYPE_Str* slf, char ch) {
-  __ZH_BOP_dotcalldotpush_back_VeclesschargreaterPchar((&((slf)->vec)), ch);
-}
-void __ZH_LOP_out_StrP(__ZH_TYPE_Str* s) {
-  __ZH_TYPE_Range r;
-  (r) = (__ZH_BOP_dotdot_intint(0, ((s)->vec).size));
-  while (__ZH_BOP_dotcalldotnxt_RangeP((&(r)))) {
-    __ZH_LOP_out_char(__ZH_BOP_dotcalldotat_VeclesschargreaterPint((&((s)->vec)), (r).cur));
-  };
+__ZH_TYPE_Veclesschargreater __ZH_LOP_to_vec_str(char* s) {
+  __ZH_TYPE_Veclesschargreater res;
 }
 int main(int argc, char *argv[])  {
-  i64 i2;
-  i64 i1;
-  __ZH_TYPE_Arg1lessintgreater t;
-  __ZH_TYPE_Veclesschargreater b;
-  __ZH_TYPE_Str s;
-  __ZH_TYPE_Range r;
-  __ZH_TYPE_Veclessintgreater a;
-  __ZH_BOP_dotcalldotctor_VeclessintgreaterP((&(a)));
-  (r) = (__ZH_BOP_dotdot_intint(0, 20));
-  while (__ZH_BOP_dotcalldotnxt_RangeP((&(r)))) {
-    __ZH_BOP_dotcalldotpush_back_VeclessintgreaterPint((&(a)), __ZH_BOP_percent_int(__ZH_LOP_rng_(), 10));
-  };
-  __ZH_LOP_out_str("Vec<int> sort:");
-  __ZH_BOP_dotcalldotprint_VeclessintgreaterP((&(a)));
-  __ZH_BOP_dotcalldotsort_VeclessintgreaterP((&(a)));
-  __ZH_BOP_dotcalldotprint_VeclessintgreaterP((&(a)));
-  __ZH_BOP_dotcalldotctor_VeclesschargreaterP((&(b)));
-  (r) = (__ZH_BOP_dotdot_intint(0, 20));
-  while (__ZH_BOP_dotcalldotnxt_RangeP((&(r)))) {
-    __ZH_BOP_dotcalldotpush_back_VeclesschargreaterPchar((&(b)), ((char)(__ZH_BOP_plus_intint(__ZH_BOP_percent_int(__ZH_LOP_rng_(), 26), ((i64)(__ZH_LOP_aschar_str("a")))))));
-  };
-  __ZH_LOP_out_str("Vec<char> sort:");
-  __ZH_BOP_dotcalldotprint_VeclesschargreaterP((&(b)));
-  __ZH_BOP_dotcalldotsort_VeclesschargreaterP((&(b)));
-  __ZH_BOP_dotcalldotprint_VeclesschargreaterP((&(b)));
-  (i1) = (2);
-  (i2) = (5);
-  __ZH_BOP_dotcalldotswap_Arg1lessintgreaterPintPintP((&(t)), (&(i1)), (&(i2)));
-  __ZH_LOP_outs_int(i1);
-  __ZH_LOP_out_int(i2);
-  __ZH_LOP_outs_int(i1);
-  __ZH_LOP_out_int(i2);
-  __ZH_LOP_out_int(__ZH_BOP_dotcalldotsizeof_Arg1lessintgreaterP((&(t))));
-  __ZH_BOP_dotcalldotctor_StrP((&(s)));
-  __ZH_BOP_plusequal_StrPchar((&(s)), __ZH_LOP_aschar_str("a"));
-  __ZH_BOP_plusequal_StrPchar((&(s)), __ZH_LOP_aschar_str("b"));
-  __ZH_BOP_plusequal_StrPchar((&(s)), __ZH_LOP_aschar_str("c"));
-  __ZH_BOP_plusequal_StrPchar((&(s)), __ZH_LOP_aschar_str("d"));
-  __ZH_LOP_out_StrP((&(s)));
-  __ZH_BOP_dotcalldotdtor_VeclessintgreaterP((&(a)));
-  __ZH_BOP_dotcalldotdtor_VeclesschargreaterP((&(b)));
-  __ZH_BOP_dotcalldotdtor_StrP((&(s)));
-}
-void __ZH_BOP_dotcalldotfree_mem_VeclessintgreaterP(__ZH_TYPE_Veclessintgreater* slf) {
-  if (((i64)((slf)->head))) {
-    __ZH_LOP_free_int(((i64)((slf)->head)));
-  }
-  ((slf)->size) = (0);
-  ((slf)->capacity) = (0);
-  ((slf)->head) = (((i64*)(0)));
-}
-void __ZH_BOP_dotcalldotdouble_capacity_VeclessintgreaterP(__ZH_TYPE_Veclessintgreater* slf) {
-  i64 item_size;
-  i64 item;
-  i64 new_capacity;
-  (new_capacity) = ((slf)->capacity);
-   item_size = sizeof(item);
-  if (__ZH_BOP_equalequal_intint(new_capacity, 0)) {
-    (new_capacity) = (1);
-    ((slf)->head) = (((i64*)(__ZH_LOP_malloc_int(item_size))));
-  } else {
-    __ZH_BOP_asteriskequal_intPint((&(new_capacity)), 2);
-    ((slf)->head) = (((i64*)(__ZH_LOP_realloc_intint(((i64)((slf)->head)), __ZH_BOP_asterisk_intint(new_capacity, item_size)))));
-  }
-  ((slf)->capacity) = (new_capacity);
-}
-i64* __ZH_BOP_dotcalldotatP_VeclessintgreaterPint(__ZH_TYPE_Veclessintgreater* slf, i64 pos) {
-  i64 item_size;
-  i64 item;
-   item_size = sizeof(item);
-  return (((i64*)(__ZH_BOP_plus_intint(((i64)((slf)->head)), __ZH_BOP_asterisk_intint(pos, item_size)))));
-}
-i64 __ZH_BOP_dotcalldotat_VeclessintgreaterPint(__ZH_TYPE_Veclessintgreater* slf, i64 pos) {
-  return ((*(__ZH_BOP_dotcalldotatP_VeclessintgreaterPint(slf, pos))));
-}
-void __ZH_BOP_dotcalldotpush_back_VeclessintgreaterPint(__ZH_TYPE_Veclessintgreater* slf, i64 val) {
-  if (__ZH_BOP_equalequal_intint((slf)->size, (slf)->capacity)) {
-    __ZH_BOP_dotcalldotdouble_capacity_VeclessintgreaterP(slf);
-  }
-  ((*(__ZH_BOP_dotcalldotatP_VeclessintgreaterPint(slf, (slf)->size)))) = (val);
-  __ZH_BOP_plusequal_intPint((&((slf)->size)), 1);
-}
-i64* __ZH_BOP_dotcalldotbegin_VeclessintgreaterP(__ZH_TYPE_Veclessintgreater* slf) {
-  return ((slf)->head);
-}
-i64* __ZH_BOP_dotcalldotend_VeclessintgreaterP(__ZH_TYPE_Veclessintgreater* slf) {
-  return (__ZH_BOP_dotcalldotatP_VeclessintgreaterPint(slf, (slf)->size));
-}
-i64 __ZH_BOP_dotcalldotfront_VeclessintgreaterP(__ZH_TYPE_Veclessintgreater* slf) {
-  return ((*((slf)->head)));
-}
-i64 __ZH_BOP_dotcalldotback_VeclessintgreaterP(__ZH_TYPE_Veclessintgreater* slf) {
-  return ((*(__ZH_BOP_dotcalldotatP_VeclessintgreaterPint(slf, __ZH_BOP_minus_intint((slf)->size, 1)))));
-}
-i64* __ZH_BOP_dotcalldotfrontP_VeclessintgreaterP(__ZH_TYPE_Veclessintgreater* slf) {
-  return ((slf)->head);
-}
-i64* __ZH_BOP_dotcalldotbackP_VeclessintgreaterP(__ZH_TYPE_Veclessintgreater* slf) {
-  return (__ZH_BOP_dotcalldotatP_VeclessintgreaterPint(slf, __ZH_BOP_minus_intint((slf)->size, 1)));
-}
-void __ZH_BOP_dotcalldotdtor_VeclessintgreaterP(__ZH_TYPE_Veclessintgreater* slf) {
-  __ZH_BOP_dotcalldotfree_mem_VeclessintgreaterP(slf);
-}
-void __ZH_BOP_dotcalldotctor_VeclessintgreaterPint(__ZH_TYPE_Veclessintgreater* slf, i64 size) {
-  ((slf)->head) = (((i64*)(0)));
-  ((slf)->size) = (0);
-  ((slf)->capacity) = (0);
-  while (__ZH_BOP_less_intint((slf)->capacity, size)) {
-    __ZH_BOP_dotcalldotdouble_capacity_VeclessintgreaterP(slf);
-  };
-  ((slf)->size) = (size);
-}
-void __ZH_BOP_dotcalldotctor_VeclessintgreaterP(__ZH_TYPE_Veclessintgreater* slf) {
-  __ZH_BOP_dotcalldotctor_VeclessintgreaterPint(slf, 0);
-}
-void __ZH_BOP_dotcalldotprint_VeclessintgreaterP(__ZH_TYPE_Veclessintgreater* slf) {
   i64 i;
   (i) = (0);
-  __ZH_LOP_put_str("[");
-  (i) = (0);
-  while (__ZH_BOP_less_intint(i, (slf)->size)) {
-    if (i) {
-      __ZH_LOP_put_str(" ");
-    }
-    __ZH_LOP_put_int(__ZH_BOP_dotcalldotat_VeclessintgreaterPint(slf, i));
-    __ZH_BOP_plusequal_intPint((&(i)), 1);
+  while (__ZH_BOP_less_intint(i, 10)) {
+    __ZH_LOP_out_int(i);
+    (i) = (__ZH_BOP_plus_intint(i, 1));
   };
-  __ZH_LOP_out_str("]");
-}
-void __ZH_BOP_dotcalldotswap_VeclessintgreaterPintPintP(__ZH_TYPE_Veclessintgreater* slf, i64* a, i64* b) {
-  i64 t;
-  (t) = ((*(a)));
-  ((*(a))) = ((*(b)));
-  ((*(b))) = (t);
-}
-i64 __ZH_BOP_dotcalldotget_item_size_VeclessintgreaterP(__ZH_TYPE_Veclessintgreater* slf) {
-  i64 item_size;
-  i64 item;
-   item_size = sizeof(item);
-  return (item_size);
-}
-void __ZH_BOP_dotcalldotnext_ptr_VeclessintgreaterPintPP(__ZH_TYPE_Veclessintgreater* slf, i64** ptr) {
-  ((*(ptr))) = (((i64*)(__ZH_BOP_plus_intint(((i64)((*(ptr)))), __ZH_BOP_dotcalldotget_item_size_VeclessintgreaterP(slf)))));
-}
-void __ZH_BOP_dotcalldotprev_ptr_VeclessintgreaterPintPP(__ZH_TYPE_Veclessintgreater* slf, i64** ptr) {
-  ((*(ptr))) = (((i64*)(__ZH_BOP_minus_intint(((i64)((*(ptr)))), __ZH_BOP_dotcalldotget_item_size_VeclessintgreaterP(slf)))));
-}
-i64 __ZH_BOP_dotcalldotptr_uneq_VeclessintgreaterPintPintP(__ZH_TYPE_Veclessintgreater* slf, i64* a, i64* b) {
-  return (__ZH_BOP_exclamationequal_intint(((i64)(a)), ((i64)(b))));
-}
-i64* __ZH_BOP_dotcalldotpartition_VeclessintgreaterPintPintP(__ZH_TYPE_Veclessintgreater* slf, i64* low, i64* high) {
-  i64* j;
-  i64* i;
-  i64* pivot;
-  __ZH_BOP_dotcalldotprev_ptr_VeclessintgreaterPintPP(slf, (&(high)));
-  (pivot) = (high);
-  (i) = (low);
-  (j) = (low);
-  (i) = (low);
-  (j) = (low);
-  while (__ZH_BOP_dotcalldotptr_uneq_VeclessintgreaterPintPintP(slf, j, pivot)) {
-    if (__ZH_BOP_less_intint((*(j)), (*(pivot)))) {
-      __ZH_BOP_dotcalldotswap_VeclessintgreaterPintPintP(slf, i, j);
-      __ZH_BOP_dotcalldotnext_ptr_VeclessintgreaterPintPP(slf, (&(i)));
-    }
-    __ZH_BOP_dotcalldotnext_ptr_VeclessintgreaterPintPP(slf, (&(j)));
-  };
-  __ZH_BOP_dotcalldotswap_VeclessintgreaterPintPintP(slf, i, pivot);
-  return (i);
-}
-void __ZH_BOP_dotcalldotqsort_VeclessintgreaterPintPintP(__ZH_TYPE_Veclessintgreater* slf, i64* lhs, i64* rhs) {
-  if (__ZH_BOP_greater_intint(__ZH_BOP_minus_intint(((i64)(rhs)), ((i64)(lhs))), __ZH_BOP_dotcalldotget_item_size_VeclessintgreaterP(slf))) {
-    i64* pi;
-    (pi) = (__ZH_BOP_dotcalldotpartition_VeclessintgreaterPintPintP(slf, lhs, rhs));
-    __ZH_BOP_dotcalldotqsort_VeclessintgreaterPintPintP(slf, lhs, pi);
-    __ZH_BOP_dotcalldotnext_ptr_VeclessintgreaterPintPP(slf, (&(pi)));
-    __ZH_BOP_dotcalldotqsort_VeclessintgreaterPintPintP(slf, pi, rhs);
-  }
-}
-void __ZH_BOP_dotcalldotsort_VeclessintgreaterP(__ZH_TYPE_Veclessintgreater* slf) {
-  __ZH_BOP_dotcalldotqsort_VeclessintgreaterPintPintP(slf, __ZH_BOP_dotcalldotbegin_VeclessintgreaterP(slf), __ZH_BOP_dotcalldotend_VeclessintgreaterP(slf));
-}
-void __ZH_BOP_dotcalldotswap_Arg1lessintgreaterPintPintP(__ZH_TYPE_Arg1lessintgreater* slf, i64* a, i64* b) {
-  i64 t;
-  (t) = ((*(a)));
-  ((*(a))) = ((*(b)));
-  ((*(b))) = (t);
-}
-i64 __ZH_BOP_dotcalldotsizeof_Arg1lessintgreaterP(__ZH_TYPE_Arg1lessintgreater* slf) {
-  i64 val;
-   return sizeof(val);
 }

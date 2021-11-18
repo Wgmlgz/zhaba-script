@@ -1,8 +1,11 @@
 use 'tuple.zh'
 
-lop sleep int n
+fn sleep int n
   #unsigned int retTime = clock() + n;
   #while (clock() < retTime);
+
+fn cls
+  #'system("cls")'
 
 fn u64 rng
   #static unsigned long long x = 666

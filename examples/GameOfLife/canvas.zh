@@ -17,15 +17,13 @@ impl Canvas
     <<< *slf.at(x y)
   
   fn fill char ch
-    int i j 
-    @ i=0 i<slf.h i=i+1
-      @ j=0 j<slf.w j=j+1
+    @ i:=0 i<slf.h i=i+1
+      @ j:=0 j<slf.w j=j+1
         *slf.at(i j) = ch
 
 lop out CanvasP c
-  int i j
-  @ i=0 i<c.h i=i+1
-    @ j=0 j<c.w j=j+1
+  @ i:=0 i<c.h i=i+1
+    @ j:=0 j<c.w j=j+1
       out(*c.at(i j))
       out(32 as char)
     out ''

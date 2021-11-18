@@ -40,6 +40,7 @@ i64 __ZH_BOP_minusequal_intPint(i64* a, i64 b);
 i64 __ZH_BOP_slashequal_intPint(i64* a, i64 b);
 i64 __ZH_BOP_percentequal_intPint(i64* a, i64 b);
 i64 __ZH_BOP_asteriskequal_intPint(i64* a, i64 b);
+i64 __ZH_BOP_less_charchar(char a, char b);
 void __ZH_LOP_put_str(char* s);
 void __ZH_LOP_put_int(i64 n);
 void __ZH_LOP_put_char(char ch);
@@ -59,10 +60,9 @@ i64 __ZH_BOP_less_intPintP(i64* a, i64* b);
 i64 __ZH_BOP_equalequal_intPintP(i64* a, i64* b);
 i64 __ZH_BOP_exclamationequal_intPintP(i64* a, i64* b);
 void __ZH_LOP_sleep_int(i64 n);
+void __ZH_LOP_cls_();
 u64 __ZH_LOP_rng_();
 void __ZH_LOP_swap_intPintP(i64* a, i64* b);
-i64* __ZH_LOP_partition_intPintP(i64* low, i64* high);
-void __ZH_LOP_qsort_intPintP(i64* lhs, i64* rhs);
 char __ZH_LOP_aschar_str(char* s);
 __ZH_TYPE_Canvas __ZH_LOP_newCanvas_intint(i64 w, i64 h);
 char* __ZH_BOP_dotcalldotat_CanvasPintint(__ZH_TYPE_Canvas* slf, i64 x, i64 y);
@@ -146,6 +146,9 @@ i64 __ZH_BOP_percentequal_intPint(i64* a, i64 b) {
 i64 __ZH_BOP_asteriskequal_intPint(i64* a, i64 b) {
   ((*(a))) = (__ZH_BOP_asterisk_intint((*(a)), b));
 }
+i64 __ZH_BOP_less_charchar(char a, char b) {
+  return (__ZH_BOP_less_intint(((i64)(a)), ((i64)(b))));
+}
 void __ZH_LOP_put_str(char* s) {
    printf("%s",s);;
 }
@@ -204,6 +207,9 @@ void __ZH_LOP_sleep_int(i64 n) {
   unsigned int retTime = clock() + n;
   while (clock() < retTime);
 }
+void __ZH_LOP_cls_() {
+   system("cls");
+}
 u64 __ZH_LOP_rng_() {
   static unsigned long long x = 666;
   x ^= x << 13;
@@ -216,33 +222,6 @@ void __ZH_LOP_swap_intPintP(i64* a, i64* b) {
   (t) = ((*(a)));
   ((*(a))) = ((*(b)));
   ((*(b))) = (t);
-}
-i64* __ZH_LOP_partition_intPintP(i64* low, i64* high) {
-  i64* j;
-  i64* i;
-  i64* pivot;
-  (pivot) = (__ZH_BOP_minus_intPint(high, 1));
-  (i) = (low);
-  (j) = (low);
-  (i) = (low);
-  (j) = (low);
-  while (__ZH_BOP_exclamationequal_intPintP(j, pivot)) {
-    if (__ZH_BOP_less_intint((*(j)), (*(pivot)))) {
-      __ZH_LOP_swap_intPintP(i, j);
-      (i) = (__ZH_BOP_plus_intPint(i, 1));
-    }
-    (j) = (__ZH_BOP_plus_intPint(j, 1));
-  };
-  __ZH_LOP_swap_intPintP(i, pivot);
-  return (i);
-}
-void __ZH_LOP_qsort_intPintP(i64* lhs, i64* rhs) {
-  if (__ZH_BOP_greater_intint(__ZH_BOP_minus_intint(((i64)(rhs)), ((i64)(lhs))), 8)) {
-    i64* pi;
-    (pi) = (__ZH_LOP_partition_intPintP(lhs, rhs));
-    __ZH_LOP_qsort_intPintP(lhs, pi);
-    __ZH_LOP_qsort_intPintP(__ZH_BOP_plus_intPint(pi, 1), rhs);
-  }
 }
 char __ZH_LOP_aschar_str(char* s) {
   return ((*(((char*)(s)))));
@@ -261,10 +240,10 @@ char __ZH_BOP_dotcalldotget_CanvasPintint(__ZH_TYPE_Canvas* slf, i64 x, i64 y) {
   return ((*(__ZH_BOP_dotcalldotat_CanvasPintint(slf, x, y))));
 }
 void __ZH_BOP_dotcalldotfill_CanvasPchar(__ZH_TYPE_Canvas* slf, char ch) {
-  i64 j;
   i64 i;
   (i) = (0);
   while (__ZH_BOP_less_intint(i, (slf)->h)) {
+    i64 j;
     (j) = (0);
     while (__ZH_BOP_less_intint(j, (slf)->w)) {
       ((*(__ZH_BOP_dotcalldotat_CanvasPintint(slf, i, j)))) = (ch);
@@ -274,10 +253,10 @@ void __ZH_BOP_dotcalldotfill_CanvasPchar(__ZH_TYPE_Canvas* slf, char ch) {
   };
 }
 void __ZH_LOP_out_CanvasP(__ZH_TYPE_Canvas* c) {
-  i64 j;
   i64 i;
   (i) = (0);
   while (__ZH_BOP_less_intint(i, (c)->h)) {
+    i64 j;
     (j) = (0);
     while (__ZH_BOP_less_intint(j, (c)->w)) {
       __ZH_LOP_out_char((*(__ZH_BOP_dotcalldotat_CanvasPintint(c, i, j))));
@@ -289,41 +268,40 @@ void __ZH_LOP_out_CanvasP(__ZH_TYPE_Canvas* c) {
   };
 }
 int main(int argc, char *argv[])  {
+  i64 i;
   char live;
   char dead;
-  i64 i;
-  i64 j;
   i64 r;
   __ZH_TYPE_Canvas c;
   i64 k;
   i64 h;
   i64 w;
-  (w) = (20);
-  (h) = (20);
+  (w) = (30), (h) = (30);
   (c) = (__ZH_LOP_newCanvas_intint(w, h));
   (r) = (54);
-  (dead) = (__ZH_LOP_aschar_str("."));
-  (live) = (__ZH_LOP_aschar_str("#"));
-  __ZH_BOP_dotcalldotfill_CanvasPchar((&(c)), __ZH_LOP_aschar_str("."));
+  (dead) = (__ZH_LOP_aschar_str(".")), (live) = (__ZH_LOP_aschar_str("#"));
+  __ZH_BOP_dotcalldotfill_CanvasPchar((&(c)), dead);
   (i) = (0);
   while (__ZH_BOP_less_intint(i, (c).h)) {
+    i64 j;
     (j) = (0);
     while (__ZH_BOP_less_intint(j, (c).w)) {
-      (r) = (((i64)(__ZH_LOP_rng_())));
-      if (__ZH_BOP_percent_intint(r, 2)) {
-        ((*(__ZH_BOP_dotcalldotat_CanvasPintint((&(c)), i, j)))) = (__ZH_LOP_aschar_str("#"));
+      if (__ZH_BOP_percent_intint(((i64)(__ZH_LOP_rng_())), 2)) {
+        ((*(__ZH_BOP_dotcalldotat_CanvasPintint((&(c)), i, j)))) = (live);
       }
       (j) = (__ZH_BOP_plus_intint(j, 1));
     };
     (i) = (__ZH_BOP_plus_intint(i, 1));
   };
   (k) = (0);
-  while (__ZH_BOP_less_intint(k, 50)) {
+  while (__ZH_BOP_less_intint(k, 500)) {
+    i64 i;
     __ZH_TYPE_Canvas nc;
     (nc) = (__ZH_LOP_newCanvas_intint(w, h));
-    __ZH_BOP_dotcalldotfill_CanvasPchar((&(nc)), __ZH_LOP_aschar_str("."));
+    __ZH_BOP_dotcalldotfill_CanvasPchar((&(nc)), dead);
     (i) = (1);
     while (__ZH_BOP_less_intint(i, __ZH_BOP_minus_intint((c).h, 1))) {
+      i64 j;
       (j) = (1);
       while (__ZH_BOP_less_intint(j, __ZH_BOP_minus_intint((c).w, 1))) {
         i64 near;
@@ -354,11 +332,11 @@ int main(int argc, char *argv[])  {
         }
         if (__ZH_BOP_equalequal_charchar((*(__ZH_BOP_dotcalldotat_CanvasPintint((&(c)), i, j))), live)) {
           if (__ZH_BOP_pipepipe_intint(__ZH_BOP_equalequal_intint(near, 2), __ZH_BOP_equalequal_intint(near, 3))) {
-            ((*(__ZH_BOP_dotcalldotat_CanvasPintint((&(nc)), i, j)))) = (((char)(live)));
+            ((*(__ZH_BOP_dotcalldotat_CanvasPintint((&(nc)), i, j)))) = (live);
           }
         } else {
           if (__ZH_BOP_equalequal_intint(near, 3)) {
-            ((*(__ZH_BOP_dotcalldotat_CanvasPintint((&(nc)), i, j)))) = (((char)(live)));
+            ((*(__ZH_BOP_dotcalldotat_CanvasPintint((&(nc)), i, j)))) = (live);
           }
         }
         (j) = (__ZH_BOP_plus_intint(j, 1));
@@ -366,8 +344,9 @@ int main(int argc, char *argv[])  {
       (i) = (__ZH_BOP_plus_intint(i, 1));
     };
     (c) = (nc);
+    __ZH_LOP_cls_();
     __ZH_LOP_out_CanvasP((&(c)));
-    __ZH_LOP_sleep_int(600);
+    __ZH_LOP_sleep_int(50);
     (k) = (__ZH_BOP_plus_intint(k, 1));
   };
 }

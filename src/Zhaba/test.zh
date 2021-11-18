@@ -7,50 +7,38 @@ use 'util.zh'
 fn Vec<char> to_vec str s
   Vec<char> res
   
-
-lop out StrP s
-  auto r = 0..s.vec.size
-  @ r.nxt()
-    out s.vec.at(r.cur)
-
 fn main
-  Vec<int> a
-  a.ctor()
-  auto r = 0..20
-  @ r.nxt(): a.push_back(rng() % 10)
-  out 'Vec<int> sort:'
-  a.print()
-  a.sort()
-  a.print()
+  @ i := 0 i < 10 i = i + 1
+    out i
+  // Vec<int> a
+  // a.ctor()
+  // auto r = 0..20
+  // @ r.nxt(): a.push_back(rng() % 10)
+  // out 'Vec<int> sort:'
+  // a.print()
+  // a.sort()
+  // a.print()
 
-  Vec<char> b
-  b.ctor()
-  r = 0..20
-  @ r.nxt(): b.push_back((rng() % 26 + aschar('a') as int) as char)
-  out 'Vec<char> sort:'
-  b.print()
-  b.sort()
-  b.print()
+  // Vec<char> b
+  // b.ctor()
+  // r = 0..20
+  // @ r.nxt(): b.push_back((rng() % 26 + aschar('a') as int) as char)
+  // out 'Vec<char> sort:'
+  // b.print()
+  // b.sort()
+  // b.print()
 
-  int i1 = 2 i2 = 5
+  // int i1 = 2 i2 = 5
   
-  Arg1<int> t
-  t.swap(&i1, &i2)
-  outs(i1)
-  out(i2)
-  outs(i1)
-  out(i2)
+  // Arg1<int> t
+  // t.swap(&i1, &i2)
+  // outs(i1)
+  // out(i2)
+  // outs(i1)
+  // out(i2)
 
-  out t.sizeof()
+  // out t.sizeof()
 
-  Str s
-  s.ctor()
-  &s += aschar('a')
-  &s += aschar('b')
-  &s += aschar('c')
-  &s += aschar('d')
-  out &s
-
-  a.dtor()
-  b.dtor()
-  s.dtor()
+  // ch := aschar('a')
+  // a.dtor()
+  // b.dtor()

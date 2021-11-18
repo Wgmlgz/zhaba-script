@@ -1,29 +1,27 @@
-include 'std.zh'
-include 'util.zh'
-include './canvas.zh'
+use 'std.zh'
+use 'util.zh' // for rand and sleep
+use './canvas.zh'
 
 fn main
-  auto w = 20 h = 20
-  auto c = newCanvas(w h)
-  auto r = 54
-  int i j k
-  auto dead = aschar('.') live = aschar('#')
-  c.fill(aschar('.'))
+  w := 30 h := 30
+  c := newCanvas(w h)
+  r := 54
+  dead := aschar('.') live := aschar('#')
+  c.fill(dead)
 
   /* fill with random stuff */
-  @ i=0 i<c.h i=i+1
-    @ j=0 j<c.w j=j+1
-      r = rng() as int
-      ? r % 2
-        *c.at(i j) = aschar('#')
+  @ i:=0 i<c.h i=i+1
+    @ j:=0 j<c.w j=j+1
+      ? rng() as int % 2: *c.at(i j) = live
 
-  @ k=0 k<50 k=k+1
-    auto nc = newCanvas(w h)
-    nc.fill(aschar('.'))
+  /* simulate */
+  @ k:=0 k<500 k=k+1
+    nc := newCanvas(w h)
+    nc.fill(dead)
     
-    @ i=1 i<c.h-1 i=i+1
-      @ j=1 j<c.w-1 j=j+1
-        int near = 0
+    @ i:=1 i<c.h-1 i=i+1
+      @ j:=1 j<c.w-1 j=j+1
+        near := 0
         ? c.get(i-1 j  ) == live: &near += 1
         ? c.get(i   j-1) == live: &near += 1
         ? c.get(i+1 j  ) == live: &near += 1
@@ -34,10 +32,10 @@ fn main
         ? c.get(i+1 j+1) == live: &near += 1
 
         ? *c.at(i j) == live
-          ? near == 2 || near == 3: *nc.at(i j) = live as char
-        \ ? near == 3: *nc.at(i j) = live as char
+          ? near == 2 || near == 3: *nc.at(i j) = live
+        \ ? near == 3: *nc.at(i j) = live
 
     c = nc
-
+    cls()
     out &c
-    sleep 600
+    sleep(50)
