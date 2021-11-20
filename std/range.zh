@@ -1,22 +1,19 @@
 // Range type for loops or something
 type Range
-  int cur begin end init
-
+  int begin end
+impl Range
+  fn int begin: <<< slf.begin
+  fn int end: <<< slf.end
 fn Range newRange int begin int end
   Range slf
   slf.begin = begin
   slf.end = end
-  slf.cur = begin
-  slf.init = 0
   <<< slf
 
 op 9 Range .. int begin int end: <<< newRange(begin end)
+  
+fn int begin RangeP r
+  <<< r.begin
 
-impl Range
-  fn int valid: <<< slf.cur != slf.end
-  fn int nxt
-    ? slf.init
-      ? slf.begin < slf.end: &slf.cur += 1
-      \ &slf.cur -= 1
-    \ slf.init = 1
-    <<< slf.valid()
+fn int end RangeP r
+  <<< r.end

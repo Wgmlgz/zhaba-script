@@ -7,7 +7,7 @@ struct STNode {
   virtual ~STNode() {}
 };
 
-struct STBlock {
+struct STBlock : public STNode {
   std::vector<STNode*> nodes;
   ScopeInfo scope_info;
 

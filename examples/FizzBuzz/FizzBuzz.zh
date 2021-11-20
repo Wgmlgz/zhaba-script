@@ -1,11 +1,11 @@
 use 'std.zh'
+use 'range.zh'
 
 fn fizz_buzz int mx
-  @ i:=1 i<=mx i=i+1
-    ? i %% 3 && i %% 5: out 'FizzBuzz'
+  @ i 1..mx+1
+    ? i %% 15: out 'FizzBuzz'
     | i %% 3: out 'Fizz'
     | i %% 5: out 'Buzz'
     \ out i
 
-fn main
-  fizz_buzz(20)
+fn main: fizz_buzz(20)

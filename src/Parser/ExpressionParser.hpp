@@ -461,6 +461,10 @@ namespace zhexp {
           op->val +
           "' for types: " + types_str);
       }
+    } else if (auto op = dynamic_cast<Tuple*>(exp)) {
+      for (auto& i : op->content) {
+        i = postprocess(i, scope_info, block_scope);
+      }
     }
     return exp;
   }

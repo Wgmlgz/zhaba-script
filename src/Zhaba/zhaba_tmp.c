@@ -13,10 +13,8 @@ struct __PROT_ZH_TYPE_Veclesschargreater;
 typedef struct __PROT_ZH_TYPE_Veclesschargreater __ZH_TYPE_Veclesschargreater;
 
 struct __PROT_ZH_TYPE_Range {
-  i64 init;
   i64 end;
   i64 begin;
-  i64 cur;
 };
 struct __PROT_ZH_TYPE_Veclesschargreater {
   char* head;
@@ -49,6 +47,8 @@ i64 __ZH_BOP_slashequal_intPint(i64* a, i64 b);
 i64 __ZH_BOP_percentequal_intPint(i64* a, i64 b);
 i64 __ZH_BOP_asteriskequal_intPint(i64* a, i64 b);
 i64 __ZH_BOP_less_charchar(char a, char b);
+i64 __ZH_LOP_plusplus_intP(i64* val);
+void __ZH_LOP_plusplus_intPP(i64** val);
 void __ZH_LOP_put_str(char* s);
 void __ZH_LOP_put_int(i64 n);
 void __ZH_LOP_put_char(char ch);
@@ -67,10 +67,12 @@ i64* __ZH_BOP_minus_intintP(i64 b, i64* a);
 i64 __ZH_BOP_less_intPintP(i64* a, i64* b);
 i64 __ZH_BOP_equalequal_intPintP(i64* a, i64* b);
 i64 __ZH_BOP_exclamationequal_intPintP(i64* a, i64* b);
+i64 __ZH_BOP_dotcalldotbegin_RangeP(__ZH_TYPE_Range* slf);
+i64 __ZH_BOP_dotcalldotend_RangeP(__ZH_TYPE_Range* slf);
 __ZH_TYPE_Range __ZH_LOP_newRange_intint(i64 begin, i64 end);
 __ZH_TYPE_Range __ZH_BOP_dotdot_intint(i64 begin, i64 end);
-i64 __ZH_BOP_dotcalldotvalid_RangeP(__ZH_TYPE_Range* slf);
-i64 __ZH_BOP_dotcalldotnxt_RangeP(__ZH_TYPE_Range* slf);
+i64 __ZH_LOP_begin_RangeP(__ZH_TYPE_Range* r);
+i64 __ZH_LOP_end_RangeP(__ZH_TYPE_Range* r);
 void __ZH_LOP_sleep_int(i64 n);
 void __ZH_LOP_cls_();
 u64 __ZH_LOP_rng_();
@@ -180,6 +182,12 @@ i64 __ZH_BOP_asteriskequal_intPint(i64* a, i64 b) {
 i64 __ZH_BOP_less_charchar(char a, char b) {
   return (__ZH_BOP_less_intint(((i64)(a)), ((i64)(b))));
 }
+i64 __ZH_LOP_plusplus_intP(i64* val) {
+  return (__ZH_BOP_plusequal_intPint(val, 1));
+}
+void __ZH_LOP_plusplus_intPP(i64** val) {
+  ((*(val))) = (((i64*)(__ZH_BOP_plus_intint(((i64)((*(val)))), 8))));
+}
 void __ZH_LOP_put_str(char* s) {
    printf("%s",s);;
 }
@@ -234,31 +242,26 @@ i64 __ZH_BOP_equalequal_intPintP(i64* a, i64* b) {
 i64 __ZH_BOP_exclamationequal_intPintP(i64* a, i64* b) {
   return (__ZH_BOP_exclamationequal_intint(((i64)(a)), ((i64)(b))));
 }
+i64 __ZH_BOP_dotcalldotbegin_RangeP(__ZH_TYPE_Range* slf) {
+  return ((slf)->begin);
+}
+i64 __ZH_BOP_dotcalldotend_RangeP(__ZH_TYPE_Range* slf) {
+  return ((slf)->end);
+}
 __ZH_TYPE_Range __ZH_LOP_newRange_intint(i64 begin, i64 end) {
   __ZH_TYPE_Range slf;
   ((slf).begin) = (begin);
   ((slf).end) = (end);
-  ((slf).cur) = (begin);
-  ((slf).init) = (0);
   return (slf);
 }
 __ZH_TYPE_Range __ZH_BOP_dotdot_intint(i64 begin, i64 end) {
   return (__ZH_LOP_newRange_intint(begin, end));
 }
-i64 __ZH_BOP_dotcalldotvalid_RangeP(__ZH_TYPE_Range* slf) {
-  return (__ZH_BOP_exclamationequal_intint((slf)->cur, (slf)->end));
+i64 __ZH_LOP_begin_RangeP(__ZH_TYPE_Range* r) {
+  return ((r)->begin);
 }
-i64 __ZH_BOP_dotcalldotnxt_RangeP(__ZH_TYPE_Range* slf) {
-  if ((slf)->init) {
-    if (__ZH_BOP_less_intint((slf)->begin, (slf)->end)) {
-      __ZH_BOP_plusequal_intPint((&((slf)->cur)), 1);
-    } else {
-      __ZH_BOP_minusequal_intPint((&((slf)->cur)), 1);
-    }
-  } else {
-    ((slf)->init) = (1);
-  }
-  return (__ZH_BOP_dotcalldotvalid_RangeP(slf));
+i64 __ZH_LOP_end_RangeP(__ZH_TYPE_Range* r) {
+  return ((r)->end);
 }
 void __ZH_LOP_sleep_int(i64 n) {
   unsigned int retTime = clock() + n;

@@ -217,6 +217,8 @@ std::string nodeToC(STNode* node, size_t depth) {
     res += "return (" + expToC(nd->exp) + ")"; 
   } else if (auto exp = dynamic_cast<STExp*>(node)) {
     res += expToC(exp->exp);
+  } else if (auto block = dynamic_cast<STBlock*>(node)) {
+    res += blockToC(block);
   }
   return res;
 };
