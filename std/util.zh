@@ -19,7 +19,7 @@ fn swap intP a intP b
   *a = *b
   *b = t
 
-fn char aschar str s: <<< *(s as charP)
+fn char asch str s: <<< *(s as charP)
 
 impl Arg1
   fn swap T1P a T1P b 

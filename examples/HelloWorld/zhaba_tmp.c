@@ -33,6 +33,9 @@ i64 __ZH_BOP_minusequal_intPint(i64* a, i64 b);
 i64 __ZH_BOP_slashequal_intPint(i64* a, i64 b);
 i64 __ZH_BOP_percentequal_intPint(i64* a, i64 b);
 i64 __ZH_BOP_asteriskequal_intPint(i64* a, i64 b);
+i64 __ZH_BOP_less_charchar(char a, char b);
+i64 __ZH_LOP_plusplus_intP(i64* val);
+void __ZH_LOP_plusplus_intPP(i64** val);
 void __ZH_LOP_put_str(char* s);
 void __ZH_LOP_put_int(i64 n);
 void __ZH_LOP_put_char(char ch);
@@ -127,6 +130,15 @@ i64 __ZH_BOP_percentequal_intPint(i64* a, i64 b) {
 }
 i64 __ZH_BOP_asteriskequal_intPint(i64* a, i64 b) {
   ((*(a))) = (__ZH_BOP_asterisk_intint((*(a)), b));
+}
+i64 __ZH_BOP_less_charchar(char a, char b) {
+  return (__ZH_BOP_less_intint(((i64)(a)), ((i64)(b))));
+}
+i64 __ZH_LOP_plusplus_intP(i64* val) {
+  return (__ZH_BOP_plusequal_intPint(val, 1));
+}
+void __ZH_LOP_plusplus_intPP(i64** val) {
+  ((*(val))) = (((i64*)(__ZH_BOP_plus_intint(((i64)((*(val)))), 8))));
 }
 void __ZH_LOP_put_str(char* s) {
    printf("%s",s);;

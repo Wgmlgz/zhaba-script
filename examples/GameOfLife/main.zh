@@ -1,39 +1,48 @@
 use 'std.zh'
 use 'util.zh' // for rand and sleep
 use './canvas.zh'
+use 'range.zh'
+
+/**
+Max compression:
+
+fn main: w:=30 h:=30 c:=newCnv(w h) r:=54 d:=asch('.') l:=asch('#') c.fill(d)
+  @i 0..c.h: @ j 0..c.w: ?rng() as int%2: *c.at(i j)=l
+  @k 0..500: nc:=newCnv(w h) nc.fill(d)
+    @i 1..c.h-1: @ j 1..c.h-1: n:=0
+      @x, -1..2: @ y, -1..2: ? !(y==0&&x==0)&&c.get(i+x j+y)==l: &n+=1
+      ? *c.at(i j)==l&&n==2||n==3: *nc.at(i j)=l
+      | n==3: *nc.at(i j)=l
+    c = nc, cls(), out &c, sleep(50)
+
+*/
 
 fn main
   w := 30 h := 30
-  c := newCanvas(w h)
+  c := newCnv(w h)
   r := 54
-  dead := aschar('.') live := aschar('#')
+  dead := asch('.') live := asch('#')
   c.fill(dead)
 
-  /* fill with random stuff */
-  @ i:=0 i<c.h i=i+1
-    @ j:=0 j<c.w j=j+1
-      ? rng() as int % 2: *c.at(i j) = live
+  @ i 0..c.h
+    @ j 0..c.w
+      ? rng() as int % 2
+        *c.at(i j) = live
 
-  /* simulate */
-  @ k:=0 k<500 k=k+1
-    nc := newCanvas(w h)
+  @ k 0..500
+    nc := newCnv(w h)
     nc.fill(dead)
     
-    @ i:=1 i<c.h-1 i=i+1
-      @ j:=1 j<c.w-1 j=j+1
+    @ i 1..c.h-1
+      @ j 1..c.h-1:
         near := 0
-        ? c.get(i-1 j  ) == live: &near += 1
-        ? c.get(i   j-1) == live: &near += 1
-        ? c.get(i+1 j  ) == live: &near += 1
-        ? c.get(i   j+1) == live: &near += 1
-        ? c.get(i-1 j-1) == live: &near += 1
-        ? c.get(i-1 j+1) == live: &near += 1
-        ? c.get(i+1 j-1) == live: &near += 1
-        ? c.get(i+1 j+1) == live: &near += 1
+        @ x, -1..2
+          @ y, -1..2
+            ? !(y == 0 && x == 0) && c.get(i+x j+y) == live
+              &near += 1
 
-        ? *c.at(i j) == live
-          ? near == 2 || near == 3: *nc.at(i j) = live
-        \ ? near == 3: *nc.at(i j) = live
+        ? *c.at(i j) == live && near == 2 || near == 3: *nc.at(i j) = live
+        | near == 3: *nc.at(i j) = live
 
     c = nc
     cls()

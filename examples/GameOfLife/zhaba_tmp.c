@@ -7,9 +7,15 @@ typedef int64_t i64;
 typedef uint32_t u32;
 typedef uint64_t u64;
 
+struct __PROT_ZH_TYPE_Range;
+typedef struct __PROT_ZH_TYPE_Range __ZH_TYPE_Range;
 struct __PROT_ZH_TYPE_Canvas;
 typedef struct __PROT_ZH_TYPE_Canvas __ZH_TYPE_Canvas;
 
+struct __PROT_ZH_TYPE_Range {
+  i64 end;
+  i64 begin;
+};
 struct __PROT_ZH_TYPE_Canvas {
   i64 h;
   i64 w;
@@ -41,6 +47,8 @@ i64 __ZH_BOP_slashequal_intPint(i64* a, i64 b);
 i64 __ZH_BOP_percentequal_intPint(i64* a, i64 b);
 i64 __ZH_BOP_asteriskequal_intPint(i64* a, i64 b);
 i64 __ZH_BOP_less_charchar(char a, char b);
+i64 __ZH_LOP_plusplus_intP(i64* val);
+void __ZH_LOP_plusplus_intPP(i64** val);
 void __ZH_LOP_put_str(char* s);
 void __ZH_LOP_put_int(i64 n);
 void __ZH_LOP_put_char(char ch);
@@ -63,8 +71,14 @@ void __ZH_LOP_sleep_int(i64 n);
 void __ZH_LOP_cls_();
 u64 __ZH_LOP_rng_();
 void __ZH_LOP_swap_intPintP(i64* a, i64* b);
-char __ZH_LOP_aschar_str(char* s);
-__ZH_TYPE_Canvas __ZH_LOP_newCanvas_intint(i64 w, i64 h);
+char __ZH_LOP_asch_str(char* s);
+i64 __ZH_BOP_dotcalldotbegin_RangeP(__ZH_TYPE_Range* slf);
+i64 __ZH_BOP_dotcalldotend_RangeP(__ZH_TYPE_Range* slf);
+__ZH_TYPE_Range __ZH_LOP_newRange_intint(i64 begin, i64 end);
+__ZH_TYPE_Range __ZH_BOP_dotdot_intint(i64 begin, i64 end);
+i64 __ZH_LOP_begin_RangeP(__ZH_TYPE_Range* r);
+i64 __ZH_LOP_end_RangeP(__ZH_TYPE_Range* r);
+__ZH_TYPE_Canvas __ZH_LOP_newCnv_intint(i64 w, i64 h);
 char* __ZH_BOP_dotcalldotat_CanvasPintint(__ZH_TYPE_Canvas* slf, i64 x, i64 y);
 char __ZH_BOP_dotcalldotget_CanvasPintint(__ZH_TYPE_Canvas* slf, i64 x, i64 y);
 void __ZH_BOP_dotcalldotfill_CanvasPchar(__ZH_TYPE_Canvas* slf, char ch);
@@ -149,6 +163,12 @@ i64 __ZH_BOP_asteriskequal_intPint(i64* a, i64 b) {
 i64 __ZH_BOP_less_charchar(char a, char b) {
   return (__ZH_BOP_less_intint(((i64)(a)), ((i64)(b))));
 }
+i64 __ZH_LOP_plusplus_intP(i64* val) {
+  return (__ZH_BOP_plusequal_intPint(val, 1));
+}
+void __ZH_LOP_plusplus_intPP(i64** val) {
+  ((*(val))) = (((i64*)(__ZH_BOP_plus_intint(((i64)((*(val)))), 8))));
+}
 void __ZH_LOP_put_str(char* s) {
    printf("%s",s);;
 }
@@ -223,10 +243,31 @@ void __ZH_LOP_swap_intPintP(i64* a, i64* b) {
   ((*(a))) = ((*(b)));
   ((*(b))) = (t);
 }
-char __ZH_LOP_aschar_str(char* s) {
+char __ZH_LOP_asch_str(char* s) {
   return ((*(((char*)(s)))));
 }
-__ZH_TYPE_Canvas __ZH_LOP_newCanvas_intint(i64 w, i64 h) {
+i64 __ZH_BOP_dotcalldotbegin_RangeP(__ZH_TYPE_Range* slf) {
+  return ((slf)->begin);
+}
+i64 __ZH_BOP_dotcalldotend_RangeP(__ZH_TYPE_Range* slf) {
+  return ((slf)->end);
+}
+__ZH_TYPE_Range __ZH_LOP_newRange_intint(i64 begin, i64 end) {
+  __ZH_TYPE_Range slf;
+  ((slf).begin) = (begin);
+  ((slf).end) = (end);
+  return (slf);
+}
+__ZH_TYPE_Range __ZH_BOP_dotdot_intint(i64 begin, i64 end) {
+  return (__ZH_LOP_newRange_intint(begin, end));
+}
+i64 __ZH_LOP_begin_RangeP(__ZH_TYPE_Range* r) {
+  return ((r)->begin);
+}
+i64 __ZH_LOP_end_RangeP(__ZH_TYPE_Range* r) {
+  return ((r)->end);
+}
+__ZH_TYPE_Canvas __ZH_LOP_newCnv_intint(i64 w, i64 h) {
   __ZH_TYPE_Canvas res;
   ((res).w) = (w);
   ((res).h) = (h);
@@ -240,113 +281,186 @@ char __ZH_BOP_dotcalldotget_CanvasPintint(__ZH_TYPE_Canvas* slf, i64 x, i64 y) {
   return ((*(__ZH_BOP_dotcalldotat_CanvasPintint(slf, x, y))));
 }
 void __ZH_BOP_dotcalldotfill_CanvasPchar(__ZH_TYPE_Canvas* slf, char ch) {
+  {
   i64 i;
-  (i) = (0);
-  while (__ZH_BOP_less_intint(i, (slf)->h)) {
-    i64 j;
-    (j) = (0);
-    while (__ZH_BOP_less_intint(j, (slf)->w)) {
-      ((*(__ZH_BOP_dotcalldotat_CanvasPintint(slf, i, j)))) = (ch);
-      (j) = (__ZH_BOP_plus_intint(j, 1));
-    };
-    (i) = (__ZH_BOP_plus_intint(i, 1));
+  i64 __end;
+  i64 __begin;
+  __ZH_TYPE_Range __range;
+  (__range) = (__ZH_BOP_dotdot_intint(0, (slf)->h));
+  (__begin) = (__ZH_BOP_dotcalldotbegin_RangeP((&(__range))));
+  (__end) = (__ZH_BOP_dotcalldotend_RangeP((&(__range))));
+  (i) = (__begin);
+  while (__ZH_BOP_exclamationequal_intint(i, __end)) {
+    {
+  i64 j;
+  i64 __end;
+  i64 __begin;
+  __ZH_TYPE_Range __range;
+  (__range) = (__ZH_BOP_dotdot_intint(0, (slf)->w));
+  (__begin) = (__ZH_BOP_dotcalldotbegin_RangeP((&(__range))));
+  (__end) = (__ZH_BOP_dotcalldotend_RangeP((&(__range))));
+  (j) = (__begin);
+  while (__ZH_BOP_exclamationequal_intint(j, __end)) {
+    ((*(__ZH_BOP_dotcalldotat_CanvasPintint(slf, i, j)))) = (ch);
+    __ZH_LOP_plusplus_intP((&(j)));
   };
+};
+    __ZH_LOP_plusplus_intP((&(i)));
+  };
+};
 }
 void __ZH_LOP_out_CanvasP(__ZH_TYPE_Canvas* c) {
+  {
   i64 i;
-  (i) = (0);
-  while (__ZH_BOP_less_intint(i, (c)->h)) {
-    i64 j;
-    (j) = (0);
-    while (__ZH_BOP_less_intint(j, (c)->w)) {
-      __ZH_LOP_out_char((*(__ZH_BOP_dotcalldotat_CanvasPintint(c, i, j))));
-      __ZH_LOP_out_char(((char)(32)));
-      (j) = (__ZH_BOP_plus_intint(j, 1));
-    };
-    __ZH_LOP_out_str("");
-    (i) = (__ZH_BOP_plus_intint(i, 1));
+  i64 __end;
+  i64 __begin;
+  __ZH_TYPE_Range __range;
+  (__range) = (__ZH_BOP_dotdot_intint(0, (c)->h));
+  (__begin) = (__ZH_BOP_dotcalldotbegin_RangeP((&(__range))));
+  (__end) = (__ZH_BOP_dotcalldotend_RangeP((&(__range))));
+  (i) = (__begin);
+  while (__ZH_BOP_exclamationequal_intint(i, __end)) {
+    {
+  i64 j;
+  i64 __end;
+  i64 __begin;
+  __ZH_TYPE_Range __range;
+  (__range) = (__ZH_BOP_dotdot_intint(0, (c)->w));
+  (__begin) = (__ZH_BOP_dotcalldotbegin_RangeP((&(__range))));
+  (__end) = (__ZH_BOP_dotcalldotend_RangeP((&(__range))));
+  (j) = (__begin);
+  while (__ZH_BOP_exclamationequal_intint(j, __end)) {
+    __ZH_LOP_out_char((*(__ZH_BOP_dotcalldotat_CanvasPintint(c, i, j))));
+    __ZH_LOP_out_char(((char)(32)));
+    __ZH_LOP_plusplus_intP((&(j)));
   };
+};
+    __ZH_LOP_out_str("");
+    __ZH_LOP_plusplus_intP((&(i)));
+  };
+};
 }
 int main(int argc, char *argv[])  {
-  i64 i;
   char live;
   char dead;
   i64 r;
   __ZH_TYPE_Canvas c;
-  i64 k;
   i64 h;
   i64 w;
   (w) = (30), (h) = (30);
-  (c) = (__ZH_LOP_newCanvas_intint(w, h));
+  (c) = (__ZH_LOP_newCnv_intint(w, h));
   (r) = (54);
-  (dead) = (__ZH_LOP_aschar_str(".")), (live) = (__ZH_LOP_aschar_str("#"));
+  (dead) = (__ZH_LOP_asch_str(".")), (live) = (__ZH_LOP_asch_str("#"));
   __ZH_BOP_dotcalldotfill_CanvasPchar((&(c)), dead);
-  (i) = (0);
-  while (__ZH_BOP_less_intint(i, (c).h)) {
-    i64 j;
-    (j) = (0);
-    while (__ZH_BOP_less_intint(j, (c).w)) {
-      if (__ZH_BOP_percent_intint(((i64)(__ZH_LOP_rng_())), 2)) {
-        ((*(__ZH_BOP_dotcalldotat_CanvasPintint((&(c)), i, j)))) = (live);
-      }
-      (j) = (__ZH_BOP_plus_intint(j, 1));
-    };
-    (i) = (__ZH_BOP_plus_intint(i, 1));
+  {
+  i64 i;
+  i64 __end;
+  i64 __begin;
+  __ZH_TYPE_Range __range;
+  (__range) = (__ZH_BOP_dotdot_intint(0, (c).h));
+  (__begin) = (__ZH_BOP_dotcalldotbegin_RangeP((&(__range))));
+  (__end) = (__ZH_BOP_dotcalldotend_RangeP((&(__range))));
+  (i) = (__begin);
+  while (__ZH_BOP_exclamationequal_intint(i, __end)) {
+    {
+  i64 j;
+  i64 __end;
+  i64 __begin;
+  __ZH_TYPE_Range __range;
+  (__range) = (__ZH_BOP_dotdot_intint(0, (c).w));
+  (__begin) = (__ZH_BOP_dotcalldotbegin_RangeP((&(__range))));
+  (__end) = (__ZH_BOP_dotcalldotend_RangeP((&(__range))));
+  (j) = (__begin);
+  while (__ZH_BOP_exclamationequal_intint(j, __end)) {
+    if (__ZH_BOP_percent_intint(((i64)(__ZH_LOP_rng_())), 2)) {
+      ((*(__ZH_BOP_dotcalldotat_CanvasPintint((&(c)), i, j)))) = (live);
+    }
+    __ZH_LOP_plusplus_intP((&(j)));
   };
-  (k) = (0);
-  while (__ZH_BOP_less_intint(k, 500)) {
-    i64 i;
+};
+    __ZH_LOP_plusplus_intP((&(i)));
+  };
+};
+  {
+  i64 k;
+  i64 __end;
+  i64 __begin;
+  __ZH_TYPE_Range __range;
+  (__range) = (__ZH_BOP_dotdot_intint(0, 500));
+  (__begin) = (__ZH_BOP_dotcalldotbegin_RangeP((&(__range))));
+  (__end) = (__ZH_BOP_dotcalldotend_RangeP((&(__range))));
+  (k) = (__begin);
+  while (__ZH_BOP_exclamationequal_intint(k, __end)) {
     __ZH_TYPE_Canvas nc;
-    (nc) = (__ZH_LOP_newCanvas_intint(w, h));
+    (nc) = (__ZH_LOP_newCnv_intint(w, h));
     __ZH_BOP_dotcalldotfill_CanvasPchar((&(nc)), dead);
-    (i) = (1);
-    while (__ZH_BOP_less_intint(i, __ZH_BOP_minus_intint((c).h, 1))) {
-      i64 j;
-      (j) = (1);
-      while (__ZH_BOP_less_intint(j, __ZH_BOP_minus_intint((c).w, 1))) {
-        i64 near;
-        (near) = (0);
-        if (__ZH_BOP_equalequal_charchar(__ZH_BOP_dotcalldotget_CanvasPintint((&(c)), __ZH_BOP_minus_intint(i, 1), j), live)) {
-          __ZH_BOP_plusequal_intPint((&(near)), 1);
-        }
-        if (__ZH_BOP_equalequal_charchar(__ZH_BOP_dotcalldotget_CanvasPintint((&(c)), i, __ZH_BOP_minus_intint(j, 1)), live)) {
-          __ZH_BOP_plusequal_intPint((&(near)), 1);
-        }
-        if (__ZH_BOP_equalequal_charchar(__ZH_BOP_dotcalldotget_CanvasPintint((&(c)), __ZH_BOP_plus_intint(i, 1), j), live)) {
-          __ZH_BOP_plusequal_intPint((&(near)), 1);
-        }
-        if (__ZH_BOP_equalequal_charchar(__ZH_BOP_dotcalldotget_CanvasPintint((&(c)), i, __ZH_BOP_plus_intint(j, 1)), live)) {
-          __ZH_BOP_plusequal_intPint((&(near)), 1);
-        }
-        if (__ZH_BOP_equalequal_charchar(__ZH_BOP_dotcalldotget_CanvasPintint((&(c)), __ZH_BOP_minus_intint(i, 1), __ZH_BOP_minus_intint(j, 1)), live)) {
-          __ZH_BOP_plusequal_intPint((&(near)), 1);
-        }
-        if (__ZH_BOP_equalequal_charchar(__ZH_BOP_dotcalldotget_CanvasPintint((&(c)), __ZH_BOP_minus_intint(i, 1), __ZH_BOP_plus_intint(j, 1)), live)) {
-          __ZH_BOP_plusequal_intPint((&(near)), 1);
-        }
-        if (__ZH_BOP_equalequal_charchar(__ZH_BOP_dotcalldotget_CanvasPintint((&(c)), __ZH_BOP_plus_intint(i, 1), __ZH_BOP_minus_intint(j, 1)), live)) {
-          __ZH_BOP_plusequal_intPint((&(near)), 1);
-        }
-        if (__ZH_BOP_equalequal_charchar(__ZH_BOP_dotcalldotget_CanvasPintint((&(c)), __ZH_BOP_plus_intint(i, 1), __ZH_BOP_plus_intint(j, 1)), live)) {
-          __ZH_BOP_plusequal_intPint((&(near)), 1);
-        }
-        if (__ZH_BOP_equalequal_charchar((*(__ZH_BOP_dotcalldotat_CanvasPintint((&(c)), i, j))), live)) {
-          if (__ZH_BOP_pipepipe_intint(__ZH_BOP_equalequal_intint(near, 2), __ZH_BOP_equalequal_intint(near, 3))) {
-            ((*(__ZH_BOP_dotcalldotat_CanvasPintint((&(nc)), i, j)))) = (live);
-          }
-        } else {
-          if (__ZH_BOP_equalequal_intint(near, 3)) {
-            ((*(__ZH_BOP_dotcalldotat_CanvasPintint((&(nc)), i, j)))) = (live);
-          }
-        }
-        (j) = (__ZH_BOP_plus_intint(j, 1));
-      };
-      (i) = (__ZH_BOP_plus_intint(i, 1));
-    };
+    {
+  i64 i;
+  i64 __end;
+  i64 __begin;
+  __ZH_TYPE_Range __range;
+  (__range) = (__ZH_BOP_dotdot_intint(1, __ZH_BOP_minus_intint((c).h, 1)));
+  (__begin) = (__ZH_BOP_dotcalldotbegin_RangeP((&(__range))));
+  (__end) = (__ZH_BOP_dotcalldotend_RangeP((&(__range))));
+  (i) = (__begin);
+  while (__ZH_BOP_exclamationequal_intint(i, __end)) {
+    {
+  i64 j;
+  i64 __end;
+  i64 __begin;
+  __ZH_TYPE_Range __range;
+  (__range) = (__ZH_BOP_dotdot_intint(1, __ZH_BOP_minus_intint((c).h, 1)));
+  (__begin) = (__ZH_BOP_dotcalldotbegin_RangeP((&(__range))));
+  (__end) = (__ZH_BOP_dotcalldotend_RangeP((&(__range))));
+  (j) = (__begin);
+  while (__ZH_BOP_exclamationequal_intint(j, __end)) {
+    i64 near;
+    (near) = (0);
+    {
+  i64 x;
+  i64 __end;
+  i64 __begin;
+  __ZH_TYPE_Range __range;
+  (__range) = (__ZH_BOP_dotdot_intint(__ZH_LOP_minus_int(1), 2));
+  (__begin) = (__ZH_BOP_dotcalldotbegin_RangeP((&(__range))));
+  (__end) = (__ZH_BOP_dotcalldotend_RangeP((&(__range))));
+  (x) = (__begin);
+  while (__ZH_BOP_exclamationequal_intint(x, __end)) {
+    {
+  i64 y;
+  i64 __end;
+  i64 __begin;
+  __ZH_TYPE_Range __range;
+  (__range) = (__ZH_BOP_dotdot_intint(__ZH_LOP_minus_int(1), 2));
+  (__begin) = (__ZH_BOP_dotcalldotbegin_RangeP((&(__range))));
+  (__end) = (__ZH_BOP_dotcalldotend_RangeP((&(__range))));
+  (y) = (__begin);
+  while (__ZH_BOP_exclamationequal_intint(y, __end)) {
+    if (__ZH_BOP_ampersandampersand_intint(__ZH_LOP_exclamation_int(__ZH_BOP_ampersandampersand_intint(__ZH_BOP_equalequal_intint(y, 0), __ZH_BOP_equalequal_intint(x, 0))), __ZH_BOP_equalequal_charchar(__ZH_BOP_dotcalldotget_CanvasPintint((&(c)), __ZH_BOP_plus_intint(i, x), __ZH_BOP_plus_intint(j, y)), live))) {
+      __ZH_BOP_plusequal_intPint((&(near)), 1);
+    }
+    __ZH_LOP_plusplus_intP((&(y)));
+  };
+};
+    __ZH_LOP_plusplus_intP((&(x)));
+  };
+};
+    if (__ZH_BOP_pipepipe_intint(__ZH_BOP_ampersandampersand_intint(__ZH_BOP_equalequal_charchar((*(__ZH_BOP_dotcalldotat_CanvasPintint((&(c)), i, j))), live), __ZH_BOP_equalequal_intint(near, 2)), __ZH_BOP_equalequal_intint(near, 3))) {
+      ((*(__ZH_BOP_dotcalldotat_CanvasPintint((&(nc)), i, j)))) = (live);
+    } else if (__ZH_BOP_equalequal_intint(near, 3)) {
+      ((*(__ZH_BOP_dotcalldotat_CanvasPintint((&(nc)), i, j)))) = (live);
+    }
+    __ZH_LOP_plusplus_intP((&(j)));
+  };
+};
+    __ZH_LOP_plusplus_intP((&(i)));
+  };
+};
     (c) = (nc);
     __ZH_LOP_cls_();
     __ZH_LOP_out_CanvasP((&(c)));
     __ZH_LOP_sleep_int(50);
-    (k) = (__ZH_BOP_plus_intint(k, 1));
+    __ZH_LOP_plusplus_intP((&(k)));
   };
+};
 }

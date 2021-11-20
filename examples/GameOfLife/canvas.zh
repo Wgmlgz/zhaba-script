@@ -1,8 +1,11 @@
+use 'std.zh'
+use 'range.zh'
+
 type Canvas
   charP head
   int w h
 
-fn Canvas newCanvas int w int h
+fn Canvas newCnv int w int h
   Canvas res
   res.w = w
   res.h = h
@@ -17,13 +20,13 @@ impl Canvas
     <<< *slf.at(x y)
   
   fn fill char ch
-    @ i:=0 i<slf.h i=i+1
-      @ j:=0 j<slf.w j=j+1
+    @ i 0..slf.h
+      @ j 0..slf.w
         *slf.at(i j) = ch
 
 lop out CanvasP c
-  @ i:=0 i<c.h i=i+1
-    @ j:=0 j<c.w j=j+1
+  @ i 0..c.h
+    @ j 0..c.w
       out(*c.at(i j))
       out(32 as char)
     out ''
