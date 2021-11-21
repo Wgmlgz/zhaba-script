@@ -21,10 +21,10 @@ struct ZHDATA {
   std::unordered_map<std::string, int64_t> prefix_operators  = tables::prefix_operators;
   std::unordered_map<std::string, int64_t> postfix_operators = tables::postfix_operators;
 
-  std::map<types::funcHead, types::Type> B_OD;
-  std::map<types::funcHead, types::Type> PR_OD;
-  std::map<types::funcHead, types::Type> PO_OD;
-  std::map<types::funcHead, types::Type> FN_OD;
+  std::map<types::funcHead, Function*> B_OD;
+  std::map<types::funcHead, Function*> PR_OD;
+  std::map<types::funcHead, Function*> PO_OD;
+  std::map<types::funcHead, Function*> FN_OD;
 
   /** main syntax tree */
   STTree* sttree;

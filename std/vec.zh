@@ -1,4 +1,5 @@
-// slassic vector for i64
+use 'range.zh'
+
 type Vec T
   int size
   int capacity
@@ -19,7 +20,7 @@ impl Vec
     ? new_capacity == 0
       new_capacity = 1
       slf.head = malloc(item_size) as TP
-    \ &new_capacity *= 2
+    \ new_capacity *= 2
       slf.head = realloc(slf.head as int, new_capacity * item_size) as TP
     slf.capacity = new_capacity
 
@@ -35,7 +36,7 @@ impl Vec
   fn push_back T val
     ? slf.size == slf.capacity: slf.double_capacity()
     *slf.atP(slf.size) = val
-    &slf.size += 1
+    ++slf.size
   
   fn TP begin: <<< slf.head
   fn TP end: <<< slf.atP(slf.size)
@@ -64,7 +65,7 @@ impl Vec
   fn print
     int i = 0
     put('[')
-    @ i=0 i<(slf.size) (&i += 1)
+    @ i 0..slf.size
      ? i: put(' ')
      put(slf.at(i))
     out(']')

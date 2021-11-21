@@ -55,6 +55,7 @@ std::string typeToC(const types::Type& type, bool plain = false) {
   //   }
   // }
   res += std::string(type.getPtr(), plain ? 'P' : '*');
+  if (type.getRef()) res += "*";
   return res;
 }
 
@@ -65,36 +66,29 @@ std::string int2hex(T i) {
          << i;
   return stream.str();
 }
-std::string funcToC(const types::funcHead& head) {
+std::string funcToC(const Function& head) {
   std::string res;
-  res += idToC(head.first);
+  res += idToC(head.name);
   res += "_";
-  for (const auto& i : head.second) {
-    res += idToC(i.toString());
+  for (const auto& i : head.args) {
+    res += idToC(i.type.toString());
   }
   return res;
 }
 
+std::string bopToC(const Function& head) { return "__ZH_BOP_" + funcToC(head); }
+std::string lopToC(const Function& head) { return "__ZH_LOP_" + funcToC(head); }
+std::string ropToC(const Function& head) { return "__ZH_ROP_" + funcToC(head); }
 
-std::string bopToC(const types::funcHead& head) {
-  return "__ZH_BOP_" + funcToC(head);
-}
-std::string lopToC(const types::funcHead& head) {
-  return "__ZH_LOP_" + funcToC(head);
-}
-std::string ropToC(const types::funcHead& head) {
-  return "__ZH_ROP_" + funcToC(head);
-}
-
-std::string bopToC(const types::funcHead* head) {
+std::string bopToC(const Function* head) {
   if (!head) throw ParserError("null head bop");
   return bopToC(*head);
 }
-std::string lopToC(const types::funcHead* head) {
+std::string lopToC(const Function* head) {
   if (!head) throw ParserError("null head lop");
   return lopToC(*head);
 }
-std::string ropToC(const types::funcHead* head) {
+std::string ropToC(const Function* head) {
   if (!head) throw ParserError("null head rop");
   return ropToC(*head);
 }
@@ -105,7 +99,8 @@ std::string ropToC(const types::funcHead* head) {
 //     str += std::to_string(static_cast<int>(i.getTypeId()));
 //   }
 // }
-
+std::string expToC(zhexp::Exp* exp);
+std::string argsToC(zhexp::Exp* exp, Function* fn);
 std::string expToC(zhexp::Exp* exp) {
   // it filally works!!!
   std::string res;
@@ -125,7 +120,10 @@ std::string expToC(zhexp::Exp* exp) {
     res += "\"" + op->val + "\"";
   }
   if (auto op = dynamic_cast<zhexp::Variable*>(exp)) {
-    res += op->name;
+    res += "(";
+    if (op->getType().getRef()) res += "*";
+    res += op->getName();
+    res += ")";
   } else if (auto op = dynamic_cast<zhexp::IdLiteral*>(exp)) {
     res += op->val;
   }
@@ -150,9 +148,11 @@ std::string expToC(zhexp::Exp* exp) {
       res += op->lhs->type.getPtr() ? "->" : ".";
       res += static_cast<zhexp::IdLiteral*>(op->rhs)->val;
     } else {
-      res += bopToC(op->func_head) + "(" + expToC(op->lhs);
-      auto rhs = expToC(op->rhs);
-      if (rhs.size()) res += ", " + rhs;
+      res += bopToC(op->func) + "(";
+      auto lhs_tuple = castToTuple(op->lhs);
+      auto rhs_tuple = castToTuple(op->rhs);
+      *lhs_tuple += *rhs_tuple;
+      res += argsToC(lhs_tuple, op->func);
       res += ")";
     }
   }
@@ -160,14 +160,33 @@ std::string expToC(zhexp::Exp* exp) {
     if (op->val == "&" or op->val == "*") {
       res += "(" +op->val + "(" + expToC(op->child) + "))";
     } else {
-      res += lopToC(op->func_head) + "(" + expToC(op->child) + ")";
+      res += lopToC(op->func) + "(" + argsToC(op->child, op->func) + ")";
     }
   }
   if (auto op = dynamic_cast<zhexp::PostfixOperator*>(exp)) {
-    res += ropToC(op->func_head) + "(" + expToC(op->child) + ")";
+    res += ropToC(op->func) + "(" + argsToC(op->child, op->func) + ")";
   }
   // if (!dynamic_cast<Literal*>(exp)) res += ")";
 
+  return res;
+}
+
+std::string argsToC(zhexp::Exp* exp, Function* fn) {
+  auto tuple = zhexp::castToTuple(exp);
+  std::string res;
+
+  for (int i = 0; i < tuple->content.size(); ++i) {
+    if (i!=0) res +=",";
+    res += "(";
+    if (fn->args[i].type.getRef()) {
+      if (!tuple->content[i]->type.getLval())
+        throw ParserError(tuple->content[i]->begin, tuple->content[i]->end,
+          "Expression must be lval to be able pass by reference");
+      res += "&";
+    }
+    res += expToC(tuple->content[i]);
+    res += ")";
+  }
   return res;
 }
 
@@ -230,8 +249,8 @@ std::string funcHeadToC(Function* func) {
   } else {
     str += typeToC(func->type) + " ";
     str +=  (
-      func->op_type == OpType::bin ? bopToC(func->getHead()) : (
-      func->op_type == OpType::lhs ? lopToC(func->getHead()) : ropToC(func->getHead())
+      func->op_type == OpType::bin ? bopToC(func) : (
+      func->op_type == OpType::lhs ? lopToC(func) : ropToC(func)
     )) + "(";
     bool start = true;
     for (auto& [name, type] : func->args) {

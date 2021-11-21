@@ -3,13 +3,28 @@ use 'vec.zh'
 use 'range.zh'
 use 'tuple.zh'
 use 'util.zh'
+use 'vec.zh'
+// op 16 int += intR a int b:
+//   a = a + b
 
-fn Vec<char> to_vec str s
-  Vec<char> res
-  
+
 fn main
-  @ i := 0 i < 10 i = i + 1
-    out i
+  // Vec<int> v
+  // v.ctor()
+  // v.push_back(1)
+  // v.push_back(2)
+  // v.push_back(3)
+  // v.push_back(4)
+  // v.print()
+  // a := 2
+  // out a
+  // prikol(a)
+  // a += 2
+  // out a
+  aboba := 2
+  out aboba
+  ++aboba
+  out aboba
   // Vec<int> a
   // a.ctor()
   // auto r = 0..20

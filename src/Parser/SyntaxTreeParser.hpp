@@ -263,11 +263,8 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
               auto iter = new STExp;
               iter->exp = new zhexp::PrefixOperator(
                   tuple_->content[1]->begin, tuple_->content[1]->end, "++", 666,
-                  new zhexp::PrefixOperator(
-                    tuple_->content[1]->begin, tuple_->content[1]->end, "&", 666,
-                    new zhexp::IdLiteral(tuple_->content[0]->begin,
-                                        tuple_->content[0]->end, id_l->val)
-                  )
+                  new zhexp::IdLiteral(tuple_->content[0]->begin,
+                                      tuple_->content[0]->end, id_l->val)
               );
               range_init->exp = zhexp::postprocess(
                   range_init->exp, foreach_scope, &foreach_block->scope_info);
@@ -281,7 +278,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
                                              &foreach_block->scope_info);
               iter->exp = zhexp::postprocess(iter->exp, foreach_scope,
                                              &foreach_block->scope_info);
-              // auto
+
               foreach_block->nodes.push_back(range_init);
               foreach_block->nodes.push_back(begin_exp);
               foreach_block->nodes.push_back(end_exp);
@@ -378,9 +375,10 @@ std::vector<Function*> parseImpl(ast::ASTBlock* block, const types::Type& type,
       scope.vars[name].setLval(true);
       types.push_back(type);
       types.back().setLval(false);
+      types.back().setRef(false);
     }
 
-    zhdata.B_OD[{func->name, types}] = func->type;
+    zhdata.B_OD[{func->name, types}] = func;
     /** '.' priority */
     zhdata.bin_operators[func->name] = 2;
     zhdata.operators.insert(func->name);
@@ -490,14 +488,16 @@ STTree* parseAST(ast::ASTBlock* main_block) {
         std::vector<types::Type> types;
         for (auto& [_, type] : func->args) {
           types.push_back(type);
+          types.back().setLval(false);
+          types.back().setRef(false);
         }
         if (func->is_fn) {
           zhdata.functions.insert(func->name);
-          zhdata.FN_OD[{func->name, types}] = func->type;
+          zhdata.FN_OD[{func->name, types}] = func;
         } else {
           zhdata.operators.insert(func->name);
           if (func->op_type == OpType::bin) {
-            zhdata.B_OD[{func->name, types}] = func->type;
+            zhdata.B_OD[{func->name, types}] = func;
             if (zhdata.bin_operators.contains(func->name) and
               func->priority != zhdata.bin_operators[func->name])
               throw ParserError(
@@ -508,10 +508,10 @@ STTree* parseAST(ast::ASTBlock* main_block) {
                       ")");
                   zhdata.bin_operators[func->name] = func->priority;
           } else if (func->op_type == OpType::lhs) {
-            zhdata.PR_OD[{func->name, types}] = func->type;
+            zhdata.PR_OD[{func->name, types}] = func;
             zhdata.prefix_operators[func->name] = func->priority;
           } else if (func->op_type == OpType::rhs) {
-            zhdata.PO_OD[{func->name, types}] = func->type;
+            zhdata.PO_OD[{func->name, types}] = func;
             zhdata.postfix_operators[func->name] = func->priority;
           }
         }

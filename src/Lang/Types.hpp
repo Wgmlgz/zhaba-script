@@ -46,24 +46,26 @@ std::unordered_map<int, std::string> struct_names;
 class Type {
  public:
   /* Ctor Dtor */
-  Type(const TYPE& type = TYPE::voidT, uint8_t ptr = 0, bool lval = false) :
-    typeid_(type), ptr_(ptr), lval_(lval) {}
+  Type(const TYPE& type = TYPE::voidT, uint8_t ptr = 0, bool lval = false, bool ref = false) :
+    typeid_(type), ptr_(ptr), lval_(lval), ref_(ref) {}
   virtual ~Type() {}
 
   /* Getters */
   auto getTypeId() const { return typeid_; }
   auto getLval() const { return lval_; }
+  auto getRef() const { return ref_; }
   auto getPtr() const { return ptr_; }
 
   /* Setters */
   void setLval(bool f) { lval_ = f; }
+  void setRef(bool f) { ref_ = f; }
   void setType(TYPE type_) { typeid_ = type_; }
   void setPtr(uint8_t val) { ptr_ = val; }
   void setTmpl(std::vector<Type> val) { tmpl_ = val; }
 
-  /* Bitmask layout: lval<1> ptr<8> typeid<other> */
+  /* Bitmask layout: ref<1> lval<1> ptr<8> typeid<other> */
   uint32_t getSelfMask() const {
-    return (static_cast<int>(typeid_) << 9) | (ptr_ << 1) | lval_;
+    return (static_cast<int>(typeid_) << 10) | (ptr_ << 2) | (lval_ << 1) | ref_;
   }
   std::vector<uint32_t> getMask() const {
     return {getSelfMask()};
@@ -73,7 +75,7 @@ class Type {
     return lhs.getMask() <=> rhs.getMask();
   }
 
-  Type rvalClone() { return Type(typeid_, ptr_); }
+  Type rvalClone() { return Type(typeid_, ptr_, false, ref_); }
 
   std::string toString() const {
     std::string res;
@@ -83,6 +85,7 @@ class Type {
       res += struct_names[static_cast<int>(typeid_)];
 
     res += std::string(ptr_, 'P');
+    if (ref_) res += "R";
 
     if (tmpl_.size()) {
       res += "<";
@@ -101,6 +104,7 @@ class Type {
  private:
   TYPE typeid_ = TYPE::voidT;
   bool lval_ = false;
+  bool ref_ = false;
   uint8_t ptr_ = 0;
   std::vector<Type> tmpl_;
 };

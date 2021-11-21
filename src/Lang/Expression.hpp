@@ -4,9 +4,10 @@
 #include "../TreeLib/TreeLib.hpp"
 #include "../Parser/Parser.hpp"
 
+struct Function;
+
 namespace zhexp {
 struct Exp {
-  // int pos;
   const Token& begin, & end; 
   types::Type type = types::Type(types::TYPE::voidT);
   Exp(const Token& new_begin, const Token& new_end) :
@@ -35,15 +36,19 @@ struct Tuple : public Exp {
   }
 };
 
-struct Variable : public Exp {
+class Variable : public Exp {
   std::string name;
-
-  Variable(const Token& new_begin, const Token& new_end)
-      : Exp(new_begin, new_end) {}
+  types::Type var_type;
+ public:
+  Variable(const Token& new_begin, const Token& new_end,
+           const std::string& new_name, const types::Type& new_type)
+      : Exp(new_begin, new_end), name(new_name), var_type(new_type) {}
   virtual std::string toString() override {
     std::string res="<variable'" + name + "'>";
     return res;
   }
+  auto getName() { return name; }
+  auto getType() { return var_type; }
 };
 
 struct Literal : public Exp {
@@ -122,7 +127,7 @@ struct CCode : public Exp {
 
 struct Operator : public Exp {
   std::string val;
-  const types::funcHead* func_head;
+  Function* func;
   int64_t priority = -666;
   size_t spl = 0, spr = 0;
   Operator(const Token& new_begin, const Token& new_end)
@@ -203,6 +208,11 @@ Tuple* castToTuple(Exp* exp) {
     return new Tuple(exp->begin, exp->end, 0, { exp });
   }
   return nullptr;
+}
+
+void operator+=(Tuple& a, const Tuple& b) {
+  for (const auto& i : b.content)
+    a.content.push_back(i);
 }
 
 TreeNode<std::string>* toGenericTree(Exp* exp) {

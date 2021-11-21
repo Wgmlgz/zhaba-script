@@ -240,14 +240,13 @@ namespace zhexp {
       exp->type = types::Type(types::TYPE::i64T);
     } else if (auto op = dynamic_cast<StrLiteral*>(exp)) {
       exp->type = types::Type(types::TYPE::strT);
-    } else if (auto op = dynamic_cast<IdLiteral*>(exp)) {
-      if (scope_info.vars.count(op->val)) {
-        auto tmp = new Variable(op->begin, op->end);
-        tmp->name = op->val;
-        tmp->type = scope_info.vars[op->val];
+    } else if (auto id = dynamic_cast<IdLiteral*>(exp)) {
+      if (scope_info.vars.count(id->val)) {
+        auto tmp =
+            new Variable(id->begin, id->end, id->val, scope_info.vars[id->val]);
+        tmp->type = scope_info.vars[id->val];
         exp = tmp;
-      }
-      else
+      } else
         throw ParserError(op->begin, op->end, "Unknown variable '" + op->val + "'");
     } else if (auto op = dynamic_cast<BinOperator*>(exp)) {
       if (op->val == ",") {
@@ -275,7 +274,10 @@ namespace zhexp {
         op->lhs = postprocess(op->lhs, scope_info, block_scope);
         op->rhs = postprocess(op->rhs, scope_info, block_scope);
 
-        if (op->lhs->type.rvalClone() <=> op->rhs->type.rvalClone() != 0) {
+        auto lhs = op->lhs->type.rvalClone();
+        auto rhs = op->rhs->type.rvalClone();
+        lhs.setRef(false);
+        if (lhs <=> rhs != 0) {
           throw ParserError(op->begin, op->end, "Types (" +
             op->lhs->type.toString() + " " +
             op->rhs->type.toString() +
@@ -303,8 +305,8 @@ namespace zhexp {
             block_scope->vars[id_l->val].setLval(true);
           }
 
-          auto tmp = new Variable(op->lhs->begin, op->lhs->end);
-          tmp->name = id_l->val;
+          auto tmp = new Variable(op->lhs->begin, op->lhs->end, id_l->val,
+                                  scope_info.vars[id_l->val]);
           tmp->type = scope_info.vars[id_l->val];
           op->lhs = tmp;
           op->val = "=";
@@ -363,26 +365,24 @@ namespace zhexp {
           }
         }
 
-        op->lhs->type.setLval(false);
-        op->rhs->type.setLval(false);
-        
         std::vector<types::Type> types;
         types.push_back(op->lhs->type);
         types.back().setLval(false);
         if (auto tuple = dynamic_cast<Tuple*>(op->rhs)) {
           for (auto exp : tuple->content) {
             types.push_back(exp->type);
-            types.back().setLval(false);
           }
         } else {
           types.push_back(op->rhs->type);
-          types.back().setLval(false);
         }
+
+        for (auto& i : types) i.setLval(false);
+        for (auto& i : types) i.setRef(false);
 
         types::funcHead func_head{op->val, types};
         if (zhdata.B_OD.count(func_head)) {
-          op->func_head = &zhdata.B_OD.find(func_head)->first;
-          exp->type = zhdata.B_OD[func_head];
+          op->func = zhdata.B_OD[func_head];
+          exp->type = zhdata.B_OD[func_head]->type;
         } else {
           throw ParserError(
             op->begin, op->end, "There is no instance of binary operator '" + op->val +
@@ -401,13 +401,13 @@ namespace zhexp {
         types.push_back(op->child->type);
       }
 
-      /** Implicit lval to rval conversion */
       for (auto& i : types) i.setLval(false);
+      for (auto& i : types) i.setRef(false);
 
       types::funcHead func_head{op->val, types};
       if (zhdata.PO_OD.count(func_head)) {
-        op->func_head = &zhdata.PO_OD.find(func_head)->first;
-        exp->type = zhdata.PO_OD[func_head];
+        op->func = zhdata.PO_OD[func_head];
+        exp->type = zhdata.PO_OD[func_head]->type;
       } else
         throw ParserError(
           op->begin, op->end, "There is no instance of postfix operator '" + op->val +
@@ -442,16 +442,16 @@ namespace zhexp {
         types.push_back(op->child->type);
       }
 
-      /* implicit lval to rval conversion */
       for (auto& i : types) i.setLval(false);
+      for (auto& i : types) i.setRef(false);
 
       types::funcHead func_head{op->val, types};
       if (zhdata.PR_OD.contains(func_head)) {
-        op->func_head = &zhdata.PR_OD.find(func_head)->first;
-        exp->type = zhdata.PR_OD[func_head];
+        op->func = zhdata.PR_OD[func_head];
+        exp->type = zhdata.PR_OD[func_head]->type;
       } else if (zhdata.FN_OD.contains(func_head)) {
-        op->func_head = &zhdata.FN_OD.find(func_head)->first;
-        exp->type = zhdata.FN_OD[func_head];
+        op->func = zhdata.FN_OD[func_head];
+        exp->type = zhdata.FN_OD[func_head]->type;
       } else {
         std::string types_str;
         for (auto& i : types) {

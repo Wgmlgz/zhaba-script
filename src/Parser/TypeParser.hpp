@@ -56,6 +56,10 @@ types::StructInfo parseStruct(ast::ASTBlock* block, const ScopeInfo& scope) {
 Type parse(std::string& str, const ScopeInfo& scope) {
   Type type;
   int ptr_c = 0;
+  if (str.back() == 'R') {
+    type.setRef(true);
+    str.pop_back();
+  }
   while (str.back() == 'P') {
     ++ptr_c;
     str.pop_back();
