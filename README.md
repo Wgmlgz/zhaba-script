@@ -1,16 +1,15 @@
-# Zhaba script
+# Zhaba script programming language🐸
 
-🐸 Zhaba(Russian: ˈʐabə, жаба(frog)) script - is a general purpose, open source, statically typed, compiled to C frog programming language, focused at minimaizing code size.
+Zhaba script (Russian: ˈʐabə, жаба(frog)) - is a multi-paradigm, high-level, statically typed programming language, that compiles to C and focuses at minimaizing your code size. It has partial OOP support, including user-created types, member functions and operators overloading, also there is support for generic types such as Vec\<T\>.
 
 Inpired by Rust, C++ and Python🐍
 
 ## Hello world
 
 ```ruby
-include 'std.zh'
+use 'std.zh'
 
-fn main
-  out 'hi world!'
+fn main: out 'hi world!'
 ```
 
 ## Setup
@@ -22,14 +21,46 @@ fn main
 
 _note_: To build Zhaba script compiler you can also use [this Makefile](./Src/Zhaba/Makefile) `$ make build`
 
+## List of features
+
+### Lang
+
+- basic types like `int` or `char`
+- all C operators like (+ - \* %)
+- if, else, else if
+- while loop
+- C-style for loop
+- foreach loop
+- single and multi line comments
+- functions
+- functions overloading
+- support for overloading any operator
+- C code injection
+- other files usage
+- functions overloading
+- custom types(structs)
+- member functions
+- pointers
+- references
+- generic types like `Vec<T>`
+
+### std
+
+- `Vec<T>` - generic Vector data structure
+- `Str` - String class, can be used in foreach
+- `Range` - int range, can be created with `..` operator
+- `Tp[1-9]` - tuple up to 9 types
+- `'frog.zh'` - file with cool ascii image of 🐸
 ## Docs
+
 Note: features with TODO are existing in language, but don't have docs😞
+
 - [TODO introduction](./docs/introduction.md)
 - [TODO compiler](./docs/compiler.md)
 - [TODO program structure](./docs/program.md)
 - [expressions](./docs/expressions.md)
 - [if, else if, else](./docs/if.md)
-- [TODO loops](./docs/loops.md)
+- [loops](./docs/loops.md)
 - [functions](./docs/functions.md)
 - [struct](./docs/struct.md)
 - [TODO operators overload](./docs/operators_overload.md)
@@ -37,80 +68,55 @@ Note: features with TODO are existing in language, but don't have docs😞
 - [TODO standart lib](./docs/std.md)
 - More later...
 
-## Examples
+# Examples
 
-Just some code:
+## Game of life
 
 ```c++
-include 'std.zh'
-include 'vec.zh'
-include 'range.zh'
-include 'util.zh'
-
-op 9 int < char a char b: <<< a as int < b as int
-
-impl Vec
-  fn swap TP a TP b
-    T t = *a
-    *a = *b
-    *b = t
-
-  fn int get_item_size
-    T item
-    int item_size
-    #'item_size = sizeof(item)'
-    <<< item_size
-
-  fn next_ptr TPP ptr: *ptr = (*ptr as int + slf.get_item_size()) as TP
-  fn prev_ptr TPP ptr: *ptr = (*ptr as int - slf.get_item_size()) as TP
-
-  fn int ptr_uneq TP a TP b
-    <<< a as int != b as int
-
-  fn TP partition TP low TP high
-    slf.prev_ptr(&high)
-    TP pivot = high i = low j = low
-    TP i = low
-
-    @ (j = low) (slf.ptr_uneq(j pivot)) (slf.next_ptr(&j))
-      ? *j < *pivot
-        slf.swap(i j)
-        slf.next_ptr(&i)
-
-    slf.swap(i  pivot)
-    <<< i
-
-  fn qsort TP lhs TP rhs
-    ? rhs as int - lhs as int > 8
-      auto pi = slf.partition(lhs rhs)
-      slf.qsort(lhs pi)
-      slf.next_ptr(&pi)
-      slf.qsort(pi rhs)
-
-  fn sort
-    slf.qsort(slf.begin() slf.end())
-
 fn main
-  Vec<int> a
-  a.ctor()
-  auto r = 0..20
-  @ r.nxt(): a.push_back(rng() % 10)
-  out 'Vec<int> sort:'
-  a.print()
-  a.sort()
-  a.print()
-  a.dtor()
+  w := 30 h := 30
+  c := newCnv(w h)
+  r := 54
+  dead := asch('.') live := asch('#')
+  c.fill(dead)
 
-  Vec<char> b
-  b.ctor()
-  r = 0..20
-  @ r.nxt(): b.push_back((rng() % 26 + aschar('a') as int) as char)
-  out 'Vec<char> sort:'
-  b.print()
-  b.sort()
-  b.print()
-  b.dtor()
+  @ i 0..c.h
+    @ j 0..c.w
+      ? rng() as int % 2
+        *c.at(i j) = live
 
+  @ k 0..500
+    nc := newCnv(w h)
+    nc.fill(dead)
+
+    @ i 1..c.h-1
+      @ j 1..c.h-1
+        near := 0
+        @ x, -1..2
+          @ y, -1..2
+            ? !(y == 0 && x == 0) && c.get(i+x j+y) == live
+              &near += 1
+
+        ? *c.at(i j) == live && near == 2 || near == 3: *nc.at(i j) = live
+        | near == 3: *nc.at(i j) = live
+
+    c = nc
+    cls()
+    out &c
+    sleep(50)
+```
+
+And because zhaba script main goal is to minimize your code, Game of life from above can be written in 8 lines like so:
+
+```c++
+fn main: w:=30 h:=30 c:=newCnv(w h) r:=54 d:=asch('.') l:=asch('#') c.fill(d)
+  @i 0..c.h: @ j 0..c.w: ?rng() as int%2: *c.at(i j)=l
+  @k 0..500: nc:=newCnv(w h) nc.fill(d)
+    @i 1..c.h-1: @ j 1..c.h-1: n:=0
+      @x, -1..2: @ y, -1..2: ? !(y==0&&x==0)&&c.get(i+x j+y)==l: &n+=1
+      ? *c.at(i j)==l&&n==2||n==3: *nc.at(i j)=l
+      | n==3: *nc.at(i j)=l
+    c = nc, cls(), out &c, sleep(50)
 ```
 
 - [std](./std) (most code here)
