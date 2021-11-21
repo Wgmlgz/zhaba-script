@@ -1,0 +1,65 @@
+use 'std.zh'
+use 'out.zh'
+use 'vec.zh'
+use 'range.zh'
+
+impl str
+  fn char at int pos: <<< *((*slf as int + pos) as charP)
+
+type Str
+  Vec<char> data
+  int size
+
+impl Str
+  fn ctor
+    slf.data.ctor()
+    slf.data.push_back(0 as char)
+    slf.size = 0
+  fn dtor: slf.data.dtor()
+  fn str cstr: <<< slf.data.begin() as str
+  fn char at int pos: <<< slf.data.at(pos)
+  fn charP atP int pos: <<< slf.data.atP(pos)
+  fn push_back char ch
+    slf.data.pop_back()
+    slf.data.push_back(ch)
+    slf.data.push_back(0 as char)
+  fn pop_back
+    slf.data.pop_back()
+    slf.data.pop_back()
+    slf.data.push_back(0 as char)
+  fn sort
+    slf.data.pop_back()
+    slf.data.sort()
+    slf.data.push_back(0 as char)
+
+fn int strlen str s
+  res := 0
+  @ *(s as charP) as int
+    ++res
+    s = (s as int + 1) as str
+  <<< res
+
+lop Str asStr str s
+  Str res
+  res.ctor()
+  res.data.pop_back()
+  @ *(s as charP) as int
+    res.data.push_back(*(s as charP))
+    s = (s as int + 1) as str
+  res.data.push_back(0 as char)
+  res.size = res.data.size - 1
+  <<< res
+
+
+// append
+op 16 int += StrR a char ch: a.push_back(ch)
+op 16 += StrR a StrR b: @ i 0..b.size: a += b.at(i)
+op 16 += StrR a str b
+  len := strlen(b)
+  @ i 0..len: a += b.at(i)
+
+// out
+lop out StrR s: out s.cstr()
+lop put StrR s: put s.cstr()
+lop sut StrR s: sut s.cstr()
+lop deb str msg StrR s: deb(msg s.cstr())

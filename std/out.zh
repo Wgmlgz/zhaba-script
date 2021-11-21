@@ -1,10 +1,20 @@
 // I believe in printf supremacy
-lop put str s: #'printf("%s",s);'
 lop put int n: #'printf("%d",n);'
+lop put u64 n: #'printf("%llu",n);'
+lop put str s: #'printf("%s",s);'
 lop put char ch: #'printf("%c",ch);'
 
 lop out int x: #'printf("%d\n",x);'
 lop out u64 x: #'printf("%llu\n",x);'
 lop out str s: #'printf("%s\n",s);'
 lop out char ch: #'putchar(ch);'
-lop outs int i: #'printf("%d ", i);'
+
+lop sut int n: #'printf("%d ",n);'
+lop sut u64 n: #'printf("%llu ",n);'
+lop sut str s: #'printf("%s ",s);'
+lop sut char ch: #'printf("%c ",ch);'
+
+fn deb str msg int n: #'printf("%s:%d\n",msg,n);'
+fn deb str msg u64 n: #'printf("%s:%llu\n",msg,n);'
+fn deb str msg str s: #'printf("%s:\"%s\"\n",msg,s);'
+fn deb str msg char ch: #'printf("%s:%c\n",msg,ch);'

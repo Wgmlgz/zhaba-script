@@ -240,6 +240,7 @@ namespace zhexp {
       exp->type = types::Type(types::TYPE::i64T);
     } else if (auto op = dynamic_cast<StrLiteral*>(exp)) {
       exp->type = types::Type(types::TYPE::strT);
+      exp->type.setLval(true);
     } else if (auto id = dynamic_cast<IdLiteral*>(exp)) {
       if (scope_info.vars.count(id->val)) {
         auto tmp =

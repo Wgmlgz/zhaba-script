@@ -30,13 +30,13 @@ impl Vec
     #'item_size = sizeof(item)'
     <<< (((slf.head) as int) + pos * item_size) as TP
 
-  fn T at int pos
-    <<< *slf.atP(pos)
+  fn T at int pos: <<< *slf.atP(pos)
   
   fn push_back T val
     ? slf.size == slf.capacity: slf.double_capacity()
     *slf.atP(slf.size) = val
     ++slf.size
+  fn pop_back: --slf.size
   
   fn TP begin: <<< slf.head
   fn TP end: <<< slf.atP(slf.size)

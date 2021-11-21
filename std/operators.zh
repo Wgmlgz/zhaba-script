@@ -13,5 +13,6 @@ op 16 *= intR a int b: a = (a) * (b)
 
 op 9 int < char a char b: <<< a as int < b as int
 lop int ++ intR val: val += 1
+lop int -- intR val: val -= 1
 lop ++ intPP val
   *val = (*val as int + 8) as intP

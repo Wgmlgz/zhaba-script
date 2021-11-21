@@ -3,57 +3,35 @@ use 'vec.zh'
 use 'range.zh'
 use 'tuple.zh'
 use 'util.zh'
-use 'vec.zh'
-// op 16 int += intR a int b:
-//   a = a + b
-
+use 'frog.zh'
+use 'str.zh'
 
 fn main
-  // Vec<int> v
-  // v.ctor()
-  // v.push_back(1)
-  // v.push_back(2)
-  // v.push_back(3)
-  // v.push_back(4)
-  // v.print()
-  // a := 2
-  // out a
-  // prikol(a)
-  // a += 2
-  // out a
-  aboba := 2
-  out aboba
-  ++aboba
-  out aboba
-  // Vec<int> a
-  // a.ctor()
-  // auto r = 0..20
-  // @ r.nxt(): a.push_back(rng() % 10)
-  // out 'Vec<int> sort:'
-  // a.print()
-  // a.sort()
-  // a.print()
+  out 'str and str examples'
+  out ''
+  out ''
 
-  // Vec<char> b
-  // b.ctor()
-  // r = 0..20
-  // @ r.nxt(): b.push_back((rng() % 26 + aschar('a') as int) as char)
-  // out 'Vec<char> sort:'
-  // b.print()
-  // b.sort()
-  // b.print()
+  deb('stlen(\'12345\')', strlen('12345'))
+  s := asStr('')
+  a := 'toad'
+  b := asStr(' frog')
 
-  // int i1 = 2 i2 = 5
+  deb('s(Str)', s)
+  deb('a(str)', a)
+  deb('b(Str)', b)
+  out ''
+
+  s += a
+  s += b
+  deb('s + a + b', s)
+  out ''
   
-  // Arg1<int> t
-  // t.swap(&i1, &i2)
-  // outs(i1)
-  // out(i2)
-  // outs(i1)
-  // out(i2)
+  deb('before sort', s)
+  s.sort()
+  deb('after sort', s)
+  frog := frog()
+  out frog
 
-  // out t.sizeof()
-
-  // ch := aschar('a')
-  // a.dtor()
-  // b.dtor()
+  frog.dtor()
+  s.dtor()
+  b.dtor()
