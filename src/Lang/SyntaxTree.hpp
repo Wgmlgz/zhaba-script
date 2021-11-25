@@ -2,6 +2,7 @@
 #include "AST.hpp"
 #include "Expression.hpp"
 #include "../TreeLib/Tree.hpp"
+#include "Scope.hpp"
 
 struct STNode {
   virtual ~STNode() {}
@@ -29,7 +30,6 @@ struct STWhile : STNode {
   zhexp::Exp* contition = nullptr;
   STBlock* body = nullptr;
 };
-
 
 struct STRet : STNode {
   zhexp::Exp* exp = nullptr;

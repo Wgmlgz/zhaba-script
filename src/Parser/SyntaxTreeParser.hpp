@@ -184,17 +184,12 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
             }
             /* foreach loop */
             else {
-
-
               auto id_l = dynamic_cast<zhexp::IdLiteral*>(tuple_->content[0]);
               if (!id_l) throw ParserError(
                 tuple_->content[0]->begin,
                 tuple_->content[0]->end,
                 "Expected id literal"
               );
-
-              // throw ParserError(ctr_->begin, ctr_->end,
-              //   "Foreach loop not implemented");
 
               /** begin & end check */
               auto foreach_block = new STBlock;

@@ -297,7 +297,7 @@ namespace zhexp {
         if (auto id_l = dynamic_cast<IdLiteral*>(op->lhs)) {
           if (op->rhs->type.getTypeId() == types::TYPE::voidT)
             throw ParserError(op->begin, op->rhs->end, "Variable type cannot be void");
-          
+
           scope_info.vars[id_l->val] = op->rhs->type;
           scope_info.vars[id_l->val].setLval(true);
 
@@ -305,7 +305,7 @@ namespace zhexp {
             block_scope->vars[id_l->val] = op->rhs->type;
             block_scope->vars[id_l->val].setLval(true);
           }
-
+          
           auto tmp = new Variable(op->lhs->begin, op->lhs->end, id_l->val,
                                   scope_info.vars[id_l->val]);
           tmp->type = scope_info.vars[id_l->val];
