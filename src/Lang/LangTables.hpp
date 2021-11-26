@@ -25,10 +25,10 @@ namespace tables {
     "?", "@", "<<<"
   };
   std::unordered_map<std::string, int64_t> bin_operators {
-    {".", 2}, {"=", 10}, {":=", 10}, {",", 17}, {"as", 4}
+    {".", 2}, {"=", 10}, {":=", 10}, {",", 17}, {"as", 4}, {"+", 6}
   };
   std::unordered_set<std::string> operators {
-    ".", "=", ":=", ",", "*", "&", "as"
+    ".", "=", ":=", ",", "*", "&", "as", "+"
   };
   std::unordered_set<std::string> functions {
     

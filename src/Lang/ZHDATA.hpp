@@ -21,7 +21,17 @@ struct ZHDATA {
   std::unordered_map<std::string, int64_t> prefix_operators  = tables::prefix_operators;
   std::unordered_map<std::string, int64_t> postfix_operators = tables::postfix_operators;
 
-  std::map<types::funcHead, Function*> B_OD;
+  std::map<types::funcHead, Function*> B_OD = {
+    {{"+", {types::Type(types::TYPE::i64T), types::Type(types::TYPE::i64T)}},
+    new Function{
+      "+",
+      {{"a", types::Type(types::TYPE::i64T)},
+        {"b", types::Type(types::TYPE::i64T)}},
+      types::Type(types::TYPE::i64T),
+      OpType::bin,
+      true
+    }}
+  };
   std::map<types::funcHead, Function*> PR_OD;
   std::map<types::funcHead, Function*> PO_OD;
   std::map<types::funcHead, Function*> FN_OD;

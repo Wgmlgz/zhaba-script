@@ -113,9 +113,10 @@ struct Function {
   std::string name;
   std::vector<Arg> args;
   types::Type type;
-  STBlock* body;
-
   OpType op_type;
+  bool is_C = false;
+  
+  STBlock* body = nullptr;
   int64_t priority = -1;
 
   bool is_fn = false;

@@ -39,6 +39,15 @@ std::unordered_map<TYPE, std::string> cpp_type_names{
   {TYPE::u32T, "u32"},
   {TYPE::strT, "char*"},
 };
+std::unordered_map<TYPE, size_t> sizes {
+  {TYPE::voidT, 1},
+  {TYPE::charT, 1},
+  {TYPE::i64T, 8},
+  {TYPE::i32T, 4},
+  {TYPE::u64T, 8},
+  {TYPE::u32T, 4},
+  {TYPE::strT, 8},
+};
 
 std::unordered_map<std::string, int> struct_ids;
 std::unordered_map<int, std::string> struct_names;
@@ -55,6 +64,7 @@ class Type {
   auto getLval() const { return lval_; }
   auto getRef() const { return ref_; }
   auto getPtr() const { return ptr_; }
+  auto getSize() const { return (ptr_ || ref_) ? 8 : sizes[typeid_]; }
 
   /* Setters */
   void setLval(bool f) { lval_ = f; }
@@ -67,10 +77,7 @@ class Type {
   uint32_t getSelfMask() const {
     return (static_cast<int>(typeid_) << 10) | (ptr_ << 2) | (lval_ << 1) | ref_;
   }
-  std::vector<uint32_t> getMask() const {
-    return {getSelfMask()};
-  }
-  
+  std::vector<uint32_t> getMask() const { return {getSelfMask()}; }
   const friend auto operator<=>(const Type& lhs, const Type& rhs) {
     return lhs.getMask() <=> rhs.getMask();
   }
@@ -142,6 +149,8 @@ void pushStruct(std::string name, const StructInfo& info) {
   struct_names[last_struct_id] = name;
   structs[last_struct_id] = info;
   ++last_struct_id;
+
+  // TODO: members offsets & sizeof
 }
 
 int getStructId(const std::string& str) {

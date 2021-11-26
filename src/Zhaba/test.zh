@@ -7,12 +7,12 @@
 // use 'str.zh'
 
 fn add int a int b
-  0
+  666 + 2
 
-fn main
-  a := 2
-  b := 3
-  add(a b)
+// fn main
+//   a := 2
+//   b := 3
+//   add(a b)
   // out 'str and str examples'
   // out ''
   // out ''
