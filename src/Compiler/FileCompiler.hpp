@@ -3,8 +3,11 @@
 #include "../Parser/Parser.hpp"
 #include "ToC.hpp"
 #include <fstream>
+#include "../Interpreter/ToBytecode.hpp"
 
-std::string compileFile(std::filesystem::path file_path) {
+void compileFile(std::filesystem::path file_path) {
+  auto start_time = clock();
+
   std::vector<Token> tokens;
   int offset = 0;
   preprocess(file_path, tokens);
@@ -42,11 +45,29 @@ std::string compileFile(std::filesystem::path file_path) {
     printASCII(st_generic);
   }
 
-  std::string c_code = toC(stree);
+  if (zhdata.bools["B"]) {
+    std::cout << "[INFO] compiling complete in " +
+                std::to_string((clock() - start_time) * 1.0 / CLOCKS_PER_SEC)
+              << std::endl;
+    zhin::ByteCode bytecode;
+    zhin::toB(bytecode, stree);
+    std::cout << bytecode.dis() << std::endl;
+    zhin::ZHVM zhvm;
+    zhvm.run(bytecode);
+  } else {
+    std::string c_code = toC(stree);
+    if (zhdata.bools["show_cpp"]) {
+      std::cout << "cpp:" << std::endl << c_code << std::endl;
+    }
+    std::cout << "[INFO] compiling complete in " +
+                     std::to_string((clock() - start_time) * 1.0 /
+                                    CLOCKS_PER_SEC)
+              << std::endl;
 
-  if (zhdata.bools["show_cpp"]) {
-    std::cout << "cpp:" << std::endl << c_code << std::endl;
+    auto tmp_file = std::ofstream("zhaba_tmp.c");
+    tmp_file << c_code;
+    tmp_file.close();
+    system("gcc zhaba_tmp.c -o zhaba_tmp -O3");
+    system(".\\zhaba_tmp.exe");
   }
-
-  return c_code;
 }

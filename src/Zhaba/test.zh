@@ -1,37 +1,43 @@
-use 'std.zh'
-use 'vec.zh'
-use 'range.zh'
-use 'tuple.zh'
-use 'util.zh'
-use 'frog.zh'
-use 'str.zh'
+// use 'std.zh'
+// use 'vec.zh'
+// use 'range.zh'
+// use 'tuple.zh'
+// use 'util.zh'
+// use 'frog.zh'
+// use 'str.zh'
+
+fn add int a int b
+  0
 
 fn main
-  out 'str and str examples'
-  out ''
-  out ''
+  a := 2
+  b := 3
+  add(a b)
+  // out 'str and str examples'
+  // out ''
+  // out ''
 
-  deb('stlen(\'12345\')', strlen('12345'))
-  s := asStr('')
-  a := 'toad'
-  b := asStr(' frog')
+  // deb('stlen(\'12345\')', strlen('12345'))
+  // s := asStr('')
+  // a := 'toad'
+  // b := asStr(' frog')
 
-  deb('s(Str)', s)
-  deb('a(str)', a)
-  deb('b(Str)', b)
-  out ''
+  // deb('s(Str)', s)
+  // deb('a(str)', a)
+  // deb('b(Str)', b)
+  // out ''
 
-  s += a
-  s += b
-  deb('s + a + b', s)
-  out ''
+  // s += a
+  // s += b
+  // deb('s + a + b', s)
+  // out ''
   
-  deb('before sort', s)
-  s.sort()
-  deb('after sort', s)
-  frog := frog()
-  out frog
+  // deb('before sort', s)
+  // s.sort()
+  // deb('after sort', s)
+  // frog := frog()
+  // out frog
 
-  frog.dtor()
-  s.dtor()
-  b.dtor()
+  // frog.dtor()
+  // s.dtor()
+  // b.dtor()
