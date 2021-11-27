@@ -248,7 +248,7 @@ namespace zhexp {
         tmp->type = scope_info.vars[id->val];
         exp = tmp;
       } else
-        throw ParserError(op->begin, op->end, "Unknown variable '" + op->val + "'");
+        throw ParserError(id->begin, id->end, "Unknown variable '" + id->val + "'");
     } else if (auto op = dynamic_cast<BinOperator*>(exp)) {
       if (op->val == ",") {
         op->lhs = postprocess(op->lhs, scope_info, block_scope);
