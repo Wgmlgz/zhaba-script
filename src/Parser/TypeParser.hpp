@@ -33,9 +33,7 @@ types::StructInfo parseStruct(ast::ASTBlock* block, const ScopeInfo& scope) {
       cur_type.setLval(true);
 
       for (auto i = cur; i != line->end; ++i) {
-        if (i->token == "space") {
-          continue;
-        }
+        if (i->token == "space") continue;
 
         /** TODO: proper member name validation */
         if (i->token != "id") {

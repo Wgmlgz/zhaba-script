@@ -127,7 +127,7 @@ struct CCode : public Exp {
 
 struct Operator : public Exp {
   std::string val;
-  Function* func;
+  Function* func = nullptr;
   int64_t priority = -666;
   size_t spl = 0, spr = 0;
   Operator(const Token& new_begin, const Token& new_end)

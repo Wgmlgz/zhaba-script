@@ -21,16 +21,23 @@ struct ZHDATA {
   std::unordered_map<std::string, int64_t> prefix_operators  = tables::prefix_operators;
   std::unordered_map<std::string, int64_t> postfix_operators = tables::postfix_operators;
 
+#define CBOP(name, lhst, rhst, rt)                                            \
+  {                                                                           \
+    {name, {types::Type(types::TYPE::i64T), types::Type(types::TYPE::i64T)}}, \
+    new Function {                                                            \
+      name,                                                                   \
+      {{"a", types::Type(types::TYPE::lhst)},                                 \
+        {"b", types::Type(types::TYPE::rhst)}},                               \
+      types::Type(types::TYPE::rt), OpType::bin, true                         \
+    }                                                                         \
+  }
+
   std::map<types::funcHead, Function*> B_OD = {
-    {{"+", {types::Type(types::TYPE::i64T), types::Type(types::TYPE::i64T)}},
-    new Function{
-      "+",
-      {{"a", types::Type(types::TYPE::i64T)},
-        {"b", types::Type(types::TYPE::i64T)}},
-      types::Type(types::TYPE::i64T),
-      OpType::bin,
-      true
-    }}
+    CBOP("+", i64T, i64T, i64T), CBOP("+", i32T, i32T, i32T),
+    CBOP("-", i64T, i64T, i64T), CBOP("-", i32T, i32T, i32T),
+    CBOP("*", i64T, i64T, i64T), CBOP("*", i32T, i32T, i32T),
+    CBOP("/", i64T, i64T, i64T), CBOP("/", i32T, i32T, i32T),
+    CBOP("%", i64T, i64T, i64T), CBOP("%", i32T, i32T, i32T),
   };
   std::map<types::funcHead, Function*> PR_OD;
   std::map<types::funcHead, Function*> PO_OD;

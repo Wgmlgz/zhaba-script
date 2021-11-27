@@ -40,7 +40,7 @@ std::unordered_map<TYPE, std::string> cpp_type_names{
   {TYPE::strT, "char*"},
 };
 std::unordered_map<TYPE, size_t> sizes {
-  {TYPE::voidT, 1},
+  {TYPE::voidT, 0},
   {TYPE::charT, 1},
   {TYPE::i64T, 8},
   {TYPE::i32T, 4},

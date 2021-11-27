@@ -19,30 +19,57 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
     bytecode.pushVal(zhin::instr::push_i64);
     bytecode.pushVal((int64_t)(lt->val));
   } else if (auto op = dynamic_cast<zhexp::BinOperator*>(exp)) {
-    expToB(bytecode, op->lhs, funcdata);
-    expToB(bytecode, op->rhs, funcdata);
-    /** C operators */
-    if (op->func->is_C) {
-      /** i64 add */
-      if (op->val == "+" and op->lhs->type.getTypeId() == types::TYPE::i64T and
-          op->lhs->type.getTypeId() == types::TYPE::i64T) {
-        bytecode.pushVal(zhin::instr::add_i64);
-      } else {
-        throw ParserError("inimplemented C op");
-      }
+    if (op->val == "as") {
+      throw ParserError("unimplemented as ");
+    } else if (op->val == "=") {
+      expToB(bytecode, op->lhs, funcdata);
+      /** pop deref + int */
+      bytecode.popBytes(5);
+      expToB(bytecode, op->rhs, funcdata);
+      bytecode.pushVal(zhin::instr::assign);
+      bytecode.pushVal((int32_t)(op->lhs->type.getSize()));
+    } else if (op->val == ".") {
+      throw ParserError("unimplemented . ");
     } else {
-      throw ParserError("inimplemented not C op");
+      expToB(bytecode, op->lhs, funcdata);
+      expToB(bytecode, op->rhs, funcdata);
+      /** C operators */
+      if (op->func && op->func->is_C) {
+        /** i64 add */
+        if (0) {
+        } else if (op->val == "+" &&
+                   op->lhs->type.getTypeId() == types::TYPE::i64T &&
+                   op->lhs->type.getTypeId() == types::TYPE::i64T) {
+          bytecode.pushVal(zhin::instr::add_i64);
+        } else if (op->val == "+" &&
+                   op->lhs->type.getTypeId() == types::TYPE::i32T &&
+                   op->lhs->type.getTypeId() == types::TYPE::i32T) {
+          bytecode.pushVal(zhin::instr::add_i32);
+        } else {
+          throw ParserError("unimplemented C op");
+        }
+      } else {
+        throw ParserError("unimplemented not C op");
+      }
     }
+  } else if (auto var = dynamic_cast<zhexp::Variable*>(exp)) {
+    bytecode.pushVal(zhin::instr::push_i64);
+    bytecode.pushVal((int64_t)(funcdata.offsets[var->getName()].back()));
+    bytecode.pushVal(zhin::instr::deref);
+    bytecode.pushVal((int32_t)(var->type.getSize()));
   } else {
-    throw ParserError("inimplemented expToB ");
+    throw ParserError("unimplemented expToB ");
   }
 }
 
 void nodeToB(zhin::ByteCode& bytecode, STNode* node, FuncData& funcdata) {
   if (auto exp = dynamic_cast<STExp*>(node)) {
     expToB(bytecode, exp->exp, funcdata);
+    /** pop unused return value */
+    bytecode.pushVal(zhin::instr::pop_bytes);
+    bytecode.pushVal((int32_t)(exp->exp->type.getSize()));
   } else {
-    throw ParserError("inimplemented nodeToB");
+    throw ParserError("unimplemented nodeToB");
   }
 
   // bytecode.pushVal(zhin::instr::nop);

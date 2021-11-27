@@ -286,7 +286,7 @@ namespace zhexp {
         }
 
         if (op->lhs->type.getLval()) {
-          op->type = op->lhs->type;
+          op->type = types::Type(types::TYPE::voidT);
         } else {
           throw ParserError(op->lhs->begin, op->end, "Left operant for '=' must be lval");
         }
@@ -311,7 +311,7 @@ namespace zhexp {
           tmp->type = scope_info.vars[id_l->val];
           op->lhs = tmp;
           op->val = "=";
-          op->type = op->lhs->type;
+          op->type = types::Type(types::TYPE::voidT);
         } else {
           throw ParserError(op->lhs->begin, op->lhs->end, "Expected id literal");
         }

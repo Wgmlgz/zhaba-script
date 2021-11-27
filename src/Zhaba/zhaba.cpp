@@ -25,6 +25,9 @@ false
 ;
 int main(int argc, char **argv) {
   CmdParser cmd(argc, argv);
+  if (deb) {
+    zhdata.bools["B"] = true;
+  }
   zhdata.bin_path = argv[0];
 
   zhdata.bin_path.remove_filename();

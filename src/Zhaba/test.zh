@@ -6,9 +6,36 @@
 // use 'frog.zh'
 // use 'str.zh'
 
-fn add int a int b
-  666 + 2
+fn add
+  d := 2
+  c := 3
+  d = (d + c + 666)
 
+/*
+
+0005  push_bytes 16  - init local
+
+000a  push_i64 8     - assign a
+0013  push_i64 2
+001c  assign 8
+0021  pop_bytes 0
+
+0026  push_i64 0     - assign c
+002f  push_i64 3
+0038  assign 8
+003d  pop_bytes 0
+
+0042  push_i64 8     - a addr
+004b  push_i64 8     - push a val
+0054  deref 8
+0059  push_i64 0     - push c val
+0062  deref 8
+0067  add_i64        - add 
+0068  assign 8       - set a 
+006d  pop_bytes 0
+0072  pop_bytes 16   - clear local
+
+*/
 // fn main
 //   a := 2
 //   b := 3

@@ -52,12 +52,12 @@ void compileFile(std::filesystem::path file_path) {
     zhin::ByteCode bytecode;
     zhin::toB(bytecode, stree);
     std::cout << bytecode.dis() << std::endl;
-    // zhin::ZHVM zhvm;
-    // zhvm.run(bytecode);
+    zhin::ZHVM zhvm;
+    zhvm.run(bytecode);
   } else {
     std::string c_code = toC(stree);
     if (zhdata.bools["show_cpp"]) {
-      std::cout << "cpp:" << std::endl << c_code << std::endl;
+      std::cout << "C:" << std::endl << c_code << std::endl;
     }
     std::cout << "[INFO] compiling complete in " +
                      std::to_string((clock() - start_time) * 1.0 /
