@@ -34,10 +34,11 @@ struct ZHDATA {
 
   std::map<types::funcHead, Function*> B_OD = {
     CBOP("+", i64T, i64T, i64T), CBOP("+", i32T, i32T, i32T),
-    CBOP("-", i64T, i64T, i64T), CBOP("-", i32T, i32T, i32T),
-    CBOP("*", i64T, i64T, i64T), CBOP("*", i32T, i32T, i32T),
-    CBOP("/", i64T, i64T, i64T), CBOP("/", i32T, i32T, i32T),
-    CBOP("%", i64T, i64T, i64T), CBOP("%", i32T, i32T, i32T),
+    CBOP("-", i64T, i64T, i64T), //CBOP("-", i32T, i32T, i32T),
+    CBOP("*", i64T, i64T, i64T), //CBOP("*", i32T, i32T, i32T),
+    CBOP("/", i64T, i64T, i64T), //CBOP("/", i32T, i32T, i32T),
+    CBOP("%", i64T, i64T, i64T), //CBOP("%", i32T, i32T, i32T),
+    CBOP("==", i64T, i64T, i64T),// CBOP("==", i32T, i32T, i32T),
   };
   std::map<types::funcHead, Function*> PR_OD;
   std::map<types::funcHead, Function*> PO_OD;

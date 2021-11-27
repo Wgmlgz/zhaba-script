@@ -20,8 +20,8 @@ void printUsage() {
 }
 
 const bool deb = 
-// true
-false
+true
+// false
 ;
 int main(int argc, char **argv) {
   CmdParser cmd(argc, argv);
@@ -53,11 +53,14 @@ int main(int argc, char **argv) {
     }
     catch (ParserError error) {
       std::cout << error.toString();
+    } catch (zhin::RuntimeError error) {
+      std::cout << error.what();
     } catch (const std::exception& err) {
       std::cout << err.what() << std::endl;
-    } catch (...) {
-      std::cout << "Uncaught error :(" << std::endl;
     }
+    // catch (...) {
+    //   std::cout << "Uncaught error :(" << std::endl;
+    // }
   } else {
     std::cout << "Wrong usage :(\n";
     printUsage();

@@ -57,6 +57,9 @@ namespace zhin {
     add_i64,  // pops and adds 2 TOS 64 and pushes res
     dup,
     swp,
+    eq_64,       // pops and '==' 2 TOS 64 and pushes res
+    jmp,         // jumps to label
+    jmp_if64,    // jumpls to label if 64
     push_i32,    // pushes const 32 to TOS
     push_i64,    // pushes const 64 to TOS
     deref,       // copies n bytes from ptr to TOS
@@ -71,7 +74,7 @@ namespace zhin {
     std::unordered_map<size_t, size_t> labels;
    public:
     size_t label(size_t t) {
-      if (labels.contains(t)) throw std::runtime_error("undefined label");
+      if (!labels.contains(t)) throw std::runtime_error("undefined label");
       return labels.at(t);
     }
     void loadLabels() {
@@ -91,13 +94,16 @@ namespace zhin {
           case instr::dup: break;
           case instr::swp: break;
           case instr::print_i32: break;
+          case instr::jmp: cur += 4; break;
+          case instr::eq_64: break;
+          case instr::jmp_if64: cur += 4; break;
           case instr::push_i32: cur += 4; break;
           case instr::deref: cur += 4; break;
           case instr::assign: cur += 4; break;
           case instr::push_i64: cur += 8; break;
           case instr::push_bytes: cur += 4; break;
           case instr::pop_bytes: cur += 4; break;
-          default: throw std::runtime_error("unimplemented"); break;
+          default: throw std::runtime_error("unimplemented loadLabels"); break;
         }
       }
     }
@@ -135,68 +141,42 @@ namespace zhin {
         auto op = *loadInstr(cur);
           ++cur;
         switch (op) {
-          case instr::nop:
-            res += "  nop\n";
-            break;
-          case instr::label:
-            res += "label ";
-            res += std::to_string(*loadI32(cur));
-            res += "\n";
-            cur += 4;
-            break;
-          case instr::add_i32:
-            res += "  add_i32\n";
-            break;
-          case instr::add_i64:
-            res += "  add_i64\n";
-            break;
-          case instr::dup:
-            res += "  dup\n";
-            break;
-          case instr::swp:
-            res += "  swp\n";
-            break;
-          case instr::print_i32:
-            res += "  print_i32\n";
-            break;
-          case instr::push_i32:
-            res += "  push_i32 ";
-            res += std::to_string(*loadI32(cur));
-            res += "\n";
-            cur += 4;
-            break;
-          case instr::deref:
-            res += "  deref ";
-            res += std::to_string(*loadI32(cur));
-            res += "\n";
-            cur += 4;
-            break;
-          case instr::assign:
-            res += "  assign ";
-            res += std::to_string(*loadI32(cur));
-            res += "\n";
-            cur += 4;
-            break;
-          case instr::push_i64:
-            res += "  push_i64 ";
-            res += std::to_string(*loadI64(cur));
-            res += "\n";
-            cur += 8;
-            break;
-          case instr::push_bytes:
-            res += "  push_bytes ";
-            res += std::to_string(*loadI32(cur));
-            res += "\n";
-            cur += 4;
-            break;
-          case instr::pop_bytes:
-            res += "  pop_bytes ";
-            res += std::to_string(*loadI32(cur));
-            res += "\n";
-            cur += 4;
-            break;
+#define INSTR(name)         \
+  case instr::name:         \
+    res += "  " #name "\n"; \
+    break;
+#define INSTR_I32(name)                   \
+  case instr::name:                       \
+    res += "  " #name " ";                \
+    res += std::to_string(*loadI32(cur)); \
+    res += "\n";                          \
+    cur += 4;                             \
+    break;
+#define INSTR_I64(name)                   \
+  case instr::name:                       \
+    res += "  " #name " ";                \
+    res += std::to_string(*loadI64(cur)); \
+    res += "\n";                          \
+    cur += 8;                             \
+    break;
+          INSTR(nop)
+          INSTR_I32(label)
+          INSTR_I32(jmp)
+          INSTR_I32(jmp_if64)
+          INSTR(add_i32)
+          INSTR(add_i64)
+          INSTR(eq_64)
+          INSTR(dup)
+          INSTR(swp)
+          INSTR(print_i32)
+          INSTR_I32(push_i32)
+          INSTR_I32(deref)
+          INSTR_I32(assign)
+          INSTR_I64(push_i64)
+          INSTR_I32(push_bytes)
+          INSTR_I32(pop_bytes)
           default:
-            throw std::runtime_error("unimplemented");
+            throw std::runtime_error("unimplemented dis");
             break;
         }
       }
@@ -232,7 +212,7 @@ namespace zhin {
         top += size;
       }
       void popBytes(size_t size) {
-        if (top - size < 0) throw RuntimeError("read below stack");
+        if ((int)top - (int)size < 0) throw RuntimeError("pop below stack");
         top -= size;
       }
       template <typename T>
@@ -242,7 +222,7 @@ namespace zhin {
         stack.resize(std::max(stack.size(), top + sizeof(T)));
 
         const byte* begin =
-            reinterpret_cast<const byte*>(std::addressof(object));
+            reinterpret_cast<const byte*>(&object);
         const byte* end = begin + sizeof(T);
         std::copy(begin, end, target);
         top += sizeof(T);
@@ -269,10 +249,11 @@ namespace zhin {
     Stack stack;
    public:
     void run(ByteCode& bytecode) {
+      bytecode.loadLabels();
       size_t cur = 0;
       std::string res;
       std::cout << stack.trace64() << std::endl;
-      while (cur != bytecode.size()) {
+      while (cur < bytecode.size()) {
         std::stringstream ss;
         ss << std::setfill('0') << std::setw(4) << std::hex << cur;
         res += ss.str() + " ";
@@ -290,9 +271,28 @@ namespace zhin {
           case instr::add_i64: {
             auto a = *reinterpret_cast<int64_t*>(stack.getBytes(-8, 8));
             auto b = *reinterpret_cast<int64_t*>(stack.getBytes(-16, 8));
-            auto res = a + b;
+            int64_t res = a + b;
             stack.popBytes(16);
             stack.push(res);
+          } break;
+          case instr::eq_64: {
+            auto a = *reinterpret_cast<int64_t*>(stack.getBytes(-8, 8));
+            auto b = *reinterpret_cast<int64_t*>(stack.getBytes(-16, 8));
+            int64_t res = a == b;
+            stack.popBytes(16);
+            stack.push(res);
+          } break;
+          case instr::jmp: {
+            auto target = *bytecode.loadI32(cur);
+            cur += 4;
+            cur = bytecode.label(target);
+          } break;
+          case instr::jmp_if64: {
+            auto target = *bytecode.loadI32(cur);
+            cur += 4;
+            auto val = *reinterpret_cast<int64_t*>(stack.getBytes(-8, 8));
+            stack.popBytes(8);
+            if (val) cur = bytecode.label(target);
           } break;
           case instr::push_i32: {
             auto val = *bytecode.loadI32(cur);

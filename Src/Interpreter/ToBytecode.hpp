@@ -14,6 +14,10 @@ int getLabel() {
   return id++;
 }
 
+void blockToB(zhin::ByteCode& bytecode, STBlock* block, FuncData& funcdata);
+void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata);
+void nodeToB(zhin::ByteCode& bytecode, STNode* node, FuncData& funcdata);
+
 void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
   if (auto lt = dynamic_cast<zhexp::IntLiteral*>(exp)) {
     bytecode.pushVal(zhin::instr::push_i64);
@@ -45,6 +49,10 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
                    op->lhs->type.getTypeId() == types::TYPE::i32T &&
                    op->lhs->type.getTypeId() == types::TYPE::i32T) {
           bytecode.pushVal(zhin::instr::add_i32);
+        } else if (op->val == "==" &&
+                   op->lhs->type.getTypeId() == types::TYPE::i64T &&
+                   op->lhs->type.getTypeId() == types::TYPE::i64T) {
+          bytecode.pushVal(zhin::instr::eq_64);
         } else {
           throw ParserError("unimplemented C op");
         }
@@ -68,6 +76,73 @@ void nodeToB(zhin::ByteCode& bytecode, STNode* node, FuncData& funcdata) {
     /** pop unused return value */
     bytecode.pushVal(zhin::instr::pop_bytes);
     bytecode.pushVal((int32_t)(exp->exp->type.getSize()));
+  } else if (auto stif = dynamic_cast<STIf*>(node)) {
+    /**
+     * exp_if
+     *  jmp <if>
+     *
+     * exp_elif0
+     *  jmp <elif0>
+     *
+     * exp_elif1
+     *  jmp <elif0>
+     *
+     * <else>
+     *  jmp end
+     * 
+    * label: if
+     * <if>
+     *  jmp end
+     *
+     * label: elif 0
+     * <elif 0>
+     *  jmp end
+     *
+     * label: elif 1
+     * <elif 1>
+     *  jmp end
+     *
+     * label: end
+     */
+
+    /** exp_if */
+    auto end_l = getLabel();
+    auto if_l = getLabel();
+    expToB(bytecode, stif->contition, funcdata);
+    bytecode.pushVal(zhin::instr::jmp_if64);
+    bytecode.pushVal((int32_t)(if_l));
+
+    /** exp_elif */
+    std::vector<int> elif_l(stif->elseif_body.size());
+    for (int i = 0; i < stif->elseif_body.size(); ++i) {
+      elif_l[i] = getLabel();
+      expToB(bytecode, stif->elseif_body[i].first, funcdata);
+      bytecode.pushVal(zhin::instr::jmp_if64);
+      bytecode.pushVal((int32_t)(elif_l[i]));
+    }
+
+    /** <else> */
+    if (stif->else_body)
+      blockToB(bytecode, stif->else_body, funcdata);
+    bytecode.pushVal(zhin::instr::jmp);
+    bytecode.pushVal((int32_t)(end_l));
+
+    /** <if> */
+    bytecode.pushVal(zhin::instr::label);
+    bytecode.pushVal((int32_t)(if_l));
+    blockToB(bytecode, stif->body, funcdata);
+    bytecode.pushVal(zhin::instr::jmp);
+    bytecode.pushVal((int32_t)(end_l));
+
+    for (int i = 0; i < stif->elseif_body.size(); ++i) {
+      bytecode.pushVal(zhin::instr::label);
+      bytecode.pushVal((int32_t)(elif_l[i]));
+      blockToB(bytecode, stif->elseif_body[i].second, funcdata);
+      bytecode.pushVal(zhin::instr::jmp);
+      bytecode.pushVal((int32_t)(end_l));
+    }
+    bytecode.pushVal(zhin::instr::label);
+    bytecode.pushVal((int32_t)(end_l));
   } else {
     throw ParserError("unimplemented nodeToB");
   }
