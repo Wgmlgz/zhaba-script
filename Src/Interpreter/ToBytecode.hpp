@@ -143,6 +143,35 @@ void nodeToB(zhin::ByteCode& bytecode, STNode* node, FuncData& funcdata) {
     }
     bytecode.pushVal(zhin::instr::label);
     bytecode.pushVal((int32_t)(end_l));
+  } else if (auto stwhile = dynamic_cast<STWhile*>(node)) {
+    /**
+     *   label: begin
+     * exp
+     * jmp_if loop
+     * jmp end
+     *  label: loop
+     * body
+     * jmp begin
+     *   label: end
+     */
+    auto begin_l = getLabel();
+    auto end_l = getLabel();
+    auto loop_l = getLabel();
+
+    bytecode.pushVal(zhin::instr::label);
+    bytecode.pushVal((int32_t)(begin_l));
+    expToB(bytecode, stwhile->contition, funcdata);
+    bytecode.pushVal(zhin::instr::jmp_if64);
+    bytecode.pushVal((int32_t)(loop_l));
+    bytecode.pushVal(zhin::instr::jmp);
+    bytecode.pushVal((int32_t)(end_l));
+    bytecode.pushVal(zhin::instr::label);
+    bytecode.pushVal((int32_t)(loop_l));
+    blockToB(bytecode, stwhile->body, funcdata);
+    bytecode.pushVal(zhin::instr::jmp);
+    bytecode.pushVal((int32_t)(begin_l));
+    bytecode.pushVal(zhin::instr::label);
+    bytecode.pushVal((int32_t)(end_l));
   } else {
     throw ParserError("unimplemented nodeToB");
   }
