@@ -53,12 +53,18 @@ namespace zhin {
   enum class instr : byte {
     nop,      // nothing
     label,    // labes
-    add_i32,  // pops and adds 2 TOS 32 and pushes res
-    add_i64,  // pops and adds 2 TOS 64 and pushes res
+    add_i32,  // pops and '+' 2 TOS 32 and pushes res
+    add_i64,  // pops and '+' 2 TOS 64 and pushes res
+    sub_i32,  // pops and '-' 2 TOS 32 and pushes res
+    sub_i64,  // pops and '-' 2 TOS 64 and pushes res
+    mul_i32,  // pops and '*' 2 TOS 32 and pushes res
+    mul_i64,  // pops and '*' 2 TOS 64 and pushes res
     dup,
     swp,
     eq_64,       // pops and '==' 2 TOS 64 and pushes res
     jmp,         // jumps to label
+    call,        // jumps to label and updates call stack
+    ret,         // pops call stack
     jmp_if64,    // jumpls to label if 64
     push_i32,    // pushes const 32 to TOS
     push_i64,    // pushes const 64 to TOS
@@ -71,9 +77,10 @@ namespace zhin {
 
   class ByteCode {
     std::vector<byte> bytes;
-    std::unordered_map<size_t, size_t> labels;
+    std::unordered_map<int, size_t> labels;
    public:
-    size_t label(size_t t) {
+    std::map<std::string, int> func_labels;
+    int label(int t) {
       if (!labels.contains(t)) throw std::runtime_error("undefined label");
       return labels.at(t);
     }
@@ -91,10 +98,16 @@ namespace zhin {
           } break;
           case instr::add_i32: break;
           case instr::add_i64: break;
+          case instr::sub_i32: break;
+          case instr::sub_i64: break;
+          case instr::mul_i32: break;
+          case instr::mul_i64: break;
           case instr::dup: break;
           case instr::swp: break;
           case instr::print_i32: break;
           case instr::jmp: cur += 4; break;
+          case instr::call: cur += 4; break;
+          case instr::ret: break;
           case instr::eq_64: break;
           case instr::jmp_if64: cur += 4; break;
           case instr::push_i32: cur += 4; break;
@@ -162,9 +175,15 @@ namespace zhin {
           INSTR(nop)
           INSTR_I32(label)
           INSTR_I32(jmp)
+          INSTR_I32(call)
           INSTR_I32(jmp_if64)
+          INSTR(ret)
           INSTR(add_i32)
           INSTR(add_i64)
+          INSTR(sub_i32)
+          INSTR(sub_i64)
+          INSTR(mul_i32)
+          INSTR(mul_i64)
           INSTR(eq_64)
           INSTR(dup)
           INSTR(swp)
@@ -193,16 +212,18 @@ namespace zhin {
       std::vector<byte> stack;
       size_t top = 0;
      public:
-      byte* getTop() { return stack.data() + top; }
+      byte* getTopPtr() { return stack.data() + top; }
+      auto getTop() { return top; }
+      void setTop(size_t val) { top = val; }
       byte* getBytes(int offset, int size) {
         if (stack.empty()) throw RuntimeError("empty stack");
-        if (-offset < size) throw RuntimeError("read too much stack");
+        if (-offset < size) throw RuntimeError("read too much stack top");
         return
          stack.data() + top + offset;
       }
       byte* getBytesOrigin(int offset, int size) {
         if (stack.empty()) throw RuntimeError("empty stack");
-        if (offset + size > stack.size()) throw RuntimeError("read too much stack");
+        if (offset + size > stack.size()) throw RuntimeError("read too much stack origin");
         return stack.data() + offset;
       }
       void pushBytes(size_t size) {
@@ -252,6 +273,8 @@ namespace zhin {
       bytecode.loadLabels();
       size_t cur = 0;
       std::string res;
+      std::vector<size_t> call_stack;
+      std::vector<size_t> call_stack_frame;
       std::cout << stack.trace64() << std::endl;
       while (cur < bytecode.size()) {
         std::stringstream ss;
@@ -261,31 +284,37 @@ namespace zhin {
         ++cur;
         switch (op) {
           case instr::nop: break;
-          case instr::add_i32: {
-            auto a = *reinterpret_cast<int32_t*>(stack.getBytes(-4, 4));
-            auto b = *reinterpret_cast<int32_t*>(stack.getBytes(-8, 4));
-            auto res = a + b;
-            stack.popBytes(8);
-            stack.push(res);
-          } break;
-          case instr::add_i64: {
-            auto a = *reinterpret_cast<int64_t*>(stack.getBytes(-8, 8));
-            auto b = *reinterpret_cast<int64_t*>(stack.getBytes(-16, 8));
-            int64_t res = a + b;
-            stack.popBytes(16);
-            stack.push(res);
-          } break;
-          case instr::eq_64: {
-            auto a = *reinterpret_cast<int64_t*>(stack.getBytes(-8, 8));
-            auto b = *reinterpret_cast<int64_t*>(stack.getBytes(-16, 8));
-            int64_t res = a == b;
-            stack.popBytes(16);
-            stack.push(res);
-          } break;
+#define ARITHMETIC_BIN(name, type, op, size)                            \
+  case instr::name: {                                                   \
+    type b = *reinterpret_cast<type*>(stack.getBytes(-size, size));     \
+    type a = *reinterpret_cast<type*>(stack.getBytes(-size * 2, size)); \
+    type res = a op b;                                                  \
+    stack.popBytes(size * 2);                                           \
+    stack.push(res);                                                    \
+  } break;
+            ARITHMETIC_BIN(add_i32, int32_t, +, 4)
+            ARITHMETIC_BIN(add_i64, int64_t, +, 8)
+            ARITHMETIC_BIN(sub_i32, int32_t, -, 4)
+            ARITHMETIC_BIN(sub_i64, int64_t, -, 8)
+            ARITHMETIC_BIN(mul_i32, int32_t, *, 4)
+            ARITHMETIC_BIN(mul_i64, int64_t, *, 8)
+            ARITHMETIC_BIN(eq_64, int64_t, ==, 8)
           case instr::jmp: {
             auto target = *bytecode.loadI32(cur);
             cur += 4;
             cur = bytecode.label(target);
+          } break;
+          case instr::call: {
+            auto target = *bytecode.loadI32(cur);
+            cur += 4;
+            call_stack.push_back(cur);
+            call_stack_frame.push_back(stack.getTop());
+            cur = bytecode.label(target);
+          } break;
+          case instr::ret: {
+            cur = call_stack.back();
+            call_stack.pop_back();
+            call_stack_frame.pop_back();
           } break;
           case instr::jmp_if64: {
             auto target = *bytecode.loadI32(cur);
@@ -311,8 +340,8 @@ namespace zhin {
             stack.popBytes(8);
 
             // TODO: proper memory read
-            auto mem = stack.getBytesOrigin(ptr, size); // get data
-            auto target = stack.getTop();
+            auto mem = stack.getBytesOrigin(ptr + call_stack_frame.back(), size); // get data
+            auto target = stack.getTopPtr();
             stack.pushBytes(size);
             const byte* begin = mem;
             const byte* end = begin + size;
@@ -325,7 +354,8 @@ namespace zhin {
             auto ptr = *reinterpret_cast<int64_t*>(stack.getBytes(- 8 -  size, 8));
 
             // TODO: proper memory write
-            auto target = stack.getBytesOrigin(ptr, size);
+            auto target =
+                stack.getBytesOrigin(ptr + call_stack_frame.back(), size);
             const byte* begin = mem;
             const byte* end = begin + size;
             std::copy(begin, end, target);

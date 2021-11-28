@@ -132,6 +132,17 @@ struct Function {
     } 
     return str;
   }
+  std::string toUniqueStr() {
+    std::string str = "fn ";
+    str += type.toString() + " ";
+    str += name + " ";
+    for (auto& arg : args) {
+      str += " ";
+      str += arg.type.toString() + " ";
+      str += arg.name;
+    }
+    return str;
+  }
   types::funcHead getHead() {
     types::funcHead res;
     res.first = name;
