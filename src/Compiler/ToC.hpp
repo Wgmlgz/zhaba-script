@@ -46,7 +46,7 @@ std::string typeToC(const types::Type& type, bool plain = false) {
   if (static_cast<int>(type.getTypeId()) < 50)
     res += types::cpp_type_names[type.getTypeId()];
   else
-    res += idToC("__ZH_TYPE_" + types::struct_names[static_cast<int>(type.getTypeId())]);
+    res += idToC("__ZH_TYPE_" + types::struct_names[type.getTypeId()]);
 
   // if (tmpl_.size()) {
   //   res += "_TMPL_";
@@ -268,11 +268,11 @@ std::string funcToC(Function* func) {
   return funcHeadToC(func) + " " + blockToC(func->body) + "\n";
 }
 
-std::string structHeadToC(int id) {
+std::string structHeadToC(types::TYPE id) {
   return "struct __PROT_ZH_TYPE_" + idToC(types::struct_names[id]);
 }
 
-std::string structToC(int id) {
+std::string structToC(types::TYPE id) {
   std::string res = structHeadToC(id);
   res += " {\n";
   for (const auto& [name, type] : types::structs[id].members) {
@@ -295,10 +295,11 @@ typedef uint64_t u64;
 )";
 
   for (int i = types::first_struct_id; i < types::last_struct_id; ++i) {
-    res += structHeadToC(i);
+    auto id = static_cast<types::TYPE>(i);
+    res += structHeadToC(id);
     res += ";\n";
-    res += "typedef struct __PROT_ZH_TYPE_" + idToC(types::struct_names[i]) +
-           " __ZH_TYPE_" + idToC(types::struct_names[i]);
+    res += "typedef struct __PROT_ZH_TYPE_" + idToC(types::struct_names[id]) +
+           " __ZH_TYPE_" + idToC(types::struct_names[id]);
     // res += structHeadToC(i);
     res += ";\n";
   }
@@ -306,7 +307,8 @@ typedef uint64_t u64;
   res += "\n";
 
   for (int i = types::first_struct_id; i < types::last_struct_id; ++i) {
-    res += structToC(i);
+    auto id = static_cast<types::TYPE>(i);
+    res += structToC(id);
   }
 
   for (auto i : block->functions) {

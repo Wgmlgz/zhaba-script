@@ -401,7 +401,7 @@ STTree* parseAST(ast::ASTBlock* main_block) {
           throw ParserError(*line->end, "Expected identifier token for struct type name");
 
         std::string name = (line->begin + 2)->val;
-        if (types::getStructId(name) != -1) {
+        if (types::getStructId(name) != types::TYPE(-1)) {
           throw ParserError(*line->begin, *line->end,
             "Type '" + name + "'already exist");
         }
@@ -481,7 +481,7 @@ STTree* parseAST(ast::ASTBlock* main_block) {
 
         /** Regiester function */
         std::vector<types::Type> types;
-        for (auto& [_, type] : func->args) {
+        for (const auto& [_, type] : func->args) {
           types.push_back(type);
           types.back().setLval(false);
           types.back().setRef(false);

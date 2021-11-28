@@ -320,14 +320,16 @@ namespace zhexp {
       else if (op->val == ".") {
         op->lhs = postprocess(op->lhs, scope_info, block_scope);
         if (auto id = dynamic_cast<IdLiteral*>(op->rhs)) {
-          if (static_cast<int>(op->lhs->type.getTypeId()) >= types::first_struct_id) {
-            if (types::structs[static_cast<int>(op->lhs->type.getTypeId())].members.count(id->val)) {
+          if (op->lhs->type.getTypeId() >=
+              static_cast<types::TYPE>(types::first_struct_id)) {
+            if (types::structs[op->lhs->type.getTypeId()].members.count(
+                    id->val)) {
               if (op->lhs->type.getPtr() > 1) {
                 throw ParserError(op->begin, op->end,
                   "Can't use member access with 2 or more pointer modifiers (" +
                   std::to_string(op->lhs->type.getPtr()) + " found)");
               }
-              op->type = types::structs[static_cast<int>(op->lhs->type.getTypeId())].members[id->val];
+              op->type = types::structs[op->lhs->type.getTypeId()].members[id->val];
               op->type.setLval(op->lhs->type.getLval());
             } else {
               throw ParserError(op->begin, op->end, "Type '" + op->lhs->type.toString() + "' doesn't have '" + id->val + "' member");

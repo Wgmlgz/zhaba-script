@@ -49,8 +49,8 @@ std::unordered_map<TYPE, size_t> sizes {
   {TYPE::strT, 8},
 };
 
-std::unordered_map<std::string, int> struct_ids;
-std::unordered_map<int, std::string> struct_names;
+std::unordered_map<std::string, TYPE> struct_ids;
+std::unordered_map<TYPE, std::string> struct_names;
 
 class Type {
  public:
@@ -90,7 +90,7 @@ class Type {
     if (static_cast<int>(typeid_) < 50)
       res += type_names[typeid_];
     else 
-      res += struct_names[static_cast<int>(typeid_)];
+      res += struct_names[typeid_];
 
     res += std::string(ptr_, 'P');
     if (ref_) res += "R";
@@ -138,27 +138,32 @@ typedef std::pair<std::string, std::vector<types::Type>> funcHead;
 
 struct StructInfo {
   std::unordered_map<std::string, Type> members;
+  std::vector<std::string> members_list;
 };
 
-std::unordered_map<int, StructInfo> structs;
+std::unordered_map<TYPE, StructInfo> structs;
 
 const int first_struct_id = 50;
 int last_struct_id = 50;
 
 void pushStruct(std::string name, const StructInfo& info) {
-  struct_ids[name] = last_struct_id;
-  struct_names[last_struct_id] = name;
-  structs[last_struct_id] = info;
+  const auto id = static_cast<TYPE>(last_struct_id);
+  struct_ids[name] = id;
+  struct_names[id] = name;
+  structs[id] = info;
   ++last_struct_id;
 
-  // TODO: members offsets & sizeof
+  int size = 0;
+  for (const auto& [_, type] : info.members)
+    size += type.getSize();
+  sizes[static_cast<TYPE>(id)] = size;
 }
 
-int getStructId(const std::string& str) {
+TYPE getStructId(const std::string& str) {
   if (struct_ids.count(str)) {
     return struct_ids[str];
   }
-  return -1;
+  return static_cast<TYPE>(-1);
 }
 
 };  // namespace types

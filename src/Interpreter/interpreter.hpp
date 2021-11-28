@@ -80,6 +80,7 @@ namespace zhin {
     std::unordered_map<int, size_t> labels;
    public:
     std::map<std::string, int> func_labels;
+    std::map<types::TYPE, std::map<std::string, int>> structs_members_offsets;
     int label(int t) {
       if (!labels.contains(t)) throw std::runtime_error("undefined label");
       return labels.at(t);

@@ -39,10 +39,12 @@ types::StructInfo parseStruct(ast::ASTBlock* block, const ScopeInfo& scope) {
         if (i->token != "id") {
           throw ParserError(*i, "Expected member name as identifier");
         }
-        if (struct_info.members.count(i->val)) {
-          throw ParserError(*i, "Member '" + i->val + "'already exist");
+        auto member_name = i->val;
+        if (struct_info.members.count(member_name)) {
+          throw ParserError(*i, "Member '" + member_name + "'already exist");
         }
-        struct_info.members[i->val] = cur_type;
+        struct_info.members[member_name] = cur_type;
+        struct_info.members_list.push_back(member_name);
       }
     } else {
       throw ParserError("Unexprected block");
@@ -68,8 +70,8 @@ Type parse(std::string& str, const ScopeInfo& scope) {
     type.setPtr(tmp.getPtr() + type.getPtr());
   } else if (prim_types.count(str)) {
     type.setType(prim_types[str]);
-  } else if (getStructId(str) != -1) {
-    type.setType(static_cast<TYPE>(getStructId(str)));
+  } else if (getStructId(str) != types::TYPE(-1)) {
+    type.setType(getStructId(str));
   } else {
     throw std::runtime_error("Type parsing failed");
   }
@@ -94,7 +96,7 @@ Type parse(tokeniter& token, const ScopeInfo& scope) {
     auto id = getStructId(name);
 
     /** Generate new implementation */
-    if (id == -1) {
+    if (id == static_cast<TYPE>(-1)) {
       /** Type substitution*/
       if (generic_types.size() != generics[str].names.size()) 
         throw ParserError(

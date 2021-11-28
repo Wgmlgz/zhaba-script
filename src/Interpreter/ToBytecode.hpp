@@ -51,21 +51,34 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
       bytecode.pushVal(zhin::instr::assign);
       bytecode.pushVal((int32_t)(op->lhs->type.getSize()));
     } else if (op->val == ".") {
-      throw ParserError("unimplemented . ");
+      expToB(bytecode, op->lhs, funcdata);
+      // res += static_cast<zhexp::IdLiteral*>(op->rhs)->val;
+      
+      if (!op->lhs->type.getPtr()) {
+        /** pop deref + int */
+        bytecode.popBytes(5);
+      }
+      bytecode.pushVal(zhin::instr::push_i64);
+      bytecode.pushVal(
+        (int64_t)(bytecode.structs_members_offsets
+          [op->lhs->type.getTypeId()]
+          [static_cast<zhexp::IdLiteral*>(op->rhs)->val])
+      );
+      bytecode.pushVal(zhin::instr::deref);
+      bytecode.pushVal((int32_t)(op->type.getSize()));
     } else {
       expToB(bytecode, op->lhs, funcdata);
       expToB(bytecode, op->rhs, funcdata);
       /** C operators */
       if (op->func && op->func->is_C) {
         /** i64 add */
-        if (0) {
+        if (0) {}
 #define BOPBYTECODE(name, type_, instr_)                      \
   else if (op->val == #name &&                                \
            op->lhs->type.getTypeId() == types::TYPE::type_ && \
            op->lhs->type.getTypeId() == types::TYPE::type_) { \
     bytecode.pushVal(zhin::instr::instr_);                    \
   }
-        }
         BOPBYTECODE(+, i64T, add_i64)
         BOPBYTECODE(+, i32T, add_i32)
         BOPBYTECODE(-, i64T, sub_i64)
@@ -77,7 +90,7 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
           throw ParserError("unimplemented C op");
         }
       } else {
-        throw ParserError("unimplemented C op");
+        throw ParserError("unimplemented op");
       }
     }
   } else if (auto op = dynamic_cast<zhexp::PrefixOperator*>(exp)) {
@@ -138,7 +151,7 @@ void nodeToB(zhin::ByteCode& bytecode, STNode* node, FuncData& funcdata) {
      * <else>
      *  jmp end
      * 
-    * label: if
+     * label: if
      * <if>
      *  jmp end
      *
@@ -202,9 +215,9 @@ void nodeToB(zhin::ByteCode& bytecode, STNode* node, FuncData& funcdata) {
      * jmp begin
      *   label: end
      */
-    auto begin_l = getLabel();
-    auto end_l = getLabel();
-    auto loop_l = getLabel();
+    const auto begin_l = getLabel();
+    const auto end_l = getLabel();
+    const auto loop_l = getLabel();
 
     bytecode.pushVal(zhin::instr::label);
     bytecode.pushVal((int32_t)(begin_l));
@@ -223,36 +236,12 @@ void nodeToB(zhin::ByteCode& bytecode, STNode* node, FuncData& funcdata) {
   } else {
     throw ParserError("unimplemented nodeToB");
   }
-
-  // bytecode.pushVal(zhin::instr::nop);
-  // if (auto nd = dynamic_cast<STIf*>(node)) {
-  //   res += "if (" + expToC(nd->contition) + ") ";
-  //   res += blockToC(nd->body, depth);
-  //   for (auto& i : nd->elseif_body) {
-  //     res += " else if (" + expToC(i.first) + ") ";
-  //     res += blockToC(i.second, depth);
-  //   }
-  //   if (nd->else_body) {
-  //     res += " else ";
-  //     res += blockToC(nd->else_body, depth);
-  //   }
-  // } else if (auto nd = dynamic_cast<STWhile*>(node)) {
-  //   res += "while (" + expToC(nd->contition) + ") ";
-  //   res += blockToC(nd->body, depth);
-  // } else if (auto nd = dynamic_cast<STRet*>(node)) {
-  //   res += "return (" + expToC(nd->exp) + ")";
-  // } else if (auto exp = dynamic_cast<STExp*>(node)) {
-  //   expToB(bytecode, exp->exp, funcdata);
-  // } else if (auto block = dynamic_cast<STBlock*>(node)) {
-  //   res += blockToC(block);
-  // }
-  // return res;
 };
 
 void blockToB(zhin::ByteCode& bytecode, STBlock* block, FuncData& funcdata) {
-  /** push local vars info */
+  /** Push local vars info */
   size_t local_vars_size = 0;
-  for (auto& [name, type] : block->scope_info.vars) {
+  for (const auto& [name, type] : block->scope_info.vars) {
     funcdata.offsets[name].push_back(funcdata.offset);
     funcdata.offset += type.getSize();
     local_vars_size += type.getSize();
@@ -260,12 +249,11 @@ void blockToB(zhin::ByteCode& bytecode, STBlock* block, FuncData& funcdata) {
   bytecode.pushVal(zhin::instr::push_bytes);
   bytecode.pushVal((int32_t)(local_vars_size));
 
-  for (auto& i : block->nodes) {
+  for (auto& i : block->nodes)
     nodeToB(bytecode, i, funcdata);
-  }
 
-  /** pop local vars info */
-  for (auto& [name, type] : block->scope_info.vars) {
+  /** Pop local vars info */
+  for (const auto& [name, type] : block->scope_info.vars) {
     funcdata.offsets[name].pop_back();
     funcdata.offset -= type.getSize();
   }
@@ -273,18 +261,21 @@ void blockToB(zhin::ByteCode& bytecode, STBlock* block, FuncData& funcdata) {
   bytecode.pushVal((int32_t)(local_vars_size));
 }
 
+#define MAIN_LABEL 666000000
+#define END_LABEL 222000000
+
 void funcToB(zhin::ByteCode& bytecode, Function* func) {
   FuncData funcdata;
-  for (auto& [name, type] : func->args) {
+  for (const auto& [name, type] : func->args) {
     funcdata.offset -= type.getSize();
     funcdata.args_size += type.getSize();
   }
-  for (auto& [name, type] : func->args) {
+  for (const auto& [name, type] : func->args) {
     funcdata.offsets[name].push_back(funcdata.offset);
     funcdata.offset += type.getSize();
   }
   /** Unique main label */
-  auto func_l = (func->name == "main") ? 666000000 : getLabel();
+  const auto func_l = (func->name == "main") ? MAIN_LABEL : getLabel();
   bytecode.func_labels[func->toUniqueStr()] = func_l;
   bytecode.pushVal(zhin::instr::label);
   bytecode.pushVal((int32_t)(func_l));
@@ -292,18 +283,29 @@ void funcToB(zhin::ByteCode& bytecode, Function* func) {
 }
 
 void toB(zhin::ByteCode& bytecode, STTree* block) {
-  /** jmp to unique main fn */
+  /** Structs members offsets calculation */
+  for (const auto& [struct_id, struct_name] : types::struct_names) {
+    int offset = 0;
+    auto& struct_map = bytecode.structs_members_offsets[struct_id];    
+    const auto& struct_info = types::structs[struct_id];
+    for (const auto& member_name : struct_info.members_list) {
+      struct_map[member_name] = offset;
+      offset += struct_info.members.at(member_name).getSize();
+    }
+  }
+
+  /** Jmp to unique main fn */
   bytecode.pushVal(zhin::instr::call);
-  bytecode.pushVal((int32_t)(666000000));
-  /** jmp to unique end label */
+  bytecode.pushVal((int32_t)(MAIN_LABEL));
+  /** Jmp to unique end label */
   bytecode.pushVal(zhin::instr::jmp);
-  bytecode.pushVal((int32_t)(222000000));
+  bytecode.pushVal((int32_t)(END_LABEL));
 
   for (auto& i : block->functions) {
     funcToB(bytecode, i);
   }
   /** Unique end label */
   bytecode.pushVal(zhin::instr::label);
-  bytecode.pushVal((int32_t)(222000000));
+  bytecode.pushVal((int32_t)(END_LABEL));
 }
 }

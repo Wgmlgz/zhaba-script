@@ -1,8 +1,31 @@
 
+type Da
+  int a
+  int b
+
 fn int fib int n
   ? n == 1: <<< n
   ? n == 0: <<< n
   <<< fib(n-1) + fib(n-2);
 
 fn main
-  fib(2)
+  Da da
+  da.a = 2
+  da.b = 3
+  2 + 3
+  da.a = 3
+  // 3
+  // 3
+  // 3
+  // d := 2 + 3
+  // da.a = 2
+  // da.b = 3
+
+  // c := da.a + da.b
+
+  // c
+  // c
+  // c
+  // c
+  // c
+  // c
