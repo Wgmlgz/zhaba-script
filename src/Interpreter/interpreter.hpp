@@ -62,6 +62,9 @@ namespace zhin {
     dup,
     swp,
     eq_64,       // pops and '==' 2 TOS 64 and pushes res
+    eq_32,       // pops and '==' 2 TOS 32 and pushes res
+    uneq_64,     // pops and '!=' 2 TOS 64 and pushes res
+    uneq_32,     // pops and '!=' 2 TOS 32 and pushes res
     jmp,         // jumps to label
     call,        // jumps to label and updates call stack
     ret,         // pops call stack
@@ -71,8 +74,10 @@ namespace zhin {
     deref,       // copies n bytes from ptr to TOS
     assign,      // copies n bytes from TOS to ptr
     push_bytes,  // allocates n bytes at TOS
+    push_frame,  // pushes current frame pointer
     pop_bytes,   // deallocates n bytes at TOS
-    print_i32    // prints TOS 32 (debug only)
+    print_i32,   // prints TOS 32 (debug only)
+    print_i64    // prints TOS 64 (debug only)
   };
 
   class ByteCode {
@@ -106,12 +111,17 @@ namespace zhin {
           case instr::dup: break;
           case instr::swp: break;
           case instr::print_i32: break;
+          case instr::print_i64: break;
           case instr::jmp: cur += 4; break;
           case instr::call: cur += 4; break;
-          case instr::ret: break;
+          case instr::ret: cur += 4; break;
           case instr::eq_64: break;
+          case instr::eq_32: break;
+          case instr::uneq_64: break;
+          case instr::uneq_32: break;
           case instr::jmp_if64: cur += 4; break;
           case instr::push_i32: cur += 4; break;
+          case instr::push_frame: break;
           case instr::deref: cur += 4; break;
           case instr::assign: cur += 4; break;
           case instr::push_i64: cur += 8; break;
@@ -145,40 +155,48 @@ namespace zhin {
       std::copy(begin, end, target);
     }
 
-    std::string dis() {
+    std::pair<std::string, std::map<size_t, std::string>> dis() {
       size_t cur = 0;
-      std::string res;
+      std::string all;
+      std::map<size_t, std::string> mp;
       while (cur != bytes.size()) {
         std::stringstream ss;
         ss << std::setfill('0') << std::setw(4) << std::hex << cur;
+        std::string res;
         res += ss.str();
+        size_t old_cur = cur;
         auto op = *loadInstr(cur);
           ++cur;
         switch (op) {
-#define INSTR(name)         \
-  case instr::name:         \
-    res += "  " #name "\n"; \
+#define INSTR(name)           \
+  case instr::name:           \
+    res += "    " #name "\n"; \
     break;
 #define INSTR_I32(name)                   \
   case instr::name:                       \
-    res += "  " #name " ";                \
+    res += "    " #name " ";              \
     res += std::to_string(*loadI32(cur)); \
     res += "\n";                          \
     cur += 4;                             \
     break;
 #define INSTR_I64(name)                   \
   case instr::name:                       \
-    res += "  " #name " ";                \
+    res += "    " #name " ";              \
     res += std::to_string(*loadI64(cur)); \
     res += "\n";                          \
     cur += 8;                             \
     break;
           INSTR(nop)
-          INSTR_I32(label)
+          case instr::label:
+            res += "  label ";
+            res += std::to_string(*loadI32(cur));
+            res += "\n";
+            cur += 4;
+          break;
           INSTR_I32(jmp)
           INSTR_I32(call)
           INSTR_I32(jmp_if64)
-          INSTR(ret)
+          INSTR_I32(ret)
           INSTR(add_i32)
           INSTR(add_i64)
           INSTR(sub_i32)
@@ -186,10 +204,15 @@ namespace zhin {
           INSTR(mul_i32)
           INSTR(mul_i64)
           INSTR(eq_64)
+          INSTR(eq_32)
+          INSTR(uneq_64)
+          INSTR(uneq_32)
           INSTR(dup)
           INSTR(swp)
           INSTR(print_i32)
+          INSTR(print_i64)
           INSTR_I32(push_i32)
+          INSTR(push_frame)
           INSTR_I32(deref)
           INSTR_I32(assign)
           INSTR_I64(push_i64)
@@ -199,8 +222,10 @@ namespace zhin {
             throw std::runtime_error("unimplemented dis");
             break;
         }
+        all += res;
+        mp[old_cur] = res;
       }
-      return res;
+      return {all, mp};
     }
   };
 
@@ -229,7 +254,6 @@ namespace zhin {
       }
       void pushBytes(size_t size) {
         stack.reserve(top + size);
-        auto target = top + stack.data();
         stack.resize(std::max(stack.size(), top + size));
         top += size;
       }
@@ -267,21 +291,29 @@ namespace zhin {
         }
         return res;
       }
+      Stack() {
+        stack.reserve(66666);
+      }
     };
     Stack stack;
    public:
     void run(ByteCode& bytecode) {
+      bool do_stack_trace = zhdata.bools["stack_trace"];
+
       bytecode.loadLabels();
+      auto [dis, mp] = bytecode.dis();
+      if (zhdata.bools["show_bytecode"]) {
+        std::cout << "bytecode: " << dis <<std::endl;
+      }
       size_t cur = 0;
       std::string res;
       std::vector<size_t> call_stack;
       std::vector<size_t> call_stack_frame;
-      std::cout << stack.trace64() << std::endl;
+
       while (cur < bytecode.size()) {
         std::stringstream ss;
-        ss << std::setfill('0') << std::setw(4) << std::hex << cur;
-        res += ss.str() + " ";
         auto op = *bytecode.loadInstr(cur);
+        if (do_stack_trace) std::cout << mp[cur];
         ++cur;
         switch (op) {
           case instr::nop: break;
@@ -300,6 +332,9 @@ namespace zhin {
             ARITHMETIC_BIN(mul_i32, int32_t, *, 4)
             ARITHMETIC_BIN(mul_i64, int64_t, *, 8)
             ARITHMETIC_BIN(eq_64, int64_t, ==, 8)
+            ARITHMETIC_BIN(eq_32, int32_t, ==, 4)
+            ARITHMETIC_BIN(uneq_64, int64_t, !=, 8)
+            ARITHMETIC_BIN(uneq_32, int32_t, !=, 4)
           case instr::jmp: {
             auto target = *bytecode.loadI32(cur);
             cur += 4;
@@ -313,7 +348,9 @@ namespace zhin {
             cur = bytecode.label(target);
           } break;
           case instr::ret: {
+            auto ret_size = *bytecode.loadI32(cur);
             cur = call_stack.back();
+            stack.setTop(call_stack_frame.back() + ret_size);
             call_stack.pop_back();
             call_stack_frame.pop_back();
           } break;
@@ -334,6 +371,9 @@ namespace zhin {
             cur += 8;
             stack.push(val);
           } break;
+          case instr::push_frame : {
+            stack.push((int64_t)call_stack_frame.back());
+          } break;
           case instr::deref: {
             auto size = *bytecode.loadI32(cur);
             cur += 4;
@@ -341,7 +381,7 @@ namespace zhin {
             stack.popBytes(8);
 
             // TODO: proper memory read
-            auto mem = stack.getBytesOrigin(ptr + call_stack_frame.back(), size); // get data
+            auto mem = stack.getBytesOrigin(ptr, size); // get data
             auto target = stack.getTopPtr();
             stack.pushBytes(size);
             const byte* begin = mem;
@@ -352,11 +392,11 @@ namespace zhin {
             auto size = *bytecode.loadI32(cur);
             cur += 4;
             auto mem = stack.getBytes(-size, size);
-            auto ptr = *reinterpret_cast<int64_t*>(stack.getBytes(- 8 -  size, 8));
+            auto ptr = *reinterpret_cast<int64_t*>(stack.getBytes(- 8 - size, 8));
 
             // TODO: proper memory write
             auto target =
-                stack.getBytesOrigin(ptr + call_stack_frame.back(), size);
+                stack.getBytesOrigin(ptr, size);
             const byte* begin = mem;
             const byte* end = begin + size;
             std::copy(begin, end, target);
@@ -369,7 +409,12 @@ namespace zhin {
           case instr::print_i32: {
             auto t = *reinterpret_cast<int32_t*>(stack.getBytes(-4, 4));
             stack.popBytes(4);
-            std::cout << "out:" << std::to_string(t) << std::endl;
+            std::cout << std::to_string(t) << std::endl;
+          } break;
+          case instr::print_i64: {
+            auto t = *reinterpret_cast<int64_t*>(stack.getBytes(-8, 8));
+            stack.popBytes(8);
+            std::cout << std::to_string(t) << std::endl;
           } break;
           case instr::push_bytes: {
             auto val = *bytecode.loadI32(cur);
@@ -385,24 +430,9 @@ namespace zhin {
             throw std::runtime_error("unimplemented op");
           }  break;
         }
-        std::cout << stack.trace64() << std::endl;
+        if (do_stack_trace)
+          std::cout << stack.trace64() << std::endl << std::endl;
       }
     }
   };
 } // namespace zhin
-
-
-// int main() {
-  // std::cout << "da" << std::endl;
-  // zhin::ByteCode bytecode;
-  // bytecode.pushVal(zhin::instr::push_i32);
-  // bytecode.pushVal((int32_t)(2));
-  // bytecode.pushVal(zhin::instr::push_i32);
-  // bytecode.pushVal((int32_t)(4));
-  // bytecode.pushVal(zhin::instr::add_i32);
-  // bytecode.pushVal(zhin::instr::print_i32);
-  // std::cout << bytecode.dis() << std::endl;
-  // zhin::ZHVM zhvm;
-  // zhvm.run(bytecode);
-
-// }

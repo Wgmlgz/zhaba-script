@@ -23,26 +23,37 @@ struct ZHDATA {
 
 #define CBOP(name, lhst, rhst, rt)                                            \
   {                                                                           \
-    {name, {types::Type(types::TYPE::i64T), types::Type(types::TYPE::i64T)}}, \
+    {#name, {types::Type(types::TYPE::lhst), types::Type(types::TYPE::rhst)}}, \
     new Function {                                                            \
-      name,                                                                   \
+      #name,                                                                   \
       {{"a", types::Type(types::TYPE::lhst)},                                 \
         {"b", types::Type(types::TYPE::rhst)}},                               \
       types::Type(types::TYPE::rt), OpType::bin, true                         \
     }                                                                         \
   }
-
+#define CFN1(name, arg1_t, rt)                                 \
+  {                                                            \
+    {#name, {types::Type(types::TYPE::arg1_t)}}, new Function { \
+      #name, {{"a", types::Type(types::TYPE::arg1_t)}},         \
+          types::Type(types::TYPE::rt), OpType::lhs, true      \
+    }                                                          \
+  }
   std::map<types::funcHead, Function*> B_OD = {
-    CBOP("+", i64T, i64T, i64T), CBOP("+", i32T, i32T, i32T),
-    CBOP("-", i64T, i64T, i64T), CBOP("-", i32T, i32T, i32T),
-    CBOP("*", i64T, i64T, i64T), CBOP("*", i32T, i32T, i32T),
-    CBOP("/", i64T, i64T, i64T), //CBOP("/", i32T, i32T, i32T),
-    CBOP("%", i64T, i64T, i64T), //CBOP("%", i32T, i32T, i32T),
-    CBOP("==", i64T, i64T, i64T),// CBOP("==", i32T, i32T, i32T),
+    CBOP(+, i64T, i64T, i64T), CBOP(+, i32T, i32T, i32T),
+    CBOP(-, i64T, i64T, i64T), CBOP(-, i32T, i32T, i32T),
+    CBOP(*, i64T, i64T, i64T), CBOP(*, i32T, i32T, i32T),
+    // CBOP("/", i64T, i64T, i64T), //CBOP("/", i32T, i32T, i32T),
+    // CBOP("%", i64T, i64T, i64T), //CBOP("%", i32T, i32T, i32T),
+    CBOP(==, i64T, i64T, i64T), CBOP(==, i32T, i32T, i32T),
+    CBOP(!=, i64T, i64T, i64T), CBOP(!=, i32T, i32T, i32T),
   };
-  std::map<types::funcHead, Function*> PR_OD;
+  std::map<types::funcHead, Function*> PR_OD = {
+      CFN1(out, i64T, voidT),
+  };
   std::map<types::funcHead, Function*> PO_OD;
-  std::map<types::funcHead, Function*> FN_OD;
+  std::map<types::funcHead, Function*> FN_OD = {
+    
+  };
 
   /** main syntax tree */
   STTree* sttree;
@@ -58,19 +69,21 @@ struct ZHDATA {
   std::filesystem::path bin_path;
   std::filesystem::path std_path;
 
-  std::unordered_map<std::string, bool> bools {
-    {"exp_parser_logs",   false},
-    {"show_ast",          false},
-    {"show_st",           false},
-    {"show_st_cool",      false},
-    {"show_err",          false},
-    {"show_cpp",          false},
-    {"show_original",     false},
+  std::unordered_map<std::string, bool> bools{
+    {"exp_parser_logs", false},
+    {"show_ast", false},
+    {"show_st", false},
+    {"show_st_cool", false},
+    {"show_err", false},
+    {"show_cpp", false},
+    {"show_original", false},
     {"show_preprocessed", false},
     {"show_exp_tmp_tree", false},
     {"B", false},
+    {"stack_trace", false},
+    {"show_bytecode", false},
     {"show_type", false},
-  };
+};
 };
 
 ZHDATA zhdata;

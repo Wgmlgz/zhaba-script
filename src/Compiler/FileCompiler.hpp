@@ -51,9 +51,13 @@ void compileFile(std::filesystem::path file_path) {
               << std::endl;
     zhin::ByteCode bytecode;
     zhin::toB(bytecode, stree);
-    std::cout << bytecode.dis() << std::endl;
+    // std::cout << bytecode.dis() << std::endl;
     zhin::ZHVM zhvm;
+    auto run_time = clock();
     zhvm.run(bytecode);
+    std::cout << "[INFO] run complete in " +
+              std::to_string((clock() - run_time) * 1.0 / CLOCKS_PER_SEC)
+            << std::endl;
   } else {
     std::string c_code = toC(stree);
     if (zhdata.bools["show_cpp"]) {

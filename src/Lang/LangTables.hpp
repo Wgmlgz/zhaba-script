@@ -28,7 +28,7 @@ namespace tables {
       {".", 2}, {"=", 10}, {":=", 10}, {",", 17}, {"as", 4},
       {"+", 6}, {"-", 6},  {"/", 5}, {"%", 5}, {"*", 5}, {"==", 10}};
   std::unordered_set<std::string> operators {
-    ".", "=", ":=", ",", "*", "&", "as", "+", "/", "%", "-", "=="
+    ".", "=", ":=", ",", "*", "&", "as", "+", "/", "%", "-", "==", "out"
   };
   std::unordered_set<std::string> functions {
     
@@ -36,6 +36,7 @@ namespace tables {
   std::unordered_map<std::string, int64_t> prefix_operators {
     {"*", 3},
     {"&", 3},
+    {"out", 3},
   };
   std::unordered_map<std::string, int64_t> postfix_operators = {};
 }

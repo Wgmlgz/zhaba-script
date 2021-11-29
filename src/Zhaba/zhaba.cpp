@@ -20,12 +20,13 @@ void printUsage() {
 }
 
 const bool deb = 
-true
-// false
+// true
+false
 ;
 int main(int argc, char **argv) {
   CmdParser cmd(argc, argv);
-  if (deb) {
+  /** to test bytecode */
+  if (true) {
     zhdata.bools["B"] = true;
   }
   zhdata.bin_path = argv[0];

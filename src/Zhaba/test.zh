@@ -1,19 +1,54 @@
 
-type Da
-  int a
-  int b
+lop int ++ intR val
+  val = val + 1
+  <<< 0
+
+type Range
+  int begin end
+impl Range
+  fn int begin: <<< slf.begin
+  fn int end: <<< slf.end
+fn Range newRange int begin int end
+  Range slf
+  slf.begin = begin
+  slf.end = end
+  <<< slf
+
+op 9 Range .. int begin int end: <<< newRange(begin end)
+  
+fn int begin RangeP r
+  <<< r.begin
+
+fn int end RangeP r
+  <<< r.end
 
 fn int fib int n
   ? n == 1: <<< n
   ? n == 0: <<< n
   <<< fib(n-1) + fib(n-2);
 
+// fn int add 
+  // <<< 2 + 2
 fn main
-  Da da
-  da.a = 2
-  da.b = 3
-  2 + 3
-  da.a = 3
+  @ i 0..10
+    out fib(20)
+  // b := add()
+  // c := add(2 5)
+  // Da da
+  // da.a = 2
+  // da.b = 3
+  // 2 + 3
+
+  // ans := 1
+  // @ i 1..11
+  //   ans = ans * i
+  
+  // out ans
+  // r := 2..5
+  // b := r.begin() + 10
+  // e := r.end() + 10
+  //   i
+  // da.a = 3
   // 3
   // 3
   // 3
