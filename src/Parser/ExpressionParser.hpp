@@ -434,8 +434,19 @@ namespace zhexp {
         exp->type.setLval(true);
         
         return exp;
+      } else if (op->val == "sizeof") {
+        size_t size = 0;
+        if (auto type = dynamic_cast<TypeLiteral*>(op->child)) {
+          size = type->literal_type.getSize();
+        } else {
+          size = op->child->type.getSize();
+        }
+        auto int_l = new IntLiteral(op->begin, op->child->end, size);
+        exp = int_l;
+        exp = postprocess(exp, scope_info, block_scope);
+        return exp;
       }
-      
+
       std::vector<types::Type> types;
       if (auto tuple = dynamic_cast<Tuple*>(op->child)) {
         for (auto exp : tuple->content) {

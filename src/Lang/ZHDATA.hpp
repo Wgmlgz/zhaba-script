@@ -21,34 +21,42 @@ struct ZHDATA {
   std::unordered_map<std::string, int64_t> prefix_operators  = tables::prefix_operators;
   std::unordered_map<std::string, int64_t> postfix_operators = tables::postfix_operators;
 
-#define CBOP(name, lhst, rhst, rt)                                            \
-  {                                                                           \
+#define CBOP(name, lhst, rhst, rt)                                             \
+  {                                                                            \
     {#name, {types::Type(types::TYPE::lhst), types::Type(types::TYPE::rhst)}}, \
-    new Function {                                                            \
+    new Function {                                                             \
       #name,                                                                   \
-      {{"a", types::Type(types::TYPE::lhst)},                                 \
-        {"b", types::Type(types::TYPE::rhst)}},                               \
-      types::Type(types::TYPE::rt), OpType::bin, true                         \
-    }                                                                         \
+      {{"a", types::Type(types::TYPE::lhst)},                                  \
+        {"b", types::Type(types::TYPE::rhst)}},                                \
+      types::Type(types::TYPE::rt), OpType::bin, true                          \
+    }                                                                          \
   }
-#define CFN1(name, arg1_t, rt)                                 \
-  {                                                            \
+#define CFN1(name, arg1_t, rt)                                  \
+  {                                                             \
     {#name, {types::Type(types::TYPE::arg1_t)}}, new Function { \
       #name, {{"a", types::Type(types::TYPE::arg1_t)}},         \
-          types::Type(types::TYPE::rt), OpType::lhs, true      \
-    }                                                          \
+          types::Type(types::TYPE::rt), OpType::lhs, true       \
+    }                                                           \
   }
   std::map<types::funcHead, Function*> B_OD = {
-    CBOP(+, i64T, i64T, i64T), CBOP(+, i32T, i32T, i32T),
-    CBOP(-, i64T, i64T, i64T), CBOP(-, i32T, i32T, i32T),
-    CBOP(*, i64T, i64T, i64T), CBOP(*, i32T, i32T, i32T),
-    // CBOP("/", i64T, i64T, i64T), //CBOP("/", i32T, i32T, i32T),
-    // CBOP("%", i64T, i64T, i64T), //CBOP("%", i32T, i32T, i32T),
+    CBOP(+, i64T, i64T, i64T),  CBOP(+, i32T, i32T, i32T),
+    CBOP(-, i64T, i64T, i64T),  CBOP(-, i32T, i32T, i32T),
+    CBOP(*, i64T, i64T, i64T),  CBOP(*, i32T, i32T, i32T),
+    CBOP(/, i64T, i64T, i64T),  CBOP(/, i32T, i32T, i32T),
+    CBOP(%, i64T, i64T, i64T),  CBOP(%, i32T, i32T, i32T),
     CBOP(==, i64T, i64T, i64T), CBOP(==, i32T, i32T, i32T),
     CBOP(!=, i64T, i64T, i64T), CBOP(!=, i32T, i32T, i32T),
+    CBOP(<, i64T, i64T, i64T),  CBOP(<, i32T, i32T, i32T),
+    CBOP(>, i64T, i64T, i64T),  CBOP(>, i32T, i32T, i32T),
+    CBOP(<=, i64T, i64T, i64T), CBOP(<=, i32T, i32T, i32T),
+    CBOP(>=, i64T, i64T, i64T), CBOP(>=, i32T, i32T, i32T),
   };
   std::map<types::funcHead, Function*> PR_OD = {
-      CFN1(out, i64T, voidT),
+    CFN1(out, i64T, voidT),
+    CFN1(malloc, i64T, voidT),
+    CFN1(realloc, i64T, voidT),
+    CFN1(calloc, i64T, voidT),
+    CFN1(free, i64T, voidT),
   };
   std::map<types::funcHead, Function*> PO_OD;
   std::map<types::funcHead, Function*> FN_OD = {

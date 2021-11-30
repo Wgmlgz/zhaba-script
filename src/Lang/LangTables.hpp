@@ -25,11 +25,11 @@ namespace tables {
     "?", "@", "<<<"
   };
   std::unordered_map<std::string, int64_t> bin_operators{
-      {".", 2}, {"=", 10}, {":=", 10}, {",", 17}, {"as", 4},
-      {"+", 6}, {"-", 6},  {"/", 5}, {"%", 5}, {"*", 5}, {"==", 10}};
-  std::unordered_set<std::string> operators {
-    ".", "=", ":=", ",", "*", "&", "as", "+", "/", "%", "-", "==", "out"
-  };
+    {".", 2}, {"=", 10}, {":=", 10}, {",", 17}, {"as", 4},
+    {"+", 6}, {"-", 6},  {"/", 5}, {"%", 5}, {"*", 5}, {"==", 10}};
+  std::unordered_set<std::string> operators{
+    ".", "=", ":=", ",",   "*",      "&", "as", "+",  "/",
+    "%", "-", "==", "out", "sizeof", "malloc", "realloc", "calloc", "free", "<", ">",  "<=", ">="};
   std::unordered_set<std::string> functions {
     
   };
@@ -37,6 +37,11 @@ namespace tables {
     {"*", 3},
     {"&", 3},
     {"out", 3},
+    {"sizeof", 3},
+    {"malloc", 3},
+    {"realloc", 3},
+    {"calloc", 3},
+    {"free", 3},
   };
   std::unordered_map<std::string, int64_t> postfix_operators = {};
 }
