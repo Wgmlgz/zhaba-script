@@ -1,6 +1,25 @@
+// use 'vec.zh'
 
 fn int fib int n
   ? n <= 1: <<< n
   <<< fib(n-1) + fib(n-2);
+
 fn main
-  out fib(20)
+  // Vec<int> v
+  // out fib(10)
+  ptr := malloc(16) as intP
+  out(*ptr)
+  out(*((ptr as int + 8) as intP))
+  *ptr = 2
+  *((ptr as int + 8) as intP) = 5
+  out(*ptr)
+  out(*((ptr as int + 8) as intP))
+  // *..
+  // a := *ptr
+  // out a
+  // out(2)
+  // out(2)
+  // out(ptr as int)
+  // out(2)
+  // out(2)
+  // out(2)

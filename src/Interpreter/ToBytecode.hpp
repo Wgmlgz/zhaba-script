@@ -41,7 +41,8 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
     bytecode.pushVal((int64_t)(lt->val));
   } else if (auto op = dynamic_cast<zhexp::BinOperator*>(exp)) {
     if (op->val == "as") {
-      throw ParserError("unimplemented as ");
+      /** I believe in weak typing supremacy 💪 */      
+      expToB(bytecode, op->lhs, funcdata);
     } else if (op->val == "=") {
       expToB(bytecode, op->lhs, funcdata);
       /** pop deref + int */
@@ -126,6 +127,7 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
     impl_;                                                      \
   }
       LOPBYTECODE(out, i64T, bytecode.pushVal(zhin::instr::print_i64))
+      LOPBYTECODE(malloc, i64T, bytecode.pushVal(zhin::instr::malloc))
       else {
         throw ParserError("unimplemented C op");
       }
@@ -134,6 +136,7 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
       /** pop deref + int */
       bytecode.popBytes(5);
     } else if (op->val == "*") {
+      expToB(bytecode, op->child, funcdata);
       bytecode.pushVal(zhin::instr::deref);
       bytecode.pushVal((int32_t)(op->child->type.getSize()));
     } else {

@@ -6,14 +6,15 @@
 #include <sstream>
 #include <string>
 #include <stack>
-
+#include <random>
 // Order important
 /*0*/ #include "../Parser/Parser.hpp"
 /*1*/ #include "../Compiler/Compiler.hpp"
 /*2*/ #include "../TreeLib/TreeLib.hpp"
 
 namespace zhin {
-  using byte = uint8_t;
+  typedef uint8_t byte;
+  typedef std::vector<byte> bytevec;
 
   std::string hexbyte(byte i) {
     std::stringstream stream;
@@ -73,16 +74,16 @@ namespace zhin {
     moreeq_i64,  // pops and '>=' 2 TOS 64 and pushes res
     dup,
     swp,
-    eq_64,    // pops and '==' 2 TOS 64 and pushes res
-    eq_32,    // pops and '==' 2 TOS 32 and pushes res
-    uneq_64,  // pops and '!=' 2 TOS 64 and pushes res
-    uneq_32,  // pops and '!=' 2 TOS 32 and pushes res
-    jmp,      // jumps to label (label:i32)
-    call,     // jumps to label and updates call stack
-    ret,      // pops call stack and clears args (args_size:i32, ret_size:i32)
-    jmp_if64,        // jumpls to label if 64
-    push_i32,        // pushes const 32 to TOS
-    push_i64,        // pushes const 64 to TOS
+    eq_64,     // pops and '==' 2 TOS 64 and pushes res
+    eq_32,     // pops and '==' 2 TOS 32 and pushes res
+    uneq_64,   // pops and '!=' 2 TOS 64 and pushes res
+    uneq_32,   // pops and '!=' 2 TOS 32 and pushes res
+    jmp,       // jumps to label (label:i32)
+    call,      // jumps to label and updates call stack
+    ret,       // pops call stack and clears args (args_size:i32, ret_size:i32)
+    jmp_if64,  // jumpls to label if 64
+    push_i32,  // pushes const 32 to TOS
+    push_i64,  // pushes const 64 to TOS
     push_stack_ptr,  // equal to push_i64; push_frame; add_i64;
     deref,           // copies n bytes from ptr to TOS
     assign,          // copies n bytes from TOS to ptr
@@ -90,11 +91,15 @@ namespace zhin {
     push_frame,      // pushes current frame pointer
     pop_bytes,       // deallocates n bytes at TOS
     print_i32,       // prints TOS 32 (debug only)
-    print_i64        // prints TOS 64 (debug only)
+    print_i64,       // prints TOS 64 (debug only)
+
+    malloc,  // allocates n bytes (i64)
+    free,    // frees pointer (i64)
   };
 
   class ByteCode {
-    std::vector<byte> bytes;
+    bytevec bytes;
+
     // std::unordered_map<int, size_t> labels;
     std::array<int, 100000> labels;
    public:
@@ -167,6 +172,8 @@ namespace zhin {
           case instr::push_stack_ptr: cur += 8; break;
           case instr::push_bytes: cur += 4; break;
           case instr::pop_bytes: cur += 4; break;
+          case instr::malloc: break;
+          case instr::free: break;
           default: throw std::runtime_error("unimplemented loadLabels"); break;
         }
       }
@@ -271,6 +278,8 @@ namespace zhin {
           INSTR_I64(push_stack_ptr)
           INSTR_I32(push_bytes)
           INSTR_I32(pop_bytes)
+          INSTR(malloc)
+          INSTR(free)
           default:
             throw std::runtime_error("unimplemented dis");
             break;
@@ -284,11 +293,12 @@ namespace zhin {
 
   /** 
    * Memory addreses
-   * 0-100000 : stack frame
+   * 0x________________: stack
+   * 0xFF15____________ :heap
   */
   class ZHVM {
     class Stack {
-      std::vector<byte> stack;
+      bytevec stack;
       size_t top = 0;
      public:
       byte* getTopPtr() { return stack.data() + top; }
@@ -349,7 +359,51 @@ namespace zhin {
         stack.reserve(66666);
       }
     };
+    class Heap {
+      /** Probaly slow as fuck */
+      std::mt19937_64 gen = std::mt19937_64(time(0));
+      std::map<int64_t, bytevec> mem;
+      std::map<int64_t, byte*> owned_ptrs;
+     public:
+      void free(int64_t ptr) {
+        if ((ptr & 0xff15000000000000) != 0xff15000000000000)
+          throw RuntimeError("ptr is not heap member");
+        if (!mem.contains(ptr))
+          throw RuntimeError("cannot free non existing ptr");
+      }
+      int64_t malloc(int64_t size) {
+        if (size > 100000 or size < 0)
+          throw RuntimeError("cannot malloc " + std::to_string(size) + " bytes");
+        int64_t ptr;
+        do {
+          ptr = gen();
+          ptr &= 0x0000111111111111;
+          ptr |= 0xff15000000000000;
+        } while (mem.contains(ptr));
+        mem.emplace(ptr, bytevec(size));
+        auto mem_cur = mem.at(ptr).data();
+        for (auto i = ptr; i < ptr + size; ++i, ++mem_cur)
+          owned_ptrs.emplace(i, mem_cur);
+        return ptr;
+      }
+      byte* access(int64_t ptr, int size) {
+        if ((ptr & 0xff15000000000000) != 0xff15000000000000)
+          throw RuntimeError("ptr is not heap member");
+        if (!owned_ptrs.contains(ptr))
+          throw RuntimeError("invalid heap ptr access");
+        if (!owned_ptrs.contains(ptr + size - 1))
+          throw RuntimeError("read too much heap ptr");
+        return owned_ptrs.at(ptr);
+      }
+    };
     Stack stack;
+    Heap heap;
+    byte* getPtr(int64_t ptr, int size) {
+      if ((ptr & 0xff15000000000000) == 0xff15000000000000)
+        /** Heap */ return heap.access(ptr, size);
+      else
+        /** Stack */ return stack.getBytesOrigin(ptr, size);
+    }
    public:
     void run(ByteCode& bytecode) {
       bool do_stack_trace = zhdata.bools["stack_trace"];
@@ -461,8 +515,7 @@ namespace zhin {
             auto ptr = *reinterpret_cast<int64_t*>(stack.getBytes(-8, 8)); // get ptr
             stack.popBytes(8);
 
-            // TODO: proper memory read
-            auto mem = stack.getBytesOrigin(ptr, size); // get data
+            auto mem = getPtr(ptr, size);  // get data
             auto target = stack.getTopPtr();
             stack.pushBytes(size);
             const byte* begin = mem;
@@ -475,9 +528,7 @@ namespace zhin {
             auto mem = stack.getBytes(-size, size);
             auto ptr = *reinterpret_cast<int64_t*>(stack.getBytes(- 8 - size, 8));
 
-            // TODO: proper memory write
-            auto target =
-                stack.getBytesOrigin(ptr, size);
+            auto target = getPtr(ptr, size);
             const byte* begin = mem;
             const byte* end = begin + size;
             std::copy(begin, end, target);
@@ -506,6 +557,17 @@ namespace zhin {
             auto val = *bytecode.loadI32(cur);
             cur += 4;
             stack.popBytes(val);
+          } break;
+          case instr::malloc: {
+            auto size = *reinterpret_cast<int64_t*>(stack.getBytes(-8, 8));
+            stack.popBytes(8);
+            auto ptr = heap.malloc(size);
+            stack.push(ptr);
+          } break;
+          case instr::free: {
+            auto ptr = *reinterpret_cast<int64_t*>(stack.getBytes(-8, 8));
+            stack.popBytes(8);
+            heap.free(ptr);
           } break;
           default: {
             throw std::runtime_error("unimplemented op");

@@ -53,7 +53,7 @@ struct ZHDATA {
   };
   std::map<types::funcHead, Function*> PR_OD = {
     CFN1(out, i64T, voidT),
-    CFN1(malloc, i64T, voidT),
+    CFN1(malloc, i64T, i64T),
     CFN1(realloc, i64T, voidT),
     CFN1(calloc, i64T, voidT),
     CFN1(free, i64T, voidT),
