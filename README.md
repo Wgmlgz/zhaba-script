@@ -2,7 +2,7 @@
 
 Zhaba script (Russian: ˈʐabə, жаба(frog)) - is a multi-paradigm, high-level, statically typed programming language, that compiles to C and focuses at minimaizing your code size. It has partial OOP support, including user-created types, member functions and operators overloading, also there is support for generic types such as Vec\<T\>.
 
-Inpired by Rust, C++ and Python🐍
+Inspired by Rust, C++ and Python🐍
 
 ## Hello world
 
