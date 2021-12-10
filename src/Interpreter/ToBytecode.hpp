@@ -14,6 +14,13 @@ int getLabel() {
   return id++;
 }
 
+int pushLiteral(zhin::ByteCode& bytecode, const byte* begin, const byte* end) {
+  static int literal_id = 10;
+  auto v = std::vector(begin, end);
+  bytecode.literals_data.emplace(literal_id, v);
+  return literal_id++;
+}
+
 void blockToB(zhin::ByteCode& bytecode, STBlock* block, FuncData& funcdata);
 void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata);
 void nodeToB(zhin::ByteCode& bytecode, STNode* node, FuncData& funcdata);
@@ -39,6 +46,13 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
   if (auto lt = dynamic_cast<zhexp::IntLiteral*>(exp)) {
     bytecode.pushVal(zhin::instr::push_i64);
     bytecode.pushVal((int64_t)(lt->val));
+  } else if (auto lt = dynamic_cast<zhexp::StrLiteral*>(exp)) {
+    auto lid =
+        pushLiteral(bytecode, reinterpret_cast<const byte*>(lt->val.c_str()),
+                    reinterpret_cast<const byte*>(lt->val.c_str() +
+                                                  strlen(lt->val.c_str()) + 1));
+    bytecode.pushVal(zhin::instr::push_literal_ptr);
+    bytecode.pushVal((int32_t)(lid));
   } else if (auto op = dynamic_cast<zhexp::BinOperator*>(exp)) {
     if (op->val == "as") {
       /** I believe in weak typing supremacy 💪 */      
@@ -127,7 +141,11 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
     impl_;                                                      \
   }
       LOPBYTECODE(out, i64T, bytecode.pushVal(zhin::instr::print_i64))
+      LOPBYTECODE(out, strT, bytecode.pushVal(zhin::instr::print_str))
       LOPBYTECODE(malloc, i64T, bytecode.pushVal(zhin::instr::malloc))
+      LOPBYTECODE(free, i64T,
+                  bytecode.pushVal(zhin::instr::pop_bytes);
+                  bytecode.pushVal((int32_t)(8)))
       else {
         throw ParserError("unimplemented C op");
       }
@@ -334,13 +352,22 @@ void toB(zhin::ByteCode& bytecode, STTree* block) {
   /** Jmp to unique main fn */
   bytecode.pushVal(zhin::instr::call);
   bytecode.pushVal((int32_t)(MAIN_LABEL));
-  /** Jmp to unique end label */
-  bytecode.pushVal(zhin::instr::jmp);
-  bytecode.pushVal((int32_t)(END_LABEL));
 
   for (auto& i : block->functions) {
     funcToB(bytecode, i);
   }
+
+  /** Jmp to unique end label */
+  bytecode.pushVal(zhin::instr::jmp);
+  bytecode.pushVal((int32_t)(END_LABEL));
+
+  for (auto& [id, data] : bytecode.literals_data) {
+    bytecode.pushVal(zhin::instr::label_data);
+    bytecode.pushVal(static_cast<int32_t>(id));
+    bytecode.pushVal(static_cast<int32_t>(data.size()));
+    bytecode.pushVal(data.begin(), data.end());
+  }
+
   /** Unique end label */
   bytecode.pushVal(zhin::instr::label);
   bytecode.pushVal((int32_t)(END_LABEL));

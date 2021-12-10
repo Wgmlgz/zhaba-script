@@ -54,6 +54,7 @@ namespace zhin {
   enum class instr : byte {
     nop,         // nothing
     label,       // labes
+    label_data,  // data labes
     add_i32,     // pops and '+' 2 TOS 32 and pushes res
     add_i64,     // pops and '+' 2 TOS 64 and pushes res
     sub_i32,     // pops and '-' 2 TOS 32 and pushes res
@@ -84,25 +85,31 @@ namespace zhin {
     jmp_if64,  // jumpls to label if 64
     push_i32,  // pushes const 32 to TOS
     push_i64,  // pushes const 64 to TOS
-    push_stack_ptr,  // equal to push_i64; push_frame; add_i64;
-    deref,           // copies n bytes from ptr to TOS
-    assign,          // copies n bytes from TOS to ptr
-    push_bytes,      // allocates n bytes at TOS
-    push_frame,      // pushes current frame pointer
-    pop_bytes,       // deallocates n bytes at TOS
-    print_i32,       // prints TOS 32 (debug only)
-    print_i64,       // prints TOS 64 (debug only)
+    push_literal_ptr,  // pushes ptr by literal id
+    push_stack_ptr,    // equal to push_i64; push_frame; add_i64;
+    deref,             // copies n bytes from ptr to TOS
+    assign,            // copies n bytes from TOS to ptr
+    push_bytes,        // allocates n bytes at TOS
+    push_frame,        // pushes current frame pointer
+    pop_bytes,         // deallocates n bytes at TOS
+    print_i32,         // prints TOS 32 (debug only)
+    print_i64,         // prints TOS 64 (debug only)
+    print_str,         // prints TOS char* (debug only)
 
     malloc,  // allocates n bytes (i64)
     free,    // frees pointer (i64)
   };
 
   class ByteCode {
+   public:
     bytevec bytes;
 
-    // std::unordered_map<int, size_t> labels;
+    std::mt19937_64 gen = std::mt19937_64(time(0));
     std::array<int, 100000> labels;
-   public:
+    std::array<int, 100000> literals_labels;
+    /**           string,  ptr */
+    std::map<int64_t, byte*> owned_ptrs;
+    std::map<int32_t, std::vector<byte>> literals_data;
     void push_pop_bytes(int val) {
       if (val == 0) return;
       pushVal(zhin::instr::pop_bytes);
@@ -121,6 +128,7 @@ namespace zhin {
     }
     void loadLabels() {
       labels.fill(-1);
+      literals_labels.fill(-1);
       size_t cur = 0;
       while (cur != bytes.size()) {
         auto op = *loadInstr(cur);
@@ -130,6 +138,13 @@ namespace zhin {
           case instr::label:{
             labels[*loadI32(cur)] = cur + 4;
             cur += 4;
+          } break;
+          case instr::label_data : {
+            literals_labels[*loadI32(cur)] = cur + 8;
+            cur += 4;
+            auto size = *loadI32(cur);
+            cur += 4;
+            cur += size;
           } break;
           case instr::add_i32: break;
           case instr::add_i64: break;
@@ -151,11 +166,11 @@ namespace zhin {
           case instr::moreeq_i32: break;
           case instr::moreeq_i64: break;
           
-
           case instr::dup: break;
           case instr::swp: break;
           case instr::print_i32: break;
           case instr::print_i64: break;
+          case instr::print_str: break;
           case instr::jmp: cur += 4; break;
           case instr::call: cur += 4; break;
           case instr::ret: cur += 4 + 4; break;
@@ -169,6 +184,7 @@ namespace zhin {
           case instr::deref: cur += 4; break;
           case instr::assign: cur += 4; break;
           case instr::push_i64: cur += 8; break;
+          case instr::push_literal_ptr: cur += 4; break;
           case instr::push_stack_ptr: cur += 8; break;
           case instr::push_bytes: cur += 4; break;
           case instr::pop_bytes: cur += 4; break;
@@ -190,15 +206,36 @@ namespace zhin {
     void popBytes(size_t size) {
       for (int i = 0; i < size; ++i) bytes.pop_back();
     }
+    byte* loadLiteral(int64_t ptr, int size) {
+      if ((ptr & 0xff54000000000000) != 0xff54000000000000)
+        throw RuntimeError("ptr is not literals member");
+      /** Unsafe as fck */
+      return bytes.data() + (ptr & 0x0000FFFFFFFFFFFF);
+      // if (!owned_ptrs.contains(ptr))
+      //   throw RuntimeError("invalid heap ptr access");
+      // if (!owned_ptrs.contains(ptr + size - 1))
+      //   throw RuntimeError("read too much heap ptr");
+      // return owned_ptrs.at(ptr);
+    }
 
     template <typename T>
     void pushVal(const T& object) {
       bytes.reserve(bytes.size() + sizeof(T));
-      auto target = bytes.end();
+      auto target = bytes.data() + bytes.size();
       bytes.resize(bytes.size() + sizeof(T));
 
       const byte* begin = reinterpret_cast<const byte*>(std::addressof(object));
       const byte* end = begin + sizeof(T);
+      std::copy(begin, end, target);
+    }
+
+    template <typename T>
+    void pushVal(T begin, T end) {
+      auto size = std::distance(begin, end);
+      bytes.reserve(bytes.size() + size);
+      auto target = bytes.end();
+      bytes.resize(bytes.size() + size);
+      
       std::copy(begin, end, target);
     }
 
@@ -240,10 +277,23 @@ namespace zhin {
             res += "\n";
             cur += 4;
           break;
+          case instr::label_data: {
+            auto id = *loadI32(cur);
+            // literals_labels[id] = cur + 4;
+            cur += 4;
+            auto size = *loadI32(cur);
+            cur += 4;
+            res += "  label_data " + std::to_string(id) +
+                   " " + std::to_string(size) + " ";
+            res += std::string(reinterpret_cast<char*>(loadBytes(cur, 1)));
+            cur += size;
+            res += "\n";
+          } break;
           INSTR_I32(jmp)
           INSTR_I32(call)
           INSTR_I32(jmp_if64)
           INSTR_I64(ret)
+          INSTR_I32(push_literal_ptr)
           INSTR(add_i32)
           INSTR(add_i64)
           INSTR(sub_i32)
@@ -270,6 +320,7 @@ namespace zhin {
           INSTR(swp)
           INSTR(print_i32)
           INSTR(print_i64)
+          INSTR(print_str)
           INSTR_I32(push_i32)
           INSTR(push_frame)
           INSTR_I32(deref)
@@ -291,11 +342,12 @@ namespace zhin {
     }
   };
 
-  /** 
+  /**
    * Memory addreses
-   * 0x________________: stack
+   * 0x________________ :stack
    * 0xFF15____________ :heap
-  */
+   * 0xFF54____________ :heap
+   */
   class ZHVM {
     class Stack {
       bytevec stack;
@@ -398,19 +450,22 @@ namespace zhin {
     };
     Stack stack;
     Heap heap;
+    ByteCode& bytecode;
     byte* getPtr(int64_t ptr, int size) {
       if ((ptr & 0xff15000000000000) == 0xff15000000000000)
         /** Heap */ return heap.access(ptr, size);
+      else if ((ptr & 0xff54000000000000) == 0xff54000000000000)
+        /** Literals */ return bytecode.loadLiteral(ptr, size);
       else
         /** Stack */ return stack.getBytesOrigin(ptr, size);
     }
    public:
-    void run(ByteCode& bytecode) {
+    ZHVM(ByteCode& run_bytecode) : bytecode(run_bytecode) {
       bool do_stack_trace = zhdata.bools["stack_trace"];
 
       bytecode.loadLabels();
       auto [dis, mp] = bytecode.dis();
-      if (zhdata.bools["show_bytecode"]) {
+      if (zhdata.bools["show_bytecode"] or true) {
         std::cout << "bytecode: " << dis <<std::endl;
       }
       size_t cur = 0;
@@ -506,6 +561,14 @@ namespace zhin {
             cur += 8;
             stack.push(val);
           } break;
+          case instr::push_literal_ptr : {
+            auto literal_id = *bytecode.loadI32(cur);
+            cur += 4;
+            auto val = 0xff54000000000000 |
+                       static_cast<int64_t>(
+                           bytecode.literals_labels[literal_id]);
+            stack.push(val);
+          } break;
           case instr::push_frame : {
             stack.push((int64_t)call_stack_frame.back());
           } break;
@@ -527,7 +590,6 @@ namespace zhin {
             cur += 4;
             auto mem = stack.getBytes(-size, size);
             auto ptr = *reinterpret_cast<int64_t*>(stack.getBytes(- 8 - size, 8));
-
             auto target = getPtr(ptr, size);
             const byte* begin = mem;
             const byte* end = begin + size;
@@ -547,6 +609,12 @@ namespace zhin {
             auto t = *reinterpret_cast<int64_t*>(stack.getBytes(-8, 8));
             stack.popBytes(8);
             std::cout << std::to_string(t) << std::endl;
+          } break;
+          case instr::print_str: {
+            auto char_ptr = *reinterpret_cast<int64_t*>(stack.getBytes(-8, 8));
+            stack.popBytes(8);
+            auto mem = getPtr(char_ptr, 1);
+            std::cout << reinterpret_cast<char*>(mem) << std::endl;
           } break;
           case instr::push_bytes: {
             auto val = *bytecode.loadI32(cur);

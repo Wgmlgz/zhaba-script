@@ -348,7 +348,8 @@ namespace zhexp {
           op->type = type_l->literal_type;
           op->type.setLval(op->lhs->type.getLval());
         } else {
-          throw ParserError(op->begin, op->end, "Expected type literal");
+          throw ParserError(op->begin, op->rhs->end,
+                            "Expected type literal, but '" + op->rhs->toString() + "' found");
         }
       } else {
         op->lhs = postprocess(op->lhs, scope_info, block_scope);
