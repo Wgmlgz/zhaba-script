@@ -1,5 +1,5 @@
 #pragma once
-#include "interpreter.hpp"
+#include "Bytecode.hpp"
 
 
 namespace zhin{

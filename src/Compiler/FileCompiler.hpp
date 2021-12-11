@@ -3,6 +3,7 @@
 #include "../Parser/Parser.hpp"
 #include "ToC.hpp"
 #include <fstream>
+#include "../Interpreter/ZHVM.hpp"
 #include "../Interpreter/ToBytecode.hpp"
 
 void compileFile(std::filesystem::path file_path) {
