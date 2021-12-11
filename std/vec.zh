@@ -16,18 +16,18 @@ impl Vec
     auto new_capacity = slf.capacity
     T item
     int item_size
-    #'item_size = sizeof(item)'
+    item_size = sizeof(item)
     ? new_capacity == 0
       new_capacity = 1
-      slf.head = malloc(item_size) as TP
+      slf.head = malloc(item_size + 10000) as TP
     \ new_capacity *= 2
-      slf.head = realloc(slf.head as int, new_capacity * item_size) as TP
+      // slf.head = realloc(slf.head as int, new_capacity * item_size) as TP
     slf.capacity = new_capacity
 
   fn TP atP int pos
     T item
     int item_size
-    #'item_size = sizeof(item)'
+    item_size = sizeof(item)
     <<< (((slf.head) as int) + pos * item_size) as TP
 
   fn T at int pos: <<< *slf.atP(pos)
@@ -92,8 +92,7 @@ impl Vec
   fn int get_item_size
     T item
     int item_size
-    #'item_size = sizeof(item)'
-    <<< item_size
+    <<< sizeof(item)
 
   fn next_ptr TPP ptr: *ptr = (*ptr as int + slf.get_item_size()) as TP
   fn prev_ptr TPP ptr: *ptr = (*ptr as int - slf.get_item_size()) as TP
@@ -115,7 +114,9 @@ impl Vec
     <<< i
 
   fn qsort TP lhs TP rhs
-    ? rhs as int - lhs as int > slf.get_item_size()
+    a := rhs as int - lhs as int
+    b := slf.get_item_size()
+    ? a > b
       auto pi = slf.partition(lhs rhs)
       slf.qsort(lhs pi)
       slf.next_ptr(&pi)

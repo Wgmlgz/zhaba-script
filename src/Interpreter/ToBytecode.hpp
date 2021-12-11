@@ -125,6 +125,7 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
         argsToC(lhs_tuple, op->func);
         argsToB(bytecode, lhs_tuple, op->func, funcdata);
         bytecode.pushVal(zhin::instr::call);
+        // if ()
         bytecode.pushVal(
             (int32_t)(bytecode.func_labels[op->func->toUniqueStr()]));
       }
@@ -140,8 +141,12 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
            op->child->type.getTypeId() == types::TYPE::type_) { \
     impl_;                                                      \
   }
-      LOPBYTECODE(out, i64T, bytecode.pushVal(zhin::instr::print_i64))
-      LOPBYTECODE(out, strT, bytecode.pushVal(zhin::instr::print_str))
+      LOPBYTECODE(put, i32T, bytecode.pushVal(zhin::instr::put_i32))
+      LOPBYTECODE(put, i64T, bytecode.pushVal(zhin::instr::put_i64))
+      LOPBYTECODE(put, strT, bytecode.pushVal(zhin::instr::put_str))
+      LOPBYTECODE(out, i32T, bytecode.pushVal(zhin::instr::out_i32))
+      LOPBYTECODE(out, i64T, bytecode.pushVal(zhin::instr::out_i64))
+      LOPBYTECODE(out, strT, bytecode.pushVal(zhin::instr::out_str))
       LOPBYTECODE(malloc, i64T, bytecode.pushVal(zhin::instr::malloc))
       LOPBYTECODE(free, i64T,
                   bytecode.pushVal(zhin::instr::pop_bytes);
@@ -329,12 +334,16 @@ void funcToB(zhin::ByteCode& bytecode, Function* func) {
     funcdata.offsets[name].push_back(funcdata.offset);
     funcdata.offset += type.getSize();
   }
-  /** Unique main label */
-  const auto func_l = (func->name == "main") ? MAIN_LABEL : getLabel();
-  bytecode.func_labels[func->toUniqueStr()] = func_l;
+
   bytecode.pushVal(zhin::instr::label);
-  bytecode.pushVal((int32_t)(func_l));
+  bytecode.pushVal((int32_t)(bytecode.func_labels[func->toUniqueStr()]));
   blockToB(bytecode, func->body, funcdata);
+
+  /** Implicit return for safety when flow reached end of the function */
+  bytecode.push_push_bytes(func->type.getSize());
+  bytecode.pushVal(zhin::instr::ret);
+  bytecode.pushVal((int32_t)(funcdata.args_size));
+  bytecode.pushVal((int32_t)(func->type.getSize()));
 }
 
 void toB(zhin::ByteCode& bytecode, STTree* block) {
@@ -349,17 +358,21 @@ void toB(zhin::ByteCode& bytecode, STTree* block) {
     }
   }
 
+  /** Pregenerate function labels */
+  for (auto& func : block->functions) {
+    bytecode.func_labels[func->toUniqueStr()] =
+        (func->name == "main") ? MAIN_LABEL : getLabel();
+  }
   /** Jmp to unique main fn */
   bytecode.pushVal(zhin::instr::call);
   bytecode.pushVal((int32_t)(MAIN_LABEL));
+  /** Jmp to unique end label */
+  bytecode.pushVal(zhin::instr::jmp);
+  bytecode.pushVal((int32_t)(END_LABEL));
 
   for (auto& i : block->functions) {
     funcToB(bytecode, i);
   }
-
-  /** Jmp to unique end label */
-  bytecode.pushVal(zhin::instr::jmp);
-  bytecode.pushVal((int32_t)(END_LABEL));
 
   for (auto& [id, data] : bytecode.literals_data) {
     bytecode.pushVal(zhin::instr::label_data);

@@ -28,15 +28,17 @@ namespace tables {
     {".", 2}, {"=", 10}, {":=", 10}, {",", 17}, {"as", 4},
     {"+", 6}, {"-", 6},  {"/", 5}, {"%", 5}, {"*", 5}, {"==", 10}};
   std::unordered_set<std::string> operators{
-    ".", "=", ":=", ",",   "*",      "&", "as", "+",  "/",
-    "%", "-", "==", "out", "sizeof", "malloc", "realloc", "calloc", "free", "<", ">",  "<=", ">="};
-  std::unordered_set<std::string> functions {
-    
+      ".",       "=",      ":=",   ",",  "*",   "&",   "as",     "+",
+      "/",       "%",      "-",    "==", "out", "put", "sizeof", "malloc",
+      "realloc", "calloc", "free", "<",  ">",   "<=",  ">="};
+  std::unordered_set<std::string> functions{
+
   };
   std::unordered_map<std::string, int64_t> prefix_operators {
     {"*", 3},
     {"&", 3},
     {"out", 3},
+    {"put", 3},
     {"sizeof", 3},
     {"malloc", 3},
     {"realloc", 3},

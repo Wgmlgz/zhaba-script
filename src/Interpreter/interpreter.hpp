@@ -1,12 +1,14 @@
+#include <inttypes.h>
 #include <stdlib.h>
 
 #include <filesystem>
 #include <fstream>
 #include <iostream>
-#include <sstream>
-#include <string>
-#include <stack>
 #include <random>
+#include <sstream>
+#include <stack>
+#include <string>
+
 // Order important
 /*0*/ #include "../Parser/Parser.hpp"
 /*1*/ #include "../Compiler/Compiler.hpp"
@@ -28,76 +30,80 @@ namespace zhin {
     std::string what() { return msg; }
   };
 
-  // namespace Data {
-  // struct Data {
-  //   virtual std::string toString() = 0;
-  //   virtual std::string toStringVal() = 0;
-  // };
-  // struct I32 : public Data {
-  //   int32_t val;
-  //   I32(int32_t new_val) : val(new_val) {}
-  //   virtual std::string toString() override {
-  //     return "i32 " + std::to_string(val);
-  //   }
-  //   virtual std::string toStringVal() override { return std::to_string(val); }
-  // };
-  // struct I64 : public Data {
-  //   int64_t val;
-  //   I64(int64_t new_val) : val(new_val) {}
-  //   virtual std::string toString() override {
-  //     return "i64 " + std::to_string(val);
-  //   }
-  //   virtual std::string toStringVal() override { return std::to_string(val); }
-  // };
-  // }  // namespace Data
-
   enum class instr : byte {
-    nop,         // nothing
+    /** does nothing*/
+    nop,
+
+    /** labels */
     label,       // labes
     label_data,  // data labes
-    add_i32,     // pops and '+' 2 TOS 32 and pushes res
-    add_i64,     // pops and '+' 2 TOS 64 and pushes res
-    sub_i32,     // pops and '-' 2 TOS 32 and pushes res
-    sub_i64,     // pops and '-' 2 TOS 64 and pushes res
-    mul_i32,     // pops and '*' 2 TOS 32 and pushes res
-    mul_i64,     // pops and '*' 2 TOS 64 and pushes res
-    div_i32,     // pops and '/' 2 TOS 32 and pushes res
-    div_i64,     // pops and '/' 2 TOS 64 and pushes res
-    mod_i32,     // pops and '%' 2 TOS 32 and pushes res
-    mod_i64,     // pops and '%' 2 TOS 64 and pushes res
-    less_i32,    // pops and '<' 2 TOS 32 and pushes res
-    less_i64,    // pops and '<' 2 TOS 64 and pushes res
-    more_i32,    // pops and '>' 2 TOS 32 and pushes res
-    more_i64,    // pops and '>' 2 TOS 64 and pushes res
+
+    /** arithmetic */
+    add_i32,  // pops and '+' 2 TOS 32 and pushes res
+    add_i64,  // pops and '+' 2 TOS 64 and pushes res
+
+    sub_i32,  // pops and '-' 2 TOS 32 and pushes res
+    sub_i64,  // pops and '-' 2 TOS 64 and pushes res
+
+    mul_i32,  // pops and '*' 2 TOS 32 and pushes res
+    mul_i64,  // pops and '*' 2 TOS 64 and pushes res
+
+    div_i32,  // pops and '/' 2 TOS 32 and pushes res
+    div_i64,  // pops and '/' 2 TOS 64 and pushes res
+
+    mod_i32,  // pops and '%' 2 TOS 32 and pushes res
+    mod_i64,  // pops and '%' 2 TOS 64 and pushes res
+
+    less_i32,  // pops and '<' 2 TOS 32 and pushes res
+    less_i64,  // pops and '<' 2 TOS 64 and pushes res
+
+    more_i32,  // pops and '>' 2 TOS 32 and pushes res
+    more_i64,  // pops and '>' 2 TOS 64 and pushes res
+
     lesseq_i32,  // pops and '<=' 2 TOS 32 and pushes res
     lesseq_i64,  // pops and '<=' 2 TOS 64 and pushes res
+
     moreeq_i32,  // pops and '>=' 2 TOS 32 and pushes res
     moreeq_i64,  // pops and '>=' 2 TOS 64 and pushes res
-    dup,
-    swp,
-    eq_64,     // pops and '==' 2 TOS 64 and pushes res
-    eq_32,     // pops and '==' 2 TOS 32 and pushes res
-    uneq_64,   // pops and '!=' 2 TOS 64 and pushes res
-    uneq_32,   // pops and '!=' 2 TOS 32 and pushes res
+
+    eq_64,  // pops and '==' 2 TOS 64 and pushes res
+    eq_32,  // pops and '==' 2 TOS 32 and pushes res
+
+    uneq_64,  // pops and '!=' 2 TOS 64 and pushes res
+    uneq_32,  // pops and '!=' 2 TOS 32 and pushes res
+
+    /** control flow */
     jmp,       // jumps to label (label:i32)
+    jmp_if64,  // jumpls to label if 64
     call,      // jumps to label and updates call stack
     ret,       // pops call stack and clears args (args_size:i32, ret_size:i32)
-    jmp_if64,  // jumpls to label if 64
-    push_i32,  // pushes const 32 to TOS
-    push_i64,  // pushes const 64 to TOS
+
+    /** stack pushers */
+    push_i32,          // pushes const 32 to TOS
+    push_i64,          // pushes const 64 to TOS
     push_literal_ptr,  // pushes ptr by literal id
     push_stack_ptr,    // equal to push_i64; push_frame; add_i64;
-    deref,             // copies n bytes from ptr to TOS
-    assign,            // copies n bytes from TOS to ptr
     push_bytes,        // allocates n bytes at TOS
-    push_frame,        // pushes current frame pointer
     pop_bytes,         // deallocates n bytes at TOS
-    print_i32,         // prints TOS 32 (debug only)
-    print_i64,         // prints TOS 64 (debug only)
-    print_str,         // prints TOS char* (debug only)
+    push_frame,        // pushes current frame pointer
 
-    malloc,  // allocates n bytes (i64)
-    free,    // frees pointer (i64)
+    /** data mutation */
+    deref,   // copies n bytes from ptr to TOS
+    assign,  // copies n bytes from TOS to ptr
+
+    /** IO */
+    put_i32,  // out TOS i32    (i32)
+    put_i64,  // out TOS i64    (i64)
+    put_str,  // out TOS char*  (i64)
+
+    out_i32,  // out TOS i32 with \n    (i32)
+    out_i64,  // out TOS i64 with \n    (i64)
+    out_str,  // out TOS char* with \n  (i64)
+
+    /** memory managment */
+    malloc,   // same as C malloc  (i64)
+    free,     //  same as C free   (i64)
+    realloc,  // same as C realloc (i64, i64)
   };
 
   class ByteCode {
@@ -152,7 +158,6 @@ namespace zhin {
           case instr::sub_i64: break;
           case instr::mul_i32: break;
           case instr::mul_i64: break;
-
           case instr::div_i32: break;
           case instr::div_i64: break;
           case instr::mod_i32: break;
@@ -165,19 +170,15 @@ namespace zhin {
           case instr::lesseq_i64: break;
           case instr::moreeq_i32: break;
           case instr::moreeq_i64: break;
-          
-          case instr::dup: break;
-          case instr::swp: break;
-          case instr::print_i32: break;
-          case instr::print_i64: break;
-          case instr::print_str: break;
-          case instr::jmp: cur += 4; break;
-          case instr::call: cur += 4; break;
-          case instr::ret: cur += 4 + 4; break;
           case instr::eq_64: break;
           case instr::eq_32: break;
           case instr::uneq_64: break;
           case instr::uneq_32: break;
+
+          case instr::jmp: cur += 4; break;
+          case instr::call: cur += 4; break;
+          case instr::ret: cur += 4 + 4; break;
+          
           case instr::jmp_if64: cur += 4; break;
           case instr::push_i32: cur += 4; break;
           case instr::push_frame: break;
@@ -188,6 +189,14 @@ namespace zhin {
           case instr::push_stack_ptr: cur += 8; break;
           case instr::push_bytes: cur += 4; break;
           case instr::pop_bytes: cur += 4; break;
+
+          case instr::put_i32: break;
+          case instr::put_i64: break;
+          case instr::put_str: break;
+          case instr::out_i32: break;
+          case instr::out_i64: break;
+          case instr::out_str: break;
+
           case instr::malloc: break;
           case instr::free: break;
           default: throw std::runtime_error("unimplemented loadLabels"); break;
@@ -211,11 +220,6 @@ namespace zhin {
         throw RuntimeError("ptr is not literals member");
       /** Unsafe as fck */
       return bytes.data() + (ptr & 0x0000FFFFFFFFFFFF);
-      // if (!owned_ptrs.contains(ptr))
-      //   throw RuntimeError("invalid heap ptr access");
-      // if (!owned_ptrs.contains(ptr + size - 1))
-      //   throw RuntimeError("read too much heap ptr");
-      // return owned_ptrs.at(ptr);
     }
 
     template <typename T>
@@ -316,11 +320,12 @@ namespace zhin {
           INSTR(eq_32)
           INSTR(uneq_64)
           INSTR(uneq_32)
-          INSTR(dup)
-          INSTR(swp)
-          INSTR(print_i32)
-          INSTR(print_i64)
-          INSTR(print_str)
+          INSTR(put_i32)
+          INSTR(put_i64)
+          INSTR(put_str)
+          INSTR(out_i32)
+          INSTR(out_i64)
+          INSTR(out_str)
           INSTR_I32(push_i32)
           INSTR(push_frame)
           INSTR_I32(deref)
@@ -346,7 +351,7 @@ namespace zhin {
    * Memory addreses
    * 0x________________ :stack
    * 0xFF15____________ :heap
-   * 0xFF54____________ :heap
+   * 0xFF54____________ :literals
    */
   class ZHVM {
     class Stack {
@@ -358,14 +363,14 @@ namespace zhin {
       auto getTop() { return top; }
       void setTop(size_t val) { top = val; }
       byte* getBytes(int offset, int size) {
-        // if (stack.empty()) throw RuntimeError("empty stack");
-        // if (-offset < size) throw RuntimeError("read too much stack top");
+        if (stack.empty()) throw RuntimeError("empty stack");
+        if (-offset < size) throw RuntimeError("read too much stack top");
         return
          stack.data() + top + offset;
       }
       byte* getBytesOrigin(int offset, int size) {
-        // if (stack.empty()) throw RuntimeError("empty stack");
-        // if (offset + size > stack.size()) throw RuntimeError("read too much stack origin");
+        if (stack.empty()) throw RuntimeError("empty stack");
+        if (offset + size > stack.size()) throw RuntimeError("read too much stack origin");
         return stack.data() + offset;
       }
       void pushBytes(size_t size) {
@@ -374,7 +379,7 @@ namespace zhin {
         top += size;
       }
       void popBytes(size_t size) {
-        // if ((int)top - (int)size < 0) throw RuntimeError("pop below stack");
+        if ((int)top - (int)size < 0) throw RuntimeError("pop below stack");
         top -= size;
       }
       template <typename T>
@@ -412,7 +417,7 @@ namespace zhin {
       }
     };
     class Heap {
-      /** Probaly slow as fuck */
+      /** Probaly slow as fck */
       std::mt19937_64 gen = std::mt19937_64(time(0));
       std::map<int64_t, bytevec> mem;
       std::map<int64_t, byte*> owned_ptrs;
@@ -429,7 +434,7 @@ namespace zhin {
         int64_t ptr;
         do {
           ptr = gen();
-          ptr &= 0x0000111111111111;
+          ptr &= 0x0000ffffffffffff;
           ptr |= 0xff15000000000000;
         } while (mem.contains(ptr));
         mem.emplace(ptr, bytevec(size));
@@ -439,7 +444,7 @@ namespace zhin {
         return ptr;
       }
       byte* access(int64_t ptr, int size) {
-        if ((ptr & 0xff15000000000000) != 0xff15000000000000)
+        if ((ptr & 0xffff000000000000) != 0xff15000000000000)
           throw RuntimeError("ptr is not heap member");
         if (!owned_ptrs.contains(ptr))
           throw RuntimeError("invalid heap ptr access");
@@ -452,9 +457,9 @@ namespace zhin {
     Heap heap;
     ByteCode& bytecode;
     byte* getPtr(int64_t ptr, int size) {
-      if ((ptr & 0xff15000000000000) == 0xff15000000000000)
+      if ((ptr & 0xffff000000000000) == 0xff15000000000000)
         /** Heap */ return heap.access(ptr, size);
-      else if ((ptr & 0xff54000000000000) == 0xff54000000000000)
+      else if ((ptr & 0xffff000000000000) == 0xff54000000000000)
         /** Literals */ return bytecode.loadLiteral(ptr, size);
       else
         /** Stack */ return stack.getBytesOrigin(ptr, size);
@@ -465,7 +470,7 @@ namespace zhin {
 
       bytecode.loadLabels();
       auto [dis, mp] = bytecode.dis();
-      if (zhdata.bools["show_bytecode"] or true) {
+      if (zhdata.bools["show_bytecode"]) {
         std::cout << "bytecode: " << dis <<std::endl;
       }
       size_t cur = 0;
@@ -480,6 +485,7 @@ namespace zhin {
         ++cur;
         switch (op) {
           case instr::nop: break;
+
 #define ARITHMETIC_BIN(name, type, op, size)                            \
   case instr::name: {                                                   \
     type b = *reinterpret_cast<type*>(stack.getBytes(-size, size));     \
@@ -487,29 +493,34 @@ namespace zhin {
     type res = a op b;                                                  \
     stack.popBytes(size * 2);                                           \
     stack.push(res);                                                    \
-} break;
-          ARITHMETIC_BIN(add_i32, int32_t, +, 4)
-          ARITHMETIC_BIN(add_i64, int64_t, +, 8)
-          ARITHMETIC_BIN(sub_i32, int32_t, -, 4)
-          ARITHMETIC_BIN(sub_i64, int64_t, -, 8)
-          ARITHMETIC_BIN(mul_i32, int32_t, *, 4)
-          ARITHMETIC_BIN(mul_i64, int64_t, *, 8)
-          ARITHMETIC_BIN(eq_64, int64_t, ==, 8)
-          ARITHMETIC_BIN(eq_32, int32_t, ==, 4)
-          ARITHMETIC_BIN(uneq_64, int64_t, !=, 8)
-          ARITHMETIC_BIN(uneq_32, int32_t, !=, 4)
-          ARITHMETIC_BIN(div_i32, int32_t, /, 4)
-          ARITHMETIC_BIN(div_i64, int64_t, /, 8)
-          ARITHMETIC_BIN(mod_i32, int32_t, %, 4)
-          ARITHMETIC_BIN(mod_i64, int64_t, %, 8)
-          ARITHMETIC_BIN(less_i32, int32_t, <, 4)
-          ARITHMETIC_BIN(less_i64, int64_t, <, 8)
-          ARITHMETIC_BIN(more_i32, int32_t, >, 4)
-          ARITHMETIC_BIN(more_i64, int64_t, >, 8)
-          ARITHMETIC_BIN(lesseq_i32, int32_t, <=, 4)
-          ARITHMETIC_BIN(lesseq_i64, int64_t, <=, 8)
-          ARITHMETIC_BIN(moreeq_i32, int32_t, >=, 4)
-          ARITHMETIC_BIN(moreeq_i64, int64_t, >=, 8)
+  } break;
+
+            ARITHMETIC_BIN(add_i32, int32_t, +, 4)
+            ARITHMETIC_BIN(add_i64, int64_t, +, 8)
+            ARITHMETIC_BIN(sub_i32, int32_t, -, 4)
+            ARITHMETIC_BIN(sub_i64, int64_t, -, 8)
+            ARITHMETIC_BIN(mul_i32, int32_t, *, 4)
+            ARITHMETIC_BIN(mul_i64, int64_t, *, 8)
+            ARITHMETIC_BIN(eq_64, int64_t, ==, 8)
+            ARITHMETIC_BIN(eq_32, int32_t, ==, 4)
+            ARITHMETIC_BIN(uneq_64, int64_t, !=, 8)
+            ARITHMETIC_BIN(uneq_32, int32_t, !=, 4)
+            ARITHMETIC_BIN(div_i32, int32_t, /, 4)
+            ARITHMETIC_BIN(div_i64, int64_t, /, 8)
+            ARITHMETIC_BIN(mod_i32, int32_t, %, 4)
+            ARITHMETIC_BIN(mod_i64, int64_t, %, 8)
+            ARITHMETIC_BIN(less_i32, int32_t, <, 4)
+            ARITHMETIC_BIN(less_i64, int64_t, <, 8)
+            ARITHMETIC_BIN(more_i32, int32_t, >, 4)
+            ARITHMETIC_BIN(more_i64, int64_t, >, 8)
+            ARITHMETIC_BIN(lesseq_i32, int32_t, <=, 4)
+            ARITHMETIC_BIN(lesseq_i64, int64_t, <=, 8)
+            ARITHMETIC_BIN(moreeq_i32, int32_t, >=, 4)
+            ARITHMETIC_BIN(moreeq_i64, int64_t, >=, 8)
+
+#define TOSi32 *reinterpret_cast<int32_t*>(stack.getBytes(-4, 4))
+#define TOSi64 *reinterpret_cast<int64_t*>(stack.getBytes(-8, 8))
+
           case instr::jmp: {
             auto target = *bytecode.loadI32(cur);
             cur += 4;
@@ -526,11 +537,9 @@ namespace zhin {
             int args_size = *bytecode.loadI32(cur);
             cur += 4;
             int ret_size = *bytecode.loadI32(cur);
-            // std::cout << args_size << " " << ret_size << " " << stack.getTop()
-            //           << " " << call_stack_frame.back() << std::endl;
-            byte* target = call_stack_frame.back() - args_size + stack.begin();
-            byte* begin = stack.getTopPtr() - ret_size;
-            byte* end = stack.getTopPtr();
+            byte *target = call_stack_frame.back() - args_size + stack.begin(),
+                 *begin = stack.getTopPtr() - ret_size,
+                 *end = stack.getTopPtr();
             std::copy(begin, end, target);
 
             cur = call_stack.back();
@@ -541,7 +550,7 @@ namespace zhin {
           case instr::jmp_if64: {
             auto target = *bytecode.loadI32(cur);
             cur += 4;
-            auto val = *reinterpret_cast<int64_t*>(stack.getBytes(-8, 8));
+            auto val = TOSi64;
             stack.popBytes(8);
             if (val) cur = bytecode.label(target);
           } break;
@@ -564,9 +573,9 @@ namespace zhin {
           case instr::push_literal_ptr : {
             auto literal_id = *bytecode.loadI32(cur);
             cur += 4;
-            auto val = 0xff54000000000000 |
-                       static_cast<int64_t>(
-                           bytecode.literals_labels[literal_id]);
+            auto val =
+              0xff54000000000000 |
+              static_cast<int64_t>(bytecode.literals_labels[literal_id]);
             stack.push(val);
           } break;
           case instr::push_frame : {
@@ -575,9 +584,8 @@ namespace zhin {
           case instr::deref: {
             auto size = *bytecode.loadI32(cur);
             cur += 4;
-            auto ptr = *reinterpret_cast<int64_t*>(stack.getBytes(-8, 8)); // get ptr
+            auto ptr = TOSi64;  // get ptr
             stack.popBytes(8);
-
             auto mem = getPtr(ptr, size);  // get data
             auto target = stack.getTopPtr();
             stack.pushBytes(size);
@@ -591,8 +599,7 @@ namespace zhin {
             auto mem = stack.getBytes(-size, size);
             auto ptr = *reinterpret_cast<int64_t*>(stack.getBytes(- 8 - size, 8));
             auto target = getPtr(ptr, size);
-            const byte* begin = mem;
-            const byte* end = begin + size;
+            const byte *begin = mem, *end = begin + size;
             std::copy(begin, end, target);
             stack.popBytes(8 + size);
           } break;
@@ -600,21 +607,37 @@ namespace zhin {
             bytecode.loadI32(cur);
             cur += 4;
           } break;
-          case instr::print_i32: {
-            auto t = *reinterpret_cast<int32_t*>(stack.getBytes(-4, 4));
+          case instr::put_i32: {
+            auto t = TOSi32;
             stack.popBytes(4);
-            std::cout << std::to_string(t) << std::endl;
+            printf("%d", t);
           } break;
-          case instr::print_i64: {
-            auto t = *reinterpret_cast<int64_t*>(stack.getBytes(-8, 8));
+          case instr::put_i64: {
+            auto t = TOSi64;
             stack.popBytes(8);
-            std::cout << std::to_string(t) << std::endl;
+            printf("%lld", t);
           } break;
-          case instr::print_str: {
-            auto char_ptr = *reinterpret_cast<int64_t*>(stack.getBytes(-8, 8));
+          case instr::put_str: {
+            auto char_ptr = TOSi64;
             stack.popBytes(8);
             auto mem = getPtr(char_ptr, 1);
-            std::cout << reinterpret_cast<char*>(mem) << std::endl;
+            printf("%s", mem);
+          } break;
+          case instr::out_i32: {
+            auto t = TOSi32;
+            stack.popBytes(4);
+            printf("%d\n", t);
+          } break;
+          case instr::out_i64: {
+            auto t = TOSi64;
+            stack.popBytes(8);
+            printf("%lld\n", t);
+          } break;
+          case instr::out_str: {
+            auto char_ptr = TOSi64;
+            stack.popBytes(8);
+            auto mem = getPtr(char_ptr, 1);
+            printf("%s\n", mem);
           } break;
           case instr::push_bytes: {
             auto val = *bytecode.loadI32(cur);
@@ -627,13 +650,19 @@ namespace zhin {
             stack.popBytes(val);
           } break;
           case instr::malloc: {
-            auto size = *reinterpret_cast<int64_t*>(stack.getBytes(-8, 8));
+            auto size = TOSi64;
+            stack.popBytes(8);
+            auto ptr = heap.malloc(size);
+            stack.push(ptr);
+          } break;
+          case instr::realloc: {
+            auto size = TOSi64;
             stack.popBytes(8);
             auto ptr = heap.malloc(size);
             stack.push(ptr);
           } break;
           case instr::free: {
-            auto ptr = *reinterpret_cast<int64_t*>(stack.getBytes(-8, 8));
+            auto ptr = TOSi64;
             stack.popBytes(8);
             heap.free(ptr);
           } break;

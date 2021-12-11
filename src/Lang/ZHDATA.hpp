@@ -38,6 +38,14 @@ struct ZHDATA {
           types::Type(types::TYPE::rt), OpType::lhs, true       \
     }                                                           \
   }
+#define CFN2(name, arg1_t, arg2_t, rt)                          \
+  {                                                             \
+    {#name, {types::Type(types::TYPE::arg1_t)}}, new Function { \
+      #name, {{"a", types::Type(types::TYPE::arg1_t) },         \
+               {"b", types::Type(types::TYPE::arg2_t) } },      \
+               types::Type(types::TYPE::rt), OpType::lhs, true  \
+    }                                                           \
+  }
   std::map<types::funcHead, Function*> B_OD = {
     CBOP(+, i64T, i64T, i64T),  CBOP(+, i32T, i32T, i32T),
     CBOP(-, i64T, i64T, i64T),  CBOP(-, i32T, i32T, i32T),
@@ -52,10 +60,14 @@ struct ZHDATA {
     CBOP(>=, i64T, i64T, i64T), CBOP(>=, i32T, i32T, i32T),
   };
   std::map<types::funcHead, Function*> PR_OD = {
+    CFN1(out, i32T, voidT),
     CFN1(out, i64T, voidT),
     CFN1(out, strT, voidT),
+    CFN1(put, i32T, voidT),
+    CFN1(put, i64T, voidT),
+    CFN1(put, strT, voidT),
     CFN1(malloc, i64T, i64T),
-    CFN1(realloc, i64T, voidT),
+    CFN2(realloc, i64T, i64T, i64T),
     CFN1(calloc, i64T, voidT),
     CFN1(free, i64T, voidT),
   };

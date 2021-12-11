@@ -1,28 +1,10 @@
-// use 'vec.zh'
-// use 'frog.zh'
-// fn int fib int n
-//   ? n <= 1: <<< n
-//   <<< fib(n-1) + fib(n-2);
+use 'operators.zh'
+use 'vec.zh'
 
 fn main
   out 'aboba'
-  // Vec<int> vk
-  // out fib(25)
-  // s := 'aboba'
-  // out 'aboba'
-  // ptr := malloc(16) as intP
-  // out(*ptr)
-  // out(*((ptr as int + 8) as intP))
-  // *ptr = 2
-  // *((ptr as int + 8) as intP) = 5
-  // out(*ptr)
-  // out(*((ptr as int + 8) as intP))
-  // *..
-  // a := *ptr
-  // out a
-  // out(2)
-  // out(2)
-  // out(ptr as int)
-  // out(2)
-  // out(2)
-  // out(2)
+  Vec<int> v
+  v.ctor()
+  v.push_back(2)
+  v.push_back(3)
+  v.print()
