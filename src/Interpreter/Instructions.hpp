@@ -93,7 +93,6 @@ enum class instr : byte {
   /** memory managment */
   malloc,   // same as C malloc  (i64)
   free,     //  same as C free   (i64)
-  realloc,  // same as C realloc (i64, i64)
 };
 
 }  // namespace zhin

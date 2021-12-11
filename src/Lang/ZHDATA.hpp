@@ -67,7 +67,6 @@ struct ZHDATA {
     CFN1(put, i64T, voidT),
     CFN1(put, strT, voidT),
     CFN1(malloc, i64T, i64T),
-    CFN2(realloc, i64T, i64T, i64T),
     CFN1(calloc, i64T, voidT),
     CFN1(free, i64T, voidT),
   };

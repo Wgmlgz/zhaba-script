@@ -232,12 +232,6 @@ class ZHVM {
           auto ptr = heap.malloc(size);
           stack.push(ptr);
         } break;
-        case instr::realloc: {
-          auto size = TOSi64;
-          stack.popBytes(8);
-          auto ptr = heap.malloc(size);
-          stack.push(ptr);
-        } break;
         case instr::free: {
           auto ptr = TOSi64;
           stack.popBytes(8);

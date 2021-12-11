@@ -148,9 +148,7 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
       LOPBYTECODE(out, i64T, bytecode.pushVal(zhin::instr::out_i64))
       LOPBYTECODE(out, strT, bytecode.pushVal(zhin::instr::out_str))
       LOPBYTECODE(malloc, i64T, bytecode.pushVal(zhin::instr::malloc))
-      LOPBYTECODE(free, i64T,
-                  bytecode.pushVal(zhin::instr::pop_bytes);
-                  bytecode.pushVal((int32_t)(8)))
+      LOPBYTECODE(free, i64T, bytecode.pushVal(zhin::instr::malloc))
       else {
         throw ParserError("unimplemented C op");
       }
@@ -188,12 +186,8 @@ void nodeToB(zhin::ByteCode& bytecode, STNode* node, FuncData& funcdata) {
     /** pop unused return value */
     bytecode.push_pop_bytes(exp->exp->type.getSize());
   } else if (auto ret = dynamic_cast<STRet*>(node)) {
-    // bytecode.pushVal(zhin::instr::push_stack_ptr);
-    // bytecode.pushVal((int64_t)(-funcdata.args_size));
     expToB(bytecode, ret->exp, funcdata);
     /** Write return value to args pos */
-    // bytecode.pushVal(zhin::instr::assign);
-    // bytecode.pushVal((int32_t)(ret->exp->type.getSize()));
     bytecode.pushVal(zhin::instr::ret);
     bytecode.pushVal((int32_t)(funcdata.args_size));
     bytecode.pushVal((int32_t)(ret->exp->type.getSize()));

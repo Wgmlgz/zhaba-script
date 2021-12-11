@@ -13,6 +13,7 @@ class Heap {
     if ((ptr & 0xff15000000000000) != 0xff15000000000000)
       throw RuntimeError("ptr is not heap member");
     if (!mem.contains(ptr)) throw RuntimeError("cannot free non existing ptr");
+    mem.erase(ptr);
   }
   int64_t malloc(int64_t size) {
     if (size > 100000 or size < 0)

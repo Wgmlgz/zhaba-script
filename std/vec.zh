@@ -1,4 +1,6 @@
 use 'range.zh'
+use 'operators.zh'
+use 'pointers_ops.zh'
 
 type Vec T
   int size
@@ -11,18 +13,6 @@ impl Vec
     slf.size = 0
     slf.capacity = 0
     slf.head = 0 as TP
-  
-  fn double_capacity
-    auto new_capacity = slf.capacity
-    T item
-    int item_size
-    item_size = sizeof(item)
-    ? new_capacity == 0
-      new_capacity = 1
-      slf.head = malloc(item_size + 10000) as TP
-    \ new_capacity *= 2
-      // slf.head = realloc(slf.head as int, new_capacity * item_size) as TP
-    slf.capacity = new_capacity
 
   fn TP atP int pos
     T item
@@ -31,7 +21,20 @@ impl Vec
     <<< (((slf.head) as int) + pos * item_size) as TP
 
   fn T at int pos: <<< *slf.atP(pos)
-  
+    
+  fn double_capacity
+    auto new_capacity = slf.capacity
+    T item
+    ? new_capacity == 0
+      new_capacity = 1
+      slf.head = malloc(sizeof(item) + 10000) as TP
+    \ new_capacity *= 2
+      new_head := malloc(new_capacity * sizeof(item)) as TP
+      @ i 0..slf.size: *(new_head + i) = slf.at(i)
+      free(slf.head as int)
+      slf.head = new_head
+    slf.capacity = new_capacity
+
   fn push_back T val
     ? slf.size == slf.capacity: slf.double_capacity()
     *slf.atP(slf.size) = val

@@ -30,7 +30,7 @@ namespace tables {
   std::unordered_set<std::string> operators{
       ".",       "=",      ":=",   ",",  "*",   "&",   "as",     "+",
       "/",       "%",      "-",    "==", "out", "put", "sizeof", "malloc",
-      "realloc", "calloc", "free", "<",  ">",   "<=",  ">="};
+     "free", "<",  ">",   "<=",  ">="};
   std::unordered_set<std::string> functions{
 
   };
@@ -41,8 +41,6 @@ namespace tables {
     {"put", 3},
     {"sizeof", 3},
     {"malloc", 3},
-    {"realloc", 3},
-    {"calloc", 3},
     {"free", 3},
   };
   std::unordered_map<std::string, int64_t> postfix_operators = {};
