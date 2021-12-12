@@ -1,19 +1,21 @@
-// Range type for loops or something
+/**
+ * Range type for loops or something
+ * example:
+ * @ i 2..5: out i
+ */
+
+use 'operators.zh' 
+
 type Range
   int begin end
+
 impl Range
   fn int begin: <<< slf.begin
   fn int end: <<< slf.end
-fn Range newRange int begin int end
+
+op 9 Range .. int begin int end
   Range slf
   slf.begin = begin
   slf.end = end
   <<< slf
-
-op 9 Range .. int begin int end: <<< newRange(begin end)
   
-fn int begin RangeP r
-  <<< r.begin
-
-fn int end RangeP r
-  <<< r.end

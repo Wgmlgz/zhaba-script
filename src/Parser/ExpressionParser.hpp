@@ -355,43 +355,80 @@ namespace zhexp {
         op->lhs = postprocess(op->lhs, scope_info, block_scope);
         op->rhs = postprocess(op->rhs, scope_info, block_scope);
 
-        /** Member call */
-        if (op->val.size() >= 6 and op->val.substr(0, 6) == ".call.") {
-          if (op->lhs->type.getPtr() == 0) {
-            if (!op->lhs->type.getLval()) {
-              throw ParserError("For now only lval member call");
+        /**
+         * Pointer arithmetic
+         * ptr + x(i64)
+         * x(i64) + ptr
+         * ptr - x(i64)
+         */
+        if ((op->val == "+" &&
+             ((op->lhs->type.getPtr() &&
+               op->rhs->type.getTypeId() == types::TYPE::i64T) ||
+              (op->rhs->type.getPtr() &&
+               op->lhs->type.getTypeId() == types::TYPE::i64T))) or
+            (op->val == "-" && op->lhs->type.getPtr() &&
+             op->rhs->type.getTypeId() == types::TYPE::i64T)) {
+          if (op->rhs->type.getPtr()) std::swap(op->rhs, op->lhs);
+          auto orig_type = op->lhs->type;
+          auto int_type = types::Type(types::TYPE::i64T);
+          op->lhs =
+              new BinOperator(op->begin, op->end, "as", 0, op->lhs,
+                              new TypeLiteral(op->begin, op->end, int_type));
+          op->lhs->type = int_type;
+
+          auto int_literal =
+            new IntLiteral(op->begin, op->end, orig_type.getSizeNonRef());
+          int_literal->type = int_type;
+          auto t = new BinOperator(op->begin, op->end, "*", 0, op->rhs, int_literal);
+          t->func = zhdata.B_OD[{"*", {int_type, int_type}}];
+          t->type = int_type;
+          op->rhs = t;
+          op->func = zhdata.B_OD[{op->val, {int_type, int_type}}];
+          op->type = int_type;
+          op = new BinOperator(op->begin, op->end, "as", 0, op,
+                               new TypeLiteral(op->begin, op->end, orig_type));
+          op->type = orig_type;
+          exp = op;
+        } else {
+          /** Member call */
+          if (op->val.size() >= 6 and op->val.substr(0, 6) == ".call.") {
+            if (op->lhs->type.getPtr() == 0) {
+              if (!op->lhs->type.getLval()) {
+                throw ParserError("For now only lval member call");
+              }
+              auto ltype = op->lhs->type;
+              op->lhs = new PrefixOperator(op->begin, op->end, "&", 3, op->lhs);
+              op->lhs->type = ltype;
+              op->lhs->type.setLval(false);
+              op->lhs->type.setPtr(1);
             }
-            auto ltype = op->lhs->type;
-            op->lhs = new PrefixOperator(op->begin, op->end, "&", 3, op->lhs);
-            op->lhs->type = ltype;
-            op->lhs->type.setLval(false);
-            op->lhs->type.setPtr(1);
           }
-        }
 
-        std::vector<types::Type> types;
-        types.push_back(op->lhs->type);
-        types.back().setLval(false);
-        if (auto tuple = dynamic_cast<Tuple*>(op->rhs)) {
-          for (auto exp : tuple->content) {
-            types.push_back(exp->type);
+          std::vector<types::Type> types;
+          types.push_back(op->lhs->type);
+          types.back().setLval(false);
+          if (auto tuple = dynamic_cast<Tuple*>(op->rhs)) {
+            for (auto exp : tuple->content) {
+              types.push_back(exp->type);
+            }
+          } else {
+            types.push_back(op->rhs->type);
           }
-        } else {
-          types.push_back(op->rhs->type);
-        }
 
-        for (auto& i : types) i.setLval(false);
-        for (auto& i : types) i.setRef(false);
+          for (auto& i : types) i.setLval(false);
+          for (auto& i : types) i.setRef(false);
 
-        types::funcHead func_head{op->val, types};
-        if (zhdata.B_OD.count(func_head)) {
-          op->func = zhdata.B_OD[func_head];
-          exp->type = zhdata.B_OD[func_head]->type;
-        } else {
-          throw ParserError(
-            op->begin, op->end, "There is no instance of binary operator '" + op->val +
-            "' for types: " + op->lhs->type.toString() + ", " +
-            op->rhs->type.toString());
+          types::funcHead func_head{op->val, types};
+          if (zhdata.B_OD.count(func_head)) {
+            op->func = zhdata.B_OD[func_head];
+            exp->type = zhdata.B_OD[func_head]->type;
+          } else {
+            throw ParserError(op->begin, op->end,
+                              "There is no instance of binary operator '" +
+                                  op->val +
+                                  "' for types: " + op->lhs->type.toString() +
+                                  ", " + op->rhs->type.toString());
+          }
         }
       }
     } else if (auto op = dynamic_cast<PostfixOperator*>(exp)) {
@@ -429,7 +466,9 @@ namespace zhexp {
         return exp;
       } else if (op->val == "*") {
         if (op->child->type.getPtr() == 0)
-          throw ParserError(op->begin, op->end, "Cannot dereference non ptr");
+          throw ParserError(
+              op->begin, op->end,
+              "Cannot dereference non ptr (" + op->child->type.toString() + ") found");
         exp->type = op->child->type;
         exp->type.setPtr(op->child->type.getPtr() - 1);
         exp->type.setLval(true);

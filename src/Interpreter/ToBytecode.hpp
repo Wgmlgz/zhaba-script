@@ -122,10 +122,8 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
         auto lhs_tuple = castToTuple(op->lhs);
         auto rhs_tuple = castToTuple(op->rhs);
         *lhs_tuple += *rhs_tuple;
-        argsToC(lhs_tuple, op->func);
         argsToB(bytecode, lhs_tuple, op->func, funcdata);
         bytecode.pushVal(zhin::instr::call);
-        // if ()
         bytecode.pushVal(
             (int32_t)(bytecode.func_labels[op->func->toUniqueStr()]));
       }

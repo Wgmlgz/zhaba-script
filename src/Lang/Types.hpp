@@ -66,6 +66,7 @@ class Type {
   auto getPtr() const { return ptr_; }
   auto getSize() const { return (ptr_ || ref_) ? 8 : sizes[typeid_]; }
   auto getSizeNonRef() const { return (ptr_) ? 8 : sizes[typeid_]; }
+  auto getSizeNonPtr() const { return (ptr_ > 1 or ref_) ? 8 : sizes[typeid_]; }
 
   /* Setters */
   void setLval(bool f) { lval_ = f; }
