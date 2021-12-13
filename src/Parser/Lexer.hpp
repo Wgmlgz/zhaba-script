@@ -59,7 +59,7 @@ public:
     std::vector<Token> parse_res;
     const std::regex r(tokens_str);
 
-    int line = 1, pos = 0;
+    int line = 0, pos = 0;
     std::string line_str;
     for (std::sregex_iterator i = std::sregex_iterator(str.begin(), str.end(), r);
       i != std::sregex_iterator();

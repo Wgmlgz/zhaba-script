@@ -10,7 +10,7 @@
 #include <stack>
 #include <string>
 #include <map>
-
+#include <array>
 #include "./Instructions.hpp"
 // Order is important
 /*0*/ #include "../Parser/Parser.hpp"

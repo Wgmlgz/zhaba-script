@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
+#include <compare>
 
 namespace types {
 
@@ -81,7 +82,7 @@ class Type {
   }
   std::vector<uint32_t> getMask() const { return {getSelfMask()}; }
   const friend auto operator<=>(const Type& lhs, const Type& rhs) {
-    return lhs.getMask() <=> rhs.getMask();
+    return lhs.getSelfMask() <=> rhs.getSelfMask();
   }
 
   Type rvalClone() { return Type(typeid_, ptr_, false, ref_); }

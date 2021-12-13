@@ -1,6 +1,8 @@
 #pragma once
-#include <vector>
+#include <filesystem>
 #include <fstream>
+#include <vector>
+
 #include "../Lang/Lang.hpp"
 #include "Lexer.hpp"
 #include "ParserError.hpp"
@@ -28,6 +30,7 @@ void preprocess(std::filesystem::path file_path, std::vector<Token>& res, int de
   ss << fin.rdbuf();
   std::string file_data = ss.str();
   fin >> file_data;
+  file_data = "\n" + file_data;
   fin.close();
   zhdata.included_files.push_back(file_data);
 

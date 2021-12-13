@@ -1,12 +1,15 @@
 #pragma once
+#include <filesystem>
+#include <list>
+#include <map>
+#include <string>
 #include <unordered_map>
 #include <unordered_set>
-#include <string>
-#include <map>
-#include <list>
-#include "Types.hpp"
-#include "SyntaxTree.hpp"
+#include <iostream>
 #include "LangTables.hpp"
+#include "SyntaxTree.hpp"
+#include "Types.hpp"
+
 
 struct ZHDATA {
   const int64_t INF = 1000000000000.0;
@@ -88,6 +91,9 @@ struct ZHDATA {
   std::map<std::string, std::vector<std::string>> files_lines;
   std::filesystem::path bin_path;
   std::filesystem::path std_path;
+
+  /** output stream for interpreter */
+  std::ostream* out = &std::cout;
 
   std::unordered_map<std::string, bool> bools{
     {"exp_parser_logs", false},

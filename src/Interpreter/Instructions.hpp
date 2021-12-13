@@ -17,7 +17,7 @@ std::string hexbyte(byte i) {
 struct RuntimeError {
   std::string msg;
   RuntimeError(const std::string& new_msg) : msg(new_msg) {}
-  std::string what() { return msg; }
+  std::string what() { return "ZHVM runtime error:" + msg; }
 };
 
 enum class instr : byte {

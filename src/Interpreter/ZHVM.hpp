@@ -49,7 +49,7 @@ class ZHVM {
     bytecode.loadLabels();
     auto [dis, mp] = bytecode.dis();
     if (zhdata.bools["show_bytecode"]) {
-      std::cout << "bytecode: " << dis << std::endl;
+      std::cout << "bytecode:\n" << dis << std::endl;
     }
     size_t cur = 0;
     std::string res;
@@ -187,34 +187,34 @@ class ZHVM {
         case instr::put_i32: {
           auto t = TOSi32;
           stack.popBytes(4);
-          printf("%d", t);
+          *zhdata.out << static_cast<int32_t>(t);
         } break;
         case instr::put_i64: {
           auto t = TOSi64;
           stack.popBytes(8);
-          printf("%lld", t);
+          *zhdata.out << static_cast<int64_t>(t);
         } break;
         case instr::put_str: {
           auto char_ptr = TOSi64;
           stack.popBytes(8);
           auto mem = getPtr(char_ptr, 1);
-          printf("%s", mem);
+          *zhdata.out << reinterpret_cast<char*>(mem);
         } break;
         case instr::out_i32: {
           auto t = TOSi32;
           stack.popBytes(4);
-          printf("%d\n", t);
+          *zhdata.out << static_cast<int32_t>(t) << std::endl;
         } break;
         case instr::out_i64: {
           auto t = TOSi64;
           stack.popBytes(8);
-          printf("%lld\n", t);
+          *zhdata.out << static_cast<int64_t>(t) << std::endl;
         } break;
         case instr::out_str: {
           auto char_ptr = TOSi64;
           stack.popBytes(8);
           auto mem = getPtr(char_ptr, 1);
-          printf("%s\n", mem);
+          *zhdata.out << reinterpret_cast<char*>(mem) << std::endl;
         } break;
         case instr::push_bytes: {
           auto val = *bytecode.loadI32(cur);

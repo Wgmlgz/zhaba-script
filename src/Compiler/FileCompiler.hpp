@@ -5,6 +5,7 @@
 #include <fstream>
 #include "../Interpreter/ZHVM.hpp"
 #include "../Interpreter/ToBytecode.hpp"
+#include <filesystem>
 
 void compileFile(std::filesystem::path file_path) {
   auto start_time = clock();
@@ -24,6 +25,7 @@ void compileFile(std::filesystem::path file_path) {
 
   defineFlowTokens(tokens);
 
+
   // auto parse_res = zhdata.lexer.parse(programm, false);
   auto ast = ast::parse(tokens.begin(), tokens.end());
   auto ast_generic = ast::toGenericTree(ast);
@@ -32,7 +34,8 @@ void compileFile(std::filesystem::path file_path) {
     std::cout << "ast:\n";
     printCompact(ast_generic);
   }
-
+  // std::cout << "11done" << std::endl;
+  // return;
   auto stree = parseAST(ast);
 
   if (zhdata.bools["show_st"]) {

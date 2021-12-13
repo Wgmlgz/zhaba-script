@@ -1,6 +1,5 @@
 use 'range.zh'
 use 'operators.zh'
-use 'pointers_ops.zh'
 
 type Vec T
   int size
