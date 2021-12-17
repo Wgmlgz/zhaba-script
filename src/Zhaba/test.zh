@@ -6,6 +6,11 @@ fn main
   v.ctor(2)
   @ i 0..10:
     v.push_back(i)
+  @ i v
+    out (*i)
+  // intP p = 2 as intP
+  // (p as int)++
+  // out(p as int)
   v.print()
 
   

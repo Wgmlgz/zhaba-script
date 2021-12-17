@@ -391,6 +391,18 @@ namespace zhexp {
                                new TypeLiteral(op->begin, op->end, orig_type));
           op->type = orig_type;
           exp = op;
+        } else if ((op->val == "==" || op->val == "!=" || op->val == "<=" ||
+                    op->val == ">=" || op->val == "<" || op->val == ">") &&
+                   (op->lhs->type.getPtr() && op->rhs->type.getPtr())) {
+          auto int_type = types::Type(types::TYPE::i64T);
+          op->lhs =
+              new BinOperator(op->begin, op->end, "as", 0, op->lhs,
+                              new TypeLiteral(op->begin, op->end, int_type));
+          op->rhs =
+              new BinOperator(op->begin, op->end, "as", 0, op->rhs,
+                              new TypeLiteral(op->begin, op->end, int_type));
+          op->func = zhdata.B_OD[{op->val, {int_type, int_type}}];
+          op->type = int_type;
         } else {
           /** Member call */
           if (op->val.size() >= 6 and op->val.substr(0, 6) == ".call.") {
@@ -457,7 +469,7 @@ namespace zhexp {
           "' for type: " + op->child->type.toString());
     } else if (auto op = dynamic_cast<PrefixOperator*>(exp)) {
       op->child = postprocess(op->child, scope_info, block_scope);
-
+      
       if (op->val == "&") {
         if (!op->child->type.getLval())
           throw ParserError(op->begin, op->end, "Cannot get ptr of rval");
@@ -466,11 +478,11 @@ namespace zhexp {
         exp->type.setLval(false);
         
         return exp;
-      } else if (op->val == "*") {
-        if (op->child->type.getPtr() == 0)
-          throw ParserError(
-              op->begin, op->end,
-              "Cannot dereference non ptr (" + op->child->type.toString() + ") found");
+      } else if (op->val == "*" && op->child->type.getPtr()) {
+        // if (op->child->type.getPtr() == 0)
+        //   throw ParserError(
+        //       op->begin, op->end,
+        //       "Cannot dereference non ptr (" + op->child->type.toString() + ") found");
         exp->type = op->child->type;
         exp->type.setPtr(op->child->type.getPtr() - 1);
         exp->type.setLval(true);
