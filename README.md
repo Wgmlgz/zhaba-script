@@ -55,6 +55,7 @@ _note_: To build Zhaba script compiler you can also use [this Makefile](./Src/Zh
 
 Note: features with TODO are existing in language, but don't have docs😞
 
+- [syntax](./docs/syntax.pdf)
 - [TODO introduction](./docs/introduction.md)
 - [TODO compiler](./docs/compiler.md)
 - [TODO program structure](./docs/program.md)
