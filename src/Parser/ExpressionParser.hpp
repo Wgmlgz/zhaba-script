@@ -338,7 +338,9 @@ namespace zhexp {
             throw ParserError(op->begin, op->end, "Expression type can't be '" + op->lhs->type.toString() + "'");
           }
         } else {
-          throw ParserError(op->begin, op->end, "Expected identifier near '.");
+          throw ParserError(op->begin, op->end,
+                            "Expected identifier near '.', but (" +
+                                op->toString() + ") found");
         }
       }
       /** Type cast */

@@ -1,17 +1,25 @@
 use 'range.zh'
+use 'vec.zh'
 
 fn main
-  size := 10
-  p := (malloc(sizeof(int) * size) as intP)
-  out 'ptr + x'
-  @ i 0..size: *(p + i) = i
-  @ i 0..size: out(*(p + i))
+  Vec<int> v
+  v.ctor(2)
+  @ i 0..10:
+    v.push_back(i)
+  v.print()
+
   
-  out 'x + ptr'
-  @ i 0..size: *(i + p) = i
-  @ i 0..size: out(*(i + p))
+  // size := 10
+  // p := (malloc(sizeof(int) * size) as intP)
+  // out 'ptr + x'
+  // @ i 0..size: *(p + i) = i
+  // @ i 0..size: out(*(p + i))
   
-  out 'ptr - x'
-  t := p + 5
-  t = t - 2
-  out(*t)
+  // out 'x + ptr'
+  // @ i 0..size: *(i + p) = i
+  // @ i 0..size: out(*(i + p))
+  
+  // out 'ptr - x'
+  // t := p + 5
+  // t = t - 2
+  // out(*t)

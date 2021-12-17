@@ -22,11 +22,12 @@ impl Vec
   fn T at int pos: <<< *slf.atP(pos)
     
   fn double_capacity
-    auto new_capacity = slf.capacity
+    new_capacity := slf.capacity
     T item
     ? new_capacity == 0
-      new_capacity = 1
+      new_capacity = 10000
       slf.head = malloc(sizeof(item) + 10000) as TP
+      // slf.capacity = 10000
     \ new_capacity *= 2
       new_head := malloc(new_capacity * sizeof(item)) as TP
       @ i 0..slf.size: *(new_head + i) = slf.at(i)
