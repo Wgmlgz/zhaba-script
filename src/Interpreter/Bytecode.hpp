@@ -64,24 +64,86 @@ namespace zhin {
             cur += 4;
             cur += size;
           } break;
+          case instr::add_i8: break;
+          case instr::sub_i8: break;
+          case instr::mul_i8: break;
+          case instr::div_i8: break;
+          case instr::mod_i8: break;
+          case instr::less_i8: break;
+          case instr::more_i8: break;
+          case instr::lesseq_i8: break;
+          case instr::moreeq_i8: break;
+
+          case instr::add_i16: break;
+          case instr::sub_i16: break;
+          case instr::mul_i16: break;
+          case instr::div_i16: break;
+          case instr::mod_i16: break;
+          case instr::less_i16: break;
+          case instr::more_i16: break;
+          case instr::lesseq_i16: break;
+          case instr::moreeq_i16: break;
+
           case instr::add_i32: break;
-          case instr::add_i64: break;
           case instr::sub_i32: break;
-          case instr::sub_i64: break;
           case instr::mul_i32: break;
-          case instr::mul_i64: break;
           case instr::div_i32: break;
-          case instr::div_i64: break;
           case instr::mod_i32: break;
-          case instr::mod_i64: break;
           case instr::less_i32: break;
-          case instr::less_i64: break;
           case instr::more_i32: break;
-          case instr::more_i64: break;
           case instr::lesseq_i32: break;
-          case instr::lesseq_i64: break;
           case instr::moreeq_i32: break;
+
+          case instr::add_i64: break;
+          case instr::sub_i64: break;
+          case instr::mul_i64: break;
+          case instr::div_i64: break;
+          case instr::mod_i64: break;
+          case instr::less_i64: break;
+          case instr::more_i64: break;
+          case instr::lesseq_i64: break;
           case instr::moreeq_i64: break;
+          
+          case instr::add_u8: break;
+          case instr::sub_u8: break;
+          case instr::mul_u8: break;
+          case instr::div_u8: break;
+          case instr::mod_u8: break;
+          case instr::less_u8: break;
+          case instr::more_u8: break;
+          case instr::lesseq_u8: break;
+          case instr::moreeq_u8: break;
+
+          case instr::add_u16: break;
+          case instr::sub_u16: break;
+          case instr::mul_u16: break;
+          case instr::div_u16: break;
+          case instr::mod_u16: break;
+          case instr::less_u16: break;
+          case instr::more_u16: break;
+          case instr::lesseq_u16: break;
+          case instr::moreeq_u16: break;
+
+          case instr::add_u32: break;
+          case instr::sub_u32: break;
+          case instr::mul_u32: break;
+          case instr::div_u32: break;
+          case instr::mod_u32: break;
+          case instr::less_u32: break;
+          case instr::more_u32: break;
+          case instr::lesseq_u32: break;
+          case instr::moreeq_u32: break;
+
+          case instr::add_u64: break;
+          case instr::sub_u64: break;
+          case instr::mul_u64: break;
+          case instr::div_u64: break;
+          case instr::mod_u64: break;
+          case instr::less_u64: break;
+          case instr::more_u64: break;
+          case instr::lesseq_u64: break;
+          case instr::moreeq_u64: break;
+
           case instr::eq_64: break;
           case instr::eq_32: break;
           case instr::uneq_64: break;
@@ -92,21 +154,43 @@ namespace zhin {
           case instr::ret: cur += 4 + 4; break;
           
           case instr::jmp_if64: cur += 4; break;
-          case instr::push_i32: cur += 4; break;
+          case instr::push_8: cur += 1; break;
+          case instr::push_16: cur += 2; break;
+          case instr::push_32: cur += 4; break;
+          case instr::push_64: cur += 8; break;
           case instr::push_frame: break;
           case instr::deref: cur += 4; break;
           case instr::assign: cur += 4; break;
-          case instr::push_i64: cur += 8; break;
           case instr::push_literal_ptr: cur += 4; break;
           case instr::push_stack_ptr: cur += 8; break;
           case instr::push_bytes: cur += 4; break;
           case instr::pop_bytes: cur += 4; break;
 
-          case instr::put_i32: break;
-          case instr::put_i64: break;
-          case instr::put_str: break;
+          case instr::out_i8: break;
+          case instr::put_i8: break;
+
+          case instr::out_i16: break;
+          case instr::put_i16: break;
+
           case instr::out_i32: break;
+          case instr::put_i32: break;
+
+          case instr::put_i64: break;
           case instr::out_i64: break;
+
+          case instr::out_u8: break;
+          case instr::put_u8: break;
+
+          case instr::out_u16: break;
+          case instr::put_u16: break;
+
+          case instr::out_u32: break;
+          case instr::put_u32: break;
+
+          case instr::put_u64: break;
+          case instr::out_u64: break;
+          
+          case instr::put_str: break;
           case instr::out_str: break;
 
           case instr::malloc: break;
@@ -122,8 +206,14 @@ namespace zhin {
       return bytes.data() + index;
     }
     instr* loadInstr(size_t index) { return (instr*)(loadBytes(index, 1)); }
+    int8_t* loadI8(size_t index) { return (int8_t*)(loadBytes(index, 1)); }
+    int16_t* loadI16(size_t index) { return (int16_t*)(loadBytes(index, 2)); }
     int32_t* loadI32(size_t index) { return (int32_t*)(loadBytes(index, 4)); }
     int64_t* loadI64(size_t index) { return (int64_t*)(loadBytes(index, 8)); }
+    uint8_t* loadU8(size_t index) { return (uint8_t*)(loadBytes(index, 1)); }
+    uint16_t* loadU16(size_t index) { return (uint16_t*)(loadBytes(index, 2)); }
+    uint32_t* loadU32(size_t index) { return (uint32_t*)(loadBytes(index, 4)); }
+    uint64_t* loadU64(size_t index) { return (uint64_t*)(loadBytes(index, 8)); }
     void popBytes(size_t size) {
       for (int i = 0; i < size; ++i) bytes.pop_back();
     }
@@ -172,6 +262,20 @@ namespace zhin {
   case instr::name:           \
     res += "    " #name "\n"; \
     break;
+#define INSTR_I8(name)                   \
+  case instr::name:                       \
+    res += "    " #name " ";              \
+    res += std::to_string(*loadI8(cur)); \
+    res += "\n";                          \
+    cur += 1;                             \
+    break;
+#define INSTR_I16(name)                   \
+  case instr::name:                       \
+    res += "    " #name " ";              \
+    res += std::to_string(*loadI16(cur)); \
+    res += "\n";                          \
+    cur += 2;                             \
+    break;
 #define INSTR_I32(name)                   \
   case instr::name:                       \
     res += "    " #name " ";              \
@@ -183,6 +287,34 @@ namespace zhin {
   case instr::name:                       \
     res += "    " #name " ";              \
     res += std::to_string(*loadI64(cur)); \
+    res += "\n";                          \
+    cur += 8;                             \
+    break;
+#define INSTR_U8(name)                   \
+  case instr::name:                      \
+    res += "    " #name " ";             \
+    res += std::to_string(*loadU8(cur)); \
+    res += "\n";                         \
+    cur += 1;                            \
+    break;
+#define INSTR_U16(name)                   \
+  case instr::name:                       \
+    res += "    " #name " ";              \
+    res += std::to_string(*loadU16(cur)); \
+    res += "\n";                          \
+    cur += 2;                             \
+    break;
+#define INSTR_U32(name)                   \
+  case instr::name:                       \
+    res += "    " #name " ";              \
+    res += std::to_string(*loadU32(cur)); \
+    res += "\n";                          \
+    cur += 4;                             \
+    break;
+#define INSTR_U64(name)                   \
+  case instr::name:                       \
+    res += "    " #name " ";              \
+    res += std::to_string(*loadU64(cur)); \
     res += "\n";                          \
     cur += 8;                             \
     break;
@@ -210,39 +342,125 @@ namespace zhin {
           INSTR_I32(jmp_if64)
           INSTR_I64(ret)
           INSTR_I32(push_literal_ptr)
+
+          INSTR(add_i8)
+          INSTR(sub_i8)
+          INSTR(mul_i8)
+          INSTR(div_i8)
+          INSTR(mod_i8)
+          INSTR(less_i8)
+          INSTR(more_i8)
+          INSTR(lesseq_i8)
+          INSTR(moreeq_i8)
+          INSTR(put_i8)
+          INSTR(out_i8)
+
+          INSTR(add_i16)
+          INSTR(sub_i16)
+          INSTR(mul_i16)
+          INSTR(div_i16)
+          INSTR(mod_i16)
+          INSTR(less_i16)
+          INSTR(more_i16)
+          INSTR(lesseq_i16)
+          INSTR(moreeq_i16)
+          INSTR(put_i16)
+          INSTR(out_i16)
+
           INSTR(add_i32)
-          INSTR(add_i64)
           INSTR(sub_i32)
-          INSTR(sub_i64)
           INSTR(mul_i32)
-          INSTR(mul_i64)
           INSTR(div_i32)
-          INSTR(div_i64)
           INSTR(mod_i32)
-          INSTR(mod_i64)
           INSTR(less_i32)
-          INSTR(less_i64)
           INSTR(more_i32)
-          INSTR(more_i64)
           INSTR(lesseq_i32)
-          INSTR(lesseq_i64)
           INSTR(moreeq_i32)
-          INSTR(moreeq_i64)
-          INSTR(eq_64)
-          INSTR(eq_32)
-          INSTR(uneq_64)
-          INSTR(uneq_32)
           INSTR(put_i32)
-          INSTR(put_i64)
-          INSTR(put_str)
           INSTR(out_i32)
+
+          INSTR(add_i64)
+          INSTR(sub_i64)
+          INSTR(mul_i64)
+          INSTR(div_i64)
+          INSTR(mod_i64)
+          INSTR(less_i64)
+          INSTR(more_i64)
+          INSTR(lesseq_i64)
+          INSTR(moreeq_i64)
+          INSTR(put_i64)
           INSTR(out_i64)
+
+          INSTR(add_u8)
+          INSTR(sub_u8)
+          INSTR(mul_u8)
+          INSTR(div_u8)
+          INSTR(mod_u8)
+          INSTR(less_u8)
+          INSTR(more_u8)
+          INSTR(lesseq_u8)
+          INSTR(moreeq_u8)
+          INSTR(put_u8)
+          INSTR(out_u8)
+
+          INSTR(add_u16)
+          INSTR(sub_u16)
+          INSTR(mul_u16)
+          INSTR(div_u16)
+          INSTR(mod_u16)
+          INSTR(less_u16)
+          INSTR(more_u16)
+          INSTR(lesseq_u16)
+          INSTR(moreeq_u16)
+          INSTR(put_u16)
+          INSTR(out_u16)
+
+          INSTR(add_u32)
+          INSTR(sub_u32)
+          INSTR(mul_u32)
+          INSTR(div_u32)
+          INSTR(mod_u32)
+          INSTR(less_u32)
+          INSTR(more_u32)
+          INSTR(lesseq_u32)
+          INSTR(moreeq_u32)
+          INSTR(put_u32)
+          INSTR(out_u32)
+
+          INSTR(add_u64)
+          INSTR(sub_u64)
+          INSTR(mul_u64)
+          INSTR(div_u64)
+          INSTR(mod_u64)
+          INSTR(less_u64)
+          INSTR(more_u64)
+          INSTR(lesseq_u64)
+          INSTR(moreeq_u64)
+          INSTR(put_u64)
+          INSTR(out_u64)
+
+          INSTR(uneq_8)
+          INSTR(eq_8)
+
+          INSTR(uneq_16)
+          INSTR(eq_16)
+
+          INSTR(uneq_32)
+          INSTR(eq_32)
+
+          INSTR(eq_64)
+          INSTR(uneq_64)
+
+          INSTR_I8(push_8)
+          INSTR_I16(push_16)
+          INSTR_I32(push_32)
+          INSTR_I64(push_64)
+
+          INSTR(put_str)
           INSTR(out_str)
-          INSTR_I32(push_i32)
           INSTR(push_frame)
           INSTR_I32(deref)
           INSTR_I32(assign)
-          INSTR_I64(push_i64)
           INSTR_I64(push_stack_ptr)
           INSTR_I32(push_bytes)
           INSTR_I32(pop_bytes)

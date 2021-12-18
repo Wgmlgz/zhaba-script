@@ -74,31 +74,103 @@ class ZHVM {
     stack.push(res);                                                    \
   } break;
 
-          ARITHMETIC_BIN(add_i32, int32_t, +, 4)
-          ARITHMETIC_BIN(add_i64, int64_t, +, 8)
-          ARITHMETIC_BIN(sub_i32, int32_t, -, 4)
-          ARITHMETIC_BIN(sub_i64, int64_t, -, 8)
-          ARITHMETIC_BIN(mul_i32, int32_t, *, 4)
-          ARITHMETIC_BIN(mul_i64, int64_t, *, 8)
-          ARITHMETIC_BIN(eq_64, int64_t, ==, 8)
-          ARITHMETIC_BIN(eq_32, int32_t, ==, 4)
-          ARITHMETIC_BIN(uneq_64, int64_t, !=, 8)
-          ARITHMETIC_BIN(uneq_32, int32_t, !=, 4)
-          ARITHMETIC_BIN(div_i32, int32_t, /, 4)
-          ARITHMETIC_BIN(div_i64, int64_t, /, 8)
-          ARITHMETIC_BIN(mod_i32, int32_t, %, 4)
-          ARITHMETIC_BIN(mod_i64, int64_t, %, 8)
-          ARITHMETIC_BIN(less_i32, int32_t, <, 4)
-          ARITHMETIC_BIN(less_i64, int64_t, <, 8)
-          ARITHMETIC_BIN(more_i32, int32_t, >, 4)
-          ARITHMETIC_BIN(more_i64, int64_t, >, 8)
-          ARITHMETIC_BIN(lesseq_i32, int32_t, <=, 4)
-          ARITHMETIC_BIN(lesseq_i64, int64_t, <=, 8)
-          ARITHMETIC_BIN(moreeq_i32, int32_t, >=, 4)
-          ARITHMETIC_BIN(moreeq_i64, int64_t, >=, 8)
+        ARITHMETIC_BIN(add_i8,    int8_t, +,  1)
+        ARITHMETIC_BIN(sub_i8,    int8_t, -,  1)
+        ARITHMETIC_BIN(mul_i8,    int8_t, *,  1)
+        ARITHMETIC_BIN(eq_8,      int8_t, ==, 1)
+        ARITHMETIC_BIN(uneq_8,    int8_t, !=, 1)
+        ARITHMETIC_BIN(div_i8,    int8_t, /,  1)
+        ARITHMETIC_BIN(mod_i8,    int8_t, %,  1)
+        ARITHMETIC_BIN(less_i8,   int8_t, <,  1)
+        ARITHMETIC_BIN(more_i8,   int8_t, >,  1)
+        ARITHMETIC_BIN(lesseq_i8, int8_t, <=, 1)
+        ARITHMETIC_BIN(moreeq_i8, int8_t, >=, 1)
 
-#define TOSi32 *reinterpret_cast<int32_t*>(stack.getBytes(-4, 4))
-#define TOSi64 *reinterpret_cast<int64_t*>(stack.getBytes(-8, 8))
+        ARITHMETIC_BIN(add_i16,    int16_t, +,  2)
+        ARITHMETIC_BIN(sub_i16,    int16_t, -,  2)
+        ARITHMETIC_BIN(mul_i16,    int16_t, *,  2)
+        ARITHMETIC_BIN(eq_16,      int16_t, ==, 2)
+        ARITHMETIC_BIN(uneq_16,    int16_t, !=, 2)
+        ARITHMETIC_BIN(div_i16,    int16_t, /,  2)
+        ARITHMETIC_BIN(mod_i16,    int16_t, %,  2)
+        ARITHMETIC_BIN(less_i16,   int16_t, <,  2)
+        ARITHMETIC_BIN(more_i16,   int16_t, >,  2)
+        ARITHMETIC_BIN(lesseq_i16, int16_t, <=, 2)
+        ARITHMETIC_BIN(moreeq_i16, int16_t, >=, 2)
+
+        ARITHMETIC_BIN(add_i32,    int32_t, +,  4)
+        ARITHMETIC_BIN(sub_i32,    int32_t, -,  4)
+        ARITHMETIC_BIN(mul_i32,    int32_t, *,  4)
+        ARITHMETIC_BIN(eq_32,      int32_t, ==, 4)
+        ARITHMETIC_BIN(uneq_32,    int32_t, !=, 4)
+        ARITHMETIC_BIN(div_i32,    int32_t, /,  4)
+        ARITHMETIC_BIN(mod_i32,    int32_t, %,  4)
+        ARITHMETIC_BIN(less_i32,   int32_t, <,  4)
+        ARITHMETIC_BIN(more_i32,   int32_t, >,  4)
+        ARITHMETIC_BIN(lesseq_i32, int32_t, <=, 4)
+        ARITHMETIC_BIN(moreeq_i32, int32_t, >=, 4)
+
+        ARITHMETIC_BIN(add_i64,    int64_t, +,  8)
+        ARITHMETIC_BIN(sub_i64,    int64_t, -,  8)
+        ARITHMETIC_BIN(mul_i64,    int64_t, *,  8)
+        ARITHMETIC_BIN(eq_64,      int64_t, ==, 8)
+        ARITHMETIC_BIN(uneq_64,    int64_t, !=, 8)
+        ARITHMETIC_BIN(div_i64,    int64_t, /,  8)
+        ARITHMETIC_BIN(mod_i64,    int64_t, %,  8)
+        ARITHMETIC_BIN(less_i64,   int64_t, <,  8)
+        ARITHMETIC_BIN(more_i64,   int64_t, >,  8)
+        ARITHMETIC_BIN(lesseq_i64, int64_t, <=, 8)
+        ARITHMETIC_BIN(moreeq_i64, int64_t, >=, 8)
+
+        ARITHMETIC_BIN(add_u8,    uint8_t, +,  1)
+        ARITHMETIC_BIN(sub_u8,    uint8_t, -,  1)
+        ARITHMETIC_BIN(mul_u8,    uint8_t, *,  1)
+        ARITHMETIC_BIN(div_u8,    uint8_t, /,  1)
+        ARITHMETIC_BIN(mod_u8,    uint8_t, %,  1)
+        ARITHMETIC_BIN(less_u8,   uint8_t, <,  1)
+        ARITHMETIC_BIN(more_u8,   uint8_t, >,  1)
+        ARITHMETIC_BIN(lesseq_u8, uint8_t, <=, 1)
+        ARITHMETIC_BIN(moreeq_u8, uint8_t, >=, 1)
+
+        ARITHMETIC_BIN(add_u16,    uint16_t, +,  2)
+        ARITHMETIC_BIN(sub_u16,    uint16_t, -,  2)
+        ARITHMETIC_BIN(mul_u16,    uint16_t, *,  2)
+        ARITHMETIC_BIN(div_u16,    uint16_t, /,  2)
+        ARITHMETIC_BIN(mod_u16,    uint16_t, %,  2)
+        ARITHMETIC_BIN(less_u16,   uint16_t, <,  2)
+        ARITHMETIC_BIN(more_u16,   uint16_t, >,  2)
+        ARITHMETIC_BIN(lesseq_u16, uint16_t, <=, 2)
+        ARITHMETIC_BIN(moreeq_u16, uint16_t, >=, 2)
+
+        ARITHMETIC_BIN(add_u32,    uint32_t, +,  4)
+        ARITHMETIC_BIN(sub_u32,    uint32_t, -,  4)
+        ARITHMETIC_BIN(mul_u32,    uint32_t, *,  4)
+        ARITHMETIC_BIN(div_u32,    uint32_t, /,  4)
+        ARITHMETIC_BIN(mod_u32,    uint32_t, %,  4)
+        ARITHMETIC_BIN(less_u32,   uint32_t, <,  4)
+        ARITHMETIC_BIN(more_u32,   uint32_t, >,  4)
+        ARITHMETIC_BIN(lesseq_u32, uint32_t, <=, 4)
+        ARITHMETIC_BIN(moreeq_u32, uint32_t, >=, 4)
+
+        ARITHMETIC_BIN(add_u64,    uint64_t, +,  8)
+        ARITHMETIC_BIN(sub_u64,    uint64_t, -,  8)
+        ARITHMETIC_BIN(mul_u64,    uint64_t, *,  8)
+        ARITHMETIC_BIN(div_u64,    uint64_t, /,  8)
+        ARITHMETIC_BIN(mod_u64,    uint64_t, %,  8)
+        ARITHMETIC_BIN(less_u64,   uint64_t, <,  8)
+        ARITHMETIC_BIN(more_u64,   uint64_t, >,  8)
+        ARITHMETIC_BIN(lesseq_u64, uint64_t, <=, 8)
+        ARITHMETIC_BIN(moreeq_u64, uint64_t, >=, 8)
+
+#define TOSi8 *reinterpret_cast<int8_t *>(stack.getBytes(-1, 1))
+#define TOSi16 *reinterpret_cast<int16_t *>(stack.getBytes(-2, 2))
+#define TOSi32 *reinterpret_cast<int32_t *>(stack.getBytes(-4, 4))
+#define TOSi64 *reinterpret_cast<int64_t *>(stack.getBytes(-8, 8))
+
+#define TOSu8 *reinterpret_cast<uint8_t *>(stack.getBytes(-1, 1))
+#define TOSu16 *reinterpret_cast<uint16_t *>(stack.getBytes(-2, 2))
+#define TOSu32 *reinterpret_cast<uint32_t *>(stack.getBytes(-4, 4))
+#define TOSu64 *reinterpret_cast<uint64_t *>(stack.getBytes(-8, 8))
 
         case instr::jmp: {
           auto target = *bytecode.loadI32(cur);
@@ -132,13 +204,23 @@ class ZHVM {
           stack.popBytes(8);
           if (val) cur = bytecode.label(target);
         } break;
-        case instr::push_i32: {
-          auto val = *bytecode.loadI32(cur);
+        case instr::push_8: {
+          auto val = *bytecode.loadU8(cur);
+          cur += 1;
+          stack.push(val);
+        } break;
+        case instr::push_16: {
+          auto val = *bytecode.loadU16(cur);
+          cur += 2;
+          stack.push(val);
+        } break;
+        case instr::push_32: {
+          auto val = *bytecode.loadU32(cur);
           cur += 4;
           stack.push(val);
         } break;
-        case instr::push_i64: {
-          auto val = *bytecode.loadI64(cur);
+        case instr::push_64: {
+          auto val = *bytecode.loadU64(cur);
           cur += 8;
           stack.push(val);
         } break;
@@ -184,6 +266,16 @@ class ZHVM {
           bytecode.loadI32(cur);
           cur += 4;
         } break;
+        case instr::put_i8: {
+          auto t = TOSi8;
+          stack.popBytes(1);
+          *zhdata.out << static_cast<int64_t>(t);
+        } break;
+        case instr::put_i16: {
+          auto t = TOSi16;
+          stack.popBytes(2);
+          *zhdata.out << static_cast<int16_t>(t);
+        } break;
         case instr::put_i32: {
           auto t = TOSi32;
           stack.popBytes(4);
@@ -194,11 +286,15 @@ class ZHVM {
           stack.popBytes(8);
           *zhdata.out << static_cast<int64_t>(t);
         } break;
-        case instr::put_str: {
-          auto char_ptr = TOSi64;
-          stack.popBytes(8);
-          auto mem = getPtr(char_ptr, 1);
-          *zhdata.out << reinterpret_cast<char*>(mem);
+        case instr::out_i8: {
+          auto t = TOSi8;
+          stack.popBytes(1);
+          *zhdata.out << static_cast<int64_t>(t) << std::endl;
+        } break;
+        case instr::out_i16: {
+          auto t = TOSi16;
+          stack.popBytes(2);
+          *zhdata.out << static_cast<int16_t>(t) << std::endl;
         } break;
         case instr::out_i32: {
           auto t = TOSi32;
@@ -209,6 +305,52 @@ class ZHVM {
           auto t = TOSi64;
           stack.popBytes(8);
           *zhdata.out << static_cast<int64_t>(t) << std::endl;
+        } break;
+        case instr::put_u8: {
+          auto t = TOSu8;
+          stack.popBytes(1);
+          *zhdata.out << static_cast<uint64_t>(t);
+        } break;
+        case instr::put_u16: {
+          auto t = TOSu16;
+          stack.popBytes(2);
+          *zhdata.out << static_cast<uint16_t>(t);
+        } break;
+        case instr::put_u32: {
+          auto t = TOSu32;
+          stack.popBytes(4);
+          *zhdata.out << static_cast<uint32_t>(t);
+        } break;
+        case instr::put_u64: {
+          auto t = TOSu64;
+          stack.popBytes(8);
+          *zhdata.out << static_cast<uint64_t>(t);
+        } break;
+        case instr::out_u8: {
+          auto t = TOSu8;
+          stack.popBytes(1);
+          *zhdata.out << static_cast<uint64_t>(t) << std::endl;
+        } break;
+        case instr::out_u16: {
+          auto t = TOSu16;
+          stack.popBytes(2);
+          *zhdata.out << static_cast<uint16_t>(t) << std::endl;
+        } break;
+        case instr::out_u32: {
+          auto t = TOSu32;
+          stack.popBytes(4);
+          *zhdata.out << static_cast<uint32_t>(t) << std::endl;
+        } break;
+        case instr::out_u64: {
+          auto t = TOSu64;
+          stack.popBytes(8);
+          *zhdata.out << static_cast<uint64_t>(t) << std::endl;
+        } break;
+        case instr::put_str: {
+          auto char_ptr = TOSi64;
+          stack.popBytes(8);
+          auto mem = getPtr(char_ptr, 1);
+          *zhdata.out << reinterpret_cast<char *>(mem);
         } break;
         case instr::out_str: {
           auto char_ptr = TOSi64;

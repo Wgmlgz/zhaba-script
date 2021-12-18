@@ -8,13 +8,31 @@
 
 namespace types {
 
-enum class TYPE : int32_t { voidT, charT, i64T, i32T, u32T, u64T, strT };
+enum class TYPE : int32_t {
+  voidT,
+  charT,
+  i8T,
+  i16T,
+  i32T,
+  i64T,
+  u8T,
+  u16T,
+  u32T,
+  u64T,
+  strT
+};
 
 std::unordered_map<std::string, TYPE> prim_types{
   {"void", TYPE::voidT},
-  {"i32", TYPE::i32T},
   {"int", TYPE::i64T},
+
+  {"i8", TYPE::i8T},
+  {"i16", TYPE::i16T},
+  {"i32", TYPE::i32T},
   {"i64", TYPE::i64T},
+
+  {"u8", TYPE::u8T},
+  {"u16", TYPE::u16T},
   {"u32", TYPE::u32T},
   {"u64", TYPE::u64T},
   {"char", TYPE::charT},
@@ -24,10 +42,17 @@ std::unordered_map<std::string, TYPE> prim_types{
 std::unordered_map<TYPE, std::string> type_names{
   {TYPE::voidT, "void"},
   {TYPE::charT, "char"},
-  {TYPE::i64T, "int"},
+
+  {TYPE::i8T,  "i8"},
+  {TYPE::i16T, "i16"},
   {TYPE::i32T, "i32"},
   {TYPE::i64T, "i64"},
-  {TYPE::i32T, "i32"},
+
+  {TYPE::u8T,  "u8"},
+  {TYPE::u16T, "u16"},
+  {TYPE::u32T, "u32"},
+  {TYPE::u64T, "u64"},
+
   {TYPE::strT, "str"},
 };
 
@@ -43,10 +68,17 @@ std::unordered_map<TYPE, std::string> cpp_type_names{
 std::unordered_map<TYPE, size_t> sizes {
   {TYPE::voidT, 0},
   {TYPE::charT, 1},
-  {TYPE::i64T, 8},
+
+  {TYPE::i8T, 1},
+  {TYPE::i16T, 2},
   {TYPE::i32T, 4},
-  {TYPE::u64T, 8},
+  {TYPE::i64T, 8},
+  
+  {TYPE::u8T, 1},
+  {TYPE::u16T, 2},
   {TYPE::u32T, 4},
+  {TYPE::u64T, 8},
+  
   {TYPE::strT, 8},
 };
 

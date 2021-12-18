@@ -113,9 +113,9 @@ std::string expToC(zhexp::Exp* exp) {
     }
     res += op->code;
   }
-  if (auto op = dynamic_cast<zhexp::IntLiteral*>(exp)) {
-    res += std::to_string(op->val);
-  }
+  // if (auto op = dynamic_cast<zhexp::IntLiteral*>(exp)) {
+  //   res += std::to_string(op->val);
+  // }
   if (auto op = dynamic_cast<zhexp::StrLiteral*>(exp)) {
     res += "\"" + op->val + "\"";
   }

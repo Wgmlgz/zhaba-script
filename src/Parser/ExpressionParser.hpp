@@ -24,13 +24,7 @@ namespace zhexp {
       return op;
     }
     if (distance(begin, end) == 1) {
-      if (auto op = dynamic_cast<IntLiteral*>(*begin))
-        return op;
-      else if (auto op = dynamic_cast<StrLiteral*>(*begin))
-        return op;
-      else if (auto op = dynamic_cast<IdLiteral*>(*begin))
-        return op;
-      else if (auto op = dynamic_cast<TypeLiteral*>(*begin))
+      if (auto op = dynamic_cast<Literal*>(*begin))
         return op;
       else if (auto op = dynamic_cast<Tuple*>(*begin))
         return op;
@@ -211,7 +205,36 @@ namespace zhexp {
           res.push_back(new Operator(*i, *i, i->val, bpriority, spaces_lhs, spaces_rhs));
         }
       } else if (i->token == "int") {
-        res.push_back(new IntLiteral(*i, *i, std::stoll(i->val)));
+        if (std::regex_match(i->val, std::regex("[0-9]+")))
+          res.push_back(new I64Literal(*i, *i, std::stoll(i->val)));
+        else if (std::regex_match(i->val, std::regex("[0-9]+i8")))
+          res.push_back(new I8Literal(
+              *i, *i, std::stoll(i->val.substr(0, i->val.size() - 2))));
+        else if (std::regex_match(i->val, std::regex("[0-9]+i16")))
+          res.push_back(new I16Literal(
+              *i, *i, std::stoll(i->val.substr(0, i->val.size() - 3))));
+        else if (std::regex_match(i->val, std::regex("[0-9]+i32")))
+          res.push_back(new I32Literal(
+              *i, *i, std::stoll(i->val.substr(0, i->val.size() - 3))));
+        else if (std::regex_match(i->val, std::regex("[0-9]+i64")))
+          res.push_back(new I64Literal(
+              *i, *i, std::stoll(i->val.substr(0, i->val.size() - 3))));
+
+
+        else if (std::regex_match(i->val, std::regex("[0-9]+u8")))
+          res.push_back(new U8Literal(
+              *i, *i, std::stoull(i->val.substr(0, i->val.size() - 2))));
+        else if (std::regex_match(i->val, std::regex("[0-9]+u16")))
+          res.push_back(new U16Literal(
+              *i, *i, std::stoull(i->val.substr(0, i->val.size() - 3))));
+        else if (std::regex_match(i->val, std::regex("[0-9]+u32")))
+          res.push_back(new U32Literal(
+              *i, *i, std::stoull(i->val.substr(0, i->val.size() - 3))));
+        else if (std::regex_match(i->val, std::regex("[0-9]+u64")))
+          res.push_back(new U64Literal(
+              *i, *i, std::stoull(i->val.substr(0, i->val.size() - 3))));
+        else
+          throw ParserError(*i, "Wrong int literal");
       } else if (i->token == "str") {
         res.push_back(new StrLiteral(*i, *i, i->val.substr(1, i->val.size() - 2)));
       } else if (i->token == "id") {
@@ -236,8 +259,22 @@ namespace zhexp {
     if (auto op = dynamic_cast<FlowOperator*>(exp)) {
       exp->type = types::Type(types::TYPE::voidT);
       if (op->operand) op->operand = postprocess(op->operand, scope_info, block_scope);
-    } else if (auto op = dynamic_cast<IntLiteral*>(exp)) {
+    } else if (auto op = dynamic_cast<I8Literal*>(exp)) {
+      exp->type = types::Type(types::TYPE::i8T);
+    } else if (auto op = dynamic_cast<I16Literal*>(exp)) {
+      exp->type = types::Type(types::TYPE::i16T);
+    } else if (auto op = dynamic_cast<I32Literal*>(exp)) {
+      exp->type = types::Type(types::TYPE::i32T);
+    } else if (auto op = dynamic_cast<I64Literal*>(exp)) {
       exp->type = types::Type(types::TYPE::i64T);
+    } else if (auto op = dynamic_cast<U8Literal*>(exp)) {
+      exp->type = types::Type(types::TYPE::u8T);
+    } else if (auto op = dynamic_cast<U16Literal*>(exp)) {
+      exp->type = types::Type(types::TYPE::u16T);
+    } else if (auto op = dynamic_cast<U32Literal*>(exp)) {
+      exp->type = types::Type(types::TYPE::u32T);
+    } else if (auto op = dynamic_cast<U64Literal*>(exp)) {
+      exp->type = types::Type(types::TYPE::u64T);
     } else if (auto op = dynamic_cast<StrLiteral*>(exp)) {
       exp->type = types::Type(types::TYPE::strT);
       exp->type.setLval(true);
@@ -379,7 +416,7 @@ namespace zhexp {
           op->lhs->type = int_type;
 
           auto int_literal =
-            new IntLiteral(op->begin, op->end, orig_type.getSizeNonRef());
+            new I64Literal(op->begin, op->end, orig_type.getSizeNonRef());
           int_literal->type = int_type;
           auto t = new BinOperator(op->begin, op->end, "*", 0, op->rhs, int_literal);
           t->func = zhdata.B_OD[{"*", {int_type, int_type}}];
@@ -495,7 +532,7 @@ namespace zhexp {
         } else {
           size = op->child->type.getSize();
         }
-        auto int_l = new IntLiteral(op->begin, op->child->end, size);
+        auto int_l = new I64Literal(op->begin, op->child->end, size);
         exp = int_l;
         exp = postprocess(exp, scope_info, block_scope);
         return exp;

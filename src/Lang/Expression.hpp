@@ -70,22 +70,37 @@ struct TypeLiteral : public Literal {
   }
 };
 
-struct IntLiteral : public Literal {
-  int64_t val;
-  IntLiteral(const Token& new_begin, const Token& new_end, int64_t new_val)
-      : Literal(new_begin, new_end) {
-    val = new_val;
-  }
-  virtual std::string toString() override {
-    std::string res="<int'" + std::to_string(val) + "'>";
-    return res;
-  }
-};
+// struct IntLiteral : public Literal {
+//   IntLiteral(const Token& new_begin, const Token& new_end)
+//     : Literal(new_begin, new_end) {}
+//   virtual std::string toString() override {
+//     return "<int>";
+//   }
+// };
+#define MAKE_LITERAL(name, type, parent, print_type)                 \
+  struct name : public parent {                                      \
+    type val;                                                        \
+    name(const Token& new_begin, const Token& new_end, type new_val) \
+        : parent(new_begin, new_end), val(new_val) {}                \
+    virtual std::string toString() override {                        \
+      return "<" print_type + std::to_string(val) + ">";             \
+    }                                                                \
+  };
+
+MAKE_LITERAL(I8Literal, int8_t, Literal, "i8");
+MAKE_LITERAL(I16Literal, int16_t, Literal, "i16");
+MAKE_LITERAL(I32Literal, int32_t, Literal, "i32");
+MAKE_LITERAL(I64Literal, int64_t, Literal, "i64");
+
+MAKE_LITERAL(U8Literal, uint8_t, Literal, "u8");
+MAKE_LITERAL(U16Literal, uint16_t, Literal, "u16");
+MAKE_LITERAL(U32Literal, uint32_t, Literal, "u32");
+MAKE_LITERAL(U64Literal, uint64_t, Literal, "u64");
 
 struct StrLiteral : public Literal {
   std::string val;
   StrLiteral(const Token& new_begin, const Token& new_end, std::string new_val)
-      : Literal(new_begin, new_end) {
+    : Literal(new_begin, new_end) {
     val = new_val;
   }
   virtual std::string toString() override {
@@ -225,15 +240,28 @@ TreeNode<std::string>* toGenericTree(Exp* exp) {
     node->data = "'" + op->val + "'";
     node->branches.push_back(toGenericTree(op->operand));
   }
-  if (auto op = dynamic_cast<IntLiteral*>(exp)) {
-    node->data = "'" + std::to_string(op->val) + "' iL";
-  }
-  if (auto op = dynamic_cast<StrLiteral*>(exp)) {
+  if (auto op = dynamic_cast<I8Literal*>(exp))
+    node->data = "'" + std::to_string(op->val) + "' i8L";
+  if (auto op = dynamic_cast<I16Literal*>(exp))
+    node->data = "'" + std::to_string(op->val) + "' i16L";
+  if (auto op = dynamic_cast<I32Literal*>(exp))
+    node->data = "'" + std::to_string(op->val) + "' i32L";
+  if (auto op = dynamic_cast<I64Literal*>(exp))
+    node->data = "'" + std::to_string(op->val) + "' i64L";
+  if (auto op = dynamic_cast<U8Literal*>(exp))
+    node->data = "'" + std::to_string(op->val) + "' u8L";
+  if (auto op = dynamic_cast<U16Literal*>(exp))
+    node->data = "'" + std::to_string(op->val) + "' u16L";
+  if (auto op = dynamic_cast<U32Literal*>(exp))
+    node->data = "'" + std::to_string(op->val) + "' u32L";
+  if (auto op = dynamic_cast<U64Literal*>(exp))
+    node->data = "'" + std::to_string(op->val) + "' u64L";
+
+  if (auto op = dynamic_cast<StrLiteral*>(exp))
     node->data = "'" + op->val + "' sL";
-  }
-  if (auto op = dynamic_cast<IdLiteral*>(exp)) {
+
+  if (auto op = dynamic_cast<IdLiteral*>(exp))
     node->data = "'" + op->val + "' idL,";
-  }
 
   if (auto t = dynamic_cast<Tuple*>(exp)) {
     node->data = "tuple";

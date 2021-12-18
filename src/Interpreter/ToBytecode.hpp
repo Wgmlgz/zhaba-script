@@ -43,9 +43,30 @@ void argsToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, Function* fn,
 }
 
 void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
-  if (auto lt = dynamic_cast<zhexp::IntLiteral*>(exp)) {
-    bytecode.pushVal(zhin::instr::push_i64);
+  if (auto lt = dynamic_cast<zhexp::I8Literal*>(exp)) {
+    bytecode.pushVal(zhin::instr::push_8);
+    bytecode.pushVal((int8_t)(lt->val));
+  } else if (auto lt = dynamic_cast<zhexp::I16Literal*>(exp)) {
+    bytecode.pushVal(zhin::instr::push_16);
+    bytecode.pushVal((int16_t)(lt->val));
+  } else if (auto lt = dynamic_cast<zhexp::I32Literal*>(exp)) {
+    bytecode.pushVal(zhin::instr::push_32);
+    bytecode.pushVal((int32_t)(lt->val));
+  } else if (auto lt = dynamic_cast<zhexp::I64Literal*>(exp)) {
+    bytecode.pushVal(zhin::instr::push_64);
     bytecode.pushVal((int64_t)(lt->val));
+  } else if (auto lt = dynamic_cast<zhexp::U8Literal*>(exp)) {
+    bytecode.pushVal(zhin::instr::push_8);
+    bytecode.pushVal((uint8_t)(lt->val));
+  } else if (auto lt = dynamic_cast<zhexp::U16Literal*>(exp)) {
+    bytecode.pushVal(zhin::instr::push_16);
+    bytecode.pushVal((uint16_t)(lt->val));
+  } else if (auto lt = dynamic_cast<zhexp::U32Literal*>(exp)) {
+    bytecode.pushVal(zhin::instr::push_32);
+    bytecode.pushVal((uint32_t)(lt->val));
+  } else if (auto lt = dynamic_cast<zhexp::U64Literal*>(exp)) {
+    bytecode.pushVal(zhin::instr::push_64);
+    bytecode.pushVal((uint64_t)(lt->val));
   } else if (auto lt = dynamic_cast<zhexp::StrLiteral*>(exp)) {
     auto lid =
         pushLiteral(bytecode, reinterpret_cast<const byte*>(lt->val.c_str()),
@@ -72,7 +93,7 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
         /** pop deref + int */
         bytecode.popBytes(5);
       }
-      bytecode.pushVal(zhin::instr::push_i64);
+      bytecode.pushVal(zhin::instr::push_64);
       bytecode.pushVal(
         (int64_t)(bytecode.structs_members_offsets
           [op->lhs->type.getTypeId()]
@@ -93,28 +114,101 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
            op->lhs->type.getTypeId() == types::TYPE::type_) { \
     bytecode.pushVal(zhin::instr::instr_);                    \
   }
-        BOPBYTECODE(+, i64T, add_i64)
-        BOPBYTECODE(+, i32T, add_i32)
-        BOPBYTECODE(-, i64T, sub_i64)
-        BOPBYTECODE(-, i32T, sub_i32)
-        BOPBYTECODE(*, i64T, mul_i64)
-        BOPBYTECODE(*, i32T, mul_i32)
-        BOPBYTECODE(==, i64T, eq_64)
+        BOPBYTECODE(+,  i8T, add_i8)
+        BOPBYTECODE(-,  i8T, sub_i8)
+        BOPBYTECODE(*,  i8T, mul_i8)
+        BOPBYTECODE(==, i8T, eq_8)
+        BOPBYTECODE(!=, i8T, uneq_8)
+        BOPBYTECODE(/,  i8T, div_i8)
+        BOPBYTECODE(%,  i8T, mod_i8)
+        BOPBYTECODE(<,  i8T, less_i8)
+        BOPBYTECODE(>,  i8T, more_i8)
+        BOPBYTECODE(<=, i8T, lesseq_i8)
+        BOPBYTECODE(>=, i8T, moreeq_i8)
+
+        BOPBYTECODE(+,  i16T, add_i16)
+        BOPBYTECODE(-,  i16T, sub_i16)
+        BOPBYTECODE(*,  i16T, mul_i16)
+        BOPBYTECODE(==, i16T, eq_16)
+        BOPBYTECODE(!=, i16T, uneq_16)
+        BOPBYTECODE(/,  i16T, div_i16)
+        BOPBYTECODE(%,  i16T, mod_i16)
+        BOPBYTECODE(<,  i16T, less_i16)
+        BOPBYTECODE(>,  i16T, more_i16)
+        BOPBYTECODE(<=, i16T, lesseq_i16)
+        BOPBYTECODE(>=, i16T, moreeq_i16)
+
+        BOPBYTECODE(+,  i32T, add_i32)
+        BOPBYTECODE(-,  i32T, sub_i32)
+        BOPBYTECODE(*,  i32T, mul_i32)
         BOPBYTECODE(==, i32T, eq_32)
-        BOPBYTECODE(!=, i64T, uneq_64)
         BOPBYTECODE(!=, i32T, uneq_32)
-        BOPBYTECODE(/, i32T, div_i32)
-        BOPBYTECODE(/, i64T, div_i64)
-        BOPBYTECODE(%, i32T, mod_i32)
-        BOPBYTECODE(%, i64T, mod_i64)
-        BOPBYTECODE(<, i32T, less_i32)
-        BOPBYTECODE(<, i64T, less_i64)
-        BOPBYTECODE(>, i32T, more_i32)
-        BOPBYTECODE(>, i64T, more_i64)
+        BOPBYTECODE(/,  i32T, div_i32)
+        BOPBYTECODE(%,  i32T, mod_i32)
+        BOPBYTECODE(<,  i32T, less_i32)
+        BOPBYTECODE(>,  i32T, more_i32)
         BOPBYTECODE(<=, i32T, lesseq_i32)
-        BOPBYTECODE(<=, i64T, lesseq_i64)
         BOPBYTECODE(>=, i32T, moreeq_i32)
+
+        BOPBYTECODE(+,  i64T, add_i64)
+        BOPBYTECODE(-,  i64T, sub_i64)
+        BOPBYTECODE(*,  i64T, mul_i64)
+        BOPBYTECODE(==, i64T, eq_64)
+        BOPBYTECODE(!=, i64T, uneq_64)
+        BOPBYTECODE(/,  i64T, div_i64)
+        BOPBYTECODE(%,  i64T, mod_i64)
+        BOPBYTECODE(<,  i64T, less_i64)
+        BOPBYTECODE(>,  i64T, more_i64)
+        BOPBYTECODE(<=, i64T, lesseq_i64)
         BOPBYTECODE(>=, i64T, moreeq_i64)
+
+        BOPBYTECODE(+,  u8T, add_u8)
+        BOPBYTECODE(-,  u8T, sub_u8)
+        BOPBYTECODE(*,  u8T, mul_u8)
+        BOPBYTECODE(==, u8T, eq_8)
+        BOPBYTECODE(!=, u8T, uneq_8)
+        BOPBYTECODE(/,  u8T, div_u8)
+        BOPBYTECODE(%,  u8T, mod_u8)
+        BOPBYTECODE(<,  u8T, less_u8)
+        BOPBYTECODE(>,  u8T, more_u8)
+        BOPBYTECODE(<=, u8T, lesseq_u8)
+        BOPBYTECODE(>=, u8T, moreeq_u8)
+
+        BOPBYTECODE(+,  u16T, add_u16)
+        BOPBYTECODE(-,  u16T, sub_u16)
+        BOPBYTECODE(*,  u16T, mul_u16)
+        BOPBYTECODE(==, u16T, eq_16)
+        BOPBYTECODE(!=, u16T, uneq_16)
+        BOPBYTECODE(/,  u16T, div_u16)
+        BOPBYTECODE(%,  u16T, mod_u16)
+        BOPBYTECODE(<,  u16T, less_u16)
+        BOPBYTECODE(>,  u16T, more_u16)
+        BOPBYTECODE(<=, u16T, lesseq_u16)
+        BOPBYTECODE(>=, u16T, moreeq_u16)
+
+        BOPBYTECODE(+,  u32T, add_u32)
+        BOPBYTECODE(-,  u32T, sub_u32)
+        BOPBYTECODE(*,  u32T, mul_u32)
+        BOPBYTECODE(==, u32T, eq_32)
+        BOPBYTECODE(!=, u32T, uneq_32)
+        BOPBYTECODE(/,  u32T, div_u32)
+        BOPBYTECODE(%,  u32T, mod_u32)
+        BOPBYTECODE(<,  u32T, less_u32)
+        BOPBYTECODE(>,  u32T, more_u32)
+        BOPBYTECODE(<=, u32T, lesseq_u32)
+        BOPBYTECODE(>=, u32T, moreeq_u32)
+
+        BOPBYTECODE(+,  u64T, add_u64)
+        BOPBYTECODE(-,  u64T, sub_u64)
+        BOPBYTECODE(*,  u64T, mul_u64)
+        BOPBYTECODE(==, u64T, eq_64)
+        BOPBYTECODE(!=, u64T, uneq_64)
+        BOPBYTECODE(/,  u64T, div_u64)
+        BOPBYTECODE(%,  u64T, mod_u64)
+        BOPBYTECODE(<,  u64T, less_u64)
+        BOPBYTECODE(>,  u64T, more_u64)
+        BOPBYTECODE(<=, u64T, lesseq_u64)
+        BOPBYTECODE(>=, u64T, moreeq_u64)
         else {
           throw ParserError("unimplemented C op");
         }
@@ -139,11 +233,31 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
            op->child->type.getTypeId() == types::TYPE::type_) { \
     impl_;                                                      \
   }
+      LOPBYTECODE(put, i8T, bytecode.pushVal(zhin::instr::put_i8))
+      LOPBYTECODE(out, i8T, bytecode.pushVal(zhin::instr::out_i8))
+
+      LOPBYTECODE(put, i16T, bytecode.pushVal(zhin::instr::put_i16))
+      LOPBYTECODE(out, i16T, bytecode.pushVal(zhin::instr::out_i16))
+
       LOPBYTECODE(put, i32T, bytecode.pushVal(zhin::instr::put_i32))
-      LOPBYTECODE(put, i64T, bytecode.pushVal(zhin::instr::put_i64))
-      LOPBYTECODE(put, strT, bytecode.pushVal(zhin::instr::put_str))
       LOPBYTECODE(out, i32T, bytecode.pushVal(zhin::instr::out_i32))
+
+      LOPBYTECODE(put, i64T, bytecode.pushVal(zhin::instr::put_i64))
       LOPBYTECODE(out, i64T, bytecode.pushVal(zhin::instr::out_i64))
+
+      LOPBYTECODE(put, u8T, bytecode.pushVal(zhin::instr::put_u8))
+      LOPBYTECODE(out, u8T, bytecode.pushVal(zhin::instr::out_u8))
+
+      LOPBYTECODE(put, u16T, bytecode.pushVal(zhin::instr::put_u16))
+      LOPBYTECODE(out, u16T, bytecode.pushVal(zhin::instr::out_u16))
+
+      LOPBYTECODE(put, u32T, bytecode.pushVal(zhin::instr::put_u32))
+      LOPBYTECODE(out, u32T, bytecode.pushVal(zhin::instr::out_u32))
+
+      LOPBYTECODE(put, u64T, bytecode.pushVal(zhin::instr::put_u64))
+      LOPBYTECODE(out, u64T, bytecode.pushVal(zhin::instr::out_u64))
+
+      LOPBYTECODE(put, strT, bytecode.pushVal(zhin::instr::put_str))
       LOPBYTECODE(out, strT, bytecode.pushVal(zhin::instr::out_str))
       LOPBYTECODE(malloc, i64T, bytecode.pushVal(zhin::instr::malloc))
       LOPBYTECODE(free, i64T, bytecode.pushVal(zhin::instr::malloc))
