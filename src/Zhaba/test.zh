@@ -1,11 +1,35 @@
-use 'range.zh'
-use 'vec.zh'
+op 9 int < char a char b: <<< (a as u8) < (b as u8)
+op 10 int != char a char b: <<< (a as u8) != (b as u8)
+lop put char ch
+  p := malloc(2)
+  *(p as charP) = ch
+  *((p + 1) as charP) = 0u8 as char
+  put (p as str)
 
+lop out char ch
+  put ch
+  out ''
+
+use 'frog.zh'
+
+type Stream
+  u8 prikol
+lop Stream << int i
+  out i
+  <<< 0u8 as Stream
+rop Stream << int i
+  out i
+  <<< 0u8 as Stream
+op 16 Stream << Stream s int i
+  out i
+  <<< s
+op 16 Stream << int i Stream s 
+  out i
+  <<< s
 fn main
-  Vec<int> v
-  v.ctor()
-
-  @ i 0..10: v.push_back(i)
-
-  v.print()
-
+  s1 := frog_escaped()
+  s2 := frog_escaped_multiline()
+  s3 := frog_raw()
+  out s1
+  out s2
+  out s3

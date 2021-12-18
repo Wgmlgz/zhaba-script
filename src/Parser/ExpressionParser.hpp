@@ -205,38 +205,64 @@ namespace zhexp {
           res.push_back(new Operator(*i, *i, i->val, bpriority, spaces_lhs, spaces_rhs));
         }
       } else if (i->token == "int") {
-        if (std::regex_match(i->val, std::regex("[0-9]+")))
-          res.push_back(new I64Literal(*i, *i, std::stoll(i->val)));
-        else if (std::regex_match(i->val, std::regex("[0-9]+i8")))
+        int base = 10;
+        auto str = i->val;
+        if (std::regex_match(i->val, std::regex("0x.+"))) {
+          base = 16;
+          str = str.substr(2, str.size() - 2);
+        } else if (std::regex_match(i->val, std::regex("0b.+"))) {
+          base = 2;
+          str = str.substr(2, str.size() - 2);
+        }
+
+        if (std::regex_match(str, std::regex(".+i8")))
           res.push_back(new I8Literal(
-              *i, *i, std::stoll(i->val.substr(0, i->val.size() - 2))));
-        else if (std::regex_match(i->val, std::regex("[0-9]+i16")))
+              *i, *i, std::stoll(str.substr(0, str.size() - 2), 0, base)));
+        else if (std::regex_match(str, std::regex(".+i16")))
           res.push_back(new I16Literal(
-              *i, *i, std::stoll(i->val.substr(0, i->val.size() - 3))));
-        else if (std::regex_match(i->val, std::regex("[0-9]+i32")))
+              *i, *i, std::stoll(str.substr(0, str.size() - 3), 0, base)));
+        else if (std::regex_match(str, std::regex(".+i32")))
           res.push_back(new I32Literal(
-              *i, *i, std::stoll(i->val.substr(0, i->val.size() - 3))));
-        else if (std::regex_match(i->val, std::regex("[0-9]+i64")))
+              *i, *i, std::stoll(str.substr(0, str.size() - 3), 0, base)));
+        else if (std::regex_match(str, std::regex(".+i64")))
           res.push_back(new I64Literal(
-              *i, *i, std::stoll(i->val.substr(0, i->val.size() - 3))));
+              *i, *i, std::stoll(str.substr(0, str.size() - 3), 0, base)));
 
-
-        else if (std::regex_match(i->val, std::regex("[0-9]+u8")))
+        else if (std::regex_match(str, std::regex(".+u8")))
           res.push_back(new U8Literal(
-              *i, *i, std::stoull(i->val.substr(0, i->val.size() - 2))));
-        else if (std::regex_match(i->val, std::regex("[0-9]+u16")))
+              *i, *i, std::stoull(str.substr(0, str.size() - 2), 0, base)));
+        else if (std::regex_match(str, std::regex(".+u16")))
           res.push_back(new U16Literal(
-              *i, *i, std::stoull(i->val.substr(0, i->val.size() - 3))));
-        else if (std::regex_match(i->val, std::regex("[0-9]+u32")))
+              *i, *i, std::stoull(str.substr(0, str.size() - 3), 0, base)));
+        else if (std::regex_match(str, std::regex(".+u32")))
           res.push_back(new U32Literal(
-              *i, *i, std::stoull(i->val.substr(0, i->val.size() - 3))));
-        else if (std::regex_match(i->val, std::regex("[0-9]+u64")))
+              *i, *i, std::stoull(str.substr(0, str.size() - 3), 0, base)));
+        else if (std::regex_match(str, std::regex(".+u64")))
           res.push_back(new U64Literal(
-              *i, *i, std::stoull(i->val.substr(0, i->val.size() - 3))));
+              *i, *i, std::stoull(str.substr(0, str.size() - 3), 0, base)));
+        else if (std::regex_match(str, std::regex(".+i")))
+          res.push_back(new I64Literal(*i, *i, std::stoll(str, 0, base)));
+        else if (std::regex_match(str, std::regex(".+u")))
+          res.push_back(new U64Literal(*i, *i, std::stoll(str, 0, base)));
+        else if (std::regex_match(str, std::regex(".+")))
+          res.push_back(new I64Literal(*i, *i, std::stoll(str, 0, base)));
         else
           throw ParserError(*i, "Wrong int literal");
       } else if (i->token == "str") {
-        res.push_back(new StrLiteral(*i, *i, i->val.substr(1, i->val.size() - 2)));
+        bool do_escape = true;
+        auto str = i->val;
+        if (str[0] == '`') do_escape = false;
+        str = str.substr(1, i->val.size() - 2);
+        /** Apply escape sequences */
+        if (do_escape) {
+          str = std::regex_replace(str, std::regex(R"(\\')"), "\'");
+          str = std::regex_replace(str, std::regex(R"(\\")"), "\"");
+          str = std::regex_replace(str, std::regex(R"(\\\\)"), "\\");
+          str = std::regex_replace(str, std::regex(R"(\\b)"), "\b");
+          str = std::regex_replace(str, std::regex(R"(\\n)"), "\n");
+          str = std::regex_replace(str, std::regex(R"(\\t)"), "\t");
+        }
+        res.push_back(new StrLiteral(*i, *i, str));
       } else if (i->token == "id") {
         res.push_back(new IdLiteral(*i, *i, i->val));
       }
