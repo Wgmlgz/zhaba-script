@@ -95,7 +95,7 @@
       }
     },
     {
-      "match": "#.*",
+      "match": "#'.*",
       "name": "string.other.cpp"
     },
     {
@@ -110,7 +110,24 @@
     {
       "begin": "'",
       "end": "'",
-      "name": "string.quoted.single"
+      "name": "string.quoted.single",
+      "patterns": [
+        {
+          "match": "\\\\[\\\\n'\"bnt]",
+          "name": "constant.character.escape"
+        }
+      ]
+    },
+    {
+      "begin": "`",
+      "end": "`",
+      "name": "string.quoted.raw",
+      "patterns": [
+        {
+          "match": "\\\\`",
+          "name": "constant.character.escape"
+        }
+      ]
     },
     {
       "include": "#type"
@@ -120,7 +137,7 @@
       "name": "variable.language"
     },
     {
-      "match": "([0-9]+)([iu][0-9]*)?",
+      "match": "(0x[0-9a-fA-F]+|0b[01]+|[0-9]+)([iu][0-9]*)?",
       "captures": {
         "1": {
           "name": "constant.int"
