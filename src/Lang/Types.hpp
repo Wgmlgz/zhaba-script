@@ -31,12 +31,12 @@ std::unordered_map<std::string, TYPE> prim_types{
   {"i32", TYPE::i32T},
   {"i64", TYPE::i64T},
 
-  {"u8", TYPE::u8T},
-  {"u16", TYPE::u16T},
-  {"u32", TYPE::u32T},
-  {"u64", TYPE::u64T},
+  {"u8",   TYPE::u8T},
+  {"u16",  TYPE::u16T},
+  {"u32",  TYPE::u32T},
+  {"u64",  TYPE::u64T},
   {"char", TYPE::charT},
-  {"str", TYPE::strT},
+  {"str",  TYPE::strT},
 };
 
 std::unordered_map<TYPE, std::string> type_names{
@@ -69,12 +69,12 @@ std::unordered_map<TYPE, size_t> sizes {
   {TYPE::voidT, 0},
   {TYPE::charT, 1},
 
-  {TYPE::i8T, 1},
+  {TYPE::i8T,  1},
   {TYPE::i16T, 2},
   {TYPE::i32T, 4},
   {TYPE::i64T, 8},
   
-  {TYPE::u8T, 1},
+  {TYPE::u8T,  1},
   {TYPE::u16T, 2},
   {TYPE::u32T, 4},
   {TYPE::u64T, 8},

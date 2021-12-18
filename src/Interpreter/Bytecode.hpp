@@ -144,10 +144,14 @@ namespace zhin {
           case instr::lesseq_u64: break;
           case instr::moreeq_u64: break;
 
-          case instr::eq_64: break;
+          case instr::eq_8: break;
+          case instr::uneq_8: break;
+          case instr::eq_16: break;
+          case instr::uneq_16: break;
           case instr::eq_32: break;
-          case instr::uneq_64: break;
           case instr::uneq_32: break;
+          case instr::eq_64: break;
+          case instr::uneq_64: break;
 
           case instr::jmp: cur += 4; break;
           case instr::call: cur += 4; break;
@@ -195,7 +199,10 @@ namespace zhin {
 
           case instr::malloc: break;
           case instr::free: break;
-          default: throw std::runtime_error("unimplemented loadLabels"); break;
+          default:
+            throw std::runtime_error("unimplemented loadLabels: " +
+                                     std::to_string(static_cast<int>(op)));
+            break;
         }
       }
     }

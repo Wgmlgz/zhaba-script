@@ -68,7 +68,7 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
     bytecode.pushVal(zhin::instr::push_64);
     bytecode.pushVal((uint64_t)(lt->val));
   } else if (auto lt = dynamic_cast<zhexp::StrLiteral*>(exp)) {
-    auto lid =
+      auto lid =
         pushLiteral(bytecode, reinterpret_cast<const byte*>(lt->val.c_str()),
                     reinterpret_cast<const byte*>(lt->val.c_str() +
                                                   strlen(lt->val.c_str()) + 1));
@@ -76,7 +76,17 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
     bytecode.pushVal((int32_t)(lid));
   } else if (auto op = dynamic_cast<zhexp::BinOperator*>(exp)) {
     if (op->val == "as") {
-      /** I believe in weak typing supremacy 💪 */      
+      /** I believe in weak typing supremacy 💪 */
+      auto type_a = op->lhs->type;
+      auto type_b = static_cast<zhexp::TypeLiteral*>(op->rhs)->literal_type;
+      auto size_a = type_a.getSize();
+      auto size_b = type_b.getSize();
+      if (size_a != size_b)
+        throw ParserError(
+            op->begin, op->end,
+            "Attempt to cast types with different sizes: " + type_a.toString() +
+                "(" + std::to_string(size_a) + ") and " + type_a.toString() +
+                "(" + std::to_string(size_b) + ")");
       expToB(bytecode, op->lhs, funcdata);
     } else if (op->val == "=") {
       expToB(bytecode, op->lhs, funcdata);
@@ -271,7 +281,7 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
     } else if (op->val == "*") {
       expToB(bytecode, op->child, funcdata);
       bytecode.pushVal(zhin::instr::deref);
-      bytecode.pushVal((int32_t)(op->child->type.getSize()));
+      bytecode.pushVal((int32_t)(op->type.getSize()));
     } else {
       argsToB(bytecode, op->child, op->func, funcdata);
       bytecode.pushVal(zhin::instr::call);
@@ -287,6 +297,12 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
     }
     bytecode.pushVal(zhin::instr::deref);
     bytecode.pushVal((int32_t)(var->type.getSizeNonRef()));
+  } else if (auto op = dynamic_cast<zhexp::PostfixOperator*>(exp)) {
+    argsToB(bytecode, op->child, op->func, funcdata);
+    bytecode.pushVal(zhin::instr::call);
+    bytecode.pushVal((int32_t)(bytecode.func_labels[op->func->toUniqueStr()]));
+  } else if (auto tuple = dynamic_cast<zhexp::Tuple*>(exp)) {
+    for (auto& i : tuple->content) expToB(bytecode, i, funcdata);
   } else {
     throw ParserError("unimplemented expToB ");
   }
