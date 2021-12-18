@@ -76,14 +76,6 @@
       }
     },
     {
-      "match": "([_a-zA-Z0-9]+)\\(",
-      "captures": {
-        "1": {
-          "name": "entity.name.function"
-        }
-      }
-    },
-    {
       "match": "\\.([_a-zA-Z0-9]+)\\(",
       "captures": {
         "1": {
@@ -128,8 +120,30 @@
       "name": "variable.language"
     },
     {
-      "match": "[0-9]+",
-      "name": "constant.int"
+      "match": "([0-9]+)([iu][0-9]*)?",
+      "captures": {
+        "1": {
+          "name": "constant.int"
+        },
+        "2": {
+          "name": "storage.type"
+        }
+      }
+    },
+    {
+      "match": "[\\.\\,\\+\\-\\*\\\\\\%\\<\\>\\=\\^\\&\\:\\|\\/\\!\\#]+",
+      "name": "constant.character.escape"
+    },
+    {
+      "match": "([_a-zA-Z0-9]+)\\(",
+      "captures": {
+        "1": {
+          "name": "entity.name.function"
+        },
+        "2": {
+          "name": "entity.name.function"
+        }
+      }
     },
     {
       "match": ":=",
@@ -140,21 +154,30 @@
       "name": "keyword.nextblock"
     },
     {
-      "match": "[\\.\\,\\+\\-\\*\\\\\\%\\<\\>\\=\\^\\&\\:\\|\\/\\!\\#]+|as",
-      "name": "constant.character.escape"
-    },
-    {
-      "match": "[_a-zA-Z0-9]+",
-      "name": "variable"
+      "match": "([_a-zA-Z0-9]+)",
+      "captures": {
+        "1": {
+          "patterns": [
+            {
+              "match": "(as|out|put|malloc|free|sizeof)$",
+              "name": "constant.character.escape"
+            },
+            {
+              "match": "[_a-zA-Z0-9]+",
+              "name": "variable"
+            }
+          ]
+        }
+      }
     }
   ],
   "repository": {
-    "base-type" :{
-      "match": "int|auto|char|str|bool|i32|i64|u32|u64",
+    "base-type": {
+      "match": "int|auto|char|str|bool|i8|i16|i32|i64|u8|u16|u32|u64",
       "name": "storage.type"
     },
-    "type" :{
-      "match": "(([A-Z]([_0-9a-z-A-OQ-Z]+)(P+([a-z-A-OQ-Z]+))*)|int|auto|char|str|bool|i32|i64|u32|u64)(P*)",
+    "type": {
+      "match": "(([A-Z]([_0-9a-z-A-OQ-Z]*)(P+([a-z-A-OQ-Z]+))*)|int|auto|char|str|bool|i8|i16|i32|i64|u8|u16|u32|u64)(P*)",
       "captures": {
         "1": {
           "patterns": [
