@@ -1,7 +1,6 @@
 #pragma once
 #include "Bytecode.hpp"
 
-
 namespace zhin{
 struct FuncData {
   std::map<std::string, std::vector<size_t>> offsets;
@@ -190,6 +189,13 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
         BOPBYTECODE(<=, u8T, lesseq_u8)
         BOPBYTECODE(>=, u8T, moreeq_u8)
 
+        BOPBYTECODE(==, charT, eq_8)
+        BOPBYTECODE(!=, charT, uneq_8)
+        BOPBYTECODE(<,  charT, less_u8)
+        BOPBYTECODE(>,  charT, more_u8)
+        BOPBYTECODE(<=, charT, lesseq_u8)
+        BOPBYTECODE(>=, charT, moreeq_u8)
+
         BOPBYTECODE(+,  u16T, add_u16)
         BOPBYTECODE(-,  u16T, sub_u16)
         BOPBYTECODE(*,  u16T, mul_u16)
@@ -255,6 +261,9 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
     impl_;                                                      \
   }
       LOPBYTECODE(!, boolT, bytecode.pushVal(zhin::instr::not_bool))
+      LOPBYTECODE(!, charT,
+                  (bytecode.pushVal(zhin::instr::not_bytes),
+                   bytecode.pushVal(static_cast<int32_t>(1))))
       LOPBYTECODE(!, i8T,
                   (bytecode.pushVal(zhin::instr::not_bytes),
                    bytecode.pushVal(static_cast<int32_t>(1))))

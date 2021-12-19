@@ -146,11 +146,19 @@ struct ZHDATA {
     CBOP(<=, u64T, u64T, boolT),
     CBOP(>=, u64T, u64T, boolT),
 
+    CBOP(==, charT, charT, boolT),
+    CBOP(!=, charT, charT, boolT),
+    CBOP(<,  charT, charT, boolT),
+    CBOP(>,  charT, charT, boolT),
+    CBOP(<=, charT, charT, boolT),
+    CBOP(>=, charT, charT, boolT),
+
     CBOP(&&, boolT, boolT, boolT),
     CBOP(||, boolT, boolT, boolT),
   };
   std::map<types::funcHead, Function*> PR_OD = {
     CFN1(!, boolT, boolT),
+    CFN1(!, charT, boolT),
     CFN1(!, i8T,   boolT),
     CFN1(!, i16T,  boolT),
     CFN1(!, i32T,  boolT),

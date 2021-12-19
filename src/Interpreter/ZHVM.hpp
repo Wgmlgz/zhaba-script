@@ -286,7 +286,7 @@ class ZHVM {
           for (auto i = stack.getTopPtr() - size; i < stack.getTopPtr(); ++i)
             val |= *i;
           stack.popBytes(size);
-          stack.push(val);
+          stack.push(!val);
         } break;
         case instr::put_i8: {
           auto t = TOSi8;

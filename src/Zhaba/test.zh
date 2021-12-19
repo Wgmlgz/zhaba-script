@@ -1,36 +1,17 @@
-op 9 bool < char a char b: <<< (a as u8) < (b as u8)
-op 10 bool != char a char b: <<< (a as u8) != (b as u8)
 use 'frog.zh'
-
-type Out:  u8 prikol
-fn Out _Out: <<< 0u8 as Out
-op 16 Out ~ Out a Out b: <<< _Out()
-
-// int
-rop Out ~ int i: put ' ', out i
-  <<< _Out()
-lop Out ~ int i: put i
-  <<< _Out()
-op 16 Out ~ Out o int i: put ' ', put i
-  <<< _Out()
-
-// str
-rop Out ~ str i: put ' ', out i
-  <<< _Out()
-lop Out ~ str i: put i
-  <<< _Out()
-op 16 Out ~ Out o str i: put ' ', put i
-  <<< _Out()
+use 'out.zh'
   
+fn bool_test str msg bool b
+  ? b: ~msg~': true'~
+  \ ~msg~': false'~
 fn main
   1 2 3 4 5
   ~1~2~3~4~5~
   t := frog()
-  out t
-
-  ? fls || tru: out 'or: true'
-  \ out 'or: false'
-  ? fls && tru: out 'and: true'
-  \ out 'and: false'
-  ? !fls: out 'not: true'
-  \ out 'not: false'
+  ~'frog:\n'~t~
+  t.sort()
+  ~'sorted frog: '~t~
+  bool_test('char', ! !0)
+  bool_test('or' fls || tru)
+  bool_test('and' fls && tru)
+  bool_test('not', !fls)
