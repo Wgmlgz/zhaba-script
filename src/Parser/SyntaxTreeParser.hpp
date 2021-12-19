@@ -335,7 +335,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
         }
       }
     } else if (auto block = dynamic_cast<ast::ASTBlock*>(*i)) {
-      throw ParserError("Unexprected block");
+      throw ParserError("Unexpected block");
     } else {
       throw ParserError("Random error lol (cannot cast ast node)");
     }
@@ -410,7 +410,7 @@ STTree* parseAST(ast::ASTBlock* main_block) {
         std::vector<std::string> generic;
 
         auto token = line->begin + 3;
-        while (token->token != "line end") {
+        while (token != line->end) {
           if (token->token == "space") ++token;
           else if (token->token == "id") {
             generic.push_back(token->val);
