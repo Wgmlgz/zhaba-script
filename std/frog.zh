@@ -32,10 +32,10 @@ fn Str frog_escaped_multiline
 fn Str frog_raw
   s := asStr('')
   s += \\\
-`         _____         
-       /       \__     
-     /             \   
-   /   0    0        | 
+`         _____
+       /       \__
+     /             \
+   /   0    0        |
   |     ..            |
   /|        _/       / 
  / .\_____/         /
@@ -43,3 +43,5 @@ fn Str frog_raw
             /  /
             |/U\ `
   <<< s
+
+fn Str frog: <<< frog_raw()

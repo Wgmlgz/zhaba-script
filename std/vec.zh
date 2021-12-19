@@ -8,7 +8,7 @@ type Vec T
 
 impl Vec
   fn free_mem
-    ? slf.head as int: free(slf.head as int)
+    ? ! !(slf.head as int): free(slf.head as int)
     slf.size = 0
     slf.capacity = 0
     slf.head = 0 as TP
@@ -62,7 +62,7 @@ impl Vec
     int i = 0
     put('[')
     @ i 0..slf.size
-     ? i: put(' ')
+     ? ! !i: put(' ')
      put(slf.at(i))
     out(']')
 
@@ -80,15 +80,12 @@ impl Vec
   fn next_ptr TPP ptr: *ptr = (*ptr as int + slf.get_item_size()) as TP
   fn prev_ptr TPP ptr: *ptr = (*ptr as int - slf.get_item_size()) as TP
   
-  fn int ptr_uneq TP a TP b
-    <<< a as int != b as int
-
   fn TP partition TP low TP high
     slf.prev_ptr(&high)
     TP pivot = high i = low j = low
     TP i = low
 
-    @ (j = low) (slf.ptr_uneq(j pivot)) (slf.next_ptr(&j))
+    @ (j = low) (j != pivot) (slf.next_ptr(&j))
       ? *j < *pivot
         slf.swap(i j)
         slf.next_ptr(&i)

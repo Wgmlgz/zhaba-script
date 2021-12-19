@@ -215,7 +215,12 @@ namespace zhexp {
           str = str.substr(2, str.size() - 2);
         }
 
-        if (std::regex_match(str, std::regex(".+i8")))
+        if (std::regex_match(str, std::regex("true|tru")))
+          res.push_back(new BoolLiteral(*i, *i, true));
+        else if (std::regex_match(str, std::regex("false|fls")))
+          res.push_back(new BoolLiteral(*i, *i, false));
+          
+        else if (std::regex_match(str, std::regex(".+i8")))
           res.push_back(new I8Literal(
               *i, *i, std::stoll(str.substr(0, str.size() - 2), 0, base)));
         else if (std::regex_match(str, std::regex(".+i16")))
@@ -261,6 +266,7 @@ namespace zhexp {
           str = std::regex_replace(str, std::regex(R"(\\b)"), "\b");
           str = std::regex_replace(str, std::regex(R"(\\n)"), "\n");
           str = std::regex_replace(str, std::regex(R"(\\t)"), "\t");
+          str = std::regex_replace(str, std::regex(R"(\\0)"), "\0");
         }
         res.push_back(new StrLiteral(*i, *i, str));
       } else if (i->token == "id") {
@@ -301,6 +307,10 @@ namespace zhexp {
       exp->type = types::Type(types::TYPE::u32T);
     } else if (auto op = dynamic_cast<U64Literal*>(exp)) {
       exp->type = types::Type(types::TYPE::u64T);
+    } else if (auto op = dynamic_cast<BoolLiteral*>(exp)) {
+      exp->type = types::Type(types::TYPE::boolT);
+    } else if (auto op = dynamic_cast<CharLiteral*>(exp)) {
+      exp->type = types::Type(types::TYPE::charT);
     } else if (auto op = dynamic_cast<StrLiteral*>(exp)) {
       exp->type = types::Type(types::TYPE::strT);
       exp->type.setLval(true);
@@ -458,14 +468,17 @@ namespace zhexp {
                     op->val == ">=" || op->val == "<" || op->val == ">") &&
                    (op->lhs->type.getPtr() && op->rhs->type.getPtr())) {
           auto int_type = types::Type(types::TYPE::i64T);
+          auto bool_type = types::Type(types::TYPE::boolT);
           op->lhs =
               new BinOperator(op->begin, op->end, "as", 0, op->lhs,
                               new TypeLiteral(op->begin, op->end, int_type));
+          op->lhs->type = int_type;
           op->rhs =
               new BinOperator(op->begin, op->end, "as", 0, op->rhs,
                               new TypeLiteral(op->begin, op->end, int_type));
-          op->func = zhdata.B_OD[{op->val, {int_type, int_type}}];
-          op->type = int_type;
+          op->rhs->type = int_type;
+          op->func = zhdata.B_OD.at({op->val, {int_type, int_type}});
+          op->type = bool_type;
         } else {
           /** Member call */
           if (op->val.size() >= 6 and op->val.substr(0, 6) == ".call.") {

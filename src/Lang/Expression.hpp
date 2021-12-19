@@ -97,6 +97,9 @@ MAKE_LITERAL(U16Literal, uint16_t, Literal, "u16");
 MAKE_LITERAL(U32Literal, uint32_t, Literal, "u32");
 MAKE_LITERAL(U64Literal, uint64_t, Literal, "u64");
 
+MAKE_LITERAL(BoolLiteral, bool, Literal, "bool");
+MAKE_LITERAL(CharLiteral, char, Literal, "char");
+
 struct StrLiteral : public Literal {
   std::string val;
   StrLiteral(const Token& new_begin, const Token& new_end, std::string new_val)

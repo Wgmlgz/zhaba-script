@@ -67,8 +67,14 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
   } else if (auto lt = dynamic_cast<zhexp::U64Literal*>(exp)) {
     bytecode.pushVal(zhin::instr::push_64);
     bytecode.pushVal((uint64_t)(lt->val));
+  } else if (auto lt = dynamic_cast<zhexp::BoolLiteral*>(exp)) {
+    bytecode.pushVal(zhin::instr::push_8);
+    bytecode.pushVal((bool)(lt->val));
+  } else if (auto lt = dynamic_cast<zhexp::CharLiteral*>(exp)) {
+    bytecode.pushVal(zhin::instr::push_8);
+    bytecode.pushVal((char)(lt->val));
   } else if (auto lt = dynamic_cast<zhexp::StrLiteral*>(exp)) {
-      auto lid =
+    auto lid =
         pushLiteral(bytecode, reinterpret_cast<const byte*>(lt->val.c_str()),
                     reinterpret_cast<const byte*>(lt->val.c_str() +
                                                   strlen(lt->val.c_str()) + 1));
@@ -219,8 +225,13 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
         BOPBYTECODE(>,  u64T, more_u64)
         BOPBYTECODE(<=, u64T, lesseq_u64)
         BOPBYTECODE(>=, u64T, moreeq_u64)
+
+        BOPBYTECODE(&&, boolT, and_bool)
+        BOPBYTECODE(||, boolT, or_bool)
         else {
-          throw ParserError("unimplemented C op");
+          throw ParserError(op->begin, op->end, "unimplemented C op " + op->val + " " +
+                            op->lhs->type.toString() + " " +
+                            op->rhs->type.toString());
         }
       } else {
         auto lhs_tuple = castToTuple(op->lhs);
@@ -243,6 +254,32 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
            op->child->type.getTypeId() == types::TYPE::type_) { \
     impl_;                                                      \
   }
+      LOPBYTECODE(!, boolT, bytecode.pushVal(zhin::instr::not_bool))
+      LOPBYTECODE(!, i8T,
+                  (bytecode.pushVal(zhin::instr::not_bytes),
+                   bytecode.pushVal(static_cast<int32_t>(1))))
+      LOPBYTECODE(!, i16T,
+                  (bytecode.pushVal(zhin::instr::not_bytes),
+                   bytecode.pushVal(static_cast<int32_t>(2))))
+      LOPBYTECODE(!, i32T,
+                  (bytecode.pushVal(zhin::instr::not_bytes),
+                   bytecode.pushVal(static_cast<int32_t>(4))))
+      LOPBYTECODE(!, i64T,
+                  (bytecode.pushVal(zhin::instr::not_bytes),
+                   bytecode.pushVal(static_cast<int32_t>(8))))
+      LOPBYTECODE(!, u8T,
+                  (bytecode.pushVal(zhin::instr::not_bytes),
+                   bytecode.pushVal(static_cast<int32_t>(1))))
+      LOPBYTECODE(!, u16T,
+                  (bytecode.pushVal(zhin::instr::not_bytes),
+                   bytecode.pushVal(static_cast<int32_t>(2))))
+      LOPBYTECODE(!, u32T,
+                  (bytecode.pushVal(zhin::instr::not_bytes),
+                   bytecode.pushVal(static_cast<int32_t>(4))))
+      LOPBYTECODE(!, u64T,
+                  (bytecode.pushVal(zhin::instr::not_bytes),
+                   bytecode.pushVal(static_cast<int32_t>(8))))
+
       LOPBYTECODE(put, i8T, bytecode.pushVal(zhin::instr::put_i8))
       LOPBYTECODE(out, i8T, bytecode.pushVal(zhin::instr::out_i8))
 
@@ -269,6 +306,13 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
 
       LOPBYTECODE(put, strT, bytecode.pushVal(zhin::instr::put_str))
       LOPBYTECODE(out, strT, bytecode.pushVal(zhin::instr::out_str))
+
+      LOPBYTECODE(put, charT, bytecode.pushVal(zhin::instr::put_char))
+      LOPBYTECODE(out, charT, bytecode.pushVal(zhin::instr::out_char))
+
+      LOPBYTECODE(put, boolT, bytecode.pushVal(zhin::instr::put_u8))
+      LOPBYTECODE(out, boolT, bytecode.pushVal(zhin::instr::out_u8))
+
       LOPBYTECODE(malloc, i64T, bytecode.pushVal(zhin::instr::malloc))
       LOPBYTECODE(free, i64T, bytecode.pushVal(zhin::instr::malloc))
       else {
@@ -352,7 +396,7 @@ void nodeToB(zhin::ByteCode& bytecode, STNode* node, FuncData& funcdata) {
     auto end_l = getLabel();
     auto if_l = getLabel();
     expToB(bytecode, stif->contition, funcdata);
-    bytecode.pushVal(zhin::instr::jmp_if64);
+    bytecode.pushVal(zhin::instr::jmp_if_bool);
     bytecode.pushVal((int32_t)(if_l));
 
     /** exp_elif */
@@ -360,7 +404,7 @@ void nodeToB(zhin::ByteCode& bytecode, STNode* node, FuncData& funcdata) {
     for (int i = 0; i < stif->elseif_body.size(); ++i) {
       elif_l[i] = getLabel();
       expToB(bytecode, stif->elseif_body[i].first, funcdata);
-      bytecode.pushVal(zhin::instr::jmp_if64);
+      bytecode.pushVal(zhin::instr::jmp_if_bool);
       bytecode.pushVal((int32_t)(elif_l[i]));
     }
 
@@ -404,7 +448,7 @@ void nodeToB(zhin::ByteCode& bytecode, STNode* node, FuncData& funcdata) {
     bytecode.pushVal(zhin::instr::label);
     bytecode.pushVal((int32_t)(begin_l));
     expToB(bytecode, stwhile->contition, funcdata);
-    bytecode.pushVal(zhin::instr::jmp_if64);
+    bytecode.pushVal(zhin::instr::jmp_if_bool);
     bytecode.pushVal((int32_t)(loop_l));
     bytecode.pushVal(zhin::instr::jmp);
     bytecode.pushVal((int32_t)(end_l));

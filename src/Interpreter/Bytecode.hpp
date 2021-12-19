@@ -157,7 +157,7 @@ namespace zhin {
           case instr::call: cur += 4; break;
           case instr::ret: cur += 4 + 4; break;
           
-          case instr::jmp_if64: cur += 4; break;
+          case instr::jmp_if_bool: cur += 4; break;
           case instr::push_8: cur += 1; break;
           case instr::push_16: cur += 2; break;
           case instr::push_32: cur += 4; break;
@@ -197,8 +197,18 @@ namespace zhin {
           case instr::put_str: break;
           case instr::out_str: break;
 
+          case instr::put_char: break;
+          case instr::out_char: break;
+
           case instr::malloc: break;
           case instr::free: break;
+
+          case instr::and_bool: break;
+          case instr::or_bool: break;
+          case instr::not_bool: break;
+
+          case instr::not_bytes: cur += 4; break;
+
           default:
             throw std::runtime_error("unimplemented loadLabels: " +
                                      std::to_string(static_cast<int>(op)));
@@ -346,7 +356,7 @@ namespace zhin {
           } break;
           INSTR_I32(jmp)
           INSTR_I32(call)
-          INSTR_I32(jmp_if64)
+          INSTR_I32(jmp_if_bool)
           INSTR_I64(ret)
           INSTR_I32(push_literal_ptr)
 
@@ -465,12 +475,20 @@ namespace zhin {
 
           INSTR(put_str)
           INSTR(out_str)
+
+          INSTR(put_char)
+          INSTR(out_char)
+
           INSTR(push_frame)
           INSTR_I32(deref)
           INSTR_I32(assign)
           INSTR_I64(push_stack_ptr)
           INSTR_I32(push_bytes)
           INSTR_I32(pop_bytes)
+          INSTR(and_bool)
+          INSTR(or_bool)
+          INSTR(not_bool)
+          INSTR_I32(not_bytes)
           INSTR(malloc)
           INSTR(free)
           default:

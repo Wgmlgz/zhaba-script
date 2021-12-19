@@ -88,7 +88,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
           if (ctr_->val == "?") {
             auto ctr = dynamic_cast<zhexp::FlowOperator*>(
                 zhexp::postprocess(exp_builded, cur_scope, &res->scope_info));
-            if (ctr->operand->type.getTypeId() == types::TYPE::i64T) {
+            if (ctr->operand->type.getTypeId() == types::TYPE::boolT) {
               auto tmp_if = new STIf;
               tmp_if->contition = ctr->operand;
               if (i + 1 != main_block->nodes.end()) {
@@ -152,7 +152,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
                 tuple->content.insert(tuple->content.end(), nullptr);
               }
               /** else for (init;contition;repeat) */
-              if (tuple->content[1]->type.getTypeId() == types::TYPE::i64T) {
+              if (tuple->content[1]->type.getTypeId() == types::TYPE::boolT) {
                 if (tuple->content[0]) {
                   auto init = new STExp;
                   init->exp = tuple->content[0];
@@ -280,7 +280,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
               foreach_block->nodes.push_back(cur_init);
 
               /** else for (init;contition;repeat) */
-              if (condition->type.getTypeId() == types::TYPE::i64T) {
+              if (condition->type.getTypeId() == types::TYPE::boolT) {
                 auto tmp_while = new STWhile;
                 tmp_while->contition = condition;
                 if (i + 1 != main_block->nodes.end()) {

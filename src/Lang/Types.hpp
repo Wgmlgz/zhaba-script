@@ -10,38 +10,59 @@ namespace types {
 
 enum class TYPE : int32_t {
   voidT,
+  
   charT,
+  strT,
+
+  boolT,
+
   i8T,
   i16T,
   i32T,
   i64T,
+  
   u8T,
   u16T,
   u32T,
   u64T,
-  strT
+
+  f4T,
+  f8T, 
+  f10T
 };
 
 std::unordered_map<std::string, TYPE> prim_types{
   {"void", TYPE::voidT},
-  {"int", TYPE::i64T},
 
-  {"i8", TYPE::i8T},
+  {"char", TYPE::charT},
+  {"str",  TYPE::strT},
+
+  {"bool", TYPE::boolT},
+
+  {"i8",  TYPE::i8T},
   {"i16", TYPE::i16T},
   {"i32", TYPE::i32T},
   {"i64", TYPE::i64T},
 
-  {"u8",   TYPE::u8T},
-  {"u16",  TYPE::u16T},
-  {"u32",  TYPE::u32T},
-  {"u64",  TYPE::u64T},
-  {"char", TYPE::charT},
-  {"str",  TYPE::strT},
+  {"u8",  TYPE::u8T},
+  {"u16", TYPE::u16T},
+  {"u32", TYPE::u32T},
+  {"u64", TYPE::u64T},
+
+  {"f4",  TYPE::f4T},
+  {"f8",  TYPE::f8T},
+  {"f10", TYPE::f10T},
+  
+  {"int", TYPE::i64T},
 };
 
 std::unordered_map<TYPE, std::string> type_names{
   {TYPE::voidT, "void"},
+
   {TYPE::charT, "char"},
+  {TYPE::strT, "str"},
+
+  {TYPE::boolT, "bool"},
 
   {TYPE::i8T,  "i8"},
   {TYPE::i16T, "i16"},
@@ -53,7 +74,9 @@ std::unordered_map<TYPE, std::string> type_names{
   {TYPE::u32T, "u32"},
   {TYPE::u64T, "u64"},
 
-  {TYPE::strT, "str"},
+  {TYPE::f4T,  "f4"},
+  {TYPE::f8T,  "f8"},
+  {TYPE::f10T, "f10"},
 };
 
 std::unordered_map<TYPE, std::string> cpp_type_names{
@@ -67,7 +90,11 @@ std::unordered_map<TYPE, std::string> cpp_type_names{
 };
 std::unordered_map<TYPE, size_t> sizes {
   {TYPE::voidT, 0},
+  
   {TYPE::charT, 1},
+  {TYPE::strT, 8},
+  
+  {TYPE::boolT, 1},
 
   {TYPE::i8T,  1},
   {TYPE::i16T, 2},
@@ -79,7 +106,9 @@ std::unordered_map<TYPE, size_t> sizes {
   {TYPE::u32T, 4},
   {TYPE::u64T, 8},
   
-  {TYPE::strT, 8},
+  {TYPE::f4T,  4},
+  {TYPE::f8T,  8},
+  {TYPE::f10T, 10},
 };
 
 std::unordered_map<std::string, TYPE> struct_ids;

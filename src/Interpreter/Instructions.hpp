@@ -123,15 +123,15 @@ enum class instr : byte {
 
   /** control flow */
   jmp,       // jumps to label (label:i32)
-  jmp_if64,  // jumpls to label if 64
+  jmp_if_bool,  // jumpls to label if 64
   call,      // jumps to label and updates call stack
   ret,       // pops call stack and clears args (args_size:i32, ret_size:i32)
 
   /** stack pushers */
-  push_8,          // pushes const 8 to TOS
-  push_16,          // pushes const 16 to TOS
-  push_32,          // pushes const 32 to TOS
-  push_64,          // pushes const 64 to TOS
+  push_8,            // pushes const 8 to TOS
+  push_16,           // pushes const 16 to TOS
+  push_32,           // pushes const 32 to TOS
+  push_64,           // pushes const 64 to TOS
   push_literal_ptr,  // pushes ptr by literal id
   push_stack_ptr,    // equal to push_i64; push_frame; add_i64;
   push_bytes,        // allocates n bytes at TOS
@@ -143,36 +143,45 @@ enum class instr : byte {
   assign,  // copies n bytes from TOS to ptr
 
   /** IO */
-  put_i8,  // out TOS i8 (i8)
-  out_i8,  // out TOS i8 with \n (i8)
+  put_i8,  // out TOS i8           :: i8 -> void
+  out_i8,  // out TOS i8 with \n   :: i8 -> void
 
-  put_i16,  // out TOS i16 (i16)
-  out_i16,  // out TOS i16 with \n (i16)
+  put_i16,  // out TOS i16         :: i16 -> void
+  out_i16,  // out TOS i16 with \n :: i16 -> void
 
-  put_i32,  // out TOS i32 (i32)
-  out_i32,  // out TOS i32 with \n (i32)
+  put_i32,  // out TOS i32         :: i32 -> void
+  out_i32,  // out TOS i32 with \n :: i32 -> void
 
-  put_i64,  // out TOS i64 (i64)
-  out_i64,  // out TOS i64 with \n (i64)
+  put_i64,  // out TOS i64         :: i64 -> void
+  out_i64,  // out TOS i64 with \n :: i64 -> void
 
-  put_u8,  // out TOS u8 (u8)
-  out_u8,  // out TOS u8 with \n (u8)
+  put_u8,  // out TOS u8           :: u8 -> void
+  out_u8,  // out TOS u8 with \n   :: u8 -> void
 
-  put_u16,  // out TOS u16 (u16)
-  out_u16,  // out TOS u16 with \n (u16)
+  put_u16,  // out TOS u16         :: u16 -> void
+  out_u16,  // out TOS u16 with \n :: u16 -> void
 
-  put_u32,  // out TOS u32 (u32)
-  out_u32,  // out TOS u32 with \n (u32)
+  put_u32,  // out TOS u32         :: u32 -> void
+  out_u32,  // out TOS u32 with \n :: u32 -> void
 
-  put_u64,  // out TOS u64 (u64)
-  out_u64,  // out TOS u64 with \n (u64)
+  put_u64,  // out TOS u64         :: u64 -> void
+  out_u64,  // out TOS u64 with \n :: u64 -> void
 
-  put_str,  // out TOS char* (i64)
-  out_str,  // out TOS char* with \n (i64)
+  put_str,  // out TOS str         :: str -> void
+  out_str,  // out TOS str with \n :: str -> void
+
+  put_char,  // out TOS char         :: char -> void
+  out_char,  // out TOS char with \n :: char -> void
+
+  /** logic */
+  and_bool,   // a && b :: bool bool -> bool
+  or_bool,    // a || b :: bool bool -> bool
+  not_bool,   // not a  :: bool -> bool
+  not_bytes,  // not a  :: bytes -> bool
 
   /** memory managment */
-  malloc,  // same as C malloc  (i64)
-  free,    //  same as C free   (i64)
+  malloc,  // allocates n bytes :: i64 -> i64
+  free,    // frees ptr   :: i64 -> void
 };
 
 }  // namespace zhin

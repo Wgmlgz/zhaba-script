@@ -1,35 +1,36 @@
-op 9 int < char a char b: <<< (a as u8) < (b as u8)
-op 10 int != char a char b: <<< (a as u8) != (b as u8)
-lop put char ch
-  p := malloc(2)
-  *(p as charP) = ch
-  *((p + 1) as charP) = 0u8 as char
-  put (p as str)
-
-lop out char ch
-  put ch
-  out ''
-
+op 9 bool < char a char b: <<< (a as u8) < (b as u8)
+op 10 bool != char a char b: <<< (a as u8) != (b as u8)
 use 'frog.zh'
 
-type Stream
-  u8 prikol
-lop Stream << int i
-  out i
-  <<< 0u8 as Stream
-rop Stream << int i
-  out i
-  <<< 0u8 as Stream
-op 16 Stream << Stream s int i
-  out i
-  <<< s
-op 16 Stream << int i Stream s 
-  out i
-  <<< s
+type Out:  u8 prikol
+fn Out _Out: <<< 0u8 as Out
+op 16 Out ~ Out a Out b: <<< _Out()
+
+// int
+rop Out ~ int i: put ' ', out i
+  <<< _Out()
+lop Out ~ int i: put i
+  <<< _Out()
+op 16 Out ~ Out o int i: put ' ', put i
+  <<< _Out()
+
+// str
+rop Out ~ str i: put ' ', out i
+  <<< _Out()
+lop Out ~ str i: put i
+  <<< _Out()
+op 16 Out ~ Out o str i: put ' ', put i
+  <<< _Out()
+  
 fn main
-  s1 := frog_escaped()
-  s2 := frog_escaped_multiline()
-  s3 := frog_raw()
-  out s1
-  out s2
-  out s3
+  1 2 3 4 5
+  ~1~2~3~4~5~
+  t := frog()
+  out t
+
+  ? fls || tru: out 'or: true'
+  \ out 'or: false'
+  ? fls && tru: out 'and: true'
+  \ out 'and: false'
+  ? !fls: out 'not: true'
+  \ out 'not: false'
