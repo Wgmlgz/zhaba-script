@@ -133,7 +133,9 @@ struct Function {
     return str;
   }
   std::string toUniqueStr() {
-    std::string str = "fn ";
+    std::string str = (op_type == OpType::lhs)
+                          ? "lhs "
+                          : (op_type == OpType::rhs ? "rop " : "bop ");
     str += type.toString() + " ";
     str += name + " ";
     for (auto& arg : args) {

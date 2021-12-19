@@ -279,6 +279,7 @@ TreeNode<std::string>* toGenericTree(Exp* exp) {
     node->data = "'" + op->val +
       (dynamic_cast<PrefixOperator*>(op) ? "'pr" : "'po") +
       std::to_string((int)op->priority);
+    node->data += " fptr:" + std::to_string((uint64_t)op->func);
     node->branches.push_back(toGenericTree(op->child));
   }
   node->data += "," + exp->type.toString();
