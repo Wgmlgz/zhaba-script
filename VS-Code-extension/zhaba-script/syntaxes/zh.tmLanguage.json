@@ -137,13 +137,16 @@
       "name": "variable.language"
     },
     {
-      "match": "(0x[0-9a-fA-F]+|0b[01]+|[0-9]+)([iu][0-9]*)?",
+      "match": "(0x[0-9a-fA-F]+|0b[01]+|[0-9]+)([iu][0-9]*)?|(true|false|tru|fls)",
       "captures": {
         "1": {
           "name": "constant.int"
         },
         "2": {
           "name": "storage.type"
+        },
+        "3": {
+          "name": "constant.bool"
         }
       }
     },
