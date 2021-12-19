@@ -1,20 +1,27 @@
-// I believe in printf supremacy
-lop put int n: #'printf("%d",n);'
-lop put u64 n: #'printf("%llu",n);'
-lop put str s: #'printf("%s",s);'
-lop put char ch: #'printf("%c",ch);'
+type Out: u8 prikol
+fn Out _Out: <<< 0u8 as Out
+op 16 Out ~ Out a Out b: <<< _Out()
 
-lop out int x: #'printf("%d\n",x);'
-lop out u64 x: #'printf("%llu\n",x);'
-lop out str s: #'printf("%s\n",s);'
-lop out char ch: #'putchar(ch);'
+// int
+rop Out ~ int i: put ' ', out i
+  <<< _Out()
+lop Out ~ int i: put i
+  <<< _Out()
+op 16 Out ~ Out o int i: put ' ', put i
+  <<< _Out()
 
-lop sut int n: #'printf("%d ",n);'
-lop sut u64 n: #'printf("%llu ",n);'
-lop sut str s: #'printf("%s ",s);'
-lop sut char ch: #'printf("%c ",ch);'
+// str
+rop Out ~ str i: put ' ', out i
+  <<< _Out()
+lop Out ~ str i: put i
+  <<< _Out()
+op 16 Out ~ Out o str i: put ' ', put i
+  <<< _Out()
 
-fn deb str msg int n: #'printf("%s:%d\n",msg,n);'
-fn deb str msg u64 n: #'printf("%s:%llu\n",msg,n);'
-fn deb str msg str s: #'printf("%s:\"%s\"\n",msg,s);'
-fn deb str msg char ch: #'printf("%s:%c\n",msg,ch);'
+// Str
+rop Out ~ Str i: put ' ', out i
+  <<< _Out()
+lop Out ~ Str i: put i
+  <<< _Out()
+op 16 Out ~ Out o Str i: put ' ', put i
+  <<< _Out()
