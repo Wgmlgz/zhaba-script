@@ -99,10 +99,9 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
       bytecode.popBytes(5);
       expToB(bytecode, op->rhs, funcdata);
       bytecode.pushVal(zhin::instr::assign);
-      bytecode.pushVal((int32_t)(op->lhs->type.getSize()));
+      bytecode.pushVal((int32_t)(op->lhs->type.getSizeNonRef()));
     } else if (op->val == ".") {
       expToB(bytecode, op->lhs, funcdata);
-      // res += static_cast<zhexp::IdLiteral*>(op->rhs)->val;
       
       if (!op->lhs->type.getPtr()) {
         /** pop deref + int */
