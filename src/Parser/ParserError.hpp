@@ -52,7 +52,8 @@ struct ParserError {
     /**
      * error :( -> /file/name.zh:42:6
      * 42 | fn errror
-     *    |    ^^^^^ Error message
+     *    |    ^^^^^
+     *    | Error message
      */
     std::string source = "cannot show source code";
     if (line != -1) source = zhdata.files_lines[filename][line];
@@ -60,8 +61,9 @@ struct ParserError {
     auto spos = std::to_string(pos);
     res += "error :( -> " + filename + ':' + sline + ':' + spos + '\n';
     res += sline + " | " + source + '\n';
-    res += std::string(sline.size(), ' ') + " | " + 
-           std::string(pos, ' ') + std::string(std::max<int>(len, 1), '^') + " " +
+    auto head_line = std::string(sline.size(), ' ') + " | ";
+    res += head_line + std::string(pos, ' ') +
+           std::string(std::max<int>(len, 1), '^') + "\n" + head_line +
            message + "\n";
     return res;
   }
