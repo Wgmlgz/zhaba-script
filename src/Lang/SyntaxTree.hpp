@@ -121,7 +121,7 @@ struct Function {
 
   bool is_fn = false;
   
-  std::string headToStr() {
+  std::string headToStr() const {
     std::string str;
     str += type.toString() + " ";
     str += name + " =";
@@ -132,12 +132,12 @@ struct Function {
     } 
     return str;
   }
-  std::string toUniqueStr() {
+  std::string toUniqueStr() const {
     std::string str = (op_type == OpType::lhs)
-                          ? "lhs "
-                          : (op_type == OpType::rhs ? "rop " : "bop ");
+                        ? "lop "
+                        : (op_type == OpType::rhs ? "rop " : "op ");
     str += type.toString() + " ";
-    str += name + " ";
+    str += name;
     for (auto& arg : args) {
       str += " ";
       str += arg.type.toString() + " ";
@@ -145,13 +145,20 @@ struct Function {
     }
     return str;
   }
-  types::funcHead getHead() {
+  types::funcHead getHead() const {
     types::funcHead res;
     res.first = name;
     for (const auto& [name, type] : args) {
       res.second.push_back(type);
       res.second.back().setLval(false);
     }
+    return res;
+  };
+  
+  types::funcHead getHeadNonRefNonLval() const {
+    types::funcHead res = getHead();
+    for (auto& type : res.second)
+      type.setLval(false), type.setRef(false);
     return res;
   };
 };

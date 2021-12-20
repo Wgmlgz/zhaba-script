@@ -8,8 +8,13 @@
 
 void validateFunction(const Function& func, tokeniter begin, tokeniter end) {
   if (func.op_type == OpType::bin) {
-    
+    if (zhdata.B_OD.contains(func.getHeadNonRefNonLval())) 
+      throw ParserError(*begin, *end,
+        func.toUniqueStr() + "already defined");
   } else if (func.op_type == OpType::lhs) {
+    if (zhdata.PR_OD.contains(func.getHeadNonRefNonLval())) 
+      throw ParserError(*begin, *end,
+        func.toUniqueStr() + "already defined");
     if (func.name == "&") {
       throw ParserError(*begin, *end,
         "You cannot overload prefix '&' operator");
@@ -18,7 +23,9 @@ void validateFunction(const Function& func, tokeniter begin, tokeniter end) {
         "You cannot overload prefix '*' operator");
     }
   } else if (func.op_type == OpType::rhs) {
-  
+    if (zhdata.PO_OD.contains(func.getHeadNonRefNonLval())) 
+      throw ParserError(*begin, *end,
+        func.toUniqueStr() + "already defined");
   }
 }
 
