@@ -288,86 +288,33 @@ class ZHVM {
           stack.popBytes(size);
           stack.push(!val);
         } break;
-        case instr::put_i8: {
-          auto t = TOSi8;
-          stack.popBytes(1);
-          *zhdata.out << static_cast<int64_t>(t);
-        } break;
-        case instr::put_i16: {
-          auto t = TOSi16;
-          stack.popBytes(2);
-          *zhdata.out << static_cast<int16_t>(t);
-        } break;
-        case instr::put_i32: {
-          auto t = TOSi32;
-          stack.popBytes(4);
-          *zhdata.out << static_cast<int32_t>(t);
-        } break;
-        case instr::put_i64: {
-          auto t = TOSi64;
-          stack.popBytes(8);
-          *zhdata.out << static_cast<int64_t>(t);
-        } break;
-        case instr::out_i8: {
-          auto t = TOSi8;
-          stack.popBytes(1);
-          *zhdata.out << static_cast<int64_t>(t) << std::endl;
-        } break;
-        case instr::out_i16: {
-          auto t = TOSi16;
-          stack.popBytes(2);
-          *zhdata.out << static_cast<int16_t>(t) << std::endl;
-        } break;
-        case instr::out_i32: {
-          auto t = TOSi32;
-          stack.popBytes(4);
-          *zhdata.out << static_cast<int32_t>(t) << std::endl;
-        } break;
-        case instr::out_i64: {
-          auto t = TOSi64;
-          stack.popBytes(8);
-          *zhdata.out << static_cast<int64_t>(t) << std::endl;
-        } break;
-        case instr::put_u8: {
-          auto t = TOSu8;
-          stack.popBytes(1);
-          *zhdata.out << static_cast<uint64_t>(t);
-        } break;
-        case instr::put_u16: {
-          auto t = TOSu16;
-          stack.popBytes(2);
-          *zhdata.out << static_cast<uint16_t>(t);
-        } break;
-        case instr::put_u32: {
-          auto t = TOSu32;
-          stack.popBytes(4);
-          *zhdata.out << static_cast<uint32_t>(t);
-        } break;
-        case instr::put_u64: {
-          auto t = TOSu64;
-          stack.popBytes(8);
-          *zhdata.out << static_cast<uint64_t>(t);
-        } break;
-        case instr::out_u8: {
-          auto t = TOSu8;
-          stack.popBytes(1);
-          *zhdata.out << static_cast<uint64_t>(t) << std::endl;
-        } break;
-        case instr::out_u16: {
-          auto t = TOSu16;
-          stack.popBytes(2);
-          *zhdata.out << static_cast<uint16_t>(t) << std::endl;
-        } break;
-        case instr::out_u32: {
-          auto t = TOSu32;
-          stack.popBytes(4);
-          *zhdata.out << static_cast<uint32_t>(t) << std::endl;
-        } break;
-        case instr::out_u64: {
-          auto t = TOSu64;
-          stack.popBytes(8);
-          *zhdata.out << static_cast<uint64_t>(t) << std::endl;
-        } break;
+
+#define MAKE_IO(type_, c_type_, print_type_, size_)                   \
+  case instr::put_##type_: {                             \
+    auto t = TOS##type_;                                 \
+    stack.popBytes(size_);                               \
+    *zhdata.out << static_cast<c_type_>(t);              \
+  } break;                                               \
+  case instr::out_##type_: {                             \
+    auto t = TOS##type_;                                 \
+    stack.popBytes(size_);                               \
+    *zhdata.out << static_cast<c_type_>(t) << std::endl; \
+  } break;                                               \
+  case instr::in_##type_: {                              \
+    c_type_ tmp;                                         \
+    *zhdata.in >> tmp;                                   \
+    stack.push(static_cast<print_type_>(tmp));               \
+  } break;
+          MAKE_IO(i8,  int64_t, int8_t, 1)
+          MAKE_IO(i16, int64_t, int16_t, 2)
+          MAKE_IO(i32, int64_t, int32_t, 4)
+          MAKE_IO(i64, int64_t, int64_t, 8)
+
+          MAKE_IO(u8,  uint64_t, uint8_t,  1)
+          MAKE_IO(u16, uint64_t, uint16_t, 2)
+          MAKE_IO(u32, uint64_t, uint32_t, 4)
+          MAKE_IO(u64, uint64_t, uint64_t, 8)
+
         case instr::put_str: {
           auto char_ptr = TOSi64;
           stack.popBytes(8);

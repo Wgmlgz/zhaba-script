@@ -172,33 +172,43 @@ namespace zhin {
 
           case instr::out_i8: break;
           case instr::put_i8: break;
+          case instr::in_i8: break;
 
           case instr::out_i16: break;
           case instr::put_i16: break;
+          case instr::in_i16: break;
 
           case instr::out_i32: break;
           case instr::put_i32: break;
+          case instr::in_i32: break;
 
           case instr::put_i64: break;
           case instr::out_i64: break;
+          case instr::in_i64: break;
 
           case instr::out_u8: break;
           case instr::put_u8: break;
+          case instr::in_u8: break;
 
           case instr::out_u16: break;
           case instr::put_u16: break;
+          case instr::in_u16: break;
 
           case instr::out_u32: break;
           case instr::put_u32: break;
+          case instr::in_u32: break;
 
           case instr::put_u64: break;
           case instr::out_u64: break;
+          case instr::in_u64: break;
           
           case instr::put_str: break;
           case instr::out_str: break;
+          case instr::in_str: break;
 
           case instr::put_char: break;
           case instr::out_char: break;
+          case instr::in_char: break;
 
           case instr::malloc: break;
           case instr::free: break;
@@ -371,6 +381,7 @@ namespace zhin {
           INSTR(moreeq_i8)
           INSTR(put_i8)
           INSTR(out_i8)
+          INSTR(in_i8)
 
           INSTR(add_i16)
           INSTR(sub_i16)
@@ -383,6 +394,7 @@ namespace zhin {
           INSTR(moreeq_i16)
           INSTR(put_i16)
           INSTR(out_i16)
+          INSTR(in_i16)
 
           INSTR(add_i32)
           INSTR(sub_i32)
@@ -395,6 +407,7 @@ namespace zhin {
           INSTR(moreeq_i32)
           INSTR(put_i32)
           INSTR(out_i32)
+          INSTR(in_i32)
 
           INSTR(add_i64)
           INSTR(sub_i64)
@@ -407,6 +420,7 @@ namespace zhin {
           INSTR(moreeq_i64)
           INSTR(put_i64)
           INSTR(out_i64)
+          INSTR(in_i64)
 
           INSTR(add_u8)
           INSTR(sub_u8)
@@ -419,6 +433,7 @@ namespace zhin {
           INSTR(moreeq_u8)
           INSTR(put_u8)
           INSTR(out_u8)
+          INSTR(in_u8)
 
           INSTR(add_u16)
           INSTR(sub_u16)
@@ -431,6 +446,7 @@ namespace zhin {
           INSTR(moreeq_u16)
           INSTR(put_u16)
           INSTR(out_u16)
+          INSTR(in_u16)
 
           INSTR(add_u32)
           INSTR(sub_u32)
@@ -443,6 +459,7 @@ namespace zhin {
           INSTR(moreeq_u32)
           INSTR(put_u32)
           INSTR(out_u32)
+          INSTR(in_u32)
 
           INSTR(add_u64)
           INSTR(sub_u64)
@@ -455,6 +472,7 @@ namespace zhin {
           INSTR(moreeq_u64)
           INSTR(put_u64)
           INSTR(out_u64)
+          INSTR(in_u64)
 
           INSTR(uneq_8)
           INSTR(eq_8)
@@ -475,9 +493,11 @@ namespace zhin {
 
           INSTR(put_str)
           INSTR(out_str)
+          INSTR(in_str)
 
           INSTR(put_char)
           INSTR(out_char)
+          INSTR(in_char)
 
           INSTR(push_frame)
           INSTR_I32(deref)

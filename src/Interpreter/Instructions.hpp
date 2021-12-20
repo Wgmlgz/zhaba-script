@@ -122,10 +122,10 @@ enum class instr : byte {
   eq_64,
 
   /** control flow */
-  jmp,       // jumps to label (label:i32)
+  jmp,          // jumps to label (label:i32)
   jmp_if_bool,  // jumpls to label if 64
-  call,      // jumps to label and updates call stack
-  ret,       // pops call stack and clears args (args_size:i32, ret_size:i32)
+  call,         // jumps to label and updates call stack
+  ret,          // pops call stack and clears args (args_size:i32, ret_size:i32)
 
   /** stack pushers */
   push_8,            // pushes const 8 to TOS
@@ -143,41 +143,67 @@ enum class instr : byte {
   assign,  // copies n bytes from TOS to ptr
 
   /** IO */
-  put_i8,  // out TOS i8           :: i8 -> void
-  out_i8,  // out TOS i8 with \n   :: i8 -> void
+  put_i8,  // out TOS i8 to stdin         :: i8 -> void
+  out_i8,  // out TOS i8 with \n to stdin :: i8 -> void
+  in_i8,   // reads i8 from stdin         :: void -> i8
 
-  put_i16,  // out TOS i16         :: i16 -> void
-  out_i16,  // out TOS i16 with \n :: i16 -> void
+  put_i16,  // out TOS i16 to stdin         :: i16 -> void
+  out_i16,  // out TOS i16 with \n to stdin :: i16 -> void
+  in_i16,   // reads i16 from stdin         :: void -> i16
 
-  put_i32,  // out TOS i32         :: i32 -> void
-  out_i32,  // out TOS i32 with \n :: i32 -> void
+  put_i32,  // out TOS i32 to stdin         :: i32 -> void
+  out_i32,  // out TOS i32 with \n to stdin :: i32 -> void
+  in_i32,   // reads i32 from stdin         :: void -> i32
 
-  put_i64,  // out TOS i64         :: i64 -> void
-  out_i64,  // out TOS i64 with \n :: i64 -> void
+  put_i64,  // out TOS i64 to stdin         :: i64 -> void
+  out_i64,  // out TOS i64 with \n to stdin :: i64 -> void
+  in_i64,   // reads i64 from stdin         :: void -> i64
 
-  put_u8,  // out TOS u8           :: u8 -> void
-  out_u8,  // out TOS u8 with \n   :: u8 -> void
+  put_u8,  // out TOS u8 to stdin         :: u8 -> void
+  out_u8,  // out TOS u8 with \n to stdin :: u8 -> void
+  in_u8,   // reads u8 from stdin         :: void -> u8
 
-  put_u16,  // out TOS u16         :: u16 -> void
-  out_u16,  // out TOS u16 with \n :: u16 -> void
+  put_u16,  // out TOS u16 to stdin         :: u16 -> void
+  out_u16,  // out TOS u16 with \n to stdin :: u16 -> void
+  in_u16,   // reads u16 from stdin         :: void -> u16
 
-  put_u32,  // out TOS u32         :: u32 -> void
-  out_u32,  // out TOS u32 with \n :: u32 -> void
+  put_u32,  // out TOS u32 to stdin         :: u32 -> void
+  out_u32,  // out TOS u32 with \n to stdin :: u32 -> void
+  in_u32,   // reads u32 from stdin         :: void -> u32
 
-  put_u64,  // out TOS u64         :: u64 -> void
-  out_u64,  // out TOS u64 with \n :: u64 -> void
+  put_u64,  // out TOS u64 to stdin         :: u64 -> void
+  out_u64,  // out TOS u64 with \n to stdin :: u64 -> void
+  in_u64,   // reads u64 from stdin         :: void -> u64
 
-  put_str,  // out TOS str         :: str -> void
-  out_str,  // out TOS str with \n :: str -> void
+  put_str,  // out TOS str to stdin         :: str -> void
+  out_str,  // out TOS str with \n to stdin :: str -> void
+  in_str,   // reads str from stdin         :: void -> str
 
-  put_char,  // out TOS char         :: char -> void
-  out_char,  // out TOS char with \n :: char -> void
+  put_char,  // out TOS char to stdin         :: char -> void
+  out_char,  // out TOS char with \n to stdin :: char -> void
+  in_char,   // reads str from stdin          :: void -> char
+
+  put_bool,  // out TOS bool to stdin         :: bool -> void
+  out_bool,  // out TOS bool with \n to stdin :: bool -> void
+  in_bool,   // reads str from stdin          :: void -> bool
+
+  put_f4,  // out TOS f4 to stdin         :: f4 -> void
+  out_f4,  // out TOS f4 with \n to stdin :: f4 -> void
+  in_f4,   // reads str from stdin        :: void -> f4
+
+  put_f8,  // out TOS f8 to stdin         :: f8 -> void
+  out_f8,  // out TOS f8 with \n to stdin :: f8 -> void
+  in_f8,   // reads str from stdin        :: void -> f8
+
+  put_f10,  // out TOS f10 to stdin         :: f10 -> void
+  out_f10,  // out TOS f10 with \n to stdin :: f10 -> void
+  in_f10,   // reads str from stdin         :: void -> f10
 
   /** logic */
-  and_bool,   // a && b :: bool bool -> bool
-  or_bool,    // a || b :: bool bool -> bool
-  not_bool,   // not a  :: bool -> bool
-  not_bytes,  // not a  :: bytes -> bool
+  and_bool,  // a && b :: bool bool -> bool
+  or_bool,   // a || b :: bool bool -> bool
+  not_bool,  // not a  :: bool -> bool
+  not_bytes, // not a  :: bytes -> bool
 
   /** memory managment */
   malloc,  // allocates n bytes :: i64 -> i64
