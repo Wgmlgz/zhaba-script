@@ -1,17 +1,18 @@
 use 'frog.zh'
 use 'out.zh'
-  
+
+
 fn bool_test str msg bool b
-  ? b: ~msg~': true'~
-  \ ~msg~': false'~
+  ? b: <msg<': true'<
+  \ <msg<': false'<
+
+// lop Out > i64R i: i = in_i64()
+//   <<< _Out()
+op 9 Out > Out o i64R i: i = in_i64()
+  <<< _Out()
+
 fn main
-  1 2 3 4 5
-  ~1~2~3~4~5~
-  t := frog()
-  ~'frog:\n'~t~
-  t.sort()
-  ~'sorted frog: '~t~
-  bool_test('char', ! !0)
-  bool_test('or' fls || tru)
-  bool_test('and' fls && tru)
-  bool_test('not', !fls)
+  a := 5i64
+  b := 0i32
+  c := 0i64
+  < 'Enter a, b, c:' < > a > b > c < a < b < c <
