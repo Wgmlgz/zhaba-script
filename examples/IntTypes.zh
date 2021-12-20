@@ -1,10 +1,10 @@
+use 'out.zh'
 
 fn main
-  out 'literals:'
-  out 'dec 100:', out 100
-  put 'hex 0xff: ', out 0xff
-  
-  put 'bin 0b101: ', out 0b101
+  < 'Literals:' <
+  < 'Dec 100:' < 100 <
+  < 'Hex 0xff:' < 0xff <
+  < 'Bin 0b101:' < 0b101 < '\n' < 
 
   _u8 := 8u8
   _u16 := 16u16
@@ -16,17 +16,12 @@ fn main
   _i32 := 32i32
   _i64 := 64i64
 
-  out 'unsinged:'
-  out _u8
-  out _u16
-  out _u32
-  out _u64
+  < 'Enter values of u8, u16, u32, u64, i8, i16, i32 and i64' < \\\
+  > _u8 > _u16 > _u32 > _u64 > _i8 > _i16 > _i32 > _i64
 
-  out 'singed:'
-  out _i8
-  out _i16
-  out _i32
-  out _i64
+  < 'Unsinged:' < < _u8 < _u16 < _u32 < _u64 <
+
+  < 'Singed:' < < _i8 < _i16 < _i32 < _i64 <
 
   _u8 = 0u8 - 1u8
   _u16 = 0u16 - 1u16
@@ -38,14 +33,5 @@ fn main
   _i32 = 0i32 - 1i32
   _i64 = 0i64 - 1i64
 
-  out 'unsinged -1:'
-  out _u8
-  out _u16
-  out _u32
-  out _u64
-
-  out 'singed -1:'
-  out _i8
-  out _i16
-  out _i32
-  out _i64
+  < 'Unsinged -1:' < < _u8 < _u16 < _u32 < _u64 <
+  < 'Singed -1:' < < _i8 < _i16 < _i32 < _i64 <
