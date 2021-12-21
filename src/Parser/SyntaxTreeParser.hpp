@@ -397,7 +397,7 @@ STTree* parseAST(ast::ASTBlock* main_block) {
         /** Struct declaration */
         if (line->end - line->begin < 3)
           throw ParserError(*line->end, "Expected type name");
-        if ((line->begin + 1)->token != "space" or (line->begin + 2)->token != "id")
+        if ((line->begin + 1)->token != TOKEN::space or (line->begin + 2)->token != TOKEN::id)
           throw ParserError(*line->end, "Expected identifier token for struct type name");
 
         std::string name = (line->begin + 2)->val;
@@ -411,8 +411,8 @@ STTree* parseAST(ast::ASTBlock* main_block) {
 
         auto token = line->begin + 3;
         while (token != line->end) {
-          if (token->token == "space") ++token;
-          else if (token->token == "id") {
+          if (token->token == TOKEN::space) ++token;
+          else if (token->token == TOKEN::id) {
             generic.push_back(token->val);
             ++token;
           } else {
@@ -445,8 +445,8 @@ STTree* parseAST(ast::ASTBlock* main_block) {
         /** Struct implementation declaration */
         if (line->end - line->begin != 3)
           throw ParserError(*line->begin, *line->end, "Expected type name and nothing else");
-        if ((line->begin + 1)->token != "space" or
-            (line->begin + 2)->token != "id")
+        if ((line->begin + 1)->token != TOKEN::space or
+            (line->begin + 2)->token != TOKEN::id)
           throw ParserError(*(line->begin + 1), *line->end, "Expected identifier token for type implementation name");
 
         ++cur;

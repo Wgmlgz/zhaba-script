@@ -1,5 +1,4 @@
 // zhaba-script standart lib!!!
 use 'operators.zh'
 use 'out.zh'
-use 'mem.zh'
-use 'pointers.zh'
+use 'frog.zh'

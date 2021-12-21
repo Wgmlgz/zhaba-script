@@ -13,12 +13,12 @@ ASTBlock* parseBlock(tokeniter begin, tokeniter end) {
   for (;;) {
     if (cur == end) break;
     size_t line_offset = 0;
-    if (cur->token == "space") {
+    if (cur->token == TOKEN::space) {
       line_offset = cur->val.size();
       ++cur;
     }
     if (cur == end) break;
-    if (cur->token == "line end") {
+    if (cur->token == TOKEN::line_end) {
       ++cur;
       ++line_n;
       continue;
@@ -30,10 +30,10 @@ ASTBlock* parseBlock(tokeniter begin, tokeniter end) {
         exit = true;
         break;
       }
-      if (cur->token == "new block") break;
-      if (cur->token == "next block") break;
-      if (cur->token == "fin block") break;
-      if (cur->token == "line end") {
+      if (cur->token == TOKEN::new_block) break;
+      if (cur->token == TOKEN::next_block) break;
+      if (cur->token == TOKEN::fin_block) break;
+      if (cur->token == TOKEN::line_end) {
         break;
       }
       ++cur;
@@ -63,22 +63,22 @@ ASTBlock* parseBlock(tokeniter begin, tokeniter end) {
         st.top()->nodes.push_back(new ASTLine(line_begin, line_end));
     }
     if (cur == end) break;
-    if (cur->token == "new block") {
+    if (cur->token == TOKEN::new_block) {
       auto tmp = new ASTBlock(st.top()->offset, true, line_n);
       st.top()->nodes.push_back(tmp);
       st.emplace(tmp);
-    } else if (cur->token == "next block") {
+    } else if (cur->token == TOKEN::next_block) {
       auto tmp = new ASTBlock(st.top()->offset, true, line_n);
       tmp->btype = ASTBlock::nextB;
       st.top()->nodes.push_back(tmp);
       st.emplace(tmp);
-    } else if (cur->token == "fin block") {
+    } else if (cur->token == TOKEN::fin_block) {
       auto tmp = new ASTBlock(st.top()->offset, true, line_n);
       tmp->btype = ASTBlock::finB;
       st.top()->nodes.push_back(tmp);
       st.emplace(tmp);
     }
-    if (cur->token == "line end") {
+    if (cur->token == TOKEN::line_end) {
       ++line_n;
     }
     ++cur;
@@ -94,7 +94,7 @@ ASTBlock* parse(tokeniter begin, tokeniter end) {
 
   // for (auto i = begin; i != end; ++i) {
   //   ParserError::which_line[i->pos] = line;
-  //   if (i->token == "line end")
+  //   if (i->token == TOKEN::line_end)
   //     ++line, ParserError::lines.push_back("");
   //   else
   //     ParserError::lines[line - 1] += i->val;

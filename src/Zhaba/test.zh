@@ -6,13 +6,9 @@ fn bool_test str msg bool b
   ? b: <msg<': true'<
   \ <msg<': false'<
 
-// lop Out > i64R i: i = in_i64()
-//   <<< _Out()
-op 9 Out > Out o i64R i: i = in_i64()
-  <<< _Out()
-
 fn main
   a := 5i64
   b := 0i32
   c := 0i64
-  < 'Enter a, b, c:' < > a > b > c < a < b < c <
+  < a < b < c < 
+  // < 'Enter a, b, c:' < > a > b > c < a < b < c <

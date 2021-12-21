@@ -33,10 +33,10 @@ types::StructInfo parseStruct(ast::ASTBlock* block, const ScopeInfo& scope) {
       cur_type.setLval(true);
 
       for (auto i = cur; i != line->end; ++i) {
-        if (i->token == "space") continue;
+        if (i->token == TOKEN::space) continue;
 
         /** TODO: proper member name validation */
-        if (i->token != "id") {
+        if (i->token != TOKEN::id) {
           throw ParserError(*i, "Expected member name as identifier");
         }
         auto member_name = i->val;
@@ -137,7 +137,7 @@ std::vector<Type> parseTemplate(tokeniter& token, const ScopeInfo& scope) {
     throw ParserError(*token, "Expected '<' for template parsing");
   ++token;
   while (1) {
-    if (token->token == "space") {
+    if (token->token == TOKEN::space) {
       ++token;
       continue;
     }

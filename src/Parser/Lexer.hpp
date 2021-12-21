@@ -11,97 +11,93 @@
 #include <utility>
 #include <vector>
 
-/* Token */
+enum class TOKEN {
+  comment_block,
+  comment_line,
+  str_literal,
+  int_literal,
+  space,
+  id,
+  line_end,
+  open_p,
+  close_p,
+  new_block,
+  next_block,
+  fin_block,
+  op,
+};
+
+/** Just Token lol */
 struct Token {
-  const std::string orig_token;
-  std::string token;
-  const std::string val;
-  const size_t pos;
-  const size_t line;
-  const std::string& filename;
+  const TOKEN orig_token;
+  TOKEN token;
+  const std::string val, &filename;
+  const size_t pos, line;
+  
+  Token(const TOKEN& new_token, const std::string& new_type, size_t new_pos,
+        size_t new_line, const std::string& new_filename)
+      : orig_token(new_token),
+        token(new_token),
+        val(new_type),
+        pos(new_pos),
+        line(new_line),
+        filename(new_filename) {}
 
-  Token(
-    const std::string& new_token,
-    const std::string& new_type,
-    size_t new_pos,
-    size_t new_line,
-    const std::string& new_filename
-  ) :
-    orig_token(new_token),
-    token(new_token),
-    val(new_type),
-    pos(new_pos),
-    line(new_line),
-    filename(new_filename)
-  {}
-
-  void reset() {
-    token = orig_token;
-  }
+  void reset() { token = orig_token; }
 };
 
 typedef std::vector<Token>::iterator tokeniter;
 
 class Lexer {
-  std::vector<std::pair<std::string, std::string>> tokens;
-public:
-  Lexer(const std::vector<std::pair<std::string, std::string>>& new_tokens) { tokens = new_tokens; }
+  std::vector<std::pair<TOKEN, std::string>> tokens;
+
+ public:
+  Lexer(const std::vector<std::pair<TOKEN, std::string>>& new_tokens)
+      : tokens(new_tokens) {}
   std::vector<Token> parse(
-    const std::string& str,
-    const std::string& filename,
-    std::map<std::string, std::vector<std::string>>& files_lines,
-    bool DEBUG = false) {
-    std::string tokens_str = std::accumulate(tokens.begin(), tokens.end(), std::string(),
-      [](const std::string& ss, const std::pair<std::string, std::string>& s) {
-        return ss.empty() ? s.second : ss + "|" + s.second;
-      });
-
+      const std::string& str, const std::string& filename,
+      std::map<std::string, std::vector<std::string>>& files_lines,
+      bool DEBUG = false) {
     std::vector<Token> parse_res;
-    const std::regex r(tokens_str);
+    /** Merge all tokens in one regex */
+    std::regex r(std::accumulate(tokens.begin(), tokens.end(), std::string(),
+                                 [](const auto& ss, const auto& s) {
+                                   return ss.empty() ? s.second
+                                                     : ss + "|" + s.second;
+                                 }));
 
-    int line = 0, pos = 0;
-    std::string line_str;
-    for (std::sregex_iterator i = std::sregex_iterator(str.begin(), str.end(), r);
-      i != std::sregex_iterator();
-      ++i) {
-      std::smatch m = *i;
+    size_t line_n = 0, pos = 0;
+    std::string line;
+    /** Iterate throw all matches */
+    for (auto i = std::sregex_iterator(str.begin(), str.end(), r);
+         i != std::sregex_iterator(); ++i) {
+      auto m = *i;
 
-      std::string log_str;
-      log_str += "val:'";
+      /** Find matched group by id */
+      size_t id = 0;
+      for (; id + 1 < m.size(); ++id)
+        if (m[id + 1].str().size()) break;
+      id /= 2;
       std::string token_val = m.str();
-      log_str += token_val;
-      log_str += "' pos:";
-      log_str += std::to_string(pos);
-      log_str += " line:";
-      log_str += std::to_string(line);
-      log_str += " gid: '";
 
-      int index;
-      for (auto i = 1; i < m.size(); ++i) if (!m[i].str().empty()) {
-        index = i - 1;
-        break;
-      }
-      index /= 2;
-      log_str += tokens[index].first + "'";
+      /** Create and push new Token */
+      parse_res.push_back({tokens[id].first, token_val, pos, line_n, filename});
 
-      parse_res.push_back(Token(
-        tokens[index].first,
-        token_val,
-        pos,
-        line,
-        filename
-      ));
+      /** Update lines info for error trace */
+      tokens[id].first == TOKEN::line_end
+          ? (files_lines[filename].push_back(line), line.clear(), ++line_n,
+             pos = 0, 0)
+          : (pos += token_val.size(), line += token_val, 0);
 
-      if (tokens[index].first == "line end") {
-        files_lines[filename].push_back(line_str);
-        line_str.clear();
-        ++line;
-        pos = 0;
-      } else {
-        pos += token_val.size();
-        line_str += token_val;
-      }
-      if (DEBUG) std::cout << log_str << std::endl;
+      /** Write logs if needed */
+      if (DEBUG)
+        std::cout << "'" + token_val + "':" +
+                         std::to_string(
+                             static_cast<std::underlying_type_t<TOKEN>>(
+                                 tokens[id].first)) +
+                         " at " + std::to_string(pos) + ":" +
+                         std::to_string(line_n)
+                  << std::endl;
     }
     return parse_res;
   }

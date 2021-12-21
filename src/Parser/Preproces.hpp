@@ -9,9 +9,12 @@
 
 void defineFlowTokens(std::vector<Token>& tokens) {
   for (auto i = tokens.begin(); i != tokens.end(); ++i) {
-    if (i->token == "id") if (i->val == ":") i->token = "new block";
-    if (i->token == "id") if (i->val == "|") i->token = "next block";
-    if (i->token == "id") if (i->val == "\\") i->token = "fin block";
+    if (i->token == TOKEN::id)
+      if (i->val == ":") i->token = TOKEN::new_block;
+    if (i->token == TOKEN::id)
+      if (i->val == "|") i->token = TOKEN::next_block;
+    if (i->token == TOKEN::id)
+      if (i->val == "\\") i->token = TOKEN::fin_block;
   }
 }
 
@@ -35,12 +38,12 @@ void preprocess(std::filesystem::path file_path, std::vector<Token>& res, int de
   zhdata.included_files.push_back(file_data);
 
   std::vector<Token> tokens = zhdata.lexer.parse(
-      file_data, zhdata.included_files_names.back(), zhdata.files_lines);
+      file_data, zhdata.included_files_names.back(), zhdata.files_lines, zhdata.bools["tokens"]);
   // for (auto& i : tokens) i.file_ptr = &zhdata.included_files.back();
 
   for (auto i = tokens.begin(); i != tokens.end(); ++i) {
     /* include <filename>*/
-    if (i->token == "comment.block" or i->token == "comment.line") continue;
+    if (i->token == TOKEN::comment_block or i->token == TOKEN::comment_line) continue;
     if (i->val == "use") {
       if (i + 1 == tokens.end()) 
         throw ParserError(i->pos, "Expected file path");
@@ -50,8 +53,8 @@ void preprocess(std::filesystem::path file_path, std::vector<Token>& res, int de
       std::string path_str;
       do {
         ++i;
-      } while (i->token == "space");
-      if (i->token == "str") {
+      } while (i->token == TOKEN::space);
+      if (i->token == TOKEN::str_literal) {
         path_str = i->val;
         path_str.erase(path_str.begin());
         path_str.pop_back();

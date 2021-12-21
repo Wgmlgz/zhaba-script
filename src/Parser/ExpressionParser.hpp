@@ -102,7 +102,7 @@ namespace zhexp {
 
 
     /** C++ code injection */
-    if (begin->token == "id" and begin->val == "#") {
+    if (begin->token == TOKEN::id and begin->val == "#") {
       std::string code;
       for (auto i = begin + 1; i != end; ++i) {
         code += i->val;
@@ -110,21 +110,21 @@ namespace zhexp {
       return {new CCode(*begin, *begin, code)};
     }
    
-    if (begin->token == "id" and zhdata.flow_ops.count(begin->val)) {
+    if (begin->token == TOKEN::id and zhdata.flow_ops.count(begin->val)) {
       res.push_back(new FlowOperator(*begin, *begin, begin->val, nullptr));
       ++begin;
     }
     
     /** Find which tokens are operators */
     for (auto i = begin; i != end; ++i) {
-      if (i->token == "id") {
+      if (i->token == TOKEN::id) {
         if (zhdata.operators.count(i->val)) {
-          i->token = "operator";
+          i->token = TOKEN::op;
         } else if (zhdata.functions.count(i->val)) {
           auto next = i + 1;
           if (next == end) continue;
-          if (next->token == "p(") {
-            i->token = "operator";
+          if (next->token == TOKEN::open_p) {
+            i->token = TOKEN::op;
           }
         }
       }
@@ -132,10 +132,10 @@ namespace zhexp {
 
     for (auto i = begin; i != end; ++i) {
       if (i == begin) {
-        if (i->token == "space") continue;
+        if (i->token == TOKEN::space) continue;
       }
       if (i + 1 == end) {
-        if (i->token == "space") continue;
+        if (i->token == TOKEN::space) continue;
       }
 
       try {
@@ -148,18 +148,18 @@ namespace zhexp {
       }
 
       bool lhs = false, rhs = false;
-      if (i->token == "space") {
+      if (i->token == TOKEN::space) {
         if (i != begin)
-          if (std::set<std::string>{"p)", "int", "str", "id"}.count((i - 1)->token))
+          if (std::set{TOKEN::close_p, TOKEN::int_literal, TOKEN::str_literal, TOKEN::id}.count((i - 1)->token))
             lhs = true;
         if (i + 1 != end)
-          if (std::set<std::string>{"p(", "int", "str", "id"}.count((i + 1)->token))
+          if (std::set{TOKEN::open_p, TOKEN::int_literal, TOKEN::str_literal, TOKEN::id}.count((i + 1)->token))
             rhs = true;
         if (lhs and rhs) {
           res.push_back(new Operator(*i, *i, ",", -zhdata.parentheses_offset * pcount, 0, i->val.size()));
         }
       } else {
-        if (i != begin) if (std::set<std::string>{"p)", "int", "str", "id"}.count((i - 1)->token))
+        if (i != begin) if (std::set{TOKEN::close_p, TOKEN::int_literal, TOKEN::str_literal, TOKEN::id}.count((i - 1)->token))
           lhs = true;
         if (lhs and rhs) {
           res.push_back(new Operator(*i, *i, ",", -zhdata.parentheses_offset * pcount, 0, 0));
@@ -167,28 +167,28 @@ namespace zhexp {
         if (zhdata.operators.count(i->val)) rhs = false;
       }
 
-      if (i->token == "p(") {
+      if (i->token == TOKEN::open_p) {
         ++pcount;
-      } else if (i->token == "p)") {
+      } else if (i->token == TOKEN::close_p) {
         --pcount;
         /** () parse and push empty tuple */
-        if (i != begin and (i-1)->token == "p(") {
+        if (i != begin and (i-1)->token == TOKEN::open_p) {
           res.push_back(new Tuple(*i, *i));
         }
       }
       if (pcount < 0) throw ParserError(i->pos, "Too many ')'");
       int bpriority = -zhdata.parentheses_offset * pcount;
 
-      if (i->token == "operator") {
+      if (i->token == TOKEN::op) {
         /* Get spaces */
         int64_t spaces_lhs = 0, spaces_rhs = 0;
         if (i != begin) {
-          if ((i - 1)->token == "space") spaces_lhs = (i - 1)->val.size();
+          if ((i - 1)->token == TOKEN::space) spaces_lhs = (i - 1)->val.size();
         } else {
           spaces_lhs = zhdata.INF;
         }
         if (i != end - 1) {
-          if ((i + 1)->token == "space") spaces_rhs = (i + 1)->val.size();
+          if ((i + 1)->token == TOKEN::space) spaces_rhs = (i + 1)->val.size();
         } else {
           spaces_rhs = zhdata.INF;
         }
@@ -196,15 +196,15 @@ namespace zhexp {
         if (i->val == "." and
           i != end - 1 and
           i != end - 2 and
-          ((i + 1)->token == "id" or (i + 1)->token == "operator") and
-          (i + 2)->token == "p("
+          ((i + 1)->token == TOKEN::id or (i + 1)->token == TOKEN::op) and
+          (i + 2)->token == TOKEN::open_p
         ) {
           ++i;
           res.push_back(new Operator(*i, *i, ".call." + i->val, bpriority, spaces_lhs, spaces_rhs));
         } else {
           res.push_back(new Operator(*i, *i, i->val, bpriority, spaces_lhs, spaces_rhs));
         }
-      } else if (i->token == "int") {
+      } else if (i->token == TOKEN::int_literal) {
         int base = 10;
         auto str = i->val;
         if (std::regex_match(i->val, std::regex("0x.+"))) {
@@ -253,7 +253,7 @@ namespace zhexp {
           res.push_back(new I64Literal(*i, *i, std::stoll(str, 0, base)));
         else
           throw ParserError(*i, "Wrong int literal");
-      } else if (i->token == "str") {
+      } else if (i->token == TOKEN::str_literal) {
         bool do_escape = true;
         auto str = i->val;
         if (str[0] == '`') do_escape = false;
@@ -269,7 +269,7 @@ namespace zhexp {
           str = std::regex_replace(str, std::regex(R"(\\0)"), "\0");
         }
         res.push_back(new StrLiteral(*i, *i, str));
-      } else if (i->token == "id") {
+      } else if (i->token == TOKEN::id) {
         res.push_back(new IdLiteral(*i, *i, i->val));
       }
     }

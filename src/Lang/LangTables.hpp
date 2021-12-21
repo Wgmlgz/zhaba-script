@@ -6,20 +6,22 @@
 #include <vector>
 
 #include "Types.hpp"
+enum TOKEN;
 
 namespace tables {
-const std::vector<std::pair<std::string, std::string>> lexer_tokens = {
-    {"comment.block", R"(((\/\*[\s\S]*?\*\/)))"},
-    {"comment.line", R"((((\/\/.*))))"},
-    {"str", R"(('(\\.|[^'\\])*'|`(?:\\`|[^`])*`))"},
-    {"int",
+
+const std::vector<std::pair<TOKEN, std::string>> lexer_tokens = {
+    {TOKEN::comment_block, R"(((\/\*[\s\S]*?\*\/)))"},
+    {TOKEN::comment_line, R"((((\/\/.*))))"},
+    {TOKEN::str_literal, R"(('(\\.|[^'\\])*'|`(?:\\`|[^`])*`))"},
+    {TOKEN::int_literal,
      R"(((?:0x[0-9a-fA-F]+|0b[01]+|[0-9]+)([iu][0-9]*)?|true|false|tru|fls))"},
-    {"space", R"((( |\\\\\\ *\n)+))"},
-    {"id",
+    {TOKEN::space, R"((( |\\\\\\ *\n)+))"},
+    {TOKEN::id,
      R"((([_a-zA-Z][_a-zA-Z0-9]*|[\~\,\.\+\-\*\\\%\<\>\=\^\&\:\|\/\!\#\$\@\?]+|\[\])))"},
-    {"line end", R"(((\n)))"},
-    {"p(", R"(((\()))"},
-    {"p)", R"(((\))))"},
+    {TOKEN::line_end, R"(((\n)))"},
+    {TOKEN::open_p, R"(((\()))"},
+    {TOKEN::close_p, R"(((\))))"},
 };
 std::unordered_set<std::string> banned_ids{
     "?", "@", "<<<", ":=", "as", "|", "\\"};

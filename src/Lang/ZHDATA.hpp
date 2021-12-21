@@ -252,6 +252,7 @@ struct ZHDATA {
   std::ostream* out = &std::cout;
 
   std::unordered_map<std::string, bool> bools{
+    {"tokens", false},
     {"exp_parser_logs", false},
     {"show_ast", false},
     {"show_st", false},
@@ -261,7 +262,7 @@ struct ZHDATA {
     {"show_original", false},
     {"show_preprocessed", false},
     {"show_exp_tmp_tree", false},
-    {"B", false},
+    {"B", true},
     {"stack_trace", false},
     {"show_bytecode", false},
     {"show_type", false},

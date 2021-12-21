@@ -1,7 +1,8 @@
 #pragma once
 #include <string>
 #include "../Parser/Parser.hpp"
-#include "ToC.hpp"
+// Deprecated
+// #include "ToC.hpp"
 #include <fstream>
 #include "../Interpreter/ZHVM.hpp"
 #include "../Interpreter/ToBytecode.hpp"
@@ -49,7 +50,7 @@ void compileFile(std::filesystem::path file_path) {
     printASCII(st_generic);
   }
 
-  if (zhdata.bools["B"]) {
+  if (zhdata.bools["B"] or true) {
     std::cout << "[INFO] compiling complete in " +
                 std::to_string((clock() - start_time) * 1.0 / CLOCKS_PER_SEC)
               << std::endl;
@@ -61,19 +62,20 @@ void compileFile(std::filesystem::path file_path) {
               std::to_string((clock() - run_time) * 1.0 / CLOCKS_PER_SEC)
             << std::endl;
   } else {
-    std::string c_code = toC(stree);
-    if (zhdata.bools["show_cpp"]) {
-      std::cout << "C:" << std::endl << c_code << std::endl;
-    }
-    std::cout << "[INFO] compiling complete in " +
-                     std::to_string((clock() - start_time) * 1.0 /
-                                    CLOCKS_PER_SEC)
-              << std::endl;
+    // Deprecated
+    // std::string c_code = toC(stree);
+    // if (zhdata.bools["show_cpp"]) {
+    //   std::cout << "C:" << std::endl << c_code << std::endl;
+    // }
+    // std::cout << "[INFO] compiling complete in " +
+    //                  std::to_string((clock() - start_time) * 1.0 /
+    //                                 CLOCKS_PER_SEC)
+    //           << std::endl;
 
-    auto tmp_file = std::ofstream("zhaba_tmp.c");
-    tmp_file << c_code;
-    tmp_file.close();
-    system("gcc zhaba_tmp.c -o zhaba_tmp -O3");
-    system(".\\zhaba_tmp.exe");
+    // auto tmp_file = std::ofstream("zhaba_tmp.c");
+    // tmp_file << c_code;
+    // tmp_file.close();
+    // system("gcc zhaba_tmp.c -o zhaba_tmp -O3");
+    // system(".\\zhaba_tmp.exe");
   }
 }

@@ -42,48 +42,48 @@ Function* parseOpHeader(tokeniter begin, tokeniter end, const ScopeInfo& scope) 
   if (cur->val == "op") {
     func->op_type = OpType::bin;
     ++cur;
-    if (cur != end and cur->token == "space") ++cur;
+    if (cur != end and cur->token == TOKEN::space) ++cur;
   } else if (cur->val == "lop") {
     ++cur;
-    if (cur != end and cur->token == "space") ++cur;
+    if (cur != end and cur->token == TOKEN::space) ++cur;
   } else if (cur->val == "rop") {
     func->op_type = OpType::rhs;
     ++cur;
-    if (cur != end and cur->token == "space") ++cur;
+    if (cur != end and cur->token == TOKEN::space) ++cur;
   } else if (cur->val == "fn") {
     is_fn = true;
     func->is_fn = true;
     ++cur;
-    if (cur != end and cur->token == "space") ++cur;
+    if (cur != end and cur->token == TOKEN::space) ++cur;
   }
 
   /* Parse priority */
-  if (!is_fn and cur->token == "int") {
+  if (!is_fn and cur->token == TOKEN::int_literal) {
     func->priority = std::stoi(cur->val);
     ++cur;
-    if (cur != end and cur->token == "space") ++cur;
+    if (cur != end and cur->token == TOKEN::space) ++cur;
   }
 
   /* Parse return type */
-  if (cur == end or cur->token != "id") {
+  if (cur == end or cur->token != TOKEN::id) {
     throw ParserError(*cur, "Expected type or operator name");
   } else {
     try {
       func->type = types::parse(cur, scope);
       ++cur;
-      if (cur != end and cur->token == "space") ++cur;
+      if (cur != end and cur->token == TOKEN::space) ++cur;
     } catch (std::runtime_error err) {
       /* Implicit void type */
     }
   }
 
   /* parse name */
-  if (cur == end or cur->token != "id") {
+  if (cur == end or cur->token != TOKEN::id) {
     throw ParserError(*cur, "Expected operator name");
   } else {
     func->name = cur->val;
     ++cur;
-    if (cur != end and cur->token == "space") ++cur;
+    if (cur != end and cur->token == TOKEN::space) ++cur;
   }
 
   /* parse args */
@@ -94,12 +94,12 @@ Function* parseOpHeader(tokeniter begin, tokeniter end, const ScopeInfo& scope) 
     try {
       func->args.back().type = types::parse(cur, scope);
       ++cur;
-      if (cur != end and cur->token == "space") ++cur;
+      if (cur != end and cur->token == TOKEN::space) ++cur;
     } catch (std::runtime_error err) {
       throw ParserError(*cur, "Expected argument type");
     }
 
-    if (cur == end or cur->token != "id") {
+    if (cur == end or cur->token != TOKEN::id) {
       throw ParserError(*cur, "Expected argument name");
     } else {
       if (used_vars.count(cur->val)) {
@@ -108,7 +108,7 @@ Function* parseOpHeader(tokeniter begin, tokeniter end, const ScopeInfo& scope) 
       func->args.back().name = cur->val;
       used_vars.insert(cur->val);
       ++cur;
-      if (cur != end and cur->token == "space") ++cur;
+      if (cur != end and cur->token == TOKEN::space) ++cur;
     }
   }
   if (func->op_type == OpType::bin and func->args.size() < 2) {
