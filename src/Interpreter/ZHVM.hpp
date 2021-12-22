@@ -327,6 +327,14 @@ class ZHVM {
           auto mem = getPtr(char_ptr, 1);
           *zhdata.out << reinterpret_cast<char*>(mem) << std::endl;
         } break;
+        case instr::in_str: {
+          std::string str;
+          *zhdata.in >> str;
+          auto ptr = heap.malloc(str.size() + 1);
+          auto real_ptr = getPtr(ptr, str.size() + 1);
+          std::copy_n(str.c_str(), str.size() + 1, real_ptr);
+          stack.push(static_cast<int64_t>(ptr));
+        } break;
         case instr::put_char: {
           auto ch = TOSi8;
           stack.popBytes(1);

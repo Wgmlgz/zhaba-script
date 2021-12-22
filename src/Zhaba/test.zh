@@ -11,4 +11,6 @@ fn main
   b := 0i32
   c := 0i64
   < a < b < c < 
+  s := 'aboba'
+  > s < s <
   // < 'Enter a, b, c:' < > a > b > c < a < b < c <
