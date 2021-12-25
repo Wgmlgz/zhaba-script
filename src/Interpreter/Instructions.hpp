@@ -181,29 +181,29 @@ enum class instr : byte {
 
   put_char,  // out TOS char to stdin         :: char -> void
   out_char,  // out TOS char with \n to stdin :: char -> void
-  in_char,   // reads str from stdin          :: void -> char
+  in_char,   // reads char from stdin         :: void -> char
 
   put_bool,  // out TOS bool to stdin         :: bool -> void
   out_bool,  // out TOS bool with \n to stdin :: bool -> void
-  in_bool,   // reads str from stdin          :: void -> bool
+  in_bool,   // reads bool from stdin         :: void -> bool
 
   put_f4,  // out TOS f4 to stdin         :: f4 -> void
   out_f4,  // out TOS f4 with \n to stdin :: f4 -> void
-  in_f4,   // reads str from stdin        :: void -> f4
+  in_f4,   // reads f4 from stdin         :: void -> f4
 
   put_f8,  // out TOS f8 to stdin         :: f8 -> void
   out_f8,  // out TOS f8 with \n to stdin :: f8 -> void
-  in_f8,   // reads str from stdin        :: void -> f8
+  in_f8,   // reads f8 from stdin         :: void -> f8
 
   put_f10,  // out TOS f10 to stdin         :: f10 -> void
   out_f10,  // out TOS f10 with \n to stdin :: f10 -> void
-  in_f10,   // reads str from stdin         :: void -> f10
+  in_f10,   // reads f10 from stdin         :: void -> f10
 
   /** logic */
-  and_bool,  // a && b :: bool bool -> bool
-  or_bool,   // a || b :: bool bool -> bool
-  not_bool,  // not a  :: bool -> bool
-  not_bytes, // not a  :: bytes -> bool
+  and_bool,   // a && b :: bool bool -> bool
+  or_bool,    // a || b :: bool bool -> bool
+  not_bool,   // not a  :: bool -> bool
+  not_bytes,  // not a  :: bytes -> bool
 
   /** memory managment */
   malloc,  // allocates n bytes :: i64 -> i64

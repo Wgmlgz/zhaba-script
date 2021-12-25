@@ -1,6 +1,6 @@
 use 'frog.zh'
 use 'out.zh'
-
+use 'range.zh'
 
 fn bool_test str msg bool b
   ? b: <msg<': true'<
@@ -12,5 +12,8 @@ fn main
   c := 0i64
   < a < b < c < 
   s := 'aboba'
-  > s < s <
+  > a < a <
+
+  @ i 0..100000
+    < i < 
   // < 'Enter a, b, c:' < > a > b > c < a < b < c <

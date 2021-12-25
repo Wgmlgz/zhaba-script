@@ -30,8 +30,17 @@ namespace zhin {
  * 0xFF54____________ :literals
  */
 class ZHVM {
+  /** State */
+  size_t cur = 0;
+  std::string res;
+  std::vector<size_t> call_stack;
+  std::vector<size_t> call_stack_frame;
   Stack stack;
   Heap heap;
+
+  std::map<size_t, std::string> mp;
+  bool do_stack_trace = zhdata.bools["stack_trace"];
+
   ByteCode& bytecode;
   byte* getPtr(int64_t ptr, int size) {
     if ((ptr & 0xffff000000000000) == 0xff15000000000000)
@@ -43,21 +52,33 @@ class ZHVM {
   }
 
  public:
-  ZHVM(ByteCode& run_bytecode) : bytecode(run_bytecode) {
-    bool do_stack_trace = zhdata.bools["stack_trace"];
+  struct InputError {
+    std::string msg;
+    InputError(const std::string &new_msg) : msg(new_msg) {}
+    std::string what() { return msg; }
+  };
 
+  ZHVM(ByteCode& run_bytecode) : bytecode(run_bytecode) {
     bytecode.loadLabels();
-    auto [dis, mp] = bytecode.dis();
+    std::string dis;
+    auto t = bytecode.dis();
+
+    dis = t.first;
+    mp = t.second;
+
     if (zhdata.bools["show_bytecode"]) {
       std::cout << "bytecode:\n" << dis << std::endl;
     }
-    size_t cur = 0;
-    std::string res;
-    std::vector<size_t> call_stack;
-    std::vector<size_t> call_stack_frame;
-
-    while (cur < bytecode.size()) {
-      std::stringstream ss;
+  }
+  /**
+   * @brief 
+   * 
+   * @param max_commands commands to run
+   * @return true if run is not completed
+   */
+  bool runChunk(size_t max_commands = 1000) {
+    try {
+    for (size_t done = 0; cur < bytecode.size() && done < max_commands; ++done) {
       auto op = *bytecode.loadInstr(cur);
       if (do_stack_trace) std::cout << mp[cur];
       ++cur;
@@ -289,7 +310,10 @@ class ZHVM {
           stack.push(!val);
         } break;
 
-#define MAKE_IO(type_, c_type_, print_type_, size_)                   \
+#define CHECK_READ(exp, type) \
+  if (zhdata.in->good() && !(exp)) throw InputError(#type " read failed");
+  
+#define MAKE_IO(type_, c_type_, print_type_, size_)      \
   case instr::put_##type_: {                             \
     auto t = TOS##type_;                                 \
     stack.popBytes(size_);                               \
@@ -302,15 +326,15 @@ class ZHVM {
   } break;                                               \
   case instr::in_##type_: {                              \
     c_type_ tmp;                                         \
-    *zhdata.in >> tmp;                                   \
-    stack.push(static_cast<print_type_>(tmp));               \
+    CHECK_READ(*zhdata.in >> tmp, type_);                \
+    stack.push(static_cast<print_type_>(tmp));           \
   } break;
-          MAKE_IO(i8,  int64_t, int8_t, 1)
+          MAKE_IO(i8, int64_t, int8_t, 1)
           MAKE_IO(i16, int64_t, int16_t, 2)
           MAKE_IO(i32, int64_t, int32_t, 4)
           MAKE_IO(i64, int64_t, int64_t, 8)
 
-          MAKE_IO(u8,  uint64_t, uint8_t,  1)
+          MAKE_IO(u8, uint64_t, uint8_t, 1)
           MAKE_IO(u16, uint64_t, uint16_t, 2)
           MAKE_IO(u32, uint64_t, uint32_t, 4)
           MAKE_IO(u64, uint64_t, uint64_t, 8)
@@ -329,7 +353,7 @@ class ZHVM {
         } break;
         case instr::in_str: {
           std::string str;
-          *zhdata.in >> str;
+          CHECK_READ(*zhdata.in >> str, str);
           auto ptr = heap.malloc(str.size() + 1);
           auto real_ptr = getPtr(ptr, str.size() + 1);
           std::copy_n(str.c_str(), str.size() + 1, real_ptr);
@@ -344,6 +368,11 @@ class ZHVM {
           auto ch = TOSi8;
           stack.popBytes(1);
           *zhdata.out << static_cast<char>(ch) << std::endl;
+        } break;
+        case instr::in_char: {
+          char tmp;
+          CHECK_READ(*zhdata.in >> tmp, char);
+          stack.push(static_cast<char>(tmp));
         } break;
         case instr::push_bytes: {
           auto val = *bytecode.loadI32(cur);
@@ -373,6 +402,9 @@ class ZHVM {
       if (do_stack_trace)
         std::cout << stack.trace64() << std::endl << std::endl;
     }
+    } catch (const InputError err) {}
+
+    return cur < bytecode.size();
   }
 };
 }  // namespace zhin

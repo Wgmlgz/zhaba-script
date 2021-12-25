@@ -58,6 +58,9 @@ void compileFile(std::filesystem::path file_path) {
     zhin::toB(bytecode, stree);
     auto run_time = clock();
     zhin::ZHVM zhvm(bytecode);
+
+    while (zhvm.runChunk()) {}
+
     std::cout << "[INFO] run complete in " +
               std::to_string((clock() - run_time) * 1.0 / CLOCKS_PER_SEC)
             << std::endl;
