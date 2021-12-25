@@ -6,7 +6,7 @@
 #include <vector>
 
 #include "Types.hpp"
-enum TOKEN;
+#include "./token.hpp"
 
 namespace tables {
 
