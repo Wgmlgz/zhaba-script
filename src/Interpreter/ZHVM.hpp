@@ -310,9 +310,6 @@ class ZHVM {
           stack.push(!val);
         } break;
 
-#define CHECK_READ(exp, type) \
-  if (zhdata.in->good() && !(exp)) throw InputError(#type " read failed");
-  
 #define MAKE_IO(type_, c_type_, print_type_, size_)      \
   case instr::put_##type_: {                             \
     auto t = TOS##type_;                                 \
@@ -326,9 +323,10 @@ class ZHVM {
   } break;                                               \
   case instr::in_##type_: {                              \
     c_type_ tmp;                                         \
-    CHECK_READ(*zhdata.in >> tmp, type_);                \
+    *zhdata.in >> tmp;                                   \
     stack.push(static_cast<print_type_>(tmp));           \
   } break;
+
           MAKE_IO(i8, int64_t, int8_t, 1)
           MAKE_IO(i16, int64_t, int16_t, 2)
           MAKE_IO(i32, int64_t, int32_t, 4)
@@ -353,7 +351,7 @@ class ZHVM {
         } break;
         case instr::in_str: {
           std::string str;
-          CHECK_READ(*zhdata.in >> str, str);
+          *zhdata.in >> str;
           auto ptr = heap.malloc(str.size() + 1);
           auto real_ptr = getPtr(ptr, str.size() + 1);
           std::copy_n(str.c_str(), str.size() + 1, real_ptr);
@@ -371,7 +369,7 @@ class ZHVM {
         } break;
         case instr::in_char: {
           char tmp;
-          CHECK_READ(*zhdata.in >> tmp, char);
+          *zhdata.in >> tmp;
           stack.push(static_cast<char>(tmp));
         } break;
         case instr::push_bytes: {
