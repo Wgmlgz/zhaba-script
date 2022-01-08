@@ -9,3 +9,7 @@ op 16 *= intR a int b: a = a * b
 
 lop int ++ intR val: val += 1
 lop int -- intR val: val -= 1
+lop int ++ u8R val: val = val + 1u8
+lop int -- u8R val: val = val - 1u8
+lop int ++ charR val: val = (val as u8R + 1u8) as char
+lop int -- charR val: val = (val as u8R - 1u8) as char

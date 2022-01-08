@@ -17,6 +17,18 @@ lop Out > strR i: i = in_str()
 op 9 Out > Out o strR i: i = in_str()
   <<< _Out()
 
+// char
+rop Out < char i: out i
+  <<< _Out()
+lop Out < char i: put i, put ' '
+  <<< _Out()
+op 9 Out < Out o char i: put i, put ' '
+  <<< _Out()
+lop Out > charR i: i = in_char()
+  <<< _Out()
+op 9 Out > Out o charR i: i = in_char()
+  <<< _Out()
+
 // Str
 rop Out < Str i: out i
   <<< _Out()

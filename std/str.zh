@@ -1,8 +1,10 @@
 use 'vec.zh'
 use 'range.zh'
 
-impl str
-  fn char at int pos: <<< *((*slf as int + pos) as charP)
+impl str: fn char at int pos: <<< *((*slf as int + pos) as charP)
+
+op 7 char ^ str s int i: <<< s.at(i)
+op 10 bool == char ch str s: <<< ch == s^0
 
 type Str
   Vec<char> data
@@ -56,7 +58,5 @@ op 16 += StrR a str b
   len := strlen(b)
   @ i 0..len: a += b.at(i)
 
-// out
 lop out StrR s: out s.cstr()
 lop put StrR s: put s.cstr()
-// lop deb str msg StrR s: deb(msg s.cstr())
