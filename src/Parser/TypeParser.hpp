@@ -68,8 +68,8 @@ Type parse(std::string& str, const ScopeInfo& scope) {
     auto tmp = scope.typedefs.at(str);
     type.setType(tmp.getTypeId());
     type.setPtr(tmp.getPtr() + type.getPtr());
-  } else if (prim_types.count(str)) {
-    type.setType(prim_types[str]);
+  } else if (types_data.prim_types.count(str)) {
+    type.setType(types_data.prim_types[str]);
   } else if (getStructId(str) != types::TYPE(-1)) {
     type.setType(getStructId(str));
   } else {

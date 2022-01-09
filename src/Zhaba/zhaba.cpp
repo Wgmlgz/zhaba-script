@@ -1,15 +1,15 @@
-#include <string>
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <stdlib.h> 
+#include <stdlib.h>
+
 #include <filesystem>
+#include <fstream>
+#include <iostream>
+#include <sstream>
+#include <string>
 
-/*0*/ #include "../Parser/Parser.hpp"
-/*1*/ #include "../Compiler/Compiler.hpp"
-/*2*/ #include "../TreeLib/TreeLib.hpp"
-/*3*/ #include "../Interpreter/ToBytecode.hpp"
-
+#include "../Compiler/Compiler.hpp"
+#include "../Interpreter/ToBytecode.hpp"
+#include "../Parser/Parser.hpp"
+#include "../TreeLib/TreeLib.hpp"
 #include "CmdOptios.hpp"
 
 void printUsage() {
@@ -19,11 +19,10 @@ void printUsage() {
   }
 }
 
-const bool deb = 
-// true
-false
-;
-int main(int argc, char **argv) {
+const bool deb =
+    // true
+    false;
+int main(int argc, char** argv) {
   CmdParser cmd(argc, argv);
   /** to test bytecode */
   if (true) {
@@ -33,14 +32,12 @@ int main(int argc, char **argv) {
 
   zhdata.bin_path.remove_filename();
   for (auto& [str, val] : zhdata.bools) {
-    if (cmd.cmdOptionExists("--" + str))
-      val = true;
+    if (cmd.cmdOptionExists("--" + str)) val = true;
   }
 
   if (cmd.cmdOptionExists("-h")) {
     printUsage();
   } else if (cmd.cmdOptionEqual(0, "compile") and cmd.size() == 3) {
-
   } else if (deb or cmd.size() >= 1) {
     std::filesystem::path file_path =
         deb ? R"(C:\Code\Zhaba-script-lang\Src\Zhaba\test.zh)"
@@ -50,9 +47,9 @@ int main(int argc, char **argv) {
       if (!tmp)
         throw std::runtime_error("Cannot find zhstd environment variable :(");
       zhdata.std_path = tmp;
+
       compileFile(file_path);
-    }
-    catch (ParserError error) {
+    } catch (ParserError error) {
       std::cout << error.toString();
     } catch (zhin::RuntimeError error) {
       std::cout << error.what();
