@@ -9,14 +9,6 @@ namespace zhin {
 typedef uint8_t byte;
 typedef std::vector<byte> bytevec;
 
-std::string hexbyte(byte i) {
-  std::stringstream stream;
-  stream << std::setfill('0') << std::setw(2) << std::hex << (int) (i);
-  return stream.str();
-}
-
-
-
 enum class instr : byte {
   /** does nothing */
   nop,

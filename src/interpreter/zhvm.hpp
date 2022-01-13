@@ -14,9 +14,9 @@
 #include "../compiler/Compiler.hpp"
 #include "../tree_lib/TreeLib.hpp"
 
-#include "./Bytecode.hpp"
-#include "./Heap.hpp"
-#include "./Stack.hpp"
+#include "./bytecode.hpp"
+#include "./heap.hpp"
+#include "./stack.hpp"
 
 namespace zhin {
 /**

@@ -1,12 +1,12 @@
 #pragma once
 #include <string>
-#include "../Parser/parser.hpp"
+#include "../parser/parser.hpp"
 // Deprecated
 // #include "ToC.hpp"
 #include <fstream>
-#include "../Interpreter/ZHVM.hpp"
-#include "../Interpreter/ToBytecode.hpp"
 #include <filesystem>
+#include "../interpreter/to_bytecode.hpp"
+#include "../interpreter/zhvm.hpp"
 
 void compileFile(std::filesystem::path file_path) {
   auto start_time = clock();

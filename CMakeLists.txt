@@ -16,12 +16,12 @@ add_executable(Zhaba_script_lang
         src/compiler/CompilerTables.hpp
         src/compiler/FileCompiler.hpp
         src/compiler/ToC.hpp
-        src/interpreter/Bytecode.hpp
-        src/interpreter/Heap.hpp
-        src/interpreter/Instructions.hpp
-        src/interpreter/Stack.hpp
-        src/interpreter/ToBytecode.hpp
-        src/interpreter/ZHVM.hpp
+        src/interpreter/bytecode.hpp
+        src/interpreter/heap.hpp
+        src/interpreter/instructions.hpp
+        src/interpreter/stack.hpp
+        src/interpreter/to_bytecode.hpp
+        src/interpreter/zhvm.hpp
         src/lang/ast.hpp
         src/lang/expression.hpp
         src/lang/generics.hpp
@@ -40,7 +40,7 @@ add_executable(Zhaba_script_lang
         src/parser/lexer.hpp
         src/parser/parser.hpp
         src/parser/parser_error.hpp
-        src/parser/preproces.hpp
+        src/parser/preprocess.hpp
         src/parser/syntax_tree_parser.hpp
         src/parser/type_parser.hpp
         src/tree_lib/Tree.hpp
@@ -49,4 +49,23 @@ add_executable(Zhaba_script_lang
         src/zhaba/CmdOptios.hpp
         src/lang/expression.cpp
         src/lang/types.cpp
-        src/zhaba/zhaba.cpp src/lang/ast.cpp src/lang/generics.cpp src/lang/syntax_tree.cpp src/parser/parser_error.cpp src/lang/zhdata.cpp src/lang/lang_tables.cpp src/parser/runtime_error.cpp src/parser/runtime_error.hpp src/parser/type_parser.cpp src/parser/syntax_tree_parser.cpp src/parser/definitions_parser.cpp src/parser/expression_parser.cpp src/parser/ast_parser.cpp src/parser/lexer.cpp src/parser/preproces.cpp)
+        src/zhaba/zhaba.cpp
+        src/lang/ast.cpp
+        src/lang/generics.cpp
+        src/lang/syntax_tree.cpp
+        src/parser/parser_error.cpp
+        src/lang/zhdata.cpp
+        src/lang/lang_tables.cpp
+        src/interpreter/runtime_error.cpp
+        src/interpreter/runtime_error.hpp
+        src/parser/type_parser.cpp
+        src/parser/syntax_tree_parser.cpp
+        src/parser/definitions_parser.cpp
+        src/parser/expression_parser.cpp
+        src/parser/ast_parser.cpp
+        src/parser/lexer.cpp
+        src/parser/preprocess.cpp
+        src/interpreter/to_bytecode.cpp
+        src/interpreter/bytecode.cpp
+        src/interpreter/heap.cpp
+        src/interpreter/stack.cpp)

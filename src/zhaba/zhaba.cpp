@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string>
 
-#include "../Compiler/Compiler.hpp"
+#include "Compiler.hpp"
 #include "CmdOptios.hpp"
 
 void printUsage() {
