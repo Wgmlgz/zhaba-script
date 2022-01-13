@@ -12,7 +12,7 @@ ______                              _           _
 // #pragma once 
 // #include <iomanip>
 // #include <sstream>
-// #include "../Lang/Lang.hpp"
+// #include "../lang/lang.hpp"
 
 // std::string expToC(zhexp::Exp* exp);
 // std::string blockToC(STBlock* exp, size_t depth = 0);

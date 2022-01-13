@@ -4,8 +4,8 @@
 
 #include "parser_error.hpp"
 #include "lexer.hpp"
-#include "../Lang/lang.hpp"
-#include "../TreeLib/TreeLib.hpp"
+#include "../lang/lang.hpp"
+#include "../tree_lib/TreeLib.hpp"
 #include "type_parser.hpp"
 
 namespace zhexp {

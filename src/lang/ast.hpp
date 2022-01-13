@@ -8,6 +8,7 @@
 
 #include "expression.hpp"
 #include "scope.hpp"
+#include "../tree_lib/Tree.hpp"
 
 namespace ast {
 struct ASTNode {

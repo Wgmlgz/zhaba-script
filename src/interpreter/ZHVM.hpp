@@ -10,9 +10,9 @@
 #include <stack>
 #include <string>
 
-#include "../Parser/parser.hpp"
-#include "../Compiler/Compiler.hpp"
-#include "../TreeLib/TreeLib.hpp"
+#include "../parser/parser.hpp"
+#include "../compiler/Compiler.hpp"
+#include "../tree_lib/TreeLib.hpp"
 
 #include "./Bytecode.hpp"
 #include "./Heap.hpp"

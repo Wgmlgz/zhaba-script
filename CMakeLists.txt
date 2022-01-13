@@ -3,50 +3,50 @@ project(Zhaba_script_lang)
 
 set(CMAKE_CXX_STANDARD 20)
 
-include_directories(src/Compiler)
-include_directories(src/Interpreter)
-include_directories(src/Lang)
-include_directories(src/Libs)
-include_directories(src/Parser)
-include_directories(src/TreeLib)
-include_directories(src/Zhaba)
+include_directories(src/compiler)
+include_directories(src/interpreter)
+include_directories(src/lang)
+include_directories(src/libs)
+include_directories(src/parser)
+include_directories(src/tree_lib)
+include_directories(src/zhaba)
 
 add_executable(Zhaba_script_lang
-        src/Compiler/Compiler.hpp
-        src/Compiler/CompilerTables.hpp
-        src/Compiler/FileCompiler.hpp
-        src/Compiler/ToC.hpp
-        src/Interpreter/Bytecode.hpp
-        src/Interpreter/Heap.hpp
-        src/Interpreter/Instructions.hpp
-        src/Interpreter/Stack.hpp
-        src/Interpreter/ToBytecode.hpp
-        src/Interpreter/ZHVM.hpp
-        src/Lang/ast.hpp
-        src/Lang/expression.hpp
-        src/Lang/generics.hpp
-        src/Lang/lang.hpp
-        src/Lang/lang_tables.hpp
-        src/Lang/scope.hpp
-        src/Lang/syntax_tree.hpp
-        src/Lang/token.cpp
-        src/Lang/token.hpp
-        src/Lang/types.hpp
-        src/Lang/zhdata.hpp
-        src/Libs/termcolor.hpp
-        src/Parser/ast_parser.hpp
-        src/Parser/definitions_parser.hpp
-        src/Parser/expression_parser.hpp
-        src/Parser/lexer.hpp
-        src/Parser/parser.hpp
-        src/Parser/parser_error.hpp
-        src/Parser/preproces.hpp
-        src/Parser/syntax_tree_parser.hpp
-        src/Parser/type_parser.hpp
-        src/TreeLib/Tree.hpp
-        src/TreeLib/TreePrinterASCII.hpp
-        src/TreeLib/TreeLib.hpp
-        src/Zhaba/CmdOptios.hpp
-        src/Lang/expression.cpp
-        src/Lang/types.cpp
-        src/Zhaba/zhaba.cpp src/Lang/ast.cpp src/Lang/generics.cpp src/Lang/syntax_tree.cpp src/Parser/parser_error.cpp src/Lang/zhdata.cpp src/Lang/lang_tables.cpp src/Parser/runtime_error.cpp src/Parser/runtime_error.hpp src/Parser/type_parser.cpp src/Parser/syntax_tree_parser.cpp src/Parser/definitions_parser.cpp src/Parser/expression_parser.cpp src/Parser/ast_parser.cpp src/Parser/lexer.cpp src/Parser/preproces.cpp)
+        src/compiler/Compiler.hpp
+        src/compiler/CompilerTables.hpp
+        src/compiler/FileCompiler.hpp
+        src/compiler/ToC.hpp
+        src/interpreter/Bytecode.hpp
+        src/interpreter/Heap.hpp
+        src/interpreter/Instructions.hpp
+        src/interpreter/Stack.hpp
+        src/interpreter/ToBytecode.hpp
+        src/interpreter/ZHVM.hpp
+        src/lang/ast.hpp
+        src/lang/expression.hpp
+        src/lang/generics.hpp
+        src/lang/lang.hpp
+        src/lang/lang_tables.hpp
+        src/lang/scope.hpp
+        src/lang/syntax_tree.hpp
+        src/lang/token.cpp
+        src/lang/token.hpp
+        src/lang/types.hpp
+        src/lang/zhdata.hpp
+        src/libs/termcolor.hpp
+        src/parser/ast_parser.hpp
+        src/parser/definitions_parser.hpp
+        src/parser/expression_parser.hpp
+        src/parser/lexer.hpp
+        src/parser/parser.hpp
+        src/parser/parser_error.hpp
+        src/parser/preproces.hpp
+        src/parser/syntax_tree_parser.hpp
+        src/parser/type_parser.hpp
+        src/tree_lib/Tree.hpp
+        src/tree_lib/TreePrinterASCII.hpp
+        src/tree_lib/TreeLib.hpp
+        src/zhaba/CmdOptios.hpp
+        src/lang/expression.cpp
+        src/lang/types.cpp
+        src/zhaba/zhaba.cpp src/lang/ast.cpp src/lang/generics.cpp src/lang/syntax_tree.cpp src/parser/parser_error.cpp src/lang/zhdata.cpp src/lang/lang_tables.cpp src/parser/runtime_error.cpp src/parser/runtime_error.hpp src/parser/type_parser.cpp src/parser/syntax_tree_parser.cpp src/parser/definitions_parser.cpp src/parser/expression_parser.cpp src/parser/ast_parser.cpp src/parser/lexer.cpp src/parser/preproces.cpp)

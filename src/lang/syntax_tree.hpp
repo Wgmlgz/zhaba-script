@@ -1,6 +1,6 @@
 #pragma once
 #include "ast.hpp"
-#include "../TreeLib/Tree.hpp"
+#include "../tree_lib/Tree.hpp"
 #include "scope.hpp"
 #include "expression.hpp"
 

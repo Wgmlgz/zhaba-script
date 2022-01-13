@@ -1,6 +1,6 @@
 #pragma once
-#include "../Lang/lang.hpp"
-#include "../TreeLib/Tree.hpp"
+#include "../lang/lang.hpp"
+#include "../tree_lib/Tree.hpp"
 #include "definitions_parser.hpp"
 #include "type_parser.hpp"
 #include "expression_parser.hpp"

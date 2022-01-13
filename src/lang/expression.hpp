@@ -1,7 +1,7 @@
 #pragma once
-#include "../Parser/lexer.hpp"
+#include "../parser/lexer.hpp"
 #include "types.hpp"
-#include "../TreeLib/TreeLib.hpp"
+#include "../tree_lib/TreeLib.hpp"
 
 struct Function;
 

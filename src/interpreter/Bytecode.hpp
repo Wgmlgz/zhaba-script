@@ -15,7 +15,7 @@
 // Order is important
 /*0*/ #include "../Parser/parser.hpp"
 /*1*/ #include "../Compiler/Compiler.hpp"
-/*2*/ #include "../TreeLib/TreeLib.hpp"
+/*2*/ #include "../tree_lib/TreeLib.hpp"
 
 #include "runtime_error.hpp"
 
