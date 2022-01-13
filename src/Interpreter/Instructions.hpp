@@ -1,6 +1,7 @@
 #pragma once
-#include <inttypes.h>
+#include <cinttypes>
 
+#include <utility>
 #include <vector>
 
 namespace zhin {
@@ -10,23 +11,19 @@ typedef std::vector<byte> bytevec;
 
 std::string hexbyte(byte i) {
   std::stringstream stream;
-  stream << std::setfill('0') << std::setw(2) << std::hex << (int)(i);
+  stream << std::setfill('0') << std::setw(2) << std::hex << (int) (i);
   return stream.str();
 }
 
-struct RuntimeError {
-  std::string msg;
-  RuntimeError(const std::string& new_msg) : msg(new_msg) {}
-  std::string what() { return "ZHVM runtime error:" + msg; }
-};
+
 
 enum class instr : byte {
-  /** does nothing*/
+  /** does nothing */
   nop,
 
   /** labels */
-  label,       // labes
-  label_data,  // data labes
+  label,       // labels
+  label_data,  // data labels
 
   /** arithmetic */
   add_i8,
@@ -123,7 +120,7 @@ enum class instr : byte {
 
   /** control flow */
   jmp,          // jumps to label (label:i32)
-  jmp_if_bool,  // jumpls to label if 64
+  jmp_if_bool,  // jumps to label if 64
   call,         // jumps to label and updates call stack
   ret,          // pops call stack and clears args (args_size:i32, ret_size:i32)
 
@@ -205,7 +202,7 @@ enum class instr : byte {
   not_bool,   // not a  :: bool -> bool
   not_bytes,  // not a  :: bytes -> bool
 
-  /** memory managment */
+  /** memory management */
   malloc,  // allocates n bytes :: i64 -> i64
   free,    // frees ptr   :: i64 -> void
 };

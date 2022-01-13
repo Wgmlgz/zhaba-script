@@ -16,16 +16,16 @@ class Lexer {
   std::vector<std::pair<TOKEN, std::string>> tokens;
 
  public:
-  Lexer(const std::vector<std::pair<TOKEN, std::string>>& new_tokens)
-      : tokens(new_tokens) {}
+  Lexer(std::vector<std::pair<TOKEN, std::string>> new_tokens)
+      : tokens(std::move(new_tokens)) {}
   std::vector<Token> parse(
-      const std::string& str, const std::string& filename,
-      std::map<std::string, std::vector<std::string>>& files_lines,
+      const std::string &str, const std::string &filename,
+      std::map<std::string, std::vector<std::string>> &files_lines,
       bool DEBUG = false) {
     std::vector<Token> parse_res;
     /** Merge all tokens in one regex */
     std::regex r(std::accumulate(tokens.begin(), tokens.end(), std::string(),
-                                 [](const auto& ss, const auto& s) {
+                                 [](const auto &ss, const auto &s) {
                                    return ss.empty() ? s.second
                                                      : ss + "|" + s.second;
                                  }));
@@ -45,22 +45,24 @@ class Lexer {
       std::string token_val = m.str();
 
       /** Create and push new Token */
-      parse_res.push_back({tokens[id].first, token_val, pos, line_n, filename});
+      parse_res.emplace_back(
+          tokens[id].first, token_val, pos, line_n, filename
+      );
 
       /** Update lines info for error trace */
       tokens[id].first == TOKEN::line_end
-          ? (files_lines[filename].push_back(line), line.clear(), ++line_n,
-             pos = 0, 0)
-          : (pos += token_val.size(), line += token_val, 0);
+      ? (files_lines[filename].push_back(line), line.clear(), ++line_n,
+          pos = 0, 0)
+      : (pos += token_val.size(), line += token_val, 0);
 
       /** Write logs if needed */
       if (DEBUG)
         std::cout << "'" + token_val + "':" +
-                         std::to_string(
-                             static_cast<std::underlying_type_t<TOKEN>>(
-                                 tokens[id].first)) +
-                         " at " + std::to_string(pos) + ":" +
-                         std::to_string(line_n)
+            std::to_string(
+                static_cast<std::underlying_type_t<TOKEN>>(
+                    tokens[id].first)) +
+            " at " + std::to_string(pos) + ":" +
+            std::to_string(line_n)
                   << std::endl;
     }
     return parse_res;

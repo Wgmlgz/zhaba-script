@@ -1,16 +1,7 @@
-#pragma once
-#include "Lexer.hpp"
-#include "../Lang/types.hpp"
-
-/** Defined in SynataxTreeParser.hpp */
-std::vector<Function *> parseImpl(ast::ASTBlock *block, const types::Type &type, ScopeInfo &main_scope);
+#include "type_parser.hpp"
 
 namespace types {
 
-Type parse(std::string &str, const ScopeInfo &scope);
-Type parse(tokeniter &token, const ScopeInfo &scope);
-std::vector<Type> parseTemplate(tokeniter &token, const ScopeInfo &scope);
-types::StructInfo parseStruct(ast::ASTBlock *block, const ScopeInfo &scope);
 types::StructInfo parseStruct(ast::ASTBlock *block, const ScopeInfo &scope) {
   if (!block) throw std::runtime_error("null block passed to parseStruct :(");
   types::StructInfo struct_info;
@@ -20,14 +11,14 @@ types::StructInfo parseStruct(ast::ASTBlock *block, const ScopeInfo &scope) {
       /** Members line parsing */
       if (line->end - line->begin < 2) {
         throw ParserError(*line->begin, *line->end,
-                          "Expected memeber type with names like 'int a b c'");
+                          "Expected member type with names like 'int a b c'");
       }
 
       types::Type cur_type;
       auto cur = line->begin;
       try {
         cur_type = types::parse(cur, scope);
-      } catch (std::runtime_error err) {
+      } catch (const std::runtime_error &err) {
         throw ParserError(*line->begin, "Expected valid type");
       }
       cur_type.setLval(true);
@@ -136,7 +127,7 @@ std::vector<Type> parseTemplate(tokeniter &token, const ScopeInfo &scope) {
   if (token->val != "<")
     throw ParserError(*token, "Expected '<' for template parsing");
   ++token;
-  while (1) {
+  while (true) {
     if (token->token == TOKEN::space) {
       ++token;
       continue;
@@ -149,7 +140,7 @@ std::vector<Type> parseTemplate(tokeniter &token, const ScopeInfo &scope) {
     try {
       auto tp = parse(token, scope);
       templ.push_back(tp);
-    } catch (std::runtime_error err) {
+    } catch (const std::runtime_error &err) {
       throw ParserError(*token, "Type parsing failed");
     }
   }

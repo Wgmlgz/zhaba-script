@@ -1,35 +1,29 @@
-#pragma once
-#include <string>
-#include <vector>
-#include "Lexer.hpp"
-#include "../Lang/lang.hpp"
-#include "TypeParser.hpp"
-#include "ParserError.hpp"
+#include "definitions_parser.hpp"
 
-void validateFunction(const Function& func, tokeniter begin, tokeniter end) {
+void validateFunction(const Function &func, tokeniter begin, tokeniter end) {
   if (func.op_type == Function::OpType::bin) {
-    if (zhdata.B_OD.contains(func.getHeadNonRefNonLval())) 
+    if (zhdata.B_OD.contains(func.getHeadNonRefNonLval()))
       throw ParserError(*begin, *end,
-        func.toUniqueStr() + "already defined");
+                        func.toUniqueStr() + "already defined");
   } else if (func.op_type == Function::OpType::lhs) {
-    if (zhdata.PR_OD.contains(func.getHeadNonRefNonLval())) 
+    if (zhdata.PR_OD.contains(func.getHeadNonRefNonLval()))
       throw ParserError(*begin, *end,
-        func.toUniqueStr() + "already defined");
+                        func.toUniqueStr() + "already defined");
     if (func.name == "&") {
       throw ParserError(*begin, *end,
-        "You cannot overload prefix '&' operator");
+                        "You cannot overload prefix '&' operator");
     } else if (func.name == "*") {
       throw ParserError(*begin, *end,
-        "You cannot overload prefix '*' operator");
+                        "You cannot overload prefix '*' operator");
     }
   } else if (func.op_type == Function::OpType::rhs) {
-    if (zhdata.PO_OD.contains(func.getHeadNonRefNonLval())) 
+    if (zhdata.PO_OD.contains(func.getHeadNonRefNonLval()))
       throw ParserError(*begin, *end,
-        func.toUniqueStr() + "already defined");
+                        func.toUniqueStr() + "already defined");
   }
 }
 
-Function* parseOpHeader(tokeniter begin, tokeniter end, const ScopeInfo& scope) {
+Function *parseOpHeader(tokeniter begin, tokeniter end, const ScopeInfo &scope) {
   if (begin >= end) throw ParserError(*begin, "Expected operator declaration");
   auto func = new Function;
   auto cur = begin;
@@ -113,7 +107,7 @@ Function* parseOpHeader(tokeniter begin, tokeniter end, const ScopeInfo& scope) 
   }
   if (func->op_type == Function::OpType::bin and func->args.size() < 2) {
     throw ParserError(*start_token, *cur,
-    "Expected at least 2 arguments in binary operator");
+                      "Expected at least 2 arguments in binary operator");
   }
 
   if (func->op_type == Function::OpType::rhs) func->priority = 2;
@@ -122,7 +116,7 @@ Function* parseOpHeader(tokeniter begin, tokeniter end, const ScopeInfo& scope) 
   if (func->priority < 0) {
     if (func->op_type == Function::OpType::bin)
       throw ParserError(*begin, *end,
-        "Binary operator priority is not defined");
+                        "Binary operator priority is not defined");
   }
 
   validateFunction(*func, start_token, cur);

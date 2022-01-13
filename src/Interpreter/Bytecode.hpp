@@ -17,6 +17,8 @@
 /*1*/ #include "../Compiler/Compiler.hpp"
 /*2*/ #include "../TreeLib/TreeLib.hpp"
 
+#include "runtime_error.hpp"
+
 namespace zhin {
   class ByteCode {
    public:

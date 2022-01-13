@@ -3,10 +3,10 @@
 namespace zhin {
 
 class Heap {
-  /** Probaly slow as fck */
+  /** Probably slow as fck */
   std::mt19937_64 gen = std::mt19937_64(time(0));
   std::map<int64_t, bytevec> mem;
-  std::map<int64_t, byte*> owned_ptrs;
+  std::map<int64_t, byte *> owned_ptrs;
 
  public:
   void free(int64_t ptr) {
@@ -30,7 +30,7 @@ class Heap {
       owned_ptrs.emplace(i, mem_cur);
     return ptr;
   }
-  byte* access(int64_t ptr, int size) {
+  byte *access(int64_t ptr, int size) {
     if ((ptr & 0xffff000000000000) != 0xff15000000000000)
       throw RuntimeError("ptr is not heap member");
     if (!owned_ptrs.contains(ptr))

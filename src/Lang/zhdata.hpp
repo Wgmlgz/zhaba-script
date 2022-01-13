@@ -58,7 +58,7 @@ struct ZHDATA {
     CBOP(>,  i16T, i16T, boolT),
     CBOP(<=, i16T, i16T, boolT),
     CBOP(>=, i16T, i16T, boolT),
-    
+
     CBOP(+,  i32T, i32T, i32T),
     CBOP(-,  i32T, i32T, i32T),
     CBOP(*,  i32T, i32T, i32T),
@@ -70,7 +70,7 @@ struct ZHDATA {
     CBOP(>,  i32T, i32T, boolT),
     CBOP(<=, i32T, i32T, boolT),
     CBOP(>=, i32T, i32T, boolT),
-    
+
     CBOP(+,  i64T, i64T, i64T),
     CBOP(-,  i64T, i64T, i64T),
     CBOP(*,  i64T, i64T, i64T),
@@ -106,7 +106,7 @@ struct ZHDATA {
     CBOP(>,  u16T, u16T, boolT),
     CBOP(<=, u16T, u16T, boolT),
     CBOP(>=, u16T, u16T, boolT),
-    
+
     CBOP(+,  u32T, u32T, u32T),
     CBOP(-,  u32T, u32T, u32T),
     CBOP(*,  u32T, u32T, u32T),
@@ -118,7 +118,7 @@ struct ZHDATA {
     CBOP(>,  u32T, u32T, boolT),
     CBOP(<=, u32T, u32T, boolT),
     CBOP(>=, u32T, u32T, boolT),
-    
+
     CBOP(+,  u64T, u64T, u64T),
     CBOP(-,  u64T, u64T, u64T),
     CBOP(*,  u64T, u64T, u64T),
@@ -269,4 +269,4 @@ struct ZHDATA {
 };
 };
 
-ZHDATA zhdata;
+extern ZHDATA zhdata;

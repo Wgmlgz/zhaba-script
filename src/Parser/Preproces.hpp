@@ -5,23 +5,23 @@
 
 #include "../Lang/lang.hpp"
 #include "Lexer.hpp"
-#include "ParserError.hpp"
+#include "parser_error.hpp"
 
-void defineFlowTokens(std::vector<Token>& tokens) {
-  for (auto i = tokens.begin(); i != tokens.end(); ++i) {
-    if (i->token == TOKEN::id)
-      if (i->val == ":") i->token = TOKEN::new_block;
-    if (i->token == TOKEN::id)
-      if (i->val == "|") i->token = TOKEN::next_block;
-    if (i->token == TOKEN::id)
-      if (i->val == "\\") i->token = TOKEN::fin_block;
+void defineFlowTokens(std::vector<Token> &tokens) {
+  for (auto &token : tokens) {
+    if (token.token == TOKEN::id)
+      if (token.val == ":") token.token = TOKEN::new_block;
+    if (token.token == TOKEN::id)
+      if (token.val == "|") token.token = TOKEN::next_block;
+    if (token.token == TOKEN::id)
+      if (token.val == "\\") token.token = TOKEN::fin_block;
   }
 }
 
-void preprocess(std::filesystem::path file_path, std::vector<Token>& res, int depth = 0) {
+void preprocess(std::filesystem::path file_path, std::vector<Token> &res, int depth = 0) {
   zhdata.included_files_names.push_back(file_path.string());
   auto fin = std::ifstream(file_path);
-  
+
   if (fin.fail()) {
     file_path = zhdata.std_path / file_path.filename();
     fin = std::ifstream(file_path);
@@ -38,22 +38,20 @@ void preprocess(std::filesystem::path file_path, std::vector<Token>& res, int de
   zhdata.included_files.push_back(file_data);
 
   std::vector<Token> tokens = zhdata.lexer.parse(
-      file_data, zhdata.included_files_names.back(), zhdata.files_lines, zhdata.bools["tokens"]);
-  // for (auto& i : tokens) i.file_ptr = &zhdata.included_files.back();
+      file_data, zhdata.included_files_names.back(), zhdata.files_lines, zhdata.bools["tokens"]
+  );
 
   for (auto i = tokens.begin(); i != tokens.end(); ++i) {
-    /* include <filename>*/
+    /* use <filename>*/
     if (i->token == TOKEN::comment_block or i->token == TOKEN::comment_line) continue;
     if (i->val == "use") {
-      if (i + 1 == tokens.end()) 
+      if (i + 1 == tokens.end())
         throw ParserError(i->pos, "Expected file path");
       if (depth >= 16)
         throw ParserError(0, "Maximum file include depth reached");
-        
+
       std::string path_str;
-      do {
-        ++i;
-      } while (i->token == TOKEN::space);
+      do { ++i; } while (i->token == TOKEN::space);
       if (i->token == TOKEN::str_literal) {
         path_str = i->val;
         path_str.erase(path_str.begin());

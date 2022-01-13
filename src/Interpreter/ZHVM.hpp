@@ -10,12 +10,8 @@
 #include <stack>
 #include <string>
 
-/** Order is important */
-/*0*/
 #include "../Parser/Parser.hpp"
-/*1*/
 #include "../Compiler/Compiler.hpp"
-/*2*/
 #include "../TreeLib/TreeLib.hpp"
 
 #include "./Bytecode.hpp"
@@ -24,7 +20,7 @@
 
 namespace zhin {
 /**
- * Memory addreses
+ * Memory addresses
  * 0x________________ :stack
  * 0xFF15____________ :heap
  * 0xFF54____________ :literals
@@ -41,8 +37,8 @@ class ZHVM {
   std::map<size_t, std::string> mp;
   bool do_stack_trace = zhdata.bools["stack_trace"];
 
-  ByteCode& bytecode;
-  byte* getPtr(int64_t ptr, int size) {
+  ByteCode &bytecode;
+  byte *getPtr(int64_t ptr, int size) {
     if ((ptr & 0xffff000000000000) == 0xff15000000000000)
       /** Heap */ return heap.access(ptr, size);
     else if ((ptr & 0xffff000000000000) == 0xff54000000000000)
@@ -52,13 +48,7 @@ class ZHVM {
   }
 
  public:
-  struct InputError {
-    std::string msg;
-    InputError(const std::string &new_msg) : msg(new_msg) {}
-    std::string what() { return msg; }
-  };
-
-  ZHVM(ByteCode& run_bytecode) : bytecode(run_bytecode) {
+  ZHVM(ByteCode &run_bytecode) : bytecode(run_bytecode) {
     bytecode.loadLabels();
     std::string dis;
     auto t = bytecode.dis();
@@ -77,14 +67,12 @@ class ZHVM {
    * @return true if run is not completed
    */
   bool runChunk(size_t max_commands = 1000) {
-    try {
     for (size_t done = 0; cur < bytecode.size() && done < max_commands; ++done) {
       auto op = *bytecode.loadInstr(cur);
       if (do_stack_trace) std::cout << mp[cur];
       ++cur;
       switch (op) {
-        case instr::nop:
-          break;
+        case instr::nop:break;
 
 #define ARITHMETIC_BIN(name, type, ret_type, op, size)                  \
   case instr::name: {                                                   \
@@ -103,98 +91,98 @@ class ZHVM {
     stack.push(res);                                                 \
   } break;
 
-          ARITHMETIC_BIN(add_i8, int8_t, int8_t, +, 1)
-          ARITHMETIC_BIN(sub_i8, int8_t, int8_t, -, 1)
-          ARITHMETIC_BIN(mul_i8, int8_t, int8_t, *, 1)
-          ARITHMETIC_BIN(div_i8, int8_t, int8_t, /, 1)
-          ARITHMETIC_BIN(mod_i8, int8_t, int8_t, %, 1)
-          ARITHMETIC_BIN(less_i8, int8_t, bool, <, 1)
-          ARITHMETIC_BIN(more_i8, int8_t, bool, >, 1)
-          ARITHMETIC_BIN(lesseq_i8, int8_t, bool, <=, 1)
-          ARITHMETIC_BIN(moreeq_i8, int8_t, bool, >=, 1)
+        ARITHMETIC_BIN(add_i8, int8_t, int8_t, +, 1)
+        ARITHMETIC_BIN(sub_i8, int8_t, int8_t, -, 1)
+        ARITHMETIC_BIN(mul_i8, int8_t, int8_t, *, 1)
+        ARITHMETIC_BIN(div_i8, int8_t, int8_t, /, 1)
+        ARITHMETIC_BIN(mod_i8, int8_t, int8_t, %, 1)
+        ARITHMETIC_BIN(less_i8, int8_t, bool, <, 1)
+        ARITHMETIC_BIN(more_i8, int8_t, bool, >, 1)
+        ARITHMETIC_BIN(lesseq_i8, int8_t, bool, <=, 1)
+        ARITHMETIC_BIN(moreeq_i8, int8_t, bool, >=, 1)
 
-          ARITHMETIC_BIN(add_i16, int16_t, int16_t, +, 2)
-          ARITHMETIC_BIN(sub_i16, int16_t, int16_t, -, 2)
-          ARITHMETIC_BIN(mul_i16, int16_t, int16_t, *, 2)
-          ARITHMETIC_BIN(div_i16, int16_t, int16_t, /, 2)
-          ARITHMETIC_BIN(mod_i16, int16_t, int16_t, %, 2)
-          ARITHMETIC_BIN(less_i16, int16_t, bool, <, 2)
-          ARITHMETIC_BIN(more_i16, int16_t, bool, >, 2)
-          ARITHMETIC_BIN(lesseq_i16, int16_t, bool, <=, 2)
-          ARITHMETIC_BIN(moreeq_i16, int16_t, bool, >=, 2)
+        ARITHMETIC_BIN(add_i16, int16_t, int16_t, +, 2)
+        ARITHMETIC_BIN(sub_i16, int16_t, int16_t, -, 2)
+        ARITHMETIC_BIN(mul_i16, int16_t, int16_t, *, 2)
+        ARITHMETIC_BIN(div_i16, int16_t, int16_t, /, 2)
+        ARITHMETIC_BIN(mod_i16, int16_t, int16_t, %, 2)
+        ARITHMETIC_BIN(less_i16, int16_t, bool, <, 2)
+        ARITHMETIC_BIN(more_i16, int16_t, bool, >, 2)
+        ARITHMETIC_BIN(lesseq_i16, int16_t, bool, <=, 2)
+        ARITHMETIC_BIN(moreeq_i16, int16_t, bool, >=, 2)
 
-          ARITHMETIC_BIN(add_i32, int32_t, int32_t, +, 4)
-          ARITHMETIC_BIN(sub_i32, int32_t, int32_t, -, 4)
-          ARITHMETIC_BIN(mul_i32, int32_t, int32_t, *, 4)
-          ARITHMETIC_BIN(div_i32, int32_t, int32_t, /, 4)
-          ARITHMETIC_BIN(mod_i32, int32_t, int32_t, %, 4)
-          ARITHMETIC_BIN(less_i32, int32_t, bool, <, 4)
-          ARITHMETIC_BIN(more_i32, int32_t, bool, >, 4)
-          ARITHMETIC_BIN(lesseq_i32, int32_t, bool, <=, 4)
-          ARITHMETIC_BIN(moreeq_i32, int32_t, bool, >=, 4)
+        ARITHMETIC_BIN(add_i32, int32_t, int32_t, +, 4)
+        ARITHMETIC_BIN(sub_i32, int32_t, int32_t, -, 4)
+        ARITHMETIC_BIN(mul_i32, int32_t, int32_t, *, 4)
+        ARITHMETIC_BIN(div_i32, int32_t, int32_t, /, 4)
+        ARITHMETIC_BIN(mod_i32, int32_t, int32_t, %, 4)
+        ARITHMETIC_BIN(less_i32, int32_t, bool, <, 4)
+        ARITHMETIC_BIN(more_i32, int32_t, bool, >, 4)
+        ARITHMETIC_BIN(lesseq_i32, int32_t, bool, <=, 4)
+        ARITHMETIC_BIN(moreeq_i32, int32_t, bool, >=, 4)
 
-          ARITHMETIC_BIN(add_i64, int64_t, int64_t, +, 8)
-          ARITHMETIC_BIN(sub_i64, int64_t, int64_t, -, 8)
-          ARITHMETIC_BIN(mul_i64, int64_t, int64_t, *, 8)
-          ARITHMETIC_BIN(div_i64, int64_t, int64_t, /, 8)
-          ARITHMETIC_BIN(mod_i64, int64_t, int64_t, %, 8)
-          ARITHMETIC_BIN(less_i64, int64_t, bool, <, 8)
-          ARITHMETIC_BIN(more_i64, int64_t, bool, >, 8)
-          ARITHMETIC_BIN(lesseq_i64, int64_t, bool, <=, 8)
-          ARITHMETIC_BIN(moreeq_i64, int64_t, bool, >=, 8)
+        ARITHMETIC_BIN(add_i64, int64_t, int64_t, +, 8)
+        ARITHMETIC_BIN(sub_i64, int64_t, int64_t, -, 8)
+        ARITHMETIC_BIN(mul_i64, int64_t, int64_t, *, 8)
+        ARITHMETIC_BIN(div_i64, int64_t, int64_t, /, 8)
+        ARITHMETIC_BIN(mod_i64, int64_t, int64_t, %, 8)
+        ARITHMETIC_BIN(less_i64, int64_t, bool, <, 8)
+        ARITHMETIC_BIN(more_i64, int64_t, bool, >, 8)
+        ARITHMETIC_BIN(lesseq_i64, int64_t, bool, <=, 8)
+        ARITHMETIC_BIN(moreeq_i64, int64_t, bool, >=, 8)
 
-          ARITHMETIC_BIN(eq_8, int8_t, bool, ==, 1)
-          ARITHMETIC_BIN(uneq_8, int8_t, bool, !=, 1)
-          ARITHMETIC_BIN(eq_16, int16_t, bool, ==, 2)
-          ARITHMETIC_BIN(uneq_16, int16_t, bool, !=, 2)
-          ARITHMETIC_BIN(eq_32, int32_t, bool, ==, 4)
-          ARITHMETIC_BIN(uneq_32, int32_t, bool, !=, 4)
-          ARITHMETIC_BIN(eq_64, int64_t, bool, ==, 8)
-          ARITHMETIC_BIN(uneq_64, int64_t, bool, !=, 8)
+        ARITHMETIC_BIN(eq_8, int8_t, bool, ==, 1)
+        ARITHMETIC_BIN(uneq_8, int8_t, bool, !=, 1)
+        ARITHMETIC_BIN(eq_16, int16_t, bool, ==, 2)
+        ARITHMETIC_BIN(uneq_16, int16_t, bool, !=, 2)
+        ARITHMETIC_BIN(eq_32, int32_t, bool, ==, 4)
+        ARITHMETIC_BIN(uneq_32, int32_t, bool, !=, 4)
+        ARITHMETIC_BIN(eq_64, int64_t, bool, ==, 8)
+        ARITHMETIC_BIN(uneq_64, int64_t, bool, !=, 8)
 
-          ARITHMETIC_BIN(add_u8, uint8_t, uint8_t, +, 1)
-          ARITHMETIC_BIN(sub_u8, uint8_t, uint8_t, -, 1)
-          ARITHMETIC_BIN(mul_u8, uint8_t, uint8_t, *, 1)
-          ARITHMETIC_BIN(div_u8, uint8_t, uint8_t, /, 1)
-          ARITHMETIC_BIN(mod_u8, uint8_t, uint8_t, %, 1)
-          ARITHMETIC_BIN(less_u8, uint8_t, bool, <, 1)
-          ARITHMETIC_BIN(more_u8, uint8_t, bool, >, 1)
-          ARITHMETIC_BIN(lesseq_u8, uint8_t, bool, <=, 1)
-          ARITHMETIC_BIN(moreeq_u8, uint8_t, bool, >=, 1)
+        ARITHMETIC_BIN(add_u8, uint8_t, uint8_t, +, 1)
+        ARITHMETIC_BIN(sub_u8, uint8_t, uint8_t, -, 1)
+        ARITHMETIC_BIN(mul_u8, uint8_t, uint8_t, *, 1)
+        ARITHMETIC_BIN(div_u8, uint8_t, uint8_t, /, 1)
+        ARITHMETIC_BIN(mod_u8, uint8_t, uint8_t, %, 1)
+        ARITHMETIC_BIN(less_u8, uint8_t, bool, <, 1)
+        ARITHMETIC_BIN(more_u8, uint8_t, bool, >, 1)
+        ARITHMETIC_BIN(lesseq_u8, uint8_t, bool, <=, 1)
+        ARITHMETIC_BIN(moreeq_u8, uint8_t, bool, >=, 1)
 
-          ARITHMETIC_BIN(add_u16, uint16_t, uint16_t, +, 2)
-          ARITHMETIC_BIN(sub_u16, uint16_t, uint16_t, -, 2)
-          ARITHMETIC_BIN(mul_u16, uint16_t, uint16_t, *, 2)
-          ARITHMETIC_BIN(div_u16, uint16_t, uint16_t, /, 2)
-          ARITHMETIC_BIN(mod_u16, uint16_t, uint16_t, %, 2)
-          ARITHMETIC_BIN(less_u16, uint16_t, bool, <, 2)
-          ARITHMETIC_BIN(more_u16, uint16_t, bool, >, 2)
-          ARITHMETIC_BIN(lesseq_u16, uint16_t, bool, <=, 2)
-          ARITHMETIC_BIN(moreeq_u16, uint16_t, bool, >=, 2)
+        ARITHMETIC_BIN(add_u16, uint16_t, uint16_t, +, 2)
+        ARITHMETIC_BIN(sub_u16, uint16_t, uint16_t, -, 2)
+        ARITHMETIC_BIN(mul_u16, uint16_t, uint16_t, *, 2)
+        ARITHMETIC_BIN(div_u16, uint16_t, uint16_t, /, 2)
+        ARITHMETIC_BIN(mod_u16, uint16_t, uint16_t, %, 2)
+        ARITHMETIC_BIN(less_u16, uint16_t, bool, <, 2)
+        ARITHMETIC_BIN(more_u16, uint16_t, bool, >, 2)
+        ARITHMETIC_BIN(lesseq_u16, uint16_t, bool, <=, 2)
+        ARITHMETIC_BIN(moreeq_u16, uint16_t, bool, >=, 2)
 
-          ARITHMETIC_BIN(add_u32, uint32_t, uint32_t, +, 4)
-          ARITHMETIC_BIN(sub_u32, uint32_t, uint32_t, -, 4)
-          ARITHMETIC_BIN(mul_u32, uint32_t, uint32_t, *, 4)
-          ARITHMETIC_BIN(div_u32, uint32_t, uint32_t, /, 4)
-          ARITHMETIC_BIN(mod_u32, uint32_t, uint32_t, %, 4)
-          ARITHMETIC_BIN(less_u32, uint32_t, bool, <, 4)
-          ARITHMETIC_BIN(more_u32, uint32_t, bool, >, 4)
-          ARITHMETIC_BIN(lesseq_u32, uint32_t, bool, <=, 4)
-          ARITHMETIC_BIN(moreeq_u32, uint32_t, bool, >=, 4)
+        ARITHMETIC_BIN(add_u32, uint32_t, uint32_t, +, 4)
+        ARITHMETIC_BIN(sub_u32, uint32_t, uint32_t, -, 4)
+        ARITHMETIC_BIN(mul_u32, uint32_t, uint32_t, *, 4)
+        ARITHMETIC_BIN(div_u32, uint32_t, uint32_t, /, 4)
+        ARITHMETIC_BIN(mod_u32, uint32_t, uint32_t, %, 4)
+        ARITHMETIC_BIN(less_u32, uint32_t, bool, <, 4)
+        ARITHMETIC_BIN(more_u32, uint32_t, bool, >, 4)
+        ARITHMETIC_BIN(lesseq_u32, uint32_t, bool, <=, 4)
+        ARITHMETIC_BIN(moreeq_u32, uint32_t, bool, >=, 4)
 
-          ARITHMETIC_BIN(add_u64, uint64_t, uint64_t, +, 8)
-          ARITHMETIC_BIN(sub_u64, uint64_t, uint64_t, -, 8)
-          ARITHMETIC_BIN(mul_u64, uint64_t, uint64_t, *, 8)
-          ARITHMETIC_BIN(div_u64, uint64_t, uint64_t, /, 8)
-          ARITHMETIC_BIN(mod_u64, uint64_t, uint64_t, %, 8)
-          ARITHMETIC_BIN(less_u64, uint64_t, bool, <, 8)
-          ARITHMETIC_BIN(more_u64, uint64_t, bool, >, 8)
-          ARITHMETIC_BIN(lesseq_u64, uint64_t, bool, <=, 8)
-          ARITHMETIC_BIN(moreeq_u64, uint64_t, bool, >=, 8)
+        ARITHMETIC_BIN(add_u64, uint64_t, uint64_t, +, 8)
+        ARITHMETIC_BIN(sub_u64, uint64_t, uint64_t, -, 8)
+        ARITHMETIC_BIN(mul_u64, uint64_t, uint64_t, *, 8)
+        ARITHMETIC_BIN(div_u64, uint64_t, uint64_t, /, 8)
+        ARITHMETIC_BIN(mod_u64, uint64_t, uint64_t, %, 8)
+        ARITHMETIC_BIN(less_u64, uint64_t, bool, <, 8)
+        ARITHMETIC_BIN(more_u64, uint64_t, bool, >, 8)
+        ARITHMETIC_BIN(lesseq_u64, uint64_t, bool, <=, 8)
+        ARITHMETIC_BIN(moreeq_u64, uint64_t, bool, >=, 8)
 
-          ARITHMETIC_BIN(and_bool, bool, bool, &&, 1)
-          ARITHMETIC_BIN(or_bool, bool, bool, ||, 1)
-          ARITHMETIC_PR(not_bool, bool, bool, !, 1)
+        ARITHMETIC_BIN(and_bool, bool, bool, &&, 1)
+        ARITHMETIC_BIN(or_bool, bool, bool, ||, 1)
+        ARITHMETIC_PR(not_bool, bool, bool, !, 1)
 
 #define TOSi8 *reinterpret_cast<int8_t *>(stack.getBytes(-1, 1))
 #define TOSi16 *reinterpret_cast<int16_t *>(stack.getBytes(-2, 2))
@@ -210,70 +198,81 @@ class ZHVM {
           auto target = *bytecode.loadI32(cur);
           cur += 4;
           cur = bytecode.label(target);
-        } break;
+        }
+          break;
         case instr::call: {
           auto target = *bytecode.loadI32(cur);
           cur += 4;
           call_stack.push_back(cur);
           call_stack_frame.push_back(stack.getTop());
           cur = bytecode.label(target);
-        } break;
+        }
+          break;
         case instr::ret: {
           int args_size = *bytecode.loadI32(cur);
           cur += 4;
           int ret_size = *bytecode.loadI32(cur);
           byte *target = call_stack_frame.back() - args_size + stack.begin(),
-               *begin = stack.getTopPtr() - ret_size, *end = stack.getTopPtr();
+              *begin = stack.getTopPtr() - ret_size, *end = stack.getTopPtr();
           std::copy(begin, end, target);
 
           cur = call_stack.back();
           stack.setTop(call_stack_frame.back() + ret_size - args_size);
           call_stack.pop_back();
           call_stack_frame.pop_back();
-        } break;
+        }
+          break;
         case instr::jmp_if_bool: {
           auto target = *bytecode.loadI32(cur);
           cur += 4;
           auto val = TOSi8;
           stack.popBytes(1);
           if (val) cur = bytecode.label(target);
-        } break;
+        }
+          break;
         case instr::push_8: {
           auto val = *bytecode.loadU8(cur);
           cur += 1;
           stack.push(val);
-        } break;
+        }
+          break;
         case instr::push_16: {
           auto val = *bytecode.loadU16(cur);
           cur += 2;
           stack.push(val);
-        } break;
+        }
+          break;
         case instr::push_32: {
           auto val = *bytecode.loadU32(cur);
           cur += 4;
           stack.push(val);
-        } break;
+        }
+          break;
         case instr::push_64: {
           auto val = *bytecode.loadU64(cur);
           cur += 8;
           stack.push(val);
-        } break;
+        }
+          break;
         case instr::push_stack_ptr: {
           auto val = *bytecode.loadI64(cur);
           val += call_stack_frame.back();
           cur += 8;
           stack.push(val);
-        } break;
+        }
+          break;
         case instr::push_literal_ptr: {
           auto literal_id = *bytecode.loadI32(cur);
           cur += 4;
           auto val = 0xff54000000000000 |
-                     static_cast<int64_t>(bytecode.literals_labels[literal_id]);
+              static_cast<int64_t>(bytecode.literals_labels[literal_id]);
           stack.push(val);
-        } break;
+        }
+          break;
         case instr::push_frame: {
-          stack.push((int64_t)call_stack_frame.back());
-        } break;
+          stack.push((int64_t) call_stack_frame.back());
+        }
+          break;
         case instr::deref: {
           auto size = *bytecode.loadI32(cur);
           cur += 4;
@@ -282,33 +281,37 @@ class ZHVM {
           auto mem = getPtr(ptr, size);  // get data
           auto target = stack.getTopPtr();
           stack.pushBytes(size);
-          const byte* begin = mem;
-          const byte* end = begin + size;
+          const byte *begin = mem;
+          const byte *end = begin + size;
           std::copy(begin, end, target);
-        } break;
+        }
+          break;
         case instr::assign: {
           auto size = *bytecode.loadI32(cur);
           cur += 4;
           auto mem = stack.getBytes(-size, size);
-          auto ptr = *reinterpret_cast<int64_t*>(stack.getBytes(-8 - size, 8));
+          auto ptr = *reinterpret_cast<int64_t *>(stack.getBytes(-8 - size, 8));
           auto target = getPtr(ptr, size);
           const byte *begin = mem, *end = begin + size;
           std::copy(begin, end, target);
           stack.popBytes(8 + size);
-        } break;
+        }
+          break;
         case instr::label: {
           bytecode.loadI32(cur);
           cur += 4;
-        } break;
+        }
+          break;
         case instr::not_bytes : {
           auto size = *bytecode.loadI32(cur);
           cur += 4;
-          bool val = 0;
+          bool val = false;
           for (auto i = stack.getTopPtr() - size; i < stack.getTopPtr(); ++i)
             val |= *i;
           stack.popBytes(size);
           stack.push(!val);
-        } break;
+        }
+          break;
 
 #define MAKE_IO(type_, c_type_, print_type_, size_)      \
   case instr::put_##type_: {                             \
@@ -327,28 +330,30 @@ class ZHVM {
     stack.push(static_cast<print_type_>(tmp));           \
   } break;
 
-          MAKE_IO(i8, int64_t, int8_t, 1)
-          MAKE_IO(i16, int64_t, int16_t, 2)
-          MAKE_IO(i32, int64_t, int32_t, 4)
-          MAKE_IO(i64, int64_t, int64_t, 8)
+        MAKE_IO(i8, int64_t, int8_t, 1)
+        MAKE_IO(i16, int64_t, int16_t, 2)
+        MAKE_IO(i32, int64_t, int32_t, 4)
+        MAKE_IO(i64, int64_t, int64_t, 8)
 
-          MAKE_IO(u8, uint64_t, uint8_t, 1)
-          MAKE_IO(u16, uint64_t, uint16_t, 2)
-          MAKE_IO(u32, uint64_t, uint32_t, 4)
-          MAKE_IO(u64, uint64_t, uint64_t, 8)
+        MAKE_IO(u8, uint64_t, uint8_t, 1)
+        MAKE_IO(u16, uint64_t, uint16_t, 2)
+        MAKE_IO(u32, uint64_t, uint32_t, 4)
+        MAKE_IO(u64, uint64_t, uint64_t, 8)
 
         case instr::put_str: {
           auto char_ptr = TOSi64;
           stack.popBytes(8);
           auto mem = getPtr(char_ptr, 1);
           *zhdata.out << reinterpret_cast<char *>(mem);
-        } break;
+        }
+          break;
         case instr::out_str: {
           auto char_ptr = TOSi64;
           stack.popBytes(8);
           auto mem = getPtr(char_ptr, 1);
-          *zhdata.out << reinterpret_cast<char*>(mem) << std::endl;
-        } break;
+          *zhdata.out << reinterpret_cast<char *>(mem) << std::endl;
+        }
+          break;
         case instr::in_str: {
           std::string str;
           *zhdata.in >> str;
@@ -356,51 +361,59 @@ class ZHVM {
           auto real_ptr = getPtr(ptr, str.size() + 1);
           std::copy_n(str.c_str(), str.size() + 1, real_ptr);
           stack.push(static_cast<int64_t>(ptr));
-        } break;
+        }
+          break;
         case instr::put_char: {
           auto ch = TOSi8;
           stack.popBytes(1);
           *zhdata.out << static_cast<char>(ch);
-        } break;
+        }
+          break;
         case instr::out_char: {
           auto ch = TOSi8;
           stack.popBytes(1);
           *zhdata.out << static_cast<char>(ch) << std::endl;
-        } break;
+        }
+          break;
         case instr::in_char: {
           char tmp;
           *zhdata.in >> tmp;
           stack.push(static_cast<char>(tmp));
-        } break;
+        }
+          break;
         case instr::push_bytes: {
           auto val = *bytecode.loadI32(cur);
           cur += 4;
           stack.pushBytes(val);
-        } break;
+        }
+          break;
         case instr::pop_bytes: {
           auto val = *bytecode.loadI32(cur);
           cur += 4;
           stack.popBytes(val);
-        } break;
+        }
+          break;
         case instr::malloc: {
           auto size = TOSi64;
           stack.popBytes(8);
           auto ptr = heap.malloc(size);
           stack.push(ptr);
-        } break;
+        }
+          break;
         case instr::free: {
           auto ptr = TOSi64;
           stack.popBytes(8);
           heap.free(ptr);
-        } break;
+        }
+          break;
         default: {
           throw std::runtime_error("unimplemented op");
-        } break;
+        }
+          break;
       }
       if (do_stack_trace)
         std::cout << stack.trace64() << std::endl << std::endl;
     }
-    } catch (const InputError err) {}
 
     return cur < bytecode.size();
   }

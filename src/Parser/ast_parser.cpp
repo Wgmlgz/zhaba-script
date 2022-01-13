@@ -1,16 +1,15 @@
-#pragma once
-#include "../Lang/lang.hpp"
-#include "ParserError.hpp"
+#include "ast_parser.hpp"
 
 namespace ast {
-ASTBlock* parseBlock(tokeniter begin, tokeniter end) {
-  std::stack<ASTBlock*> st;
+
+ASTBlock *parseBlock(tokeniter begin, tokeniter end) {
+  std::stack<ASTBlock *> st;
   auto root = new ASTBlock;
   st.emplace(root);
   auto cur = begin;
 
   int line_n = -1;
-  for (;;) {
+  while (true) {
     if (cur == end) break;
     size_t line_offset = 0;
     if (cur->token == TOKEN::space) {
@@ -23,11 +22,9 @@ ASTBlock* parseBlock(tokeniter begin, tokeniter end) {
       ++line_n;
       continue;
     }
-    tokeniter line_begin = cur, line_end = end;
-    bool exit = false;
-    for (;;) {
+    auto line_begin = cur, line_end = end;
+    while (true) {
       if (cur == end) {
-        exit = true;
         break;
       }
       if (cur->token == TOKEN::new_block) break;
@@ -39,7 +36,7 @@ ASTBlock* parseBlock(tokeniter begin, tokeniter end) {
       ++cur;
     }
     line_end = cur;
-    // cur at new line
+    /** cur at new line */
     if (line_n != st.top()->line) {
       while (st.top()->undef_offset ? line_offset <= st.top()->offset
                                     : line_offset < st.top()->offset) {
@@ -86,20 +83,8 @@ ASTBlock* parseBlock(tokeniter begin, tokeniter end) {
   return root;
 }
 
-ASTBlock* parse(tokeniter begin, tokeniter end) {
-  // int line = 1;
-  // ParserError::which_line.clear();
-  // ParserError::lines.clear();
-  // ParserError::lines.resize(1);
-
-  // for (auto i = begin; i != end; ++i) {
-  //   ParserError::which_line[i->pos] = line;
-  //   if (i->token == TOKEN::line_end)
-  //     ++line, ParserError::lines.push_back("");
-  //   else
-  //     ParserError::lines[line - 1] += i->val;
-  // }
-
+ASTBlock *parse(tokeniter begin, tokeniter end) {
   return parseBlock(begin, end);
 }
+
 }

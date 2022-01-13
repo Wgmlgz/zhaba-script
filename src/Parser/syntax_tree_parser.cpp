@@ -1,8 +1,4 @@
-#pragma once
-#include "../Lang/lang.hpp"
-#include "../TreeLib/Tree.hpp"
-#include "DefinitionsParser.hpp"
-#include "TypeParser.hpp"
+#include "syntax_tree_parser.hpp"
 
 STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo& parent_scope, types::Type retT) {
   auto res = new STBlock;
@@ -53,9 +49,9 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
                 } else {
                   if (type <=> assign->rhs->type != 0) {
                     throw ParserError(assign->begin, assign->end,
-                      "Types (" + type.toString() +
-                      " " + assign->rhs->type.toString() +
-                      ") for '='(init) are different");
+                                      "Types (" + type.toString() +
+                                          " " + assign->rhs->type.toString() +
+                                          ") for '='(init) are different");
                   }
                   res->scope_info.vars[id->val] = type;
                   cur_scope.vars[id->val] = type;
@@ -81,9 +77,9 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
         auto exp_builded =
             buildExp(exp_preprocessed.begin(), exp_preprocessed.end());
 
-          // auto exp = zhexp::parse(line->begin, line->end, cur_scope, &res->scope_info);
+        // auto exp = zhexp::parse(line->begin, line->end, cur_scope, &res->scope_info);
         if (auto ctr_ = dynamic_cast<zhexp::FlowOperator*>(exp_builded)) {
-        
+
           /* "?" (if) statement parsing */
           if (ctr_->val == "?") {
             auto ctr = dynamic_cast<zhexp::FlowOperator*>(
@@ -101,10 +97,10 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
                       if (elseif_body->nodes.size() == 2) {
                         if (auto line = dynamic_cast<ast::ASTLine*>(elseif_body->nodes[0])) {
                           auto exp =
-                            zhexp::parse(line->begin, line->end, cur_scope, &res->scope_info);
+                              zhexp::parse(line->begin, line->end, cur_scope, &res->scope_info);
                           if (auto block = dynamic_cast<ast::ASTBlock*>(elseif_body->nodes[1])) {
                             tmp_if->elseif_body.emplace_back(
-                              exp, parseASTblock(block, cur_scope, res->scope_info, retT));
+                                exp, parseASTblock(block, cur_scope, res->scope_info, retT));
                           } else throw ParserError("Exprected block in '|(else if)' statement");
                         } else throw ParserError("Expected expression in '|(else if)' statement");
                       } else {
@@ -116,7 +112,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
                   if (i + 1 != main_block->nodes.end()) {
                     if (auto else_body = dynamic_cast<ast::ASTBlock*>(*(i + 1))) {
                       tmp_if->else_body =
-                        parseASTblock(else_body, cur_scope, res->scope_info, retT);
+                          parseASTblock(else_body, cur_scope, res->scope_info, retT);
                       ++i;
                     }
                   }
@@ -129,7 +125,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
               throw ParserError(ctr->begin, ctr->end, "Expected int expression in '?(if)' condition");
             }
           }
-          /* "@" (for) statement parsing */
+            /* "@" (for) statement parsing */
           else if (ctr_->val == "@") {
             auto tuple_ = castTreeToTuple(ctr_->operand);
 
@@ -139,7 +135,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
 
             if (tuple_->content.size() > 3) {
               throw ParserError(ctr_->begin, ctr_->end,
-                "You can privide max 3 expressions (init condition iteration) '@(for)' in statement");
+                                "You can privide max 3 expressions (init condition iteration) '@(for)' in statement");
             }
 
             if (tuple_->content.size() == 1 or tuple_->content.size() == 3) {
@@ -182,14 +178,14 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
                         tuple->content[1]->type.toString() + "' found");
               }
             }
-            /* foreach loop */
+              /* foreach loop */
             else {
               auto id_l = dynamic_cast<zhexp::IdLiteral*>(tuple_->content[0]);
               if (!id_l) throw ParserError(
-                tuple_->content[0]->begin,
-                tuple_->content[0]->end,
-                "Expected id literal"
-              );
+                    tuple_->content[0]->begin,
+                    tuple_->content[0]->end,
+                    "Expected id literal"
+                );
 
               /** begin & end check */
               auto foreach_block = new STBlock;
@@ -259,7 +255,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
               iter->exp = new zhexp::PrefixOperator(
                   tuple_->content[1]->begin, tuple_->content[1]->end, "++", 666,
                   new zhexp::IdLiteral(tuple_->content[0]->begin,
-                                      tuple_->content[0]->end, id_l->val)
+                                       tuple_->content[0]->end, id_l->val)
               );
               range_init->exp = zhexp::postprocess(
                   range_init->exp, foreach_scope, &foreach_block->scope_info);
@@ -305,7 +301,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
               ++i;
             }
           }
-          /* <(return) statement parsing */
+            /* <(return) statement parsing */
           else if (ctr_->val == "<<<") {
             auto ctr = dynamic_cast<zhexp::FlowOperator*>(
                 zhexp::postprocess(exp_builded, cur_scope, &res->scope_info));
@@ -319,8 +315,8 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
                 throw ParserError(ctr->begin, ctr->end, "Expected return value");
               if (tmp_ret->exp->type.getTypeId() != retT.getTypeId())
                 throw ParserError(ctr->begin, ctr->end,
-                  "Return type must be '" + retT.toString() + "', but '" +
-                  tmp_ret->exp->type.toString() + "' found");
+                                  "Return type must be '" + retT.toString() + "', but '" +
+                                      tmp_ret->exp->type.toString() + "' found");
             }
             res->nodes.push_back(tmp_ret);
           } else {
@@ -377,7 +373,7 @@ std::vector<Function*> parseImpl(ast::ASTBlock* block, const types::Type& type,
     /** '.' priority */
     zhdata.bin_operators[func->name] = 2;
     zhdata.operators.insert(func->name);
-    
+
     func->body = parseASTblock(block, scope, main_scope, func->type);
 
     res.push_back(func);
@@ -403,7 +399,7 @@ STTree* parseAST(ast::ASTBlock* main_block) {
         std::string name = (line->begin + 2)->val;
         if (types::getStructId(name) != types::TYPE(-1)) {
           throw ParserError(*line->begin, *line->end,
-            "Type '" + name + "'already exist");
+                            "Type '" + name + "'already exist");
         }
 
         bool isGeneric = false;
@@ -429,7 +425,7 @@ STTree* parseAST(ast::ASTBlock* main_block) {
           throw ParserError(*line->end, "Expected type body");
         auto block = dynamic_cast<ast::ASTBlock*>(*cur);
         if (!block)
-        throw ParserError(*line->end, "Expected type body");
+          throw ParserError(*line->end, "Expected type body");
         if (isGeneric) {
           try {
             types::pushGenericType(name, generic, block);
@@ -465,7 +461,7 @@ STTree* parseAST(ast::ASTBlock* main_block) {
             type = types::parse(token, main_scope);
           } catch (std::runtime_error err) {
             throw ParserError(*line->begin, *line->end,
-              "Fail to parse impl type");
+                              "Fail to parse impl type");
           }
 
           auto funcs = parseImpl(block, type, main_scope);
@@ -494,14 +490,14 @@ STTree* parseAST(ast::ASTBlock* main_block) {
           if (func->op_type == Function::OpType::bin) {
             zhdata.B_OD[{func->name, types}] = func;
             if (zhdata.bin_operators.contains(func->name) and
-              func->priority != zhdata.bin_operators[func->name])
+                func->priority != zhdata.bin_operators[func->name])
               throw ParserError(
                   *line->begin, *line->end,
                   "Operator priority doesn't match old one (" +
                       std::to_string(zhdata.bin_operators[func->name]) +
                       " <- old vs new -> " + std::to_string(func->priority) +
                       ")");
-                  zhdata.bin_operators[func->name] = func->priority;
+            zhdata.bin_operators[func->name] = func->priority;
           } else if (func->op_type == Function::OpType::lhs) {
             zhdata.PR_OD[{func->name, types}] = func;
             zhdata.prefix_operators[func->name] = func->priority;

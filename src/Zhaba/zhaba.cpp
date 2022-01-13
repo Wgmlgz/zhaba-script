@@ -1,20 +1,15 @@
-#include <stdlib.h>
+#include <cstdlib>
 
 #include <filesystem>
-#include <fstream>
 #include <iostream>
-#include <sstream>
 #include <string>
 
 #include "../Compiler/Compiler.hpp"
-#include "../Interpreter/ToBytecode.hpp"
-#include "../Parser/Parser.hpp"
-#include "../TreeLib/TreeLib.hpp"
 #include "CmdOptios.hpp"
 
 void printUsage() {
   std::cout << usage << "\nFlags:\n";
-  for (auto& [str, val] : zhdata.bools) {
+  for (auto&[str, val] : zhdata.bools) {
     std::cout << "  --" + str + "\n";
   }
 }
@@ -22,7 +17,7 @@ void printUsage() {
 const bool deb =
     // true
     false;
-int main(int argc, char** argv) {
+int main(int argc, char **argv) {
   CmdParser cmd(argc, argv);
   /** to test bytecode */
   if (true) {
@@ -31,7 +26,7 @@ int main(int argc, char** argv) {
   zhdata.bin_path = argv[0];
 
   zhdata.bin_path.remove_filename();
-  for (auto& [str, val] : zhdata.bools) {
+  for (auto&[str, val] : zhdata.bools) {
     if (cmd.cmdOptionExists("--" + str)) val = true;
   }
 
@@ -49,11 +44,11 @@ int main(int argc, char** argv) {
       zhdata.std_path = tmp;
 
       compileFile(file_path);
-    } catch (ParserError error) {
-      std::cout << error.toString();
-    } catch (zhin::RuntimeError error) {
+    } catch (ParserError &error) {
       std::cout << error.what();
-    } catch (const std::exception& err) {
+    } catch (zhin::RuntimeError &error) {
+      std::cout << error.what();
+    } catch (std::exception &err) {
       std::cout << err.what() << std::endl;
     }
     // catch (...) {

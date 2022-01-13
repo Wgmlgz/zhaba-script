@@ -34,20 +34,20 @@ add_executable(Zhaba_script_lang
         src/Lang/types.hpp
         src/Lang/zhdata.hpp
         src/Libs/termcolor.hpp
-        src/Parser/ASTParser.hpp
-        src/Parser/DefinitionsParser.hpp
-        src/Parser/ExpressionParser.hpp
+        src/Parser/ast_parser.hpp
+        src/Parser/definitions_parser.hpp
+        src/Parser/expression_parser.hpp
         src/Parser/Lexer.hpp
         src/Parser/Parser.hpp
-        src/Parser/ParserError.hpp
+        src/Parser/parser_error.hpp
         src/Parser/Preproces.hpp
         src/Parser/Preprocessor.hpp
-        src/Parser/SyntaxTreeParser.hpp
-        src/Parser/TypeParser.hpp
+        src/Parser/syntax_tree_parser.hpp
+        src/Parser/type_parser.hpp
         src/TreeLib/Tree.hpp
         src/TreeLib/TreePrinterASCII.hpp
         src/TreeLib/TreeLib.hpp
         src/Zhaba/CmdOptios.hpp
         src/Lang/expression.cpp
         src/Lang/types.cpp
-        src/Zhaba/zhaba.cpp src/Lang/ast.cpp src/Lang/generics.cpp src/Lang/syntax_tree.cpp)
+        src/Zhaba/zhaba.cpp src/Lang/ast.cpp src/Lang/generics.cpp src/Lang/syntax_tree.cpp src/Parser/parser_error.cpp src/Lang/zhdata.cpp src/Lang/lang_tables.cpp src/Parser/runtime_error.cpp src/Parser/runtime_error.hpp src/Parser/type_parser.cpp src/Parser/syntax_tree_parser.cpp src/Parser/DefenitionsParser.cpp src/Parser/expression_parser.cpp src/Parser/ast_parser.cpp)
