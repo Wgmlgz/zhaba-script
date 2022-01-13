@@ -25,5 +25,5 @@ fn main
   //   ]+<<++.[-]<<]>.>+[>>]>+]
   //   `)
      
-  < '[echo 5 symbols]' <
-  brainfuck(`+++++[>,.<-]`)
+  // < '[echo 5 symbols]' <
+  // brainfuck(`+++++[>,.<-]`)
