@@ -4,7 +4,7 @@
 
 #include "ParserError.hpp"
 #include "Lexer.hpp"
-#include "../Lang/Lang.hpp"
+#include "../Lang/lang.hpp"
 #include "../TreeLib/TreeLib.hpp"
 
 namespace zhexp {

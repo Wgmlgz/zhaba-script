@@ -6,10 +6,10 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <iostream>
-#include "LangTables.hpp"
-#include "SyntaxTree.hpp"
-#include "Types.hpp"
-
+#include "lang_tables.hpp"
+#include "syntax_tree.hpp"
+#include "types.hpp"
+#include "lang.hpp"
 
 struct ZHDATA {
   const int64_t INF = 1000000000000.0;
@@ -31,7 +31,7 @@ struct ZHDATA {
       #name,                                                                   \
       {{"a", types::Type(types::TYPE::lhst)},                                  \
         {"b", types::Type(types::TYPE::rhst)}},                                \
-      types::Type(types::TYPE::rt), OpType::bin, true                          \
+      types::Type(types::TYPE::rt), Function::OpType::bin, true                \
     }                                                                          \
   }
   std::map<types::funcHead, Function*> B_OD = {
@@ -145,14 +145,14 @@ struct ZHDATA {
 #define CFN0(name, rt)                                             \
   {                                                                \
     {(#name), {}}, new Function {                                  \
-      (#name), {}, types::Type(types::TYPE::rt), OpType::lhs, true \
+      (#name), {}, types::Type(types::TYPE::rt), Function::OpType::lhs, true \
     }                                                              \
   }
 #define CFN1(name, arg1_t, rt)                                  \
   {                                                             \
     {#name, {types::Type(types::TYPE::arg1_t)}}, new Function { \
       (#name), {{"a", types::Type(types::TYPE::arg1_t)}},       \
-          types::Type(types::TYPE::rt), OpType::lhs, true       \
+          types::Type(types::TYPE::rt), Function::OpType::lhs, true       \
     }                                                           \
   }
 

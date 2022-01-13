@@ -1,5 +1,5 @@
 #pragma once
-#include "../Lang/Lang.hpp"
+#include "../Lang/lang.hpp"
 #include "../TreeLib/Tree.hpp"
 #include "DefinitionsParser.hpp"
 #include "TypeParser.hpp"
@@ -17,7 +17,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
       try {
         if (!autoT) type = types::parse(cur, cur_scope);
         else ++cur;
-      } catch (std::runtime_error err) {
+      } catch (const std::runtime_error& err) {
         is_var_decl = false;
       }
       if (is_var_decl) {
@@ -90,7 +90,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
                 zhexp::postprocess(exp_builded, cur_scope, &res->scope_info));
             if (ctr->operand->type.getTypeId() == types::TYPE::boolT) {
               auto tmp_if = new STIf;
-              tmp_if->contition = ctr->operand;
+              tmp_if->condition = ctr->operand;
               if (i + 1 != main_block->nodes.end()) {
                 if (auto body = dynamic_cast<ast::ASTBlock*>(*(i + 1))) {
                   tmp_if->body = parseASTblock(body, cur_scope, res->scope_info, retT);
@@ -126,7 +126,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
                 }
               }
             } else {
-              throw ParserError(ctr->begin, ctr->end, "Expected int expression in '?(if)' contition");
+              throw ParserError(ctr->begin, ctr->end, "Expected int expression in '?(if)' condition");
             }
           }
           /* "@" (for) statement parsing */
@@ -151,7 +151,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
                 tuple->content.insert(tuple->content.begin(), nullptr);
                 tuple->content.insert(tuple->content.end(), nullptr);
               }
-              /** else for (init;contition;repeat) */
+              /** else for (init;condition;repeat) */
               if (tuple->content[1]->type.getTypeId() == types::TYPE::boolT) {
                 if (tuple->content[0]) {
                   auto init = new STExp;
@@ -159,7 +159,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
                   res->nodes.push_back(init);
                 }
                 auto tmp_while = new STWhile;
-                tmp_while->contition = tuple->content[1];
+                tmp_while->condition = tuple->content[1];
                 if (i + 1 != main_block->nodes.end()) {
                   if (auto body = dynamic_cast<ast::ASTBlock*>(*(i + 1))) {
                     tmp_while->body =
@@ -178,7 +178,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
               } else {
                 throw ParserError(
                     ctr->begin, ctr->end,
-                    "Expected int expression in '@(for)' contition, but '" +
+                    "Expected int expression in '@(for)' condition, but '" +
                         tuple->content[1]->type.toString() + "' found");
               }
             }
@@ -279,10 +279,10 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
               foreach_block->nodes.push_back(end_exp);
               foreach_block->nodes.push_back(cur_init);
 
-              /** else for (init;contition;repeat) */
+              /** else for (init;condition;repeat) */
               if (condition->type.getTypeId() == types::TYPE::boolT) {
                 auto tmp_while = new STWhile;
-                tmp_while->contition = condition;
+                tmp_while->condition = condition;
                 if (i + 1 != main_block->nodes.end()) {
                   if (auto body = dynamic_cast<ast::ASTBlock*>(*(i + 1))) {
                     tmp_while->body = parseASTblock(body, foreach_scope,
@@ -297,7 +297,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
               } else {
                 throw ParserError(
                     condition->begin, condition->end,
-                    "Expected int expression in '@(for)' contition, but '" +
+                    "Expected int expression in '@(for)' condition, but '" +
                         condition->type.toString() + "' found");
               }
 
@@ -362,7 +362,7 @@ std::vector<Function*> parseImpl(ast::ASTBlock* block, const types::Type& type,
     func->args.insert(
         func->args.begin(),
         {"slf", types::Type(type.getTypeId(), type.getPtr() + 1, 1)});
-    func->op_type = OpType::bin;
+    func->op_type = Function::OpType::bin;
     func->name = ".call." + func->name;
     std::vector<types::Type> types;
     for (auto& [name, type] : func->args) {
@@ -420,7 +420,7 @@ STTree* parseAST(ast::ASTBlock* main_block) {
           }
         }
 
-        if (generic.size()) isGeneric = true;
+        if (!generic.empty()) isGeneric = true;
 
         ++cur;
 
@@ -437,7 +437,7 @@ STTree* parseAST(ast::ASTBlock* main_block) {
             throw ParserError(*line->begin, *line->end, err.what());
           }
         } else {
-          /** Push declarated struct */
+          /** Push declared struct */
           types::pushStruct(name, types::parseStruct(block, main_scope));
         }
         ++cur;
@@ -491,7 +491,7 @@ STTree* parseAST(ast::ASTBlock* main_block) {
           zhdata.FN_OD[{func->name, types}] = func;
         } else {
           zhdata.operators.insert(func->name);
-          if (func->op_type == OpType::bin) {
+          if (func->op_type == Function::OpType::bin) {
             zhdata.B_OD[{func->name, types}] = func;
             if (zhdata.bin_operators.contains(func->name) and
               func->priority != zhdata.bin_operators[func->name])
@@ -502,10 +502,10 @@ STTree* parseAST(ast::ASTBlock* main_block) {
                       " <- old vs new -> " + std::to_string(func->priority) +
                       ")");
                   zhdata.bin_operators[func->name] = func->priority;
-          } else if (func->op_type == OpType::lhs) {
+          } else if (func->op_type == Function::OpType::lhs) {
             zhdata.PR_OD[{func->name, types}] = func;
             zhdata.prefix_operators[func->name] = func->priority;
-          } else if (func->op_type == OpType::rhs) {
+          } else if (func->op_type == Function::OpType::rhs) {
             zhdata.PO_OD[{func->name, types}] = func;
             zhdata.postfix_operators[func->name] = func->priority;
           }

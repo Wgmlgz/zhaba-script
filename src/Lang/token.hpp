@@ -25,16 +25,10 @@ struct Token {
   const std::string val, &filename;
   const size_t pos, line;
 
-  Token(const TOKEN& new_token, const std::string& new_type, size_t new_pos,
-        size_t new_line, const std::string& new_filename)
-      : orig_token(new_token),
-        token(new_token),
-        val(new_type),
-        pos(new_pos),
-        line(new_line),
-        filename(new_filename) {}
+  Token(const TOKEN& new_token, std::string  new_type, size_t new_pos,
+        size_t new_line, const std::string& new_filename);
 
-  void reset() { token = orig_token; }
+  void reset();
 };
 
 typedef std::vector<Token>::iterator tokeniter;

@@ -427,7 +427,7 @@ void nodeToB(zhin::ByteCode& bytecode, STNode* node, FuncData& funcdata) {
     /** exp_if */
     auto end_l = getLabel();
     auto if_l = getLabel();
-    expToB(bytecode, stif->contition, funcdata);
+    expToB(bytecode, stif->condition, funcdata);
     bytecode.pushVal(zhin::instr::jmp_if_bool);
     bytecode.pushVal((int32_t)(if_l));
 
@@ -479,7 +479,7 @@ void nodeToB(zhin::ByteCode& bytecode, STNode* node, FuncData& funcdata) {
 
     bytecode.pushVal(zhin::instr::label);
     bytecode.pushVal((int32_t)(begin_l));
-    expToB(bytecode, stwhile->contition, funcdata);
+    expToB(bytecode, stwhile->condition, funcdata);
     bytecode.pushVal(zhin::instr::jmp_if_bool);
     bytecode.pushVal((int32_t)(loop_l));
     bytecode.pushVal(zhin::instr::jmp);

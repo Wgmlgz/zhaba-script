@@ -1,22 +1,22 @@
 #pragma once
 #include "Lexer.hpp"
-#include "../Lang/Types.hpp"
+#include "../Lang/types.hpp"
 
 /** Defined in SynataxTreeParser.hpp */
-std::vector<Function*> parseImpl(ast::ASTBlock* block, const types::Type& type, ScopeInfo& main_scope);
+std::vector<Function *> parseImpl(ast::ASTBlock *block, const types::Type &type, ScopeInfo &main_scope);
 
 namespace types {
 
-Type parse(std::string& str, const ScopeInfo& scope);
-Type parse(tokeniter& token, const ScopeInfo& scope);
-std::vector<Type> parseTemplate(tokeniter& token, const ScopeInfo& scope);
-types::StructInfo parseStruct(ast::ASTBlock* block, const ScopeInfo& scope);
-types::StructInfo parseStruct(ast::ASTBlock* block, const ScopeInfo& scope) {
+Type parse(std::string &str, const ScopeInfo &scope);
+Type parse(tokeniter &token, const ScopeInfo &scope);
+std::vector<Type> parseTemplate(tokeniter &token, const ScopeInfo &scope);
+types::StructInfo parseStruct(ast::ASTBlock *block, const ScopeInfo &scope);
+types::StructInfo parseStruct(ast::ASTBlock *block, const ScopeInfo &scope) {
   if (!block) throw std::runtime_error("null block passed to parseStruct :(");
   types::StructInfo struct_info;
 
   for (auto node : block->nodes) {
-    if (auto line = dynamic_cast<ast::ASTLine*>(node)) {
+    if (auto line = dynamic_cast<ast::ASTLine *>(node)) {
       /** Members line parsing */
       if (line->end - line->begin < 2) {
         throw ParserError(*line->begin, *line->end,
@@ -53,7 +53,7 @@ types::StructInfo parseStruct(ast::ASTBlock* block, const ScopeInfo& scope) {
   return struct_info;
 }
 
-Type parse(std::string& str, const ScopeInfo& scope) {
+Type parse(std::string &str, const ScopeInfo &scope) {
   Type type;
   int ptr_c = 0;
   if (str.back() == 'R') {
@@ -79,7 +79,7 @@ Type parse(std::string& str, const ScopeInfo& scope) {
   return type;
 }
 
-Type parse(tokeniter& token, const ScopeInfo& scope) {
+Type parse(tokeniter &token, const ScopeInfo &scope) {
   std::string str = token->val;
 
   Type res;
@@ -98,11 +98,11 @@ Type parse(tokeniter& token, const ScopeInfo& scope) {
     /** Generate new implementation */
     if (id == static_cast<TYPE>(-1)) {
       /** Type substitution*/
-      if (generic_types.size() != generics[str].names.size()) 
+      if (generic_types.size() != generics[str].names.size())
         throw ParserError(
-          *token, "Number of generic types doesn't match: found " + 
-          std::to_string(generic_types.size()) + ", but " +
-          std::to_string(generics[str].names.size()) + " expected");
+            *token, "Number of generic types doesn't match: found " +
+                std::to_string(generic_types.size()) + ", but " +
+                std::to_string(generics[str].names.size()) + " expected");
 
       //TODO proper scope
       ScopeInfo scope;
@@ -112,7 +112,7 @@ Type parse(tokeniter& token, const ScopeInfo& scope) {
       // for (auto i : generic)
       /** Try generate generic implementation */
       pushStruct(name, parseStruct(generics[str].block, scope));
-      for (auto& block : generics[str].impl_blocks) {
+      for (auto &block : generics[str].impl_blocks) {
         block->reset();
         auto funcs = parseImpl(block, Type(static_cast<TYPE>(getStructId(name))), scope);
         for (auto i : funcs)
@@ -122,7 +122,7 @@ Type parse(tokeniter& token, const ScopeInfo& scope) {
     }
     res.setType(static_cast<TYPE>(id));
     // res.setTmpl(generic_types);
-  } else if(is_generic) {
+  } else if (is_generic) {
     throw ParserError(*token, "Generic type parsing failed, expected '<'");
   }
   if (zhdata.bools["show_type"]) {
@@ -130,7 +130,7 @@ Type parse(tokeniter& token, const ScopeInfo& scope) {
   }
   return res;
 }
-std::vector<Type> parseTemplate(tokeniter& token, const ScopeInfo& scope) {
+std::vector<Type> parseTemplate(tokeniter &token, const ScopeInfo &scope) {
   std::vector<Type> templ;
 
   if (token->val != "<")

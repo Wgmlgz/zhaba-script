@@ -3,7 +3,7 @@
 #include <fstream>
 #include <vector>
 
-#include "../Lang/Lang.hpp"
+#include "../Lang/lang.hpp"
 #include "Lexer.hpp"
 #include "ParserError.hpp"
 

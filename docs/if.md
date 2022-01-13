@@ -5,9 +5,9 @@ In zhaba-script you can use `?` to create _if_ statements, `|` for elif(else if)
 ## Syntax
 
 ```rust
-         ? <contition> <if block>
-optional | <contition> <else if block>
-optional | <contition> <else if block>
+         ? <condition> <if block>
+optional | <condition> <else if block>
+optional | <condition> <else if block>
          | ...
 optional \ <else block>
 ```

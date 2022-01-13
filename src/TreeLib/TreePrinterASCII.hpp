@@ -3,32 +3,25 @@
 #include <iostream>
 #include <vector>
 
-#define range3(name, start, stop, step) for (int name = start; name < stop; name += step)
-#define range2(name, start, stop) for (int name = start; name < stop; ++name)
-#define range(name, stop) for (int name = 0; name < stop; ++name)
-
-
-// settings
-int spacing_x = 0;
-int spacing_y = 0;
-int block_spacing = 1;
-int vertical_spacing = 1;
-
-std::string cor_top = ".";
-std::string cor_donw = "\'";
-
-char sp = ' ';
-char hor = '-';
-std::string ver = "|";
-
-
-std::string cor_top_arr = ".";
-char hor_arr = '-';
-std::string ver_arr = "|";
-
 using vstr = std::vector<std::string>;
 
-vstr null_render = { "null" };
+#define range2(name, start, stop) for (int (name) = start; (name) < (stop); ++(name))
+#define range(name, stop) for (int (name) = 0; (name) < (stop); ++(name))
+
+// settings
+const int spacing_x = 0;
+const int spacing_y = 0;
+const int block_spacing = 1;
+const int vertical_spacing = 1;
+const std::string cor_top = ".";
+const std::string cor_donw = "\'";
+const char sp = ' ';
+const char hor = '-';
+const std::string ver = "|";
+const std::string cor_top_arr = ".";
+const char hor_arr = '-';
+const std::string ver_arr = "|";
+const vstr null_render = { "null" };
 
 template<typename T>
 V2 size(TreeNode<T>* node) {
@@ -39,12 +32,6 @@ V2 size(TreeNode<T>* node) {
     int x = max + spacing_x * 2 + 2;
     int y = 2 + node->to_vstr().size() + spacing_y * 2;
     return V2{ x, y };
-}
-
-void _print(vstr& v) {
-    for (auto& i : v) {
-        std::cout << i << "#" << std::endl;
-    }
 }
 
 template<typename T>

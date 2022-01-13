@@ -230,7 +230,7 @@ ______                              _           _
 //   res += std::string(depth * tab_size, ' ');
 
 //   if (auto nd = dynamic_cast<STIf*>(node)) {
-//     res += "if (" + expToC(nd->contition) + ") ";
+//     res += "if (" + expToC(nd->condition) + ") ";
 //     res += blockToC(nd->body, depth);
 //     for (auto& i : nd->elseif_body) {
 //       res += " else if (" + expToC(i.first) + ") ";
@@ -241,7 +241,7 @@ ______                              _           _
 //       res += blockToC(nd->else_body, depth);
 //     }
 //   } else if (auto nd = dynamic_cast<STWhile*>(node)) {
-//     res += "while (" + expToC(nd->contition) + ") ";
+//     res += "while (" + expToC(nd->condition) + ") ";
 //     res += blockToC(nd->body, depth);
 //   } else if (auto nd = dynamic_cast<STRet*>(node)) {
 //     res += "return (" + expToC(nd->exp) + ")"; 

@@ -2,7 +2,7 @@
 #include <unordered_map>
 #include <string>
 #include <map>
-#include "Types.hpp"
+#include "types.hpp"
 
 struct ScopeInfo {
   std::unordered_map<std::string, types::Type> vars;

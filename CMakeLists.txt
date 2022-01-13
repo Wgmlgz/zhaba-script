@@ -22,17 +22,17 @@ add_executable(Zhaba_script_lang
         src/Interpreter/Stack.hpp
         src/Interpreter/ToBytecode.hpp
         src/Interpreter/ZHVM.hpp
-        src/Lang/AST.hpp
-        src/Lang/Expression.hpp
-        src/Lang/Generics.hpp
-        src/Lang/Lang.hpp
-        src/Lang/LangTables.hpp
-        src/Lang/Scope.hpp
-        src/Lang/SyntaxTree.hpp
+        src/Lang/ast.hpp
+        src/Lang/expression.hpp
+        src/Lang/generics.hpp
+        src/Lang/lang.hpp
+        src/Lang/lang_tables.hpp
+        src/Lang/scope.hpp
+        src/Lang/syntax_tree.hpp
         src/Lang/token.cpp
         src/Lang/token.hpp
-        src/Lang/Types.hpp
-        src/Lang/ZHDATA.hpp
+        src/Lang/types.hpp
+        src/Lang/zhdata.hpp
         src/Libs/termcolor.hpp
         src/Parser/ASTParser.hpp
         src/Parser/DefinitionsParser.hpp
@@ -45,7 +45,9 @@ add_executable(Zhaba_script_lang
         src/Parser/SyntaxTreeParser.hpp
         src/Parser/TypeParser.hpp
         src/TreeLib/Tree.hpp
-        src/TreeLib/TreeLib.hpp
         src/TreeLib/TreePrinterASCII.hpp
+        src/TreeLib/TreeLib.hpp
         src/Zhaba/CmdOptios.hpp
-        src/Zhaba/zhaba.cpp)
+        src/Lang/expression.cpp
+        src/Lang/types.cpp
+        src/Zhaba/zhaba.cpp src/Lang/ast.cpp src/Lang/generics.cpp src/Lang/syntax_tree.cpp)

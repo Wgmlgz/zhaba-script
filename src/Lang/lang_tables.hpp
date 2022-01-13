@@ -5,12 +5,12 @@
 #include <utility>
 #include <vector>
 
-#include "Types.hpp"
+#include "types.hpp"
 #include "./token.hpp"
 
 namespace tables {
 
-const std::vector<std::pair<TOKEN, std::string>> lexer_tokens = {
+const std::vector<std::pair<TOKEN, std::string>> lexer_tokens{
     {TOKEN::comment_block, R"(((\/\*[\s\S]*?\*\/)))"},
     {TOKEN::comment_line, R"((((\/\/.*))))"},
     {TOKEN::str_literal, R"(('(\\.|[^'\\])*'|`(?:\\`|[^`])*`))"},

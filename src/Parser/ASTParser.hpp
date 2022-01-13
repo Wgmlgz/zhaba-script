@@ -1,5 +1,5 @@
 #pragma once
-#include "../Lang/Lang.hpp"
+#include "../Lang/lang.hpp"
 #include "ParserError.hpp"
 
 namespace ast {

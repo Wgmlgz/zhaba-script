@@ -3,11 +3,12 @@
 #include <vector>
 #include <string>
 #include <sstream>
+
 struct V2 { int x = 0, y = 0; V2(int nx, int ny) { x = nx; y = ny; } };
 struct Rect { V2 pos, size; };
 struct Line { V2 pos1, pos2; };
 // use ++id_counter
-int id_counter = 0;
+static int id_counter = 0;
 
 template<typename T>
 class TreeNode {
