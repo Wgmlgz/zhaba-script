@@ -10,7 +10,7 @@
 #include <stack>
 #include <string>
 
-#include "../Parser/Parser.hpp"
+#include "../Parser/parser.hpp"
 #include "../Compiler/Compiler.hpp"
 #include "../TreeLib/TreeLib.hpp"
 

@@ -3,7 +3,7 @@
 #include <utility>
 
 #include "parser_error.hpp"
-#include "Lexer.hpp"
+#include "lexer.hpp"
 #include "../Lang/lang.hpp"
 #include "../TreeLib/TreeLib.hpp"
 #include "type_parser.hpp"

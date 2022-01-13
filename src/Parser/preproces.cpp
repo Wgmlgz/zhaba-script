@@ -1,11 +1,4 @@
-#pragma once
-#include <filesystem>
-#include <fstream>
-#include <vector>
-
-#include "../Lang/lang.hpp"
-#include "Lexer.hpp"
-#include "parser_error.hpp"
+#include "preproces.hpp"
 
 void defineFlowTokens(std::vector<Token> &tokens) {
   for (auto &token : tokens) {
@@ -18,7 +11,7 @@ void defineFlowTokens(std::vector<Token> &tokens) {
   }
 }
 
-void preprocess(std::filesystem::path file_path, std::vector<Token> &res, int depth = 0) {
+void preprocess(std::filesystem::path file_path, std::vector<Token> &res, int depth) {
   zhdata.included_files_names.push_back(file_path.string());
   auto fin = std::ifstream(file_path);
 

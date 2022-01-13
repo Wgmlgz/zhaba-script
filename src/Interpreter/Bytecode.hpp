@@ -13,7 +13,7 @@
 #include <array>
 #include "./Instructions.hpp"
 // Order is important
-/*0*/ #include "../Parser/Parser.hpp"
+/*0*/ #include "../Parser/parser.hpp"
 /*1*/ #include "../Compiler/Compiler.hpp"
 /*2*/ #include "../TreeLib/TreeLib.hpp"
 

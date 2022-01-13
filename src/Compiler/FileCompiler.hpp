@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include "../Parser/Parser.hpp"
+#include "../Parser/parser.hpp"
 // Deprecated
 // #include "ToC.hpp"
 #include <fstream>

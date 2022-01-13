@@ -1,5 +1,5 @@
 #pragma once
-#include "Lexer.hpp"
+#include "lexer.hpp"
 #include "../Lang/types.hpp"
 #include "lang.hpp"
 #include "parser_error.hpp"
