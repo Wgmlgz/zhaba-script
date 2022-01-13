@@ -31,7 +31,7 @@ void preprocess(std::filesystem::path file_path, std::vector<Token> &res, int de
   zhdata.included_files.push_back(file_data);
 
   std::vector<Token> tokens = zhdata.lexer.parse(
-      file_data, zhdata.included_files_names.back(), zhdata.files_lines, zhdata.bools["tokens"]
+      file_data, zhdata.included_files_names.back(), zhdata.files_lines, zhdata.flags["tokens"]
   );
 
   for (auto i = tokens.begin(); i != tokens.end(); ++i) {

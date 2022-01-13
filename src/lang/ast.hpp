@@ -11,6 +11,7 @@
 #include "../tree_lib/Tree.hpp"
 
 namespace ast {
+
 struct ASTNode {
   virtual ~ASTNode();
   virtual void reset();
@@ -34,10 +35,10 @@ struct ASTBlock : public ASTNode {
                     size_t new_line = 0);
 
   void reset() override;
-
 };
 
 std::string lineToStr(tokeniter begin, tokeniter end);
 
 TreeNode<std::string> *toGenericTree(ASTNode *node);
+
 };  // namespace ast

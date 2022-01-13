@@ -16,8 +16,6 @@ struct Generic {
   std::string toString();
 };
 
-extern std::map<std::string, Generic> generics;
-
 void pushGenericType(
     const std::string &name,
     const std::vector<std::string> &names,

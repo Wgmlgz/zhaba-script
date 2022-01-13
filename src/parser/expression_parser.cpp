@@ -57,7 +57,7 @@ Exp *buildExp(const std::vector<Exp *>::iterator begin,
       }
     }
   }
-  if (zhdata.bools["exp_parser_logs"]) {
+  if (zhdata.flags["exp_parser_logs"]) {
     for (auto i = begin; i != end; ++i) {
       std::cout << (*i)->toString() << ",";
     }
@@ -385,28 +385,36 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope_info, ScopeInfo *block_scope) {
       op->lhs = postprocess(op->lhs, scope_info, block_scope);
       if (auto id = dynamic_cast<IdLiteral *>(op->rhs)) {
         if (op->lhs->type.getTypeId() >=
-            static_cast<types::TYPE>(types::types_data.first_struct_id)) {
-          if (types::types_data.structs[op->lhs->type.getTypeId()].members.count(
+            static_cast<types::TYPE>(zhdata.first_struct_id)) {
+          if (zhdata.structs[op->lhs->type.getTypeId()].members.count(
               id->val)) {
             if (op->lhs->type.getPtr() > 1) {
-              throw ParserError(op->begin, op->end,
-                                "Can't use member access with 2 or more pointer modifiers (" +
-                                    std::to_string(op->lhs->type.getPtr()) + " found)");
+              throw ParserError(
+                  op->begin, op->end,
+                  "Can't use member access with 2 or more pointer modifiers (" +
+                      std::to_string(op->lhs->type.getPtr()) + " found)"
+              );
             }
-            op->type = types::types_data.structs[op->lhs->type.getTypeId()].members[id->val];
+            op->type = zhdata.structs[op->lhs->type.getTypeId()].members[id->val];
             op->type.setLval(op->lhs->type.getLval());
           } else {
-            throw ParserError(op->begin,
-                              op->end,
-                              "Type '" + op->lhs->type.toString() + "' doesn't have '" + id->val + "' member");
+            throw ParserError(
+                op->begin,
+                op->end,
+                "Type '" + op->lhs->type.toString() + "' doesn't have '" + id->val + "' member"
+            );
           }
         } else {
-          throw ParserError(op->begin, op->end, "Expression type can't be '" + op->lhs->type.toString() + "'");
+          throw ParserError(
+              op->begin, op->end, "Expression type can't be '" + op->lhs->type.toString() + "'"
+          );
         }
       } else {
-        throw ParserError(op->begin, op->end,
-                          "Expected identifier near '.', but (" +
-                              op->toString() + ") found");
+        throw ParserError(
+            op->begin, op->end,
+            "Expected identifier near '.', but (" +
+                op->toString() + ") found"
+        );
       }
     }
       /** Type cast */
@@ -416,8 +424,10 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope_info, ScopeInfo *block_scope) {
         op->type = type_l->literal_type;
         op->type.setLval(op->lhs->type.getLval());
       } else {
-        throw ParserError(op->begin, op->rhs->end,
-                          "Expected type literal, but '" + op->rhs->toString() + "' found");
+        throw ParserError(
+            op->begin, op->rhs->end,
+            "Expected type literal, but '" + op->rhs->toString() + "' found"
+        );
       }
     } else {
       op->lhs = postprocess(op->lhs, scope_info, block_scope);
@@ -447,7 +457,9 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope_info, ScopeInfo *block_scope) {
         auto int_literal =
             new I64Literal(op->begin, op->end, orig_type.getSizeNonRef());
         int_literal->type = int_type;
-        auto t = new BinOperator(op->begin, op->end, "*", 0, op->rhs, int_literal);
+        auto t = new BinOperator(
+            op->begin, op->end, "*", 0, op->rhs, int_literal
+        );
         t->func = zhdata.B_OD[{"*", {int_type, int_type}}];
         t->type = int_type;
         op->rhs = t;
@@ -607,9 +619,9 @@ Exp *parse(std::vector<Token>::iterator begin,
            ScopeInfo *block_scope) {
   auto exp_res = preprocess(begin, end, scope_info);
   Exp *exp = buildExp(exp_res.begin(), exp_res.end());
-  if (zhdata.bools["exp_parser_logs"]) zhexp::printExpTree(exp);
+  if (zhdata.flags["exp_parser_logs"]) zhexp::printExpTree(exp);
   exp = postprocess(exp, scope_info, block_scope);
-  if (zhdata.bools["exp_parser_logs"]) zhexp::printExpTree(exp);
+  if (zhdata.flags["exp_parser_logs"]) zhexp::printExpTree(exp);
   return exp;
 }
 };

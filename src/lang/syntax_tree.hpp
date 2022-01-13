@@ -35,7 +35,6 @@ struct STRet : STNode {
   zhexp::Exp *exp = nullptr;
 };
 
-
 struct Function {
   struct Arg {
     std::string name;
@@ -62,6 +61,5 @@ struct Function {
 
 struct STTree {
   std::vector<Function *> functions;
-
   TreeNode<std::string> *toGenericTree();
 };

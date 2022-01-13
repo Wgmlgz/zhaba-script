@@ -1,6 +1,6 @@
 #pragma once
-#include <inttypes.h>
-#include <stdlib.h>
+#include <cinttypes>
+#include <cstdlib>
 
 #include <filesystem>
 #include <fstream>
@@ -35,7 +35,7 @@ class ZHVM {
   Heap heap;
 
   std::map<size_t, std::string> mp;
-  bool do_stack_trace = zhdata.bools["stack_trace"];
+  bool do_stack_trace = zhdata.flags["stack_trace"];
 
   ByteCode &bytecode;
   byte *getPtr(int64_t ptr, int size) {
@@ -56,7 +56,7 @@ class ZHVM {
     dis = t.first;
     mp = t.second;
 
-    if (zhdata.bools["show_bytecode"]) {
+    if (zhdata.flags["show_bytecode"]) {
       std::cout << "bytecode:\n" << dis << std::endl;
     }
   }

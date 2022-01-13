@@ -1,4 +1,5 @@
 #include "generics.hpp"
+#include "zhdata.hpp"
 
 namespace types {
 std::string Generic::toString() {
@@ -14,16 +15,14 @@ std::string Generic::toString() {
   return res;
 }
 
-std::map<std::string, Generic> generics;
-
 void pushGenericType(
     const std::string &name,
     const std::vector<std::string> &names,
     ast::ASTBlock *block
 ) {
-  if (generics.contains(name))
+  if (zhdata.generics.contains(name))
     throw std::runtime_error(
-        "Generic type '" + name + "' is already defined. (" + generics[name].toString() + ")");
-  generics.insert({name, {name, names, block}});
+        "Generic type '" + name + "' is already defined. (" + zhdata.generics[name].toString() + ")");
+  zhdata.generics.insert({name, {name, names, block}});
 }
 }

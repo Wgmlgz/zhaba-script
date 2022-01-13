@@ -1,4 +1,5 @@
 #include "types.hpp"
+#include "zhdata.hpp"
 
 namespace types {
 
@@ -29,21 +30,21 @@ std::string genericToStr(const std::vector<Type> &generic) {
 }
 
 void pushStruct(const std::string &name, const StructInfo &info) {
-  const auto id = static_cast<TYPE>(types_data.last_struct_id);
-  types_data.struct_ids[name] = id;
-  types_data.struct_names[id] = name;
-  types_data.structs[id] = info;
-  ++types_data.last_struct_id;
+  const auto id = static_cast<TYPE>(zhdata.last_struct_id);
+  zhdata.struct_ids[name] = id;
+  zhdata.struct_names[id] = name;
+  zhdata.structs[id] = info;
+  ++zhdata.last_struct_id;
 
   size_t size = 0;
   for (const auto&[_, type] : info.members)
     size += type.getSize();
-  types_data.sizes[static_cast<TYPE>(id)] = size;
+  zhdata.sizes[static_cast<TYPE>(id)] = size;
 }
 
 TYPE getStructId(const std::string &str) {
-  if (types_data.struct_ids.count(str)) {
-    return types_data.struct_ids[str];
+  if (zhdata.struct_ids.count(str)) {
+    return zhdata.struct_ids[str];
   }
   return static_cast<TYPE>(-1);
 }
@@ -60,13 +61,13 @@ bool types::Type::getLval() const { return lval_; }
 bool types::Type::getRef() const { return ref_; }
 uint8_t types::Type::getPtr() const { return ptr_; }
 size_t types::Type::getSize() const {
-  return (ptr_ || ref_) ? 8 : types::types_data.sizes[typeid_];
+  return (ptr_ || ref_) ? 8 : zhdata.sizes[typeid_];
 }
 size_t types::Type::getSizeNonRef() const {
-  return (ptr_) ? 8 : types_data.sizes[typeid_];
+  return (ptr_) ? 8 : zhdata.sizes[typeid_];
 }
 size_t types::Type::getSizeNonPtr() const {
-  return (ptr_ > 1 or ref_) ? 8 : types_data.sizes[typeid_];
+  return (ptr_ > 1 or ref_) ? 8 : zhdata.sizes[typeid_];
 }
 
 /** Setters */
@@ -82,9 +83,9 @@ types::Type types::Type::rvalClone() const { return Type(typeid_, ptr_, false, r
 std::string types::Type::toString() const {
   std::string res;
   if (static_cast<int>(typeid_) < 50)
-    types_data.type_names[typeid_];
+    zhdata.type_names[typeid_];
   else
-    res += types_data.struct_names[typeid_];
+    res += zhdata.struct_names[typeid_];
 
   res += std::string(ptr_, 'P');
   if (ref_) res += "R";
@@ -104,8 +105,6 @@ std::string types::Type::toString() const {
   if (lval_) res += "&";
   return res;
 }
-
-TypesData types_data;
 }
 
 

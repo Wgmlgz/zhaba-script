@@ -535,10 +535,10 @@ void funcToB(zhin::ByteCode& bytecode, Function* func) {
 
 void toB(zhin::ByteCode& bytecode, STTree* block) {
   /** Structs members offsets calculation */
-  for (const auto& [struct_id, struct_name] : types::types_data.struct_names) {
+  for (const auto& [struct_id, struct_name] : zhdata.struct_names) {
     int offset = 0;
     auto& struct_map = bytecode.structs_members_offsets[struct_id];
-    const auto& struct_info = types::types_data.structs[struct_id];
+    const auto& struct_info = zhdata.structs[struct_id];
     for (const auto& member_name : struct_info.members_list) {
       struct_map[member_name] = offset;
       offset += struct_info.members.at(member_name).getSize();

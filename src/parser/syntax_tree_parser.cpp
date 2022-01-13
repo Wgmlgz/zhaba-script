@@ -22,7 +22,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
         auto exp = zhexp::buildExp(exp_res.begin(), exp_res.end());
         auto tuple = castTreeToTuple(exp);
 
-        if (zhdata.bools["exp_parser_logs"]) {
+        if (zhdata.flags["exp_parser_logs"]) {
           zhexp::printExpTree(tuple);
         }
         for (auto i : tuple->content) {
@@ -451,9 +451,9 @@ STTree* parseAST(ast::ASTBlock* main_block) {
         if (!block) throw ParserError("Expected block");
 
         auto token = (line->begin + 2);
-        if (types::generics.contains(token->val)) {
+        if (zhdata.generics.contains(token->val)) {
           /** Push generic impl */
-          types::generics[token->val].impl_blocks.push_back(block);
+          zhdata.generics[token->val].impl_blocks.push_back(block);
         } else {
           /** Parce regular implementation */
           types::Type type;

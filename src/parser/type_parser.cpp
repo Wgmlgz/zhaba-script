@@ -59,8 +59,8 @@ Type parse(std::string &str, const ScopeInfo &scope) {
     auto tmp = scope.typedefs.at(str);
     type.setType(tmp.getTypeId());
     type.setPtr(tmp.getPtr() + type.getPtr());
-  } else if (types_data.prim_types.count(str)) {
-    type.setType(types_data.prim_types[str]);
+  } else if (zhdata.prim_types.count(str)) {
+    type.setType(zhdata.prim_types[str]);
   } else if (getStructId(str) != types::TYPE(-1)) {
     type.setType(getStructId(str));
   } else {
@@ -75,7 +75,7 @@ Type parse(tokeniter &token, const ScopeInfo &scope) {
 
   Type res;
   bool is_generic = false;
-  if (generics.contains(str)) {
+  if (zhdata.generics.contains(str)) {
     is_generic = true;
   } else {
     res = parse(str, scope);
@@ -89,21 +89,21 @@ Type parse(tokeniter &token, const ScopeInfo &scope) {
     /** Generate new implementation */
     if (id == static_cast<TYPE>(-1)) {
       /** Type substitution*/
-      if (generic_types.size() != generics[str].names.size())
+      if (generic_types.size() != zhdata.generics[str].names.size())
         throw ParserError(
             *token, "Number of generic types doesn't match: found " +
                 std::to_string(generic_types.size()) + ", but " +
-                std::to_string(generics[str].names.size()) + " expected");
+                std::to_string(zhdata.generics[str].names.size()) + " expected");
 
       //TODO proper scope
       ScopeInfo scope;
       for (int i = 0; i < generic_types.size(); ++i) {
-        scope.typedefs[generics[str].names[i]] = generic_types[i];
+        scope.typedefs[zhdata.generics[str].names[i]] = generic_types[i];
       }
       // for (auto i : generic)
       /** Try generate generic implementation */
-      pushStruct(name, parseStruct(generics[str].block, scope));
-      for (auto &block : generics[str].impl_blocks) {
+      pushStruct(name, parseStruct(zhdata.generics[str].block, scope));
+      for (auto &block : zhdata.generics[str].impl_blocks) {
         block->reset();
         auto funcs = parseImpl(block, Type(static_cast<TYPE>(getStructId(name))), scope);
         for (auto i : funcs)
@@ -116,7 +116,7 @@ Type parse(tokeniter &token, const ScopeInfo &scope) {
   } else if (is_generic) {
     throw ParserError(*token, "Generic type parsing failed, expected '<'");
   }
-  if (zhdata.bools["show_type"]) {
+  if (zhdata.flags["show_type"]) {
     std::cout << res.toString() << std::endl;
   }
   return res;
