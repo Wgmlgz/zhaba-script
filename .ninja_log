@@ -1,0 +1,24 @@
+# ninja log v5
+1	4975	6648834399428717	CMakeFiles/Zhaba_script_lang.dir/src/lang/token.cpp.obj	527c949904b5a353
+48	5005	6648834400238720	CMakeFiles/Zhaba_script_lang.dir/src/interpreter/runtime_error.cpp.obj	2812b3c893c3fd89
+19	5115	6648834401368807	CMakeFiles/Zhaba_script_lang.dir/src/lang/ast.cpp.obj	c7ebef887c05e6a1
+29	5121	6648834401298744	CMakeFiles/Zhaba_script_lang.dir/src/lang/syntax_tree.cpp.obj	297a183c9bbcc431
+35	5192	6648834401728744	CMakeFiles/Zhaba_script_lang.dir/src/parser/parser_error.cpp.obj	1af079e3935adeb8
+41	5271	6648834403078709	CMakeFiles/Zhaba_script_lang.dir/src/lang/generics.cpp.obj	e714500862076f01
+73	5292	6648834403298714	CMakeFiles/Zhaba_script_lang.dir/src/parser/definitions_parser.cpp.obj	cce929dd7cbc1485
+24	5567	6648834405828721	CMakeFiles/Zhaba_script_lang.dir/src/lang/types.cpp.obj	9f10c50af7710ab4
+65	5606	6648834406138725	CMakeFiles/Zhaba_script_lang.dir/src/lang/zhdata.cpp.obj	10f1d9befbfcbbea
+14	5727	6648834407308722	CMakeFiles/Zhaba_script_lang.dir/src/lang/expression.cpp.obj	3145fa4a36e13db0
+79	6214	6648834411578697	CMakeFiles/Zhaba_script_lang.dir/src/parser/type_parser.cpp.obj	660a1189900a99e5
+85	6902	6648834419198720	CMakeFiles/Zhaba_script_lang.dir/src/parser/syntax_tree_parser.cpp.obj	adbdcf702e7817dd
+11	6964	6648834419738737	CMakeFiles/Zhaba_script_lang.dir/src/zhaba/zhaba.cpp.obj	a98d0dde74877eea
+55	7380	6648834424128738	CMakeFiles/Zhaba_script_lang.dir/src/lang/lang_tables.cpp.obj	cddee21783e9312
+5568	7451	6648834424928720	CMakeFiles/Zhaba_script_lang.dir/src/interpreter/stack.cpp.obj	1b7079d4c85cb4e5
+4985	8253	6648834432978714	CMakeFiles/Zhaba_script_lang.dir/src/parser/ast_parser.cpp.obj	c60ad0ef3246264
+5292	8324	6648834433678696	CMakeFiles/Zhaba_script_lang.dir/src/interpreter/heap.cpp.obj	722893a614ae193f
+5271	8394	6648834434378698	CMakeFiles/Zhaba_script_lang.dir/src/interpreter/bytecode.cpp.obj	2be83aadae78cd10
+5192	8899	6648834439418716	CMakeFiles/Zhaba_script_lang.dir/src/parser/preprocess.cpp.obj	28c9ab8254fd27ac
+5122	9518	6648834445598687	CMakeFiles/Zhaba_script_lang.dir/src/interpreter/to_bytecode.cpp.obj	1b4a1c8cb6655214
+5006	9811	6648834448488706	CMakeFiles/Zhaba_script_lang.dir/src/parser/lexer.cpp.obj	85df0858161031a3
+5116	11463	6648834464978695	CMakeFiles/Zhaba_script_lang.dir/src/parser/expression_parser.cpp.obj	3a5343bdbf44de0b
+11463	17579	6648834526112208	Zhaba_script_lang.exe	f21b0533e62d01cf

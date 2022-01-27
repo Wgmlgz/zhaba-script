@@ -1,0 +1,1 @@
+-IC:/Code/Zhaba-script-lang/src/compiler -IC:/Code/Zhaba-script-lang/src/interpreter -IC:/Code/Zhaba-script-lang/src/lang -IC:/Code/Zhaba-script-lang/src/libs -IC:/Code/Zhaba-script-lang/src/parser -IC:/Code/Zhaba-script-lang/src/tree_lib -IC:/Code/Zhaba-script-lang/src/zhaba

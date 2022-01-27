@@ -8,30 +8,27 @@ type Vec T
 
 impl Vec
   fn free_mem
-    ? ! !(slf.head as int): free(slf.head as int)
+    // ? ! !(slf.head as int): free(slf.head as int)
     slf.size = 0
     slf.capacity = 0
     slf.head = 0 as TP
 
   fn TP atP int pos
-    T item
-    int item_size
-    item_size = sizeof(item)
-    <<< (((slf.head) as int) + pos * item_size) as TP
+    <<< (((slf.head) as int) + pos * sizeof T) as TP
 
   fn T at int pos: <<< *slf.atP(pos)
     
   fn double_capacity
     new_capacity := slf.capacity
-    T item
     ? new_capacity == 0
-      new_capacity = 10000
-      slf.head = malloc(sizeof(item) + 10000) as TP
-      // slf.capacity = 10000
+      new_capacity = 1
+      slf.head = malloc(sizeof T) as TP
+      slf.capacity = new_capacity
     \ new_capacity *= 2
-      new_head := malloc(new_capacity * sizeof(item)) as TP
+      new_head := malloc(new_capacity * sizeof T) as TP
       @ i 0..slf.size: *(new_head + i) = slf.at(i)
-      free(slf.head as int)
+      //TODO fix free 
+      // free(slf.head as int)
       slf.head = new_head
     slf.capacity = new_capacity
 
@@ -72,20 +69,15 @@ impl Vec
     *a = *b
     *b = t
 
-  fn int get_item_size
-    T item
-    int item_size
-    <<< sizeof(item)
-
-  fn next_ptr TPP ptr: *ptr = (*ptr as int + slf.get_item_size()) as TP
-  fn prev_ptr TPP ptr: *ptr = (*ptr as int - slf.get_item_size()) as TP
+  fn next_ptr TPP ptr: *ptr = (*ptr as int + sizeof(T)) as TP
+  fn prev_ptr TPP ptr: *ptr = (*ptr as int - sizeof(T)) as TP
   
   fn TP partition TP low TP high
     slf.prev_ptr(&high)
     TP pivot = high i = low j = low
     TP i = low
 
-    @ (j = low) (j != pivot) (slf.next_ptr(&j))
+    @ j = low, j != pivot, slf.next_ptr(&j)
       ? *j < *pivot
         slf.swap(i j)
         slf.next_ptr(&i)
@@ -95,12 +87,11 @@ impl Vec
 
   fn qsort TP lhs TP rhs
     a := rhs as int - lhs as int
-    b := slf.get_item_size()
+    b := sizeof(T)
     ? a > b
       auto pi = slf.partition(lhs rhs)
       slf.qsort(lhs pi)
       slf.next_ptr(&pi)
       slf.qsort(pi rhs)
   
-  fn sort
-    slf.qsort(slf.begin() slf.end())
+  fn sort: slf.qsort(slf.begin() slf.end())
