@@ -1,13 +1,8 @@
-use 'range.zh'
-use 'vec.zh'
+use 'brainfuck.zh'
 
-fn main
-  Vec<int> v
-  v.ctor()
-  @ i 0..10:
-    v.push_back(10 - i)
-  put 'vector content: '
-  v.print()
-  v.sort()
-  put 'vector content: '
-  v.print()
+/** Hello world! */
+fn main: brainfuck(`
+  ++++++++[>++++[>++>+++>+++>+<<<<-]>+>->+>>
+  +[<]<-]>>.>>---.+++++++..+++.>.<<-.>.+++.-
+  -----.--------.>+.>++.
+  `)

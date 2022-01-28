@@ -16,6 +16,8 @@ enum class TOKEN {
   new_block,
   next_block,
   fin_block,
+  block_end,
+  statement_end,
   op,
 };
 

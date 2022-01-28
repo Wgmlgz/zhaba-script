@@ -25,14 +25,14 @@ const std::vector<std::pair<TOKEN, std::string>> lexer_tokens{
     {TOKEN::str_literal, R"(('(\\.|[^'\\])*'|`(?:\\`|[^`])*`))"},
     {TOKEN::int_literal, R"(((?:0x[0-9a-fA-F]+|0b[01]+|[0-9]+)([iu][0-9]*)?|true|false|tru|fls))"},
     {TOKEN::space, R"((( |\\\\\\ *\n)+))"},
-    {TOKEN::id, R"((([_a-zA-Z][_a-zA-Z0-9]*|[\~\,\.\+\-\*\\\%\<\>\=\^\&\:\|\/\!\#\$\@\?]+|\[\])))"},
+    {TOKEN::id, R"((([_a-zA-Z][_a-zA-Z0-9]*|[\~\,\.\+\-\*\\\%\<\>\=\^\&\:\;\|\/\!\#\$\@\?]+|\[\])))"},
     {TOKEN::line_end, R"(((\n)))"},
     {TOKEN::open_p, R"(((\()))"},
     {TOKEN::close_p, R"(((\))))"},
 };
 
 const std::unordered_set<std::string> banned_ids{
-    "?", "@", "<<<", ":=", "as", "|", "\\"
+    "?", "@", "<<<", ":=", "as", "|", "\\", ";"
 };
 
 const std::unordered_set<std::string> flow_ops{

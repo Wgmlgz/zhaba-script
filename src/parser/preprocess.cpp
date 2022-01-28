@@ -2,12 +2,13 @@
 
 void defineFlowTokens(std::vector<Token> &tokens) {
   for (auto &token : tokens) {
-    if (token.token == TOKEN::id)
+    if (token.token == TOKEN::id) {
       if (token.val == ":") token.token = TOKEN::new_block;
-    if (token.token == TOKEN::id)
       if (token.val == "|") token.token = TOKEN::next_block;
-    if (token.token == TOKEN::id)
       if (token.val == "\\") token.token = TOKEN::fin_block;
+      if (token.val == ";;") token.token = TOKEN::block_end;
+      if (token.val == ";") token.token = TOKEN::statement_end;
+    }
   }
 }
 

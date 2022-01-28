@@ -6,6 +6,7 @@ ASTBlock *parseBlock(tokeniter begin, tokeniter end) {
   std::stack<ASTBlock *> st;
   auto root = new ASTBlock;
   st.emplace(root);
+
   auto cur = begin;
 
   int line_n = -1;
@@ -16,6 +17,22 @@ ASTBlock *parseBlock(tokeniter begin, tokeniter end) {
       line_offset = cur->val.size();
       ++cur;
     }
+    if (cur != begin) {
+      if (
+          (cur - 1)->token == TOKEN::block_end ||
+              (cur - 1)->token == TOKEN::statement_end
+          ) {
+        if (!st.empty()) line_offset = st.top()->offset;
+      } else if (
+          (cur - 1) != begin &&
+              (cur - 1)->token == TOKEN::space &&
+              ((cur - 2)->token == TOKEN::block_end ||
+                  (cur - 2)->token == TOKEN::statement_end)
+          ) {
+        if (!st.empty()) line_offset = st.top()->offset;
+      }
+    }
+    std::cout << cur->val << " " << line_offset << std::endl;
     if (cur == end) break;
     if (cur->token == TOKEN::line_end) {
       ++cur;
@@ -30,6 +47,8 @@ ASTBlock *parseBlock(tokeniter begin, tokeniter end) {
       if (cur->token == TOKEN::new_block) break;
       if (cur->token == TOKEN::next_block) break;
       if (cur->token == TOKEN::fin_block) break;
+      if (cur->token == TOKEN::block_end) break;
+      if (cur->token == TOKEN::statement_end) break;
       if (cur->token == TOKEN::line_end) {
         break;
       }
@@ -74,6 +93,8 @@ ASTBlock *parseBlock(tokeniter begin, tokeniter end) {
       tmp->btype = ASTBlock::finB;
       st.top()->nodes.push_back(tmp);
       st.emplace(tmp);
+    } else if (cur->token == TOKEN::block_end) {
+      st.pop();
     }
     if (cur->token == TOKEN::line_end) {
       ++line_n;
