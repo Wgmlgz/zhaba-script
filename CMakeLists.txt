@@ -3,6 +3,16 @@ project(Zhaba_script_lang)
 
 set(CMAKE_CXX_STANDARD 20)
 
+include(FetchContent)
+FetchContent_Declare(
+  googletest
+  URL https://github.com/google/googletest/archive/609281088cfefc76f9d0ce82e1ff6c30cc3591e5.zip
+)
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(googletest)
+
+enable_testing()
+
 include_directories(src/compiler)
 include_directories(src/interpreter)
 include_directories(src/lang)
@@ -10,6 +20,21 @@ include_directories(src/libs)
 include_directories(src/parser)
 include_directories(src/tree_lib)
 include_directories(src/zhaba)
+include_directories(tests)
+
+add_executable(
+  misc
+  misc.cc
+)
+target_link_libraries(
+  misc
+  gtest_main
+)
+
+include(GoogleTest)
+gtest_discover_tests(misc)
+
+
 
 add_executable(Zhaba_script_lang
         src/compiler/Compiler.hpp

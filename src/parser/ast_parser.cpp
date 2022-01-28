@@ -18,21 +18,15 @@ ASTBlock *parseBlock(tokeniter begin, tokeniter end) {
       ++cur;
     }
     if (cur != begin) {
-      if (
-          (cur - 1)->token == TOKEN::block_end ||
-              (cur - 1)->token == TOKEN::statement_end
-          ) {
+      if ((cur - 1)->token == TOKEN::block_end ||
+          (cur - 1)->token == TOKEN::statement_end) {
         if (!st.empty()) line_offset = st.top()->offset;
-      } else if (
-          (cur - 1) != begin &&
-              (cur - 1)->token == TOKEN::space &&
-              ((cur - 2)->token == TOKEN::block_end ||
-                  (cur - 2)->token == TOKEN::statement_end)
-          ) {
+      } else if ((cur - 1) != begin && (cur - 1)->token == TOKEN::space &&
+                 ((cur - 2)->token == TOKEN::block_end ||
+                  (cur - 2)->token == TOKEN::statement_end)) {
         if (!st.empty()) line_offset = st.top()->offset;
       }
     }
-    std::cout << cur->val << " " << line_offset << std::endl;
     if (cur == end) break;
     if (cur->token == TOKEN::line_end) {
       ++cur;
@@ -40,17 +34,24 @@ ASTBlock *parseBlock(tokeniter begin, tokeniter end) {
       continue;
     }
     auto line_begin = cur, line_end = end;
+
+    int p_count = 0;
     while (true) {
       if (cur == end) {
         break;
       }
-      if (cur->token == TOKEN::new_block) break;
-      if (cur->token == TOKEN::next_block) break;
-      if (cur->token == TOKEN::fin_block) break;
-      if (cur->token == TOKEN::block_end) break;
-      if (cur->token == TOKEN::statement_end) break;
-      if (cur->token == TOKEN::line_end) {
-        break;
+      if (cur->token == TOKEN::open_p) ++p_count;
+      if (cur->token == TOKEN::close_p) --p_count;
+
+      if (p_count == 0) {
+        if (cur->token == TOKEN::new_block) break;
+        if (cur->token == TOKEN::next_block) break;
+        if (cur->token == TOKEN::fin_block) break;
+        if (cur->token == TOKEN::block_end) break;
+        if (cur->token == TOKEN::statement_end) break;
+        if (cur->token == TOKEN::line_end) {
+          break;
+        }
       }
       ++cur;
     }
@@ -108,4 +109,4 @@ ASTBlock *parse(tokeniter begin, tokeniter end) {
   return parseBlock(begin, end);
 }
 
-}
+}  // namespace ast
