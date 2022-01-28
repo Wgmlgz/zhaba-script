@@ -1,3 +1,0 @@
-C:/Code/Zhaba-script-lang/CMakeFiles/Zhaba_script_lang.dir
-C:/Code/Zhaba-script-lang/CMakeFiles/edit_cache.dir
-C:/Code/Zhaba-script-lang/CMakeFiles/rebuild_cache.dir
