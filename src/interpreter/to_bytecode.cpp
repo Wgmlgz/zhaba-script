@@ -1,6 +1,6 @@
 #include "to_bytecode.hpp"
 
-namespace zhin{
+namespace zhin {
 
 int getLabel() {
   static int id = 100;
@@ -65,7 +65,7 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
     auto lid =
         pushLiteral(bytecode, reinterpret_cast<const byte*>(lt->val.c_str()),
                     reinterpret_cast<const byte*>(lt->val.c_str() +
-                        strlen(lt->val.c_str()) + 1));
+                                                  strlen(lt->val.c_str()) + 1));
     bytecode.pushVal(zhin::instr::push_literal_ptr);
     bytecode.pushVal((int32_t)(lid));
   } else if (auto op = dynamic_cast<zhexp::BinOperator*>(exp)) {
@@ -99,9 +99,8 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
       bytecode.pushVal(zhin::instr::push_64);
       bytecode.pushVal(
           (int64_t)(bytecode.structs_members_offsets
-          [op->lhs->type.getTypeId()]
-          [static_cast<zhexp::IdLiteral*>(op->rhs)->val])
-      );
+                        [op->lhs->type.getTypeId()]
+                        [static_cast<zhexp::IdLiteral*>(op->rhs)->val]));
       bytecode.pushVal(zhin::instr::add_i64);
       bytecode.pushVal(zhin::instr::deref);
       bytecode.pushVal((int32_t)(op->type.getSize()));
@@ -110,8 +109,9 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
       if (op->func && op->func->is_C) {
         expToB(bytecode, op->lhs, funcdata);
         expToB(bytecode, op->rhs, funcdata);
-        if (false) {}
-#define BOP_BYTECODE(name, type_, instr_)                      \
+        if (false) {
+        }
+#define BOP_BYTECODE(name, type_, instr_)                     \
   else if (op->val == #name &&                                \
            op->lhs->type.getTypeId() == types::TYPE::type_ && \
            op->lhs->type.getTypeId() == types::TYPE::type_) { \
@@ -223,9 +223,10 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
         BOP_BYTECODE(&&, boolT, and_bool)
         BOP_BYTECODE(||, boolT, or_bool)
         else {
-          throw ParserError(op->begin, op->end, "unimplemented C op " + op->val + " " +
-              op->lhs->type.toString() + " " +
-              op->rhs->type.toString());
+          throw ParserError(op->begin, op->end,
+                            "unimplemented C op " + op->val + " " +
+                                op->lhs->type.toString() + " " +
+                                op->rhs->type.toString());
         }
       } else {
         auto lhs_tuple = castToTuple(op->lhs);
@@ -245,63 +246,63 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
       expToB(bytecode, op->child, funcdata);
       if (0) {
       }
-#define MAKE_LOP_BYTECODE(name, type_, impl_)                         \
+#define MAKE_LOP_BYTECODE(name, type_, impl_)                   \
   else if (op->val == #name &&                                  \
            op->child->type.getTypeId() == types::TYPE::type_) { \
     impl_;                                                      \
   }
-#define MAKE_VOID_LOP_BYTECODE(name, impl_)                               \
-  else if (op->val == #name && dynamic_cast<zhexp::Tuple*>(op->child) &&  \
-           dynamic_cast<zhexp::Tuple*>(op->child)->content.empty()) { \
-    impl_;                                                                \
+#define MAKE_VOID_LOP_BYTECODE(name, impl_)                              \
+  else if (op->val == #name && dynamic_cast<zhexp::Tuple*>(op->child) && \
+           dynamic_cast<zhexp::Tuple*>(op->child)->content.empty()) {    \
+    impl_;                                                               \
   }
-      MAKE_VOID_LOP_BYTECODE(in_i8,  bytecode.pushVal(zhin::instr::in_i8))
+      MAKE_VOID_LOP_BYTECODE(in_i8, bytecode.pushVal(zhin::instr::in_i8))
       MAKE_VOID_LOP_BYTECODE(in_i16, bytecode.pushVal(zhin::instr::in_i16))
       MAKE_VOID_LOP_BYTECODE(in_i32, bytecode.pushVal(zhin::instr::in_i32))
       MAKE_VOID_LOP_BYTECODE(in_i64, bytecode.pushVal(zhin::instr::in_i64))
 
-      MAKE_VOID_LOP_BYTECODE(in_u8,  bytecode.pushVal(zhin::instr::in_u8))
+      MAKE_VOID_LOP_BYTECODE(in_u8, bytecode.pushVal(zhin::instr::in_u8))
       MAKE_VOID_LOP_BYTECODE(in_u16, bytecode.pushVal(zhin::instr::in_u16))
       MAKE_VOID_LOP_BYTECODE(in_u32, bytecode.pushVal(zhin::instr::in_u32))
       MAKE_VOID_LOP_BYTECODE(in_u64, bytecode.pushVal(zhin::instr::in_u64))
 
       MAKE_VOID_LOP_BYTECODE(in_char, bytecode.pushVal(zhin::instr::in_char))
-      MAKE_VOID_LOP_BYTECODE(in_str,  bytecode.pushVal(zhin::instr::in_str))
+      MAKE_VOID_LOP_BYTECODE(in_str, bytecode.pushVal(zhin::instr::in_str))
 
       MAKE_VOID_LOP_BYTECODE(in_bool, bytecode.pushVal(zhin::instr::in_bool))
 
-      MAKE_VOID_LOP_BYTECODE(in_f4,  bytecode.pushVal(zhin::instr::in_f4))
-      MAKE_VOID_LOP_BYTECODE(in_f8,  bytecode.pushVal(zhin::instr::in_f8))
+      MAKE_VOID_LOP_BYTECODE(in_f4, bytecode.pushVal(zhin::instr::in_f4))
+      MAKE_VOID_LOP_BYTECODE(in_f8, bytecode.pushVal(zhin::instr::in_f8))
       MAKE_VOID_LOP_BYTECODE(in_f10, bytecode.pushVal(zhin::instr::in_f10))
 
       MAKE_LOP_BYTECODE(!, boolT, bytecode.pushVal(zhin::instr::not_bool))
       MAKE_LOP_BYTECODE(!, charT,
                         (bytecode.pushVal(zhin::instr::not_bytes),
-                            bytecode.pushVal(static_cast<int32_t>(1))))
+                         bytecode.pushVal(static_cast<int32_t>(1))))
       MAKE_LOP_BYTECODE(!, i8T,
                         (bytecode.pushVal(zhin::instr::not_bytes),
-                            bytecode.pushVal(static_cast<int32_t>(1))))
+                         bytecode.pushVal(static_cast<int32_t>(1))))
       MAKE_LOP_BYTECODE(!, i16T,
                         (bytecode.pushVal(zhin::instr::not_bytes),
-                            bytecode.pushVal(static_cast<int32_t>(2))))
+                         bytecode.pushVal(static_cast<int32_t>(2))))
       MAKE_LOP_BYTECODE(!, i32T,
                         (bytecode.pushVal(zhin::instr::not_bytes),
-                            bytecode.pushVal(static_cast<int32_t>(4))))
+                         bytecode.pushVal(static_cast<int32_t>(4))))
       MAKE_LOP_BYTECODE(!, i64T,
                         (bytecode.pushVal(zhin::instr::not_bytes),
-                            bytecode.pushVal(static_cast<int32_t>(8))))
+                         bytecode.pushVal(static_cast<int32_t>(8))))
       MAKE_LOP_BYTECODE(!, u8T,
                         (bytecode.pushVal(zhin::instr::not_bytes),
-                            bytecode.pushVal(static_cast<int32_t>(1))))
+                         bytecode.pushVal(static_cast<int32_t>(1))))
       MAKE_LOP_BYTECODE(!, u16T,
                         (bytecode.pushVal(zhin::instr::not_bytes),
-                            bytecode.pushVal(static_cast<int32_t>(2))))
+                         bytecode.pushVal(static_cast<int32_t>(2))))
       MAKE_LOP_BYTECODE(!, u32T,
                         (bytecode.pushVal(zhin::instr::not_bytes),
-                            bytecode.pushVal(static_cast<int32_t>(4))))
+                         bytecode.pushVal(static_cast<int32_t>(4))))
       MAKE_LOP_BYTECODE(!, u64T,
                         (bytecode.pushVal(zhin::instr::not_bytes),
-                            bytecode.pushVal(static_cast<int32_t>(8))))
+                         bytecode.pushVal(static_cast<int32_t>(8))))
 
       MAKE_LOP_BYTECODE(put, i8T, bytecode.pushVal(zhin::instr::put_i8))
       MAKE_LOP_BYTECODE(out, i8T, bytecode.pushVal(zhin::instr::out_i8))
@@ -352,7 +353,8 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
     } else {
       argsToB(bytecode, op->child, op->func, funcdata);
       bytecode.pushVal(zhin::instr::call);
-      bytecode.pushVal((int32_t)(bytecode.func_labels[op->func->toUniqueStr()]));
+      bytecode.pushVal(
+          (int32_t)(bytecode.func_labels[op->func->toUniqueStr()]));
     }
   } else if (auto var = dynamic_cast<zhexp::Variable*>(exp)) {
     bytecode.pushVal(zhin::instr::push_stack_ptr);
@@ -432,8 +434,7 @@ void nodeToB(zhin::ByteCode& bytecode, STNode* node, FuncData& funcdata) {
     }
 
     /** <else> */
-    if (stif->else_body)
-      blockToB(bytecode, stif->else_body, funcdata);
+    if (stif->else_body) blockToB(bytecode, stif->else_body, funcdata);
     bytecode.pushVal(zhin::instr::jmp);
     bytecode.pushVal((int32_t)(end_l));
 
@@ -499,8 +500,7 @@ void blockToB(zhin::ByteCode& bytecode, STBlock* block, FuncData& funcdata) {
   }
   bytecode.push_push_bytes(local_vars_size);
 
-  for (auto& i : block->nodes)
-    nodeToB(bytecode, i, funcdata);
+  for (auto& i : block->nodes) nodeToB(bytecode, i, funcdata);
 
   /** Pop local vars info */
   for (const auto& [name, type] : block->scope_info.vars) {
@@ -574,4 +574,4 @@ void toB(zhin::ByteCode& bytecode, STTree* block) {
   bytecode.pushVal(zhin::instr::label);
   bytecode.pushVal((int32_t)(END_LABEL));
 }
-}
+}  // namespace zhin

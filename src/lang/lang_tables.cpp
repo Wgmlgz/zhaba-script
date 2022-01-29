@@ -17,6 +17,7 @@ const std::unordered_map<std::string, bool> flags{
     {"stack_trace", false},
     {"show_bytecode", false},
     {"show_type", false},
+    {"pure", false},
 };
 
 const std::vector<std::pair<TOKEN, std::string>> lexer_tokens{

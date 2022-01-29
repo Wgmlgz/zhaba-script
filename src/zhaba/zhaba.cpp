@@ -14,16 +14,8 @@ void printUsage() {
   }
 }
 
-const bool deb =
-    // true
-    false;
 int main(int argc, char **argv) {
   CmdParser cmd(argc, argv);
-  /** to test bytecode */
-  if (true) {
-    zhdata.flags["B"] = true;
-  }
-  zhdata.bin_path = argv[0];
 
   zhdata.bin_path.remove_filename();
   for (auto&[str, val] : zhdata.flags) {
@@ -33,10 +25,8 @@ int main(int argc, char **argv) {
   if (cmd.cmdOptionExists("-h")) {
     printUsage();
   } else if (cmd.cmdOptionEqual(0, "compile") and cmd.size() == 3) {
-  } else if (deb or cmd.size() >= 1) {
-    std::filesystem::path file_path =
-        deb ? R"(C:\Code\Zhaba-script-lang\Src\Zhaba\test.zh)"
-            : cmd.getCmdOption(0);
+  } else if (cmd.size() >= 1) {
+    std::filesystem::path file_path = cmd.getCmdOption(0);
     try {
       auto tmp = std::getenv("zhstd");
       if (!tmp)

@@ -1,10 +1,12 @@
 #pragma once
 #include <string>
+
 #include "../parser/parser.hpp"
 // Deprecated
 // #include "ToC.hpp"
-#include <fstream>
 #include <filesystem>
+#include <fstream>
+
 #include "../interpreter/to_bytecode.hpp"
 #include "../interpreter/zhvm.hpp"
 
@@ -25,7 +27,6 @@ void compileFile(std::filesystem::path file_path) {
   }
 
   defineFlowTokens(tokens);
-
 
   // auto parse_res = zhdata.lexer.parse(programm, false);
   auto ast = ast::parse(tokens.begin(), tokens.end());
@@ -51,19 +52,24 @@ void compileFile(std::filesystem::path file_path) {
   }
 
   if (zhdata.flags["B"] or true) {
-    std::cout << "[INFO] compiling complete in " +
-                std::to_string((clock() - start_time) * 1.0 / CLOCKS_PER_SEC)
-              << std::endl;
+    if (!zhdata.flags["pure"])
+      std::cout << "[INFO] compiling complete in " +
+                       std::to_string((clock() - start_time) * 1.0 /
+                                      CLOCKS_PER_SEC)
+                << std::endl;
     zhin::ByteCode bytecode;
     zhin::toB(bytecode, stree);
     auto run_time = clock();
     zhin::ZHVM zhvm(bytecode);
 
-    while (zhvm.runChunk()) {}
+    while (zhvm.runChunk()) {
+    }
 
-    std::cout << "[INFO] run complete in " +
-              std::to_string((clock() - run_time) * 1.0 / CLOCKS_PER_SEC)
-            << std::endl;
+    if (!zhdata.flags["pure"])
+      std::cout << "[INFO] run complete in " +
+                       std::to_string((clock() - run_time) * 1.0 /
+                                      CLOCKS_PER_SEC)
+                << std::endl;
   } else {
     // Deprecated
     // std::string c_code = toC(stree);

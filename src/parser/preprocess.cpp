@@ -15,7 +15,7 @@ void defineFlowTokens(std::vector<Token> &tokens) {
 void preprocess(std::filesystem::path file_path, std::vector<Token> &res,
                 int depth) {
   zhdata.included_files_names.push_back(file_path.string());
-  auto fin = std::ifstream(file_path);
+  auto fin = std::ifstream(zhdata.bin_path / file_path);
 
   if (fin.fail()) {
     file_path = zhdata.std_path / file_path.filename();
