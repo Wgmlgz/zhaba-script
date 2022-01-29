@@ -66,7 +66,7 @@ Function *parseOpHeader(tokeniter begin, tokeniter end, const ScopeInfo &scope) 
       func->type = types::parse(cur, scope);
       ++cur;
       if (cur != end and cur->token == TOKEN::space) ++cur;
-    } catch (std::runtime_error err) {
+    } catch (const types::TypeParsingError& err) {
       /* Implicit void type */
     }
   }
@@ -89,7 +89,7 @@ Function *parseOpHeader(tokeniter begin, tokeniter end, const ScopeInfo &scope) 
       func->args.back().type = types::parse(cur, scope);
       ++cur;
       if (cur != end and cur->token == TOKEN::space) ++cur;
-    } catch (std::runtime_error err) {
+    } catch (const types::TypeParsingError& err) {
       throw ParserError(*cur, "Expected argument type");
     }
 

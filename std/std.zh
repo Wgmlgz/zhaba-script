@@ -1,4 +1,4 @@
 // zhaba-script standart lib!!!
-use 'operators.zh'
-use 'out.zh'
-use 'frog.zh'
+use operators
+use out
+use frog

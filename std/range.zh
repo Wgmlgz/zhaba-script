@@ -4,10 +4,9 @@
  * @ i 2..5: out i
  */
 
-use 'operators.zh' 
+use operators
 
-type Range
-  int begin end
+type Range: int begin end
 
 impl Range
   fn int begin: <<< slf.begin

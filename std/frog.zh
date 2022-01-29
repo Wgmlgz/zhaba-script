@@ -1,4 +1,4 @@
-use 'str.zh'
+use str
 
 fn Str frog_escaped
   s := asStr('')
@@ -29,9 +29,8 @@ fn Str frog_escaped_multiline
             |/U\\'
   <<< s
 
-fn Str frog_raw
-  s := asStr('')
-  s += \\\
+fn str frog_raw
+  <<< (
 `         _____
        /       \__
      /             \
@@ -41,7 +40,6 @@ fn Str frog_raw
  / .\_____/         /
 /U\|    \___|   |__/
             /  /
-            |/U\ `
-  <<< s
+            |/U\ `)
 
-fn Str frog: <<< frog_raw()
+fn str frog: <<< frog_raw()

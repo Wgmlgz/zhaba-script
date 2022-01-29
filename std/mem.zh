@@ -1,4 +1,0 @@
-// I bevieve in segfault supremacy
-fn int realloc int ptr int new_size: #'return (i64)realloc((void*)ptr, new_size)'
-fn int malloc int size: #'return (i64)malloc(size)'
-fn free int ptr: #'free((void*)ptr)'

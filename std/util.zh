@@ -1,4 +1,4 @@
-use 'tuple.zh'
+use tuple
 
 fn sleep int n
   #unsigned int retTime = clock() + n;

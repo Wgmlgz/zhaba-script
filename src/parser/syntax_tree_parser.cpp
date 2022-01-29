@@ -13,7 +13,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
       try {
         if (!autoT) type = types::parse(cur, cur_scope);
         else ++cur;
-      } catch (const std::runtime_error& err) {
+      } catch (const types::TypeParsingError& err) {
         is_var_decl = false;
       }
       if (is_var_decl) {
@@ -459,7 +459,7 @@ STTree* parseAST(ast::ASTBlock* main_block) {
           types::Type type;
           try {
             type = types::parse(token, main_scope);
-          } catch (std::runtime_error err) {
+          } catch (const types::TypeParsingError& err) {
             throw ParserError(*line->begin, *line->end,
                               "Fail to parse impl type");
           }

@@ -1,5 +1,5 @@
-use 'vec.zh'
-use 'range.zh'
+use vec
+use range
 
 impl str: fn char at int pos: <<< *((*slf as int + pos) as charP)
 
@@ -55,8 +55,18 @@ lop Str asStr str s
 op 16 int += StrR a char ch: a.push_back(ch)
 op 16 += StrR a StrR b: @ i 0..b.size: a += b.at(i)
 op 16 += StrR a str b
+  out b
   len := strlen(b)
-  @ i 0..len: a += b.at(i)
+  out len
+  len := 2
+  @ i 0..len: 
+    out i
+    put '"'
+    put b.at(i)
+    put '"'
+
+    a += b.at(i)
+    out i
 
 lop out StrR s: out s.cstr()
 lop put StrR s: put s.cstr()

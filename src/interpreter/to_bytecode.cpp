@@ -239,6 +239,8 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
     }
   } else if (auto op = dynamic_cast<zhexp::PrefixOperator*>(exp)) {
     /** C operators */
+
+    auto a = (&"aboba");
     if (op->func && op->func->is_C) {
       expToB(bytecode, op->child, funcdata);
       if (0) {

@@ -1,4 +1,5 @@
 #include "types.hpp"
+
 #include "zhdata.hpp"
 
 namespace types {
@@ -8,7 +9,8 @@ uint32_t types::Type::getSelfMask() const {
   return (static_cast<int>(typeid_) << 10) | (ptr_ << 2) | (lval_ << 1) | ref_;
 }
 
-std::strong_ordering operator<=>(const types::Type &lhs, const types::Type &rhs) {
+std::strong_ordering operator<=>(const types::Type &lhs,
+                                 const types::Type &rhs) {
   return lhs.getSelfMask() <=> rhs.getSelfMask();
 }
 
@@ -37,8 +39,7 @@ void pushStruct(const std::string &name, const StructInfo &info) {
   ++zhdata.last_struct_id;
 
   size_t size = 0;
-  for (const auto&[_, type] : info.members)
-    size += type.getSize();
+  for (const auto &[_, type] : info.members) size += type.getSize();
   zhdata.sizes[static_cast<TYPE>(id)] = size;
 }
 
@@ -50,8 +51,7 @@ TYPE getStructId(const std::string &str) {
 }
 
 /* Ctor Dtor */
-types::Type::Type(const types::TYPE &type, uint8_t ptr, bool lval,
-                  bool ref)
+types::Type::Type(const types::TYPE &type, uint8_t ptr, bool lval, bool ref)
     : typeid_(type), ptr_(ptr), lval_(lval), ref_(ref) {}
 types::Type::~Type() = default;
 
@@ -78,14 +78,14 @@ void types::Type::setPtr(uint8_t val) { ptr_ = val; }
 
 std::vector<uint32_t> types::Type::getMask() const { return {getSelfMask()}; }
 
-types::Type types::Type::rvalClone() const { return Type(typeid_, ptr_, false, ref_); }
+types::Type types::Type::rvalClone() const {
+  return Type(typeid_, ptr_, false, ref_);
+}
 
 std::string types::Type::toString() const {
   std::string res;
-  if (static_cast<int>(typeid_) < 50)
-    zhdata.type_names[typeid_];
-  else
-    res += zhdata.struct_names[typeid_];
+  res += static_cast<int>(typeid_) < 50 ? zhdata.type_names[typeid_]
+                                        : zhdata.struct_names[typeid_];
 
   res += std::string(ptr_, 'P');
   if (ref_) res += "R";
@@ -105,6 +105,4 @@ std::string types::Type::toString() const {
   if (lval_) res += "&";
   return res;
 }
-}
-
-
+}  // namespace types

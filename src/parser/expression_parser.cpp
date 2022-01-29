@@ -134,7 +134,7 @@ std::vector<Exp *> preprocess(tokeniter begin, tokeniter end, const ScopeInfo &s
       res.push_back(new TypeLiteral(*i, *i, type));
       --i;
       continue;
-    } catch (std::runtime_error err) {
+    } catch (const types::TypeParsingError& err) {
     }
 
     bool lhs = false, rhs = false;
@@ -304,7 +304,6 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope_info, ScopeInfo *block_scope) {
     exp->type = types::Type(types::TYPE::charT);
   } else if (auto op = dynamic_cast<StrLiteral *>(exp)) {
     exp->type = types::Type(types::TYPE::strT);
-    exp->type.setLval(true);
   } else if (auto id = dynamic_cast<IdLiteral *>(exp)) {
     if (scope_info.vars.count(id->val)) {
       auto tmp =

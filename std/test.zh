@@ -1,13 +1,11 @@
-use 'brainfuck.zh'
+use range
+use out
 
-fn int da int a int b: <<< a + b
-fn main:
-  out (
-    
-    
-    da(
-      2,
-      2
-  )
+fn fizz_buzz int mx
+  @ i 1..mx+1
+    ? i %% 15: <'FizzBuzz'<
+    | i %% 3: <'Fizz'<
+    | i %% 5: <'Buzz'<
+    \ <i<
 
-  )
+fn main: fizz_buzz(20)

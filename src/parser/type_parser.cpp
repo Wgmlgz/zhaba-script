@@ -18,7 +18,7 @@ types::StructInfo parseStruct(ast::ASTBlock *block, const ScopeInfo &scope) {
       auto cur = line->begin;
       try {
         cur_type = types::parse(cur, scope);
-      } catch (const std::runtime_error &err) {
+      } catch (const types::TypeParsingError &err) {
         throw ParserError(*line->begin, "Expected valid type");
       }
       cur_type.setLval(true);
@@ -64,7 +64,7 @@ Type parse(std::string &str, const ScopeInfo &scope) {
   } else if (getStructId(str) != types::TYPE(-1)) {
     type.setType(getStructId(str));
   } else {
-    throw std::runtime_error("Type parsing failed");
+    throw TypeParsingError();
   }
   type.setPtr(ptr_c);
   return type;
@@ -140,7 +140,7 @@ std::vector<Type> parseTemplate(tokeniter &token, const ScopeInfo &scope) {
     try {
       auto tp = parse(token, scope);
       templ.push_back(tp);
-    } catch (const std::runtime_error &err) {
+    } catch (const types::TypeParsingError &err) {
       throw ParserError(*token, "Type parsing failed");
     }
   }

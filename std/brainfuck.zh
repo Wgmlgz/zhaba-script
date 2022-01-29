@@ -1,4 +1,4 @@
-use 'out.zh'
+use out
 
 fn brainfuck str s: p := malloc(3000) as charP b := 0; @ i 0..strlen(s): v := *p c := s^i
   ? c == '>': ++(p as i64)

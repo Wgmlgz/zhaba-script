@@ -44,7 +44,8 @@ const char* ParserError::what() {
      *    | Error message
      */
     std::string source = "cannot show source code";
-    if (line != -1) source = zhdata.files_lines[filename][line];
+    std::cout << filename << " " << line << std::endl;
+    if (line != -1) source = zhdata.files_lines.at(filename)[line];
     auto line_str = std::to_string(line);
     auto pos_str = std::to_string(pos);
     res += "error :( -> " + filename + ':' + line_str + ':' + pos_str + '\n';

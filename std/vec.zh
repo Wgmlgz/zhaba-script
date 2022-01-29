@@ -1,5 +1,5 @@
-use 'range.zh'
-use 'operators.zh'
+use range
+use operators
 
 type Vec T
   int size
