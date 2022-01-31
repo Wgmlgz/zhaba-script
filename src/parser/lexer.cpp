@@ -10,8 +10,10 @@ std::vector<Token> Lexer::parse(
   /** Merge all tokens in one regex */
   std::regex r(std::accumulate(tokens.begin(), tokens.end(), std::string(),
                                [](const auto &ss, const auto &s) {
-                                 return ss.empty() ? s.second
-                                                   : ss + "|" + s.second;
+                                 if (ss.empty())
+                                   return s.second;
+                                 else
+                                   return ss + "|" + s.second;
                                }));
 
   size_t line_n = 0, pos = 0;
@@ -32,20 +34,29 @@ std::vector<Token> Lexer::parse(
     parse_res.emplace_back(tokens[id].first, token_val, pos, line_n, filename);
 
     /** Update lines info for error trace */
-    tokens[id].first == TOKEN::line_end
-        ? (files_lines[filename].push_back(line), line.clear(), ++line_n,
-           pos = 0, 0)
-        : (pos += token_val.size(), line += token_val, 0);
+    if (tokens[id].first == TOKEN::line_end) {
+      files_lines[filename].push_back(line);
+      line.clear();
+      ++line_n;
+      pos = 0;
+    } else {
+      pos += token_val.size(), line += token_val;
+    }
+
+    auto new_line_n = std::count(line.begin(), line.end(), '\n');
+    for (int i = 0; i < new_line_n; ++i) {
+      ++line_n;
+      files_lines[filename].push_back("");
+      line.clear();
+    }
 
     /** Write logs if needed */
-    if (DEBUG)
-      std::cout << "'" + token_val + "':" +
-                       std::to_string(
-                           static_cast<std::underlying_type_t<TOKEN>>(
-                               tokens[id].first)) +
-                       " at " + std::to_string(pos) + ":" +
-                       std::to_string(line_n)
-                << std::endl;
+    if (DEBUG) {
+      std::cout << "'" << token_val << "':"
+                << static_cast<std::underlying_type_t<TOKEN>>(tokens[id].first)
+                << " at " << std::to_string(pos) << ":"
+                << std::to_string(line_n) << std::endl;
+    }
   }
   return parse_res;
 }
