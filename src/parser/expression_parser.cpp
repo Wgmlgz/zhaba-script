@@ -134,8 +134,7 @@ std::vector<Exp *> preprocess(tokeniter begin, tokeniter end, const ScopeInfo &s
       res.push_back(new TypeLiteral(*i, *i, type));
       --i;
       continue;
-    } catch (const types::TypeParsingError& err) {
-    }
+    } catch (const types::TypeParsingError& err) {}
 
     bool lhs = false, rhs = false;
     if (i->token == TOKEN::space) {
@@ -159,6 +158,14 @@ std::vector<Exp *> preprocess(tokeniter begin, tokeniter end, const ScopeInfo &s
     }
 
     if (i->token == TOKEN::open_p) {
+      if (!res.empty())
+        if (auto type_literal = dynamic_cast<TypeLiteral *>(res.back())) {
+          auto type_name = type_literal->literal_type.toString();
+          auto op = new Operator(*i, *i, type_name,
+                                 -zhdata.parentheses_offset * pcount, 0, 0);
+          res.pop_back();
+          res.push_back(op);
+        }
       ++pcount;
     } else if (i->token == TOKEN::close_p) {
       --pcount;

@@ -1,6 +1,15 @@
-#include "definitions_parser.hpp"
+#include "./definitions_parser.hpp"
 
 void validateFunction(const Function &func, tokeniter begin, tokeniter end) {
+  try {
+    auto scope = ScopeInfo();
+    auto str = func.name;
+    types::parse(str, scope);
+    throw ParserError(*begin, *end,
+                      "'" + str + "' is a type name, use ctor instead");
+  } catch (const types::TypeParsingError& err) {
+  }
+
   if (func.op_type == Function::OpType::bin) {
     if (zhdata.B_OD.contains(func.getHeadNonRefNonLval()))
       throw ParserError(*begin, *end,
@@ -119,6 +128,6 @@ Function *parseOpHeader(tokeniter begin, tokeniter end, const ScopeInfo &scope) 
                         "Binary operator priority is not defined");
   }
 
-  validateFunction(*func, start_token, cur);
+  validateFunction(*func, begin, cur);
   return func;
 }
