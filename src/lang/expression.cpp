@@ -99,12 +99,10 @@ CCode::CCode(const Token &new_begin, const Token &new_end, std::string new_code)
 Operator::Operator(const Token &new_begin, const Token &new_end)
     : Exp(new_begin, new_end) {}
 Operator::Operator(const Token &new_begin, const Token &new_end, std::string new_val,
-                   int64_t new_priority, size_t new_spl, size_t new_spr)
+                   int64_t new_priority)
     : Exp(new_begin, new_end) {
   val = std::move(new_val);
   priority = new_priority;
-  spl = new_spl;
-  spr = new_spr;
 }
 std::string Operator::toString() {
   std::string res = "<operator'" + val + "'>";

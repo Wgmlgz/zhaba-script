@@ -32,17 +32,14 @@ Exp *buildExp(const std::vector<Exp *>::iterator begin,
       if (i == begin) {
         if (!zhdata.prefix_operators.contains(op->val) and !zhdata.functions.contains(op->val))
           throw ParserError(op->begin, "Unknown prefix operator '" + op->val + "'");
-        if (zhdata.USE_SPACES_OFFSET) true_priority += 2 * op->spr * zhdata.priority_offset;
         true_priority += zhdata.prefix_operators[op->val];
       } else if (i == end - 1) {
         if (!zhdata.postfix_operators.contains(op->val))
           throw ParserError(op->begin, "Unknown postfix operator");
 
-        if (zhdata.USE_SPACES_OFFSET) true_priority += 2 * op->spl * zhdata.priority_offset;
         true_priority += zhdata.postfix_operators[op->val];
       } else {
         if (zhdata.bin_operators.contains(op->val)) {
-          if (zhdata.USE_SPACES_OFFSET) true_priority += (op->spl + op->spr) * zhdata.priority_offset;
           true_priority += zhdata.bin_operators[op->val];
         } else {
           true_priority = -zhdata.INF;
@@ -121,12 +118,8 @@ std::vector<Exp *> preprocess(tokeniter begin, tokeniter end, const ScopeInfo &s
   }
 
   for (auto i = begin; i != end; ++i) {
-    if (i == begin) {
-      if (i->token == TOKEN::space) continue;
-    }
-    if (i + 1 == end) {
-      if (i->token == TOKEN::space) continue;
-    }
+    if (i == begin && i->token == TOKEN::space) continue;
+    if (i + 1 == end && i->token == TOKEN::space) continue;
 
     try {
       auto pos = i->pos;
@@ -145,14 +138,14 @@ std::vector<Exp *> preprocess(tokeniter begin, tokeniter end, const ScopeInfo &s
         if (std::set{TOKEN::open_p, TOKEN::int_literal, TOKEN::str_literal, TOKEN::id}.count((i + 1)->token))
           rhs = true;
       if (lhs and rhs) {
-        res.push_back(new Operator(*i, *i, ",", -zhdata.parentheses_offset * pcount, 0, i->val.size()));
+        res.push_back(new Operator(*i, *i, ",", -zhdata.parentheses_offset * pcount));
       }
     } else {
       if (i != begin)
         if (std::set{TOKEN::close_p, TOKEN::int_literal, TOKEN::str_literal, TOKEN::id}.count((i - 1)->token))
           lhs = true;
       if (lhs and rhs) {
-        res.push_back(new Operator(*i, *i, ",", -zhdata.parentheses_offset * pcount, 0, 0));
+        res.push_back(new Operator(*i, *i, ",", -zhdata.parentheses_offset * pcount));
       }
       if (zhdata.operators.count(i->val)) rhs = false;
     }
@@ -161,8 +154,7 @@ std::vector<Exp *> preprocess(tokeniter begin, tokeniter end, const ScopeInfo &s
       if (!res.empty())
         if (auto type_literal = dynamic_cast<TypeLiteral *>(res.back())) {
           auto type_name = type_literal->literal_type.toString();
-          auto op = new Operator(*i, *i, type_name,
-                                 -zhdata.parentheses_offset * pcount, 0, 0);
+          auto op = new Operator(*i, *i, type_name, -zhdata.parentheses_offset * pcount);
           res.pop_back();
           res.push_back(op);
         }
@@ -178,18 +170,6 @@ std::vector<Exp *> preprocess(tokeniter begin, tokeniter end, const ScopeInfo &s
     int bpriority = -zhdata.parentheses_offset * pcount;
 
     if (i->token == TOKEN::op) {
-      /* Get spaces */
-      int64_t spaces_lhs = 0, spaces_rhs = 0;
-      if (i != begin) {
-        if ((i - 1)->token == TOKEN::space) spaces_lhs = (i - 1)->val.size();
-      } else {
-        spaces_lhs = zhdata.INF;
-      }
-      if (i != end - 1) {
-        if ((i + 1)->token == TOKEN::space) spaces_rhs = (i + 1)->val.size();
-      } else {
-        spaces_rhs = zhdata.INF;
-      }
       /** Member call */
       if (i->val == "." and
           i != end - 1 and
@@ -198,9 +178,9 @@ std::vector<Exp *> preprocess(tokeniter begin, tokeniter end, const ScopeInfo &s
           (i + 2)->token == TOKEN::open_p
           ) {
         ++i;
-        res.push_back(new Operator(*i, *i, ".call." + i->val, bpriority, spaces_lhs, spaces_rhs));
+        res.push_back(new Operator(*i, *i, ".call." + i->val, bpriority));
       } else {
-        res.push_back(new Operator(*i, *i, i->val, bpriority, spaces_lhs, spaces_rhs));
+        res.push_back(new Operator(*i, *i, i->val, bpriority));
       }
     } else if (i->token == TOKEN::int_literal) {
       int base = 10;

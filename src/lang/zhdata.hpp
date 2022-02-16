@@ -34,7 +34,6 @@ struct ZHDATA {
   const int64_t INF = 1000000000000.0;
   const int64_t priority_offset = 100;
   const int64_t parentheses_offset = 1000000;
-  const bool USE_SPACES_OFFSET = false;
 
   std::unordered_set<std::string> flow_ops = tables::flow_ops;
   std::unordered_set<std::string> operators = tables::operators;
