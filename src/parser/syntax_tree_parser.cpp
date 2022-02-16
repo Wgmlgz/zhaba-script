@@ -1,7 +1,7 @@
 #include "syntax_tree_parser.hpp"
 
-STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo& parent_scope, types::Type retT) {
-  auto res = new STBlock;
+STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo& parent_scope, types::Type retT) {
+  auto res = new STBlock(&parent_scope);
 
   for (auto i = main_block->nodes.begin(); i != main_block->nodes.end(); ++i) {
     if (auto line = dynamic_cast<ast::ASTLine*>(*i)) {
@@ -11,14 +11,15 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
       bool autoT = cur->val == "auto";
       types::Type type;
       try {
-        if (!autoT) type = types::parse(cur, cur_scope);
+        if (!autoT)
+          type = types::parse(cur, res->scope_info);
         else ++cur;
       } catch (const types::TypeParsingError& err) {
         is_var_decl = false;
       }
       if (is_var_decl) {
         /* if line is variable declaration */
-        auto exp_res = zhexp::preprocess(cur, line->end, cur_scope);
+        auto exp_res = zhexp::preprocess(cur, line->end, res->scope_info);
         auto exp = zhexp::buildExp(exp_res.begin(), exp_res.end());
         auto tuple = castTreeToTuple(exp);
 
@@ -29,23 +30,27 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
           if (auto id = dynamic_cast<zhexp::IdLiteral*>(i)) {
             /* just plane variable */
             if (autoT) throw ParserError(i->begin, i->end, "Cannot decide type for '" + id->val + "'");
-            res->scope_info.vars[id->val] = type;
-            res->scope_info.vars[id->val].setLval(true);
-
-            cur_scope.vars[id->val] = type;
-            cur_scope.vars[id->val].setLval(true);
+            try {
+              res->scope_info.setVar(id->val, type);
+            } catch (const std::runtime_error& err) {
+              throw ParserError(i->begin, i->end, err.what());
+            }
+            res->scope_info.getVar(id->val).setLval(true);
           } else {
             /* variable with assignment */
             if (auto assign = dynamic_cast<zhexp::BinOperator*>(i)) {
               if (assign->val != "=")
                 throw ParserError(i->begin, i->end, "Expected assignment, but '" + assign->val + "' found");
               if (auto id = dynamic_cast<zhexp::IdLiteral*>(assign->lhs)) {
-                assign->rhs = zhexp::postprocess(assign->rhs, cur_scope, &res->scope_info);
+                assign->rhs = zhexp::postprocess(assign->rhs, res->scope_info);
                 assign->rhs->type.setLval(false);
                 /* push variable */
                 if (autoT) {
-                  res->scope_info.vars[id->val] = assign->rhs->type;
-                  cur_scope.vars[id->val] = assign->rhs->type;
+                  try {
+                    res->scope_info.setVar(id->val, assign->rhs->type);
+                  } catch (const std::runtime_error& err) {
+                    throw ParserError(assign->begin, assign->end, err.what());
+                  }
                 } else {
                   if (type <=> assign->rhs->type != 0) {
                     throw ParserError(assign->begin, assign->end,
@@ -53,14 +58,16 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
                                           " " + assign->rhs->type.toString() +
                                           ") for '='(init) are different");
                   }
-                  res->scope_info.vars[id->val] = type;
-                  cur_scope.vars[id->val] = type;
+                  try {
+                    res->scope_info.setVar(id->val, type);
+                  } catch (const std::runtime_error& err) {
+                    throw ParserError(assign->begin, assign->end, err.what());
+                  }
                 }
-                res->scope_info.vars[id->val].setLval(true);
-                cur_scope.vars[id->val].setLval(true);
+                res->scope_info.getVar(id->val).setLval(true);
 
                 /* push assignment expression */
-                assign->lhs = zhexp::postprocess(assign->lhs, cur_scope, &res->scope_info);
+                assign->lhs = zhexp::postprocess(assign->lhs, res->scope_info);
                 auto tmp = new STExp;
                 tmp->exp = assign;
                 res->nodes.push_back(tmp);
@@ -73,7 +80,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
       } else {
         /* not variable declaration so normal parsing */
         auto exp_preprocessed =
-            zhexp::preprocess(line->begin, line->end, cur_scope);
+            zhexp::preprocess(line->begin, line->end, res->scope_info);
         auto exp_builded =
             buildExp(exp_preprocessed.begin(), exp_preprocessed.end());
 
@@ -83,13 +90,13 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
           /* "?" (if) statement parsing */
           if (ctr_->val == "?") {
             auto ctr = dynamic_cast<zhexp::FlowOperator*>(
-                zhexp::postprocess(exp_builded, cur_scope, &res->scope_info));
+                zhexp::postprocess(exp_builded, res->scope_info));
             if (ctr->operand->type.getTypeId() == types::TYPE::boolT) {
               auto tmp_if = new STIf;
               tmp_if->condition = ctr->operand;
               if (i + 1 != main_block->nodes.end()) {
                 if (auto body = dynamic_cast<ast::ASTBlock*>(*(i + 1))) {
-                  tmp_if->body = parseASTblock(body, cur_scope, res->scope_info, retT);
+                  tmp_if->body = parseASTblock(body, res->scope_info, retT);
                   ++i;
                   while (i + 1 != main_block->nodes.end()) {
                     if (auto elseif_body = dynamic_cast<ast::ASTBlock*>(*(i + 1))) {
@@ -97,10 +104,10 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
                       if (elseif_body->nodes.size() == 2) {
                         if (auto line = dynamic_cast<ast::ASTLine*>(elseif_body->nodes[0])) {
                           auto exp =
-                              zhexp::parse(line->begin, line->end, cur_scope, &res->scope_info);
+                              zhexp::parse(line->begin, line->end, res->scope_info);
                           if (auto block = dynamic_cast<ast::ASTBlock*>(elseif_body->nodes[1])) {
                             tmp_if->elseif_body.emplace_back(
-                                exp, parseASTblock(block, cur_scope, res->scope_info, retT));
+                                exp, parseASTblock(block, res->scope_info, retT));
                           } else throw ParserError("Exprected block in '|(else if)' statement");
                         } else throw ParserError("Expected expression in '|(else if)' statement");
                       } else {
@@ -112,7 +119,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
                   if (i + 1 != main_block->nodes.end()) {
                     if (auto else_body = dynamic_cast<ast::ASTBlock*>(*(i + 1))) {
                       tmp_if->else_body =
-                          parseASTblock(else_body, cur_scope, res->scope_info, retT);
+                          parseASTblock(else_body, res->scope_info, retT);
                       ++i;
                     }
                   }
@@ -140,7 +147,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
 
             if (tuple_->content.size() == 1 or tuple_->content.size() == 3) {
               auto ctr = dynamic_cast<zhexp::FlowOperator*>(
-                  zhexp::postprocess(exp_builded, cur_scope, &res->scope_info));
+                  zhexp::postprocess(exp_builded, res->scope_info));
               auto tuple = castToTuple(ctr->operand);
               /* for (;condition;) */
               if (tuple->content.size() == 1) {
@@ -159,7 +166,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
                 if (i + 1 != main_block->nodes.end()) {
                   if (auto body = dynamic_cast<ast::ASTBlock*>(*(i + 1))) {
                     tmp_while->body =
-                        parseASTblock(body, cur_scope, res->scope_info, retT);
+                        parseASTblock(body, res->scope_info, retT);
                     if (tuple->content[2]) {
                       auto iter = new STExp;
                       iter->exp = tuple->content[2];
@@ -188,8 +195,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
                 );
 
               /** begin & end check */
-              auto foreach_block = new STBlock;
-              auto foreach_scope = cur_scope;
+              auto foreach_block = new STBlock(&res->scope_info);
 
               auto range_init = new STExp;
               range_init->exp = new zhexp::BinOperator(
@@ -257,18 +263,12 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
                   new zhexp::IdLiteral(tuple_->content[0]->begin,
                                        tuple_->content[0]->end, id_l->val)
               );
-              range_init->exp = zhexp::postprocess(
-                  range_init->exp, foreach_scope, &foreach_block->scope_info);
-              begin_exp->exp = zhexp::postprocess(begin_exp->exp, foreach_scope,
-                                                  &foreach_block->scope_info);
-              end_exp->exp = zhexp::postprocess(end_exp->exp, foreach_scope,
-                                                &foreach_block->scope_info);
-              cur_init->exp = zhexp::postprocess(cur_init->exp, foreach_scope,
-                                                 &foreach_block->scope_info);
-              condition = zhexp::postprocess(condition, foreach_scope,
-                                             &foreach_block->scope_info);
-              iter->exp = zhexp::postprocess(iter->exp, foreach_scope,
-                                             &foreach_block->scope_info);
+              range_init->exp = zhexp::postprocess(range_init->exp, foreach_block->scope_info);
+              begin_exp->exp = zhexp::postprocess(begin_exp->exp, foreach_block->scope_info);
+              end_exp->exp = zhexp::postprocess(end_exp->exp, foreach_block->scope_info);
+              cur_init->exp = zhexp::postprocess(cur_init->exp, foreach_block->scope_info);
+              condition = zhexp::postprocess(condition, foreach_block->scope_info);
+              iter->exp = zhexp::postprocess(iter->exp, foreach_block->scope_info);
 
               foreach_block->nodes.push_back(range_init);
               foreach_block->nodes.push_back(begin_exp);
@@ -281,8 +281,8 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
                 tmp_while->condition = condition;
                 if (i + 1 != main_block->nodes.end()) {
                   if (auto body = dynamic_cast<ast::ASTBlock*>(*(i + 1))) {
-                    tmp_while->body = parseASTblock(body, foreach_scope,
-                                                    res->scope_info, retT);
+                    tmp_while->body =
+                        parseASTblock(body, foreach_block->scope_info, retT);
                     tmp_while->body->nodes.push_back(iter);
                     foreach_block->nodes.push_back(tmp_while);
                   } else {
@@ -304,7 +304,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
             /* <(return) statement parsing */
           else if (ctr_->val == "<<<") {
             auto ctr = dynamic_cast<zhexp::FlowOperator*>(
-                zhexp::postprocess(exp_builded, cur_scope, &res->scope_info));
+                zhexp::postprocess(exp_builded, res->scope_info));
             auto tmp_ret = new STRet;
             tmp_ret->exp = ctr->operand;
             if (retT.getTypeId() == types::TYPE::voidT) {
@@ -323,7 +323,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo cur_scope, ScopeInfo
             throw ParserError("Random error lol (unknown flow control operator)");
           }
         } else {
-          auto exp = zhexp::postprocess(exp_builded, cur_scope, &res->scope_info);
+          auto exp = zhexp::postprocess(exp_builded, res->scope_info);
           /* just normal expression */
           auto tmp = new STExp;
           tmp->exp = exp;
@@ -346,7 +346,7 @@ std::vector<Function*> parseImpl(ast::ASTBlock* block, const types::Type& type,
     auto line = dynamic_cast<ast::ASTLine*>(*i);
     if (!line) throw ParserError("Expected function decl");
 
-    ScopeInfo scope = main_scope;
+    ScopeInfo scope(&main_scope);
     auto func = parseOpHeader(line->begin, line->end, main_scope);
 
     ++i;
@@ -362,8 +362,8 @@ std::vector<Function*> parseImpl(ast::ASTBlock* block, const types::Type& type,
     func->name = ".call." + func->name;
     std::vector<types::Type> types;
     for (auto& [name, type] : func->args) {
-      scope.vars[name] = type;
-      scope.vars[name].setLval(true);
+      scope.setVar(name, type);
+      scope.getVar(name).setLval(true);
       types.push_back(type);
       types.back().setLval(false);
       types.back().setRef(false);
@@ -374,7 +374,7 @@ std::vector<Function*> parseImpl(ast::ASTBlock* block, const types::Type& type,
     zhdata.bin_operators[func->name] = 2;
     zhdata.operators.insert(func->name);
 
-    func->body = parseASTblock(block, scope, main_scope, func->type);
+    func->body = parseASTblock(block, scope, func->type);
 
     res.push_back(func);
   }
@@ -385,7 +385,7 @@ STTree* parseAST(ast::ASTBlock* main_block) {
   STTree* res = new STTree;
   zhdata.sttree = res;
   auto cur = main_block->nodes.begin();
-  ScopeInfo main_scope;
+  ScopeInfo main_scope(nullptr);
   while (cur != main_block->nodes.end()) {
     if (auto line = dynamic_cast<ast::ASTLine*>(*cur)) {
       const auto& id = line->begin->val;
@@ -508,10 +508,11 @@ STTree* parseAST(ast::ASTBlock* main_block) {
         }
 
         ++cur;
-        ScopeInfo scope;
+        // TODO add global scope
+        ScopeInfo scope(nullptr);
         for (auto& [name, type] : func->args) {
-          scope.vars[name] = type;
-          scope.vars[name].setLval(true);
+          scope.setVar(name, type);
+          scope.getVar(name).setLval(true);
         }
 
         /** And then parse body */
@@ -519,7 +520,7 @@ STTree* parseAST(ast::ASTBlock* main_block) {
           throw ParserError(*line->end, "Expected function body");
         if (auto block = dynamic_cast<ast::ASTBlock*>(*cur)) {
           auto& t = res->functions.back()->body;
-          t = parseASTblock(block, scope, main_scope, func->type);
+          t = parseASTblock(block, scope, func->type);
         } else {
           throw ParserError(*line->end, "Expected function body");
         }

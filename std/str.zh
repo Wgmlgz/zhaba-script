@@ -58,7 +58,6 @@ op 16 += StrR a str b
   out b
   len := strlen(b)
   out len
-  len := 2
   @ i 0..len: 
     out i
     put '"'

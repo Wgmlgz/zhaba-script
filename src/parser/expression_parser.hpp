@@ -2,18 +2,20 @@
 #include <set>
 #include <utility>
 
-#include "parser_error.hpp"
-#include "lexer.hpp"
 #include "../lang/lang.hpp"
 #include "../tree_lib/TreeLib.hpp"
+#include "lexer.hpp"
+#include "parser_error.hpp"
 #include "type_parser.hpp"
 
 namespace zhexp {
 
-Exp *buildExp(std::vector<Exp *>::iterator begin, std::vector<Exp *>::iterator end, int depth = 0);
-std::vector<Exp *> preprocess(tokeniter begin, tokeniter end, const ScopeInfo &scope);
-Exp *postprocess(Exp *exp, ScopeInfo &scope_info, ScopeInfo *block_scope);
+Exp *buildExp(std::vector<Exp *>::iterator begin,
+              std::vector<Exp *>::iterator end, int depth = 0);
+std::vector<Exp *> preprocess(tokeniter begin, tokeniter end,
+                              const ScopeInfo &scope);
+Exp *postprocess(Exp *exp, ScopeInfo &scope_info);
 Exp *parse(std::vector<Token>::iterator begin, std::vector<Token>::iterator end,
-           ScopeInfo &scope_info, ScopeInfo *block_scope);
+           ScopeInfo &scope_info);
 
-};
+};  // namespace zhexp

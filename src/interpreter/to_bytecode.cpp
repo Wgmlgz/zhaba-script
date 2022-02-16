@@ -493,7 +493,7 @@ void nodeToB(zhin::ByteCode& bytecode, STNode* node, FuncData& funcdata) {
 void blockToB(zhin::ByteCode& bytecode, STBlock* block, FuncData& funcdata) {
   /** Push local vars info */
   size_t local_vars_size = 0;
-  for (const auto& [name, type] : block->scope_info.vars) {
+  for (const auto& [name, type] : *block->scope_info.getVars()) {
     funcdata.offsets[name].push_back(funcdata.offset);
     funcdata.offset += type.getSize();
     local_vars_size += type.getSize();
@@ -503,7 +503,7 @@ void blockToB(zhin::ByteCode& bytecode, STBlock* block, FuncData& funcdata) {
   for (auto& i : block->nodes) nodeToB(bytecode, i, funcdata);
 
   /** Pop local vars info */
-  for (const auto& [name, type] : block->scope_info.vars) {
+  for (const auto& [name, type] : *block->scope_info.getVars()) {
     funcdata.offsets[name].pop_back();
     funcdata.offset -= type.getSize();
   }

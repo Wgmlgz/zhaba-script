@@ -55,8 +55,8 @@ Type parse(std::string &str, const ScopeInfo &scope) {
     ++ptr_c;
     str.pop_back();
   }
-  if (scope.typedefs.contains(str)) {
-    auto tmp = scope.typedefs.at(str);
+  if (scope.containsTypedef(str)) {
+    auto tmp = scope.getTypedef(str);
     type.setType(tmp.getTypeId());
     type.setPtr(tmp.getPtr() + type.getPtr());
   } else if (zhdata.prim_types.count(str)) {
@@ -96,9 +96,9 @@ Type parse(tokeniter &token, const ScopeInfo &scope) {
                 std::to_string(zhdata.generics[str].names.size()) + " expected");
 
       //TODO proper scope
-      ScopeInfo scope;
+      ScopeInfo scope(nullptr);
       for (int i = 0; i < generic_types.size(); ++i) {
-        scope.typedefs[zhdata.generics[str].names[i]] = generic_types[i];
+        scope.setTypedef(zhdata.generics[str].names[i], generic_types[i]);
       }
       // for (auto i : generic)
       /** Try generate generic implementation */

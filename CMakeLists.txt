@@ -30,6 +30,7 @@ set(lib
   src/lang/lang.hpp
   src/lang/lang_tables.hpp
   src/lang/scope.hpp
+  src/lang/scope.cpp
   src/lang/syntax_tree.hpp
   src/lang/token.cpp
   src/lang/token.hpp
@@ -41,7 +42,7 @@ set(lib
   src/parser/expression_parser.hpp
   src/parser/lexer.hpp
   src/parser/parser.hpp
-  src/parser/parser_error.hpp
+  src/lang/parser_error.hpp
   src/parser/preprocess.hpp
   src/parser/syntax_tree_parser.hpp
   src/parser/type_parser.hpp
@@ -54,7 +55,7 @@ set(lib
   src/lang/ast.cpp
   src/lang/generics.cpp
   src/lang/syntax_tree.cpp
-  src/parser/parser_error.cpp
+  src/lang/parser_error.cpp
   src/lang/zhdata.cpp
   src/lang/lang_tables.cpp
   src/interpreter/runtime_error.cpp

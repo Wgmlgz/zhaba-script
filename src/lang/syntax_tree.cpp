@@ -1,21 +1,26 @@
 #include "syntax_tree.hpp"
 
+STBlock::STBlock(ScopeInfo *parent_scope) : scope_info(parent_scope) {}
 STNode::~STNode() = default;
 
 TreeNode<std::string> *STBlock::toGenericTree() {
   auto node = new TreeNode<std::string>;
   node->data = "<block>";
   auto vars = new TreeNode<std::string>("<vars>");
-  for (const auto& var : scope_info.vars)
+  for (const auto& [name, type] : *scope_info.getVars())
     vars->branches.push_back(
         new TreeNode<std::string>(
-            var.first,
-            {new TreeNode<std::string>(var.second.toString())}
+            name,
+            {new TreeNode<std::string>(type.toString())}
         )
     );
   node->branches.push_back(vars);
   for (auto i : nodes) {
-    if (auto if_statement = dynamic_cast<STIf *>(i)) {
+    if (auto block = dynamic_cast<STBlock *>(i)) {
+      auto tmp = new TreeNode<std::string>("<block>");
+      tmp->branches.push_back(block->toGenericTree());
+      node->branches.push_back(tmp);
+    }else if (auto if_statement = dynamic_cast<STIf *>(i)) {
       auto tmp = new TreeNode<std::string>("<if>");
       tmp->branches.push_back(
           new TreeNode<std::string>("<condition>", {

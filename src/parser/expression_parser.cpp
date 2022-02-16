@@ -282,13 +282,13 @@ std::vector<Exp *> preprocess(tokeniter begin, tokeniter end, const ScopeInfo &s
   return res;
 }
 
-Exp *postprocess(Exp *exp, ScopeInfo &scope_info, ScopeInfo *block_scope) {
+Exp *postprocess(Exp *exp, ScopeInfo &scope) {
   if (auto op = dynamic_cast<CCode *>(exp)) {
     return op;
   }
   if (auto op = dynamic_cast<FlowOperator *>(exp)) {
     exp->type = types::Type(types::TYPE::voidT);
-    if (op->operand) op->operand = postprocess(op->operand, scope_info, block_scope);
+    if (op->operand) op->operand = postprocess(op->operand, scope);
   } else if (auto op = dynamic_cast<I8Literal *>(exp)) {
     exp->type = types::Type(types::TYPE::i8T);
   } else if (auto op = dynamic_cast<I16Literal *>(exp)) {
@@ -312,17 +312,17 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope_info, ScopeInfo *block_scope) {
   } else if (auto op = dynamic_cast<StrLiteral *>(exp)) {
     exp->type = types::Type(types::TYPE::strT);
   } else if (auto id = dynamic_cast<IdLiteral *>(exp)) {
-    if (scope_info.vars.count(id->val)) {
+    if (scope.containsVar(id->val)) {
       auto tmp =
-          new Variable(id->begin, id->end, id->val, scope_info.vars[id->val]);
-      tmp->type = scope_info.vars[id->val];
+          new Variable(id->begin, id->end, id->val, scope.getVar(id->val));
+      tmp->type = scope.getVar(id->val);
       exp = tmp;
     } else
       throw ParserError(id->begin, id->end, "Unknown variable '" + id->val + "'");
   } else if (auto op = dynamic_cast<BinOperator *>(exp)) {
     if (op->val == ",") {
-      op->lhs = postprocess(op->lhs, scope_info, block_scope);
-      op->rhs = postprocess(op->rhs, scope_info, block_scope);
+      op->lhs = postprocess(op->lhs, scope);
+      op->rhs = postprocess(op->rhs, scope);
 
       bool b = true;
       if (auto t = dynamic_cast<Tuple *>(op->lhs)) {
@@ -342,8 +342,8 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope_info, ScopeInfo *block_scope) {
     }
       /** Regular assignment */
     else if (op->val == "=") {
-      op->lhs = postprocess(op->lhs, scope_info, block_scope);
-      op->rhs = postprocess(op->rhs, scope_info, block_scope);
+      op->lhs = postprocess(op->lhs, scope);
+      op->rhs = postprocess(op->rhs, scope);
 
       auto lhs = op->lhs->type.rvalClone();
       auto rhs = op->rhs->type.rvalClone();
@@ -363,22 +363,21 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope_info, ScopeInfo *block_scope) {
     }
       /** Variable creation & assingment */
     else if (op->val == ":=") {
-      op->rhs = postprocess(op->rhs, scope_info, block_scope);
+      op->rhs = postprocess(op->rhs, scope);
       if (auto id_l = dynamic_cast<IdLiteral *>(op->lhs)) {
         if (op->rhs->type.getTypeId() == types::TYPE::voidT)
           throw ParserError(op->begin, op->rhs->end, "Variable type cannot be void");
 
-        scope_info.vars[id_l->val] = op->rhs->type;
-        scope_info.vars[id_l->val].setLval(true);
-
-        if (block_scope) {
-          block_scope->vars[id_l->val] = op->rhs->type;
-          block_scope->vars[id_l->val].setLval(true);
+        try {
+          scope.setVar(id_l->val, op->rhs->type);
+        } catch (const std::runtime_error &err) {
+          throw ParserError(op->begin, op->rhs->end, err.what());
         }
+        scope.getVar(id_l->val).setLval(true) ;
 
         auto tmp = new Variable(op->lhs->begin, op->lhs->end, id_l->val,
-                                scope_info.vars[id_l->val]);
-        tmp->type = scope_info.vars[id_l->val];
+                                scope.getVar(id_l->val));
+        tmp->type = scope.getVar(id_l->val);
         op->lhs = tmp;
         op->val = "=";
         op->type = types::Type(types::TYPE::voidT);
@@ -388,7 +387,7 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope_info, ScopeInfo *block_scope) {
     }
       /** Member access */
     else if (op->val == ".") {
-      op->lhs = postprocess(op->lhs, scope_info, block_scope);
+      op->lhs = postprocess(op->lhs, scope);
       if (auto id = dynamic_cast<IdLiteral *>(op->rhs)) {
         if (op->lhs->type.getTypeId() >=
             static_cast<types::TYPE>(zhdata.first_struct_id)) {
@@ -425,7 +424,7 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope_info, ScopeInfo *block_scope) {
     }
       /** Type cast */
     else if (op->val == "as") {
-      op->lhs = postprocess(op->lhs, scope_info, block_scope);
+      op->lhs = postprocess(op->lhs, scope);
       if (auto type_l = dynamic_cast<TypeLiteral *>(op->rhs)) {
         op->type = type_l->literal_type;
         op->type.setLval(op->lhs->type.getLval());
@@ -436,8 +435,8 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope_info, ScopeInfo *block_scope) {
         );
       }
     } else {
-      op->lhs = postprocess(op->lhs, scope_info, block_scope);
-      op->rhs = postprocess(op->rhs, scope_info, block_scope);
+      op->lhs = postprocess(op->lhs, scope);
+      op->rhs = postprocess(op->rhs, scope);
 
       /**
        * Pointer arithmetic
@@ -533,7 +532,7 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope_info, ScopeInfo *block_scope) {
       }
     }
   } else if (auto op = dynamic_cast<PostfixOperator *>(exp)) {
-    op->child = postprocess(op->child, scope_info, block_scope);
+    op->child = postprocess(op->child, scope);
     std::vector<types::Type> types;
     if (auto tuple = dynamic_cast<Tuple *>(op->child)) {
       for (auto exp : tuple->content) {
@@ -555,7 +554,7 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope_info, ScopeInfo *block_scope) {
           op->begin, op->end, "There is no instance of postfix operator '" + op->val +
               "' for type: " + op->child->type.toString());
   } else if (auto op = dynamic_cast<PrefixOperator *>(exp)) {
-    op->child = postprocess(op->child, scope_info, block_scope);
+    op->child = postprocess(op->child, scope);
 
     if (op->val == "&") {
       if (!op->child->type.getLval())
@@ -580,7 +579,7 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope_info, ScopeInfo *block_scope) {
       }
       auto int_l = new I64Literal(op->begin, op->child->end, size);
       exp = int_l;
-      exp = postprocess(exp, scope_info, block_scope);
+      exp = postprocess(exp, scope);
       return exp;
     }
 
@@ -614,19 +613,18 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope_info, ScopeInfo *block_scope) {
     }
   } else if (auto op = dynamic_cast<Tuple *>(exp)) {
     for (auto &i : op->content) {
-      i = postprocess(i, scope_info, block_scope);
+      i = postprocess(i, scope);
     }
   }
   return exp;
 }
 
 Exp *parse(std::vector<Token>::iterator begin,
-           std::vector<Token>::iterator end, ScopeInfo &scope_info,
-           ScopeInfo *block_scope) {
+           std::vector<Token>::iterator end, ScopeInfo &scope_info) {
   auto exp_res = preprocess(begin, end, scope_info);
   Exp *exp = buildExp(exp_res.begin(), exp_res.end());
   if (zhdata.flags["exp_parser_logs"]) zhexp::printExpTree(exp);
-  exp = postprocess(exp, scope_info, block_scope);
+  exp = postprocess(exp, scope_info);
   if (zhdata.flags["exp_parser_logs"]) zhexp::printExpTree(exp);
   return exp;
 }

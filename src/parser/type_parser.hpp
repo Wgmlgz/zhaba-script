@@ -1,8 +1,8 @@
 #pragma once
-#include "../Lang/types.hpp"
+#include "../lang/parser_error.hpp"
+#include "../lang/types.hpp"
 #include "lang.hpp"
 #include "lexer.hpp"
-#include "parser_error.hpp"
 
 /** Defined in SyntaxTreeParser.hpp */
 std::vector<Function *> parseImpl(ast::ASTBlock *block, const types::Type &type,

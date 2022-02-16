@@ -13,6 +13,7 @@ struct STBlock : public STNode {
   ScopeInfo scope_info;
 
   TreeNode<std::string> *toGenericTree();
+  STBlock(ScopeInfo *parent_scope);
 };
 
 struct STExp : public STNode {

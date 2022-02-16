@@ -75,7 +75,6 @@ impl Vec
   fn TP partition TP low TP high
     slf.prev_ptr(&high)
     TP pivot = high i = low j = low
-    TP i = low
 
     @ j = low, j != pivot, slf.next_ptr(&j)
       ? *j < *pivot

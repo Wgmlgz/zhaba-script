@@ -30,7 +30,6 @@ struct ASTBlock : public ASTNode {
   size_t line;
   enum block_type { newB, nextB, finB };
   block_type btype = newB;
-  ScopeInfo scope_info;
   explicit ASTBlock(size_t new_offset = 0, bool new_undef_offset = false,
                     size_t new_line = 0);
 

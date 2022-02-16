@@ -2,7 +2,8 @@
 
 void validateFunction(const Function &func, tokeniter begin, tokeniter end) {
   try {
-    auto scope = ScopeInfo();
+    // TODO add global scope
+    auto scope = ScopeInfo(nullptr);
     auto str = func.name;
     types::parse(str, scope);
     throw ParserError(*begin, *end,
