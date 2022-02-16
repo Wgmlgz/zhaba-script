@@ -87,7 +87,7 @@
       "match": "(\\.)([_a-zA-Z0-9]+)",
       "captures": {
         "1": {
-          "name": "constant.character.escape"
+          "name": "keyword.operator.assignment"
         },
         "2": {
           "name": "variable"
@@ -114,7 +114,7 @@
       "patterns": [
         {
           "match": "\\\\[\\\\n'\"bnt]",
-          "name": "constant.character.escape"
+          "name": "keyword.operator.assignment"
         }
       ]
     },
@@ -125,7 +125,7 @@
       "patterns": [
         {
           "match": "\\\\`",
-          "name": "constant.character.escape"
+          "name": "keyword.operator.assignment"
         }
       ]
     },
@@ -152,7 +152,7 @@
     },
     {
       "match": "[\\.\\,\\+\\-\\*\\\\\\%\\<\\>\\=\\^\\&\\:\\|\\/\\!\\#]+",
-      "name": "constant.character.escape"
+      "name": "keyword.operator.assignment"
     },
     {
       "match": "([_a-zA-Z0-9]+)\\(",
@@ -167,7 +167,7 @@
     },
     {
       "match": ":=",
-      "name": "constant.character.escape"
+      "name": "keyword.operator.assignment"
     },
     {
       "match": "\\:|\\?|\\@|\\\\",
@@ -180,7 +180,7 @@
           "patterns": [
             {
               "match": "(as|out|put|malloc|free|sizeof)$",
-              "name": "constant.character.escape"
+              "name": "keyword.operator.assignment"
             },
             {
               "match": "[_a-zA-Z0-9]+",
@@ -211,7 +211,7 @@
           ]
         },
         "6": {
-          "name": "constant.character.escape"
+          "name": "keyword.operator.assignment"
         }
       }
     },
