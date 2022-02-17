@@ -1,9 +1,8 @@
 #include "./definitions_parser.hpp"
 
-void validateFunction(const Function &func, tokeniter begin, tokeniter end) {
+void validateFunction(const ScopeInfo& scope, const Function &func, tokeniter begin, tokeniter end) {
   try {
     // TODO add global scope
-    auto scope = ScopeInfo(nullptr);
     auto str = func.name;
     types::parse(str, scope);
     throw ParserError(*begin, *end,
@@ -12,11 +11,11 @@ void validateFunction(const Function &func, tokeniter begin, tokeniter end) {
   }
 
   if (func.op_type == Function::OpType::bin) {
-    if (zhdata.B_OD.contains(func.getHeadNonRefNonLval()))
+    if (scope.containsBinOp(func.getHeadNonRefNonLval()))
       throw ParserError(*begin, *end,
                         func.toUniqueStr() + "already defined");
   } else if (func.op_type == Function::OpType::lhs) {
-    if (zhdata.PR_OD.contains(func.getHeadNonRefNonLval()))
+    if (scope.containsPrOp(func.getHeadNonRefNonLval()))
       throw ParserError(*begin, *end,
                         func.toUniqueStr() + "already defined");
     if (func.name == "&") {
@@ -27,7 +26,7 @@ void validateFunction(const Function &func, tokeniter begin, tokeniter end) {
                         "You cannot overload prefix '*' operator");
     }
   } else if (func.op_type == Function::OpType::rhs) {
-    if (zhdata.PO_OD.contains(func.getHeadNonRefNonLval()))
+    if (scope.containsPoOp(func.getHeadNonRefNonLval()))
       throw ParserError(*begin, *end,
                         func.toUniqueStr() + "already defined");
   }
@@ -129,6 +128,6 @@ Function *parseOpHeader(tokeniter begin, tokeniter end, const ScopeInfo &scope) 
                         "Binary operator priority is not defined");
   }
 
-  validateFunction(*func, begin, cur);
+  validateFunction(scope, * func, begin, cur);
   return func;
 }

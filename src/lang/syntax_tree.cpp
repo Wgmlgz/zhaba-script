@@ -131,3 +131,5 @@ TreeNode<std::string> *STTree::toGenericTree() {
   }
   return main_node;
 };
+
+STTree::STTree(ScopeInfo *parent_scope) : scope(parent_scope) {}

@@ -6,7 +6,7 @@
 
 /** Defined in SyntaxTreeParser.hpp */
 std::vector<Function *> parseImpl(ast::ASTBlock *block, const types::Type &type,
-                                  ScopeInfo &main_scope);
+                                  ScopeInfo &main_scope, ScopeInfo &push_scope);
 
 namespace types {
 

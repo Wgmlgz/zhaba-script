@@ -63,4 +63,6 @@ struct Function {
 struct STTree {
   std::vector<Function *> functions;
   TreeNode<std::string> *toGenericTree();
+  ScopeInfo scope;
+  STTree(ScopeInfo* scope);
 };

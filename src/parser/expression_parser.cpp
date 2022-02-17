@@ -4,7 +4,7 @@ namespace zhexp {
 /**
  * @brief Converts expression to expression tree
  */
-Exp *buildExp(const std::vector<Exp *>::iterator begin,
+Exp *buildExp(ScopeInfo& scope, const std::vector<Exp *>::iterator begin,
               const std::vector<Exp *>::iterator end, int depth) {
   if (distance(begin, end) == 0)
     throw ParserError(0, "Unknown error (empty buildExp range)");
@@ -12,8 +12,7 @@ Exp *buildExp(const std::vector<Exp *>::iterator begin,
     return op;
   }
   if (auto op = dynamic_cast<FlowOperator *>(*begin)) {
-    if (begin + 1 < end)
-      op->operand = buildExp(begin + 1, end);
+    if (begin + 1 < end) op->operand = buildExp(scope, begin + 1, end);
     return op;
   }
   if (distance(begin, end) == 1) {
@@ -30,17 +29,20 @@ Exp *buildExp(const std::vector<Exp *>::iterator begin,
     if (Operator *op = dynamic_cast<Operator *>(*i)) {
       true_priority = op->priority;
       if (i == begin) {
-        if (!zhdata.prefix_operators.contains(op->val) and !zhdata.functions.contains(op->val))
+        if (!scope.containsPrOpP(op->val) and
+            !zhdata.fn_info.functions.contains(op->val))
           throw ParserError(op->begin, "Unknown prefix operator '" + op->val + "'");
-        true_priority += zhdata.prefix_operators[op->val];
+        
+        /** Prefix operator priority */
+        true_priority += 3;  // scope.getPrOpP(op->val);
       } else if (i == end - 1) {
-        if (!zhdata.postfix_operators.contains(op->val))
+        if (!scope.containsPoOpP(op->val))
           throw ParserError(op->begin, "Unknown postfix operator");
-
-        true_priority += zhdata.postfix_operators[op->val];
+        /** Postfix operator priority */
+        true_priority += 2;  // scope.getPoOpP(op->val);
       } else {
-        if (zhdata.bin_operators.contains(op->val)) {
-          true_priority += zhdata.bin_operators[op->val];
+        if (scope.containsBinOpP(op->val)) {
+          true_priority += scope.getBinOpP(op->val);
         } else {
           true_priority = -zhdata.INF;
         }
@@ -68,14 +70,14 @@ Exp *buildExp(const std::vector<Exp *>::iterator begin,
   auto op = static_cast<Operator *>(*pos);
   if (pos == begin) {
     return new PrefixOperator(op->begin, op->end, op->val, max_priority,
-                              buildExp(pos + 1, end, depth + 1));
+                              buildExp(scope, pos + 1, end, depth + 1));
   } else if (pos == end - 1) {
     return new PostfixOperator(op->begin, op->end, op->val, max_priority,
-                               buildExp(begin, pos, depth + 1));
+                               buildExp(scope, begin, pos, depth + 1));
   } else {
     return new BinOperator(op->begin, op->end, op->val, max_priority,
-                           buildExp(begin, pos, depth + 1),
-                           buildExp(pos + 1, end, depth + 1));
+                           buildExp(scope, begin, pos, depth + 1),
+                           buildExp(scope, pos + 1, end, depth + 1));
   }
 }
 
@@ -97,7 +99,7 @@ std::vector<Exp *> preprocess(tokeniter begin, tokeniter end, const ScopeInfo &s
     return {new CCode(*begin, *begin, code)};
   }
 
-  if (begin->token == TOKEN::id and zhdata.flow_ops.count(begin->val)) {
+  if (begin->token == TOKEN::id and zhdata.fn_info.flow_ops.count(begin->val)) {
     res.push_back(new FlowOperator(*begin, *begin, begin->val, nullptr));
     ++begin;
   }
@@ -105,9 +107,9 @@ std::vector<Exp *> preprocess(tokeniter begin, tokeniter end, const ScopeInfo &s
   /** Find which tokens are operators */
   for (auto i = begin; i != end; ++i) {
     if (i->token == TOKEN::id) {
-      if (zhdata.operators.count(i->val)) {
+      if (zhdata.fn_info.operators.count(i->val)) {
         i->token = TOKEN::op;
-      } else if (zhdata.functions.count(i->val)) {
+      } else if (zhdata.fn_info.functions.count(i->val)) {
         auto next = i + 1;
         if (next == end) continue;
         if (next->token == TOKEN::open_p) {
@@ -147,7 +149,7 @@ std::vector<Exp *> preprocess(tokeniter begin, tokeniter end, const ScopeInfo &s
       if (lhs and rhs) {
         res.push_back(new Operator(*i, *i, ",", -zhdata.parentheses_offset * pcount));
       }
-      if (zhdata.operators.count(i->val)) rhs = false;
+      if (zhdata.fn_info.operators.count(i->val)) rhs = false;
     }
 
     if (i->token == TOKEN::open_p) {
@@ -445,10 +447,10 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
         auto t = new BinOperator(
             op->begin, op->end, "*", 0, op->rhs, int_literal
         );
-        t->func = zhdata.B_OD[{"*", {int_type, int_type}}];
+        t->func = scope.getBinOp({"*", {int_type, int_type}});
         t->type = int_type;
         op->rhs = t;
-        op->func = zhdata.B_OD[{op->val, {int_type, int_type}}];
+        op->func = scope.getBinOp({op->val, {int_type, int_type}});
         op->type = int_type;
         op = new BinOperator(op->begin, op->end, "as", 0, op,
                              new TypeLiteral(op->begin, op->end, orig_type));
@@ -467,7 +469,7 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
             new BinOperator(op->begin, op->end, "as", 0, op->rhs,
                             new TypeLiteral(op->begin, op->end, int_type));
         op->rhs->type = int_type;
-        op->func = zhdata.B_OD.at({op->val, {int_type, int_type}});
+        op->func = scope.getBinOp({op->val, {int_type, int_type}});
         op->type = bool_type;
       } else {
         /** Member call */
@@ -499,9 +501,9 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
         for (auto &i : types) i.setRef(false);
 
         types::funcHead func_head{op->val, types};
-        if (zhdata.B_OD.count(func_head)) {
-          op->func = zhdata.B_OD[func_head];
-          exp->type = zhdata.B_OD[func_head]->type;
+        if (scope.containsBinOp(func_head)) {
+          op->func = scope.getBinOp(func_head);
+          exp->type = scope.getBinOp(func_head)->type;
         } else {
           throw ParserError(op->begin, op->end,
                             "There is no instance of binary operator '" +
@@ -526,9 +528,9 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
     for (auto &i : types) i.setRef(false);
 
     types::funcHead func_head{op->val, types};
-    if (zhdata.PO_OD.count(func_head)) {
-      op->func = zhdata.PO_OD[func_head];
-      exp->type = zhdata.PO_OD[func_head]->type;
+    if (scope.containsPoOp(func_head)) {
+      op->func = scope.getPoOp(func_head);
+      exp->type = scope.getPoOp(func_head)->type;
     } else
       throw ParserError(
           op->begin, op->end, "There is no instance of postfix operator '" + op->val +
@@ -576,12 +578,12 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
     for (auto &i : types) i.setRef(false);
 
     types::funcHead func_head{op->val, types};
-    if (zhdata.PR_OD.contains(func_head)) {
-      op->func = zhdata.PR_OD[func_head];
-      exp->type = zhdata.PR_OD[func_head]->type;
-    } else if (zhdata.FN_OD.contains(func_head)) {
-      op->func = zhdata.FN_OD[func_head];
-      exp->type = zhdata.FN_OD[func_head]->type;
+    if (scope.containsPrOp(func_head)) {
+      op->func = scope.getPrOp(func_head);
+      exp->type =  scope.getPrOp(func_head)->type;
+    } else if (scope.containsFn(func_head)) {
+      op->func =  scope.getFn(func_head);
+      exp->type = scope.getFn(func_head)->type;
     } else {
       std::string types_str;
       for (auto &i : types) {
@@ -602,7 +604,7 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
 Exp *parse(std::vector<Token>::iterator begin,
            std::vector<Token>::iterator end, ScopeInfo &scope_info) {
   auto exp_res = preprocess(begin, end, scope_info);
-  Exp *exp = buildExp(exp_res.begin(), exp_res.end());
+  Exp *exp = buildExp(scope_info, exp_res.begin(), exp_res.end());
   if (zhdata.flags["exp_parser_logs"]) zhexp::printExpTree(exp);
   exp = postprocess(exp, scope_info);
   if (zhdata.flags["exp_parser_logs"]) zhexp::printExpTree(exp);

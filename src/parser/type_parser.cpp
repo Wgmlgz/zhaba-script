@@ -70,7 +70,7 @@ Type parse(std::string &str, const ScopeInfo &scope) {
   return type;
 }
 
-Type parse(tokeniter &token, const ScopeInfo &scope) {
+Type parse(tokeniter &token, const ScopeInfo &parent_scope) {
   std::string str = token->val;
 
   Type res;
@@ -78,11 +78,11 @@ Type parse(tokeniter &token, const ScopeInfo &scope) {
   if (zhdata.generics.contains(str)) {
     is_generic = true;
   } else {
-    res = parse(str, scope);
+    res = parse(str, parent_scope);
   }
   ++token;
   if (token->val == "<") {
-    auto generic_types = parseTemplate(token, scope);
+    auto generic_types = parseTemplate(token, parent_scope);
     auto name = str + genericToStr(generic_types);
     auto id = getStructId(name);
 
@@ -96,7 +96,7 @@ Type parse(tokeniter &token, const ScopeInfo &scope) {
                 std::to_string(zhdata.generics[str].names.size()) + " expected");
 
       //TODO proper scope
-      ScopeInfo scope(nullptr);
+      ScopeInfo scope(&zhdata.sttree->scope);
       for (int i = 0; i < generic_types.size(); ++i) {
         scope.setTypedef(zhdata.generics[str].names[i], generic_types[i]);
       }
@@ -105,7 +105,7 @@ Type parse(tokeniter &token, const ScopeInfo &scope) {
       pushStruct(name, parseStruct(zhdata.generics[str].block, scope));
       for (auto &block : zhdata.generics[str].impl_blocks) {
         block->reset();
-        auto funcs = parseImpl(block, Type(static_cast<TYPE>(getStructId(name))), scope);
+        auto funcs = parseImpl(block, Type(static_cast<TYPE>(getStructId(name))), scope, zhdata.sttree->scope);
         for (auto i : funcs)
           zhdata.sttree->functions.push_back(i);
       }

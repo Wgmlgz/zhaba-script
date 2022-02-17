@@ -6,5 +6,6 @@
 #include "type_parser.hpp"
 #include "parser_error.hpp"
 
-void validateFunction(const Function &func, tokeniter begin, tokeniter end);
+void validateFunction(ScopeInfo &scope, const Function &func, tokeniter begin,
+                      tokeniter end);
 Function *parseOpHeader(tokeniter begin, tokeniter end, const ScopeInfo &scope);

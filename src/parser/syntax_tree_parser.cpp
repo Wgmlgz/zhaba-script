@@ -20,7 +20,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo& parent_scope, types
       if (is_var_decl) {
         /* if line is variable declaration */
         auto exp_res = zhexp::preprocess(cur, line->end, res->scope_info);
-        auto exp = zhexp::buildExp(exp_res.begin(), exp_res.end());
+        auto exp = zhexp::buildExp(res->scope_info, exp_res.begin(), exp_res.end());
         auto tuple = castTreeToTuple(exp);
 
         if (zhdata.flags["exp_parser_logs"]) {
@@ -82,7 +82,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo& parent_scope, types
         auto exp_preprocessed =
             zhexp::preprocess(line->begin, line->end, res->scope_info);
         auto exp_builded =
-            buildExp(exp_preprocessed.begin(), exp_preprocessed.end());
+            buildExp(res->scope_info, exp_preprocessed.begin(), exp_preprocessed.end());
 
         // auto exp = zhexp::parse(line->begin, line->end, cur_scope, &res->scope_info);
         if (auto ctr_ = dynamic_cast<zhexp::FlowOperator*>(exp_builded)) {
@@ -327,7 +327,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo& parent_scope, types
           /* just normal expression */
           auto tmp = new STExp;
           tmp->exp = exp;
-          res->nodes.push_back(tmp);
+          res->nodes.push_back(tmp); 
         }
       }
     } else if (auto block = dynamic_cast<ast::ASTBlock*>(*i)) {
@@ -340,12 +340,13 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo& parent_scope, types
 }
 
 std::vector<Function*> parseImpl(ast::ASTBlock* block, const types::Type& type,
-                                 ScopeInfo& main_scope) {
+                                 ScopeInfo& main_scope, ScopeInfo& push_scope) {
   std::vector<Function*> res;
   for (auto i = block->nodes.begin(); i != block->nodes.end(); ++i) {
     auto line = dynamic_cast<ast::ASTLine*>(*i);
     if (!line) throw ParserError("Expected function decl");
 
+    /** Function scope */
     ScopeInfo scope(&main_scope);
     auto func = parseOpHeader(line->begin, line->end, main_scope);
 
@@ -369,10 +370,12 @@ std::vector<Function*> parseImpl(ast::ASTBlock* block, const types::Type& type,
       types.back().setRef(false);
     }
 
-    zhdata.B_OD[{func->name, types}] = func;
+    push_scope.setBinOp({func->name, types}, func);
     /** '.' priority */
-    zhdata.bin_operators[func->name] = 2;
-    zhdata.operators.insert(func->name);
+    int64_t p = 2;
+    if (!push_scope.containsBinOpP(func->name))
+      push_scope.setBinOpP(func->name, p);
+    zhdata.fn_info.operators.insert(func->name);
 
     func->body = parseASTblock(block, scope, func->type);
 
@@ -382,10 +385,19 @@ std::vector<Function*> parseImpl(ast::ASTBlock* block, const types::Type& type,
 }
 
 STTree* parseAST(ast::ASTBlock* main_block) {
-  STTree* res = new STTree;
+  // TODO: add module scope
+  STTree* res = new STTree(nullptr);
+  /* init with default values*/
+  res->scope.bin_operators_ = tables::bin_operators;
+  res->scope.prefix_operators_ = tables::prefix_operators;
+  res->scope.postfix_operators_ = tables::postfix_operators;
+
+  res->scope.B_OD_ = tables::B_OD;
+  res->scope.PR_OD_ = tables::PR_OD;
+
   zhdata.sttree = res;
   auto cur = main_block->nodes.begin();
-  ScopeInfo main_scope(nullptr);
+
   while (cur != main_block->nodes.end()) {
     if (auto line = dynamic_cast<ast::ASTLine*>(*cur)) {
       const auto& id = line->begin->val;
@@ -434,7 +446,7 @@ STTree* parseAST(ast::ASTBlock* main_block) {
           }
         } else {
           /** Push declared struct */
-          types::pushStruct(name, types::parseStruct(block, main_scope));
+          types::pushStruct(name, types::parseStruct(block, res->scope));
         }
         ++cur;
       } else if (id == "impl") {
@@ -451,6 +463,7 @@ STTree* parseAST(ast::ASTBlock* main_block) {
         if (!block) throw ParserError("Expected block");
 
         auto token = (line->begin + 2);
+        auto v = token->val;
         if (zhdata.generics.contains(token->val)) {
           /** Push generic impl */
           zhdata.generics[token->val].impl_blocks.push_back(block);
@@ -458,13 +471,13 @@ STTree* parseAST(ast::ASTBlock* main_block) {
           /** Parce regular implementation */
           types::Type type;
           try {
-            type = types::parse(token, main_scope);
+            type = types::parse(token, res->scope);
           } catch (const types::TypeParsingError& err) {
             throw ParserError(*line->begin, *line->end,
                               "Fail to parse impl type");
           }
 
-          auto funcs = parseImpl(block, type, main_scope);
+          auto funcs = parseImpl(block, type, res->scope, res->scope);
           for (auto i : funcs)
             res->functions.push_back(i);
         }
@@ -472,7 +485,8 @@ STTree* parseAST(ast::ASTBlock* main_block) {
         ++cur;
       } else if (id == "op" or id == "lop" or id == "rop" or id == "fn") {
         /** Parse function header */
-        res->functions.push_back(parseOpHeader(line->begin, line->end, main_scope));
+        res->functions.push_back(
+            parseOpHeader(line->begin, line->end, res->scope));
         auto& func = res->functions.back();
 
         /** Regiester function */
@@ -483,33 +497,39 @@ STTree* parseAST(ast::ASTBlock* main_block) {
           types.back().setRef(false);
         }
         if (func->is_fn) {
-          zhdata.functions.insert(func->name);
-          zhdata.FN_OD[{func->name, types}] = func;
+          zhdata.fn_info.functions.insert(func->name);
+          res->scope.setFn({func->name, types}, func);
         } else {
-          zhdata.operators.insert(func->name);
+          zhdata.fn_info.operators.insert(func->name);
           if (func->op_type == Function::OpType::bin) {
-            zhdata.B_OD[{func->name, types}] = func;
-            if (zhdata.bin_operators.contains(func->name) and
-                func->priority != zhdata.bin_operators[func->name])
-              throw ParserError(
-                  *line->begin, *line->end,
-                  "Operator priority doesn't match old one (" +
-                      std::to_string(zhdata.bin_operators[func->name]) +
-                      " <- old vs new -> " + std::to_string(func->priority) +
-                      ")");
-            zhdata.bin_operators[func->name] = func->priority;
+            res->scope.setBinOp({func->name, types}, func);
+            if (res->scope.containsBinOpP(func->name)) {
+              if (func->priority != res->scope.getBinOpP(func->name))
+                throw ParserError(
+                    *line->begin, *line->end,
+                    "Operator priority doesn't match old one (" +
+                        std::to_string(res->scope.getBinOpP(func->name)) +
+                        " <- old vs new -> " + std::to_string(func->priority) +
+                        ")");
+            } else {
+              res->scope.setBinOpP(func->name, func->priority);
+            }
           } else if (func->op_type == Function::OpType::lhs) {
-            zhdata.PR_OD[{func->name, types}] = func;
-            zhdata.prefix_operators[func->name] = func->priority;
+            res->scope.setPrOp({func->name, types}, func);
+            if (!res->scope.containsPrOpP(func->name)) {
+              res->scope.setPrOpP(func->name, func->priority);
+            }
           } else if (func->op_type == Function::OpType::rhs) {
-            zhdata.PO_OD[{func->name, types}] = func;
-            zhdata.postfix_operators[func->name] = func->priority;
+            res->scope.setPoOp({func->name, types}, func);
+            if (!res->scope.containsPoOpP(func->name)) {
+              res->scope.setPoOpP(func->name, func->priority);
+            }
           }
         }
 
         ++cur;
         // TODO add global scope
-        ScopeInfo scope(nullptr);
+        ScopeInfo scope(&res->scope);
         for (auto& [name, type] : func->args) {
           scope.setVar(name, type);
           scope.getVar(name).setLval(true);

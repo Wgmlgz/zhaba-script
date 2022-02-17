@@ -13,6 +13,23 @@
 #include "generics.hpp"
 #include "types.hpp"
 
+struct FnInfo {
+  std::unordered_set<std::string> flow_ops = tables::flow_ops;
+  std::unordered_set<std::string> operators = tables::operators;
+  std::unordered_set<std::string> functions = tables::functions;
+  // std::unordered_map<std::string, int64_t> bin_operators =
+  //     tables::bin_operators;
+  // std::unordered_map<std::string, int64_t> prefix_operators =
+  //     tables::prefix_operators;
+  // std::unordered_map<std::string, int64_t> postfix_operators =
+  //     tables::postfix_operators;
+
+  // std::map<types::funcHead, Function *> B_OD = tables::B_OD;
+  // std::map<types::funcHead, Function *> PR_OD = tables::PR_OD;
+  // std::map<types::funcHead, Function *> PO_OD;
+  // std::map<types::funcHead, Function *> FN_OD;
+};
+
 struct ZHDATA {
   /** Type related */
   std::map<std::string, types::Generic> generics;
@@ -35,17 +52,7 @@ struct ZHDATA {
   const int64_t priority_offset = 100;
   const int64_t parentheses_offset = 1000000;
 
-  std::unordered_set<std::string> flow_ops = tables::flow_ops;
-  std::unordered_set<std::string> operators = tables::operators;
-  std::unordered_set<std::string> functions = tables::functions;
-  std::unordered_map<std::string, int64_t> bin_operators = tables::bin_operators;
-  std::unordered_map<std::string, int64_t> prefix_operators = tables::prefix_operators;
-  std::unordered_map<std::string, int64_t> postfix_operators = tables::postfix_operators;
-
-  std::map<types::funcHead, Function *> B_OD = tables::B_OD;
-  std::map<types::funcHead, Function *> PR_OD = tables::PR_OD;
-  std::map<types::funcHead, Function *> PO_OD;
-  std::map<types::funcHead, Function *> FN_OD;
+  FnInfo fn_info;
 
   /** main syntax tree */
   STTree *sttree;
