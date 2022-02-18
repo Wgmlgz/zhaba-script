@@ -3,7 +3,7 @@
 #include <stdexcept>
 #include <string>
 #include <unordered_map>
-
+#include <set>
 #include "types.hpp"
 
 struct Function;
@@ -14,9 +14,7 @@ class ScopeInfo {
   std::map<std::string, types::Type> typedefs;
 
  public:
-  // std::unordered_set<std::string> flow_ops;
-  // std::unordered_set<std::string> operators;
-  // std::unordered_set<std::string> functions;
+  std::unordered_set<std::string> operators;
   std::unordered_map<std::string, int64_t> bin_operators_;
   std::unordered_map<std::string, int64_t> prefix_operators_;
   std::unordered_map<std::string, int64_t> postfix_operators_;
@@ -80,6 +78,19 @@ class ScopeInfo {
     if (container.contains(name))                                             \
       throw std::runtime_error(#display " is already defined in this scope"); \
     container.emplace(name, val);                                             \
+  }
+
+#define MAKE_SCOPE_ACCESS_SET(property, properties, display, container,       \
+                              access_type)                                    \
+  bool contains##property(const access_type& name) const {                    \
+    if (container.contains(name)) return true;                                \
+    if (parent) return parent->contains##property(name);                      \
+    return false;                                                             \
+  }                                                                           \
+  void set##property(const access_type& name) {                               \
+    if (container.contains(name))                                             \
+      throw std::runtime_error(#display " is already defined in this scope"); \
+    container.emplace(name);                                                  \
   }                                                                           \
   const auto get##properties() { return &container; }
 
@@ -101,4 +112,5 @@ class ScopeInfo {
                           prefix_operators_, int64_t, std::string);
   MAKE_SCOPE_ACCESS_NOMSG(PoOpP, PoOpsP, postfix_operator_priority,
                           postfix_operators_, int64_t, std::string);
+  MAKE_SCOPE_ACCESS_SET(Op, Ops, operators, operators, std::string);
 };

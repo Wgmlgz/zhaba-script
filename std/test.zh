@@ -12,7 +12,7 @@ fn fizz_buzz int mx
     | i %% 5: <'Buzz'<
     \ <i<
 
-fn fizz_buzz int mx
+fn fizz_buzz int mx int mn
   < 'aboba2' <
   @ i 1..mx+1
     ? i %% 15: <'FizzBuzz'<
@@ -21,4 +21,5 @@ fn fizz_buzz int mx
     \ <i<
 
 fn main
+  f := fizz_buzz
   fizz_buzz(20)

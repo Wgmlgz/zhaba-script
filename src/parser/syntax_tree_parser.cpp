@@ -379,9 +379,10 @@ std::vector<Function*> parseImpl(ast::ASTBlock* block, const types::Type& type,
     push_scope.setBinOp({func->name, types}, func);
     /** '.' priority */
     int64_t p = 2;
-    if (!push_scope.containsBinOpP(func->name))
+    if (!push_scope.containsBinOpP(func->name)) {
+      push_scope.setOp(func->name);
       push_scope.setBinOpP(func->name, p);
-    zhdata.fn_info.operators.insert(func->name);
+    }
 
     func->body = parseASTblock(block, scope, func->type);
 
@@ -406,12 +407,11 @@ void parceFn(STTree* res, ScopeInfo& push_scope, ast::ASTLine* line, ast::ASTBlo
   if (func->is_fn) {
     try {
       push_scope.setFn({func->name, types}, func);
-      zhdata.fn_info.functions.insert(func->name);
     } catch (const std::runtime_error& err) {
       throw ParserError(*line->begin, *line->end, err.what());
     }
   } else {
-    zhdata.fn_info.operators.insert(func->name);
+    if(!push_scope.containsOp(func->name)) push_scope.setOp(func->name);
     if (func->op_type == Function::OpType::bin) {
       push_scope.setBinOp({func->name, types}, func);
       if (push_scope.containsBinOpP(func->name)) {
@@ -467,6 +467,7 @@ STTree* parseAST(ast::ASTBlock* main_block) {
 
   res->scope.B_OD_ = tables::B_OD;
   res->scope.PR_OD_ = tables::PR_OD;
+  res->scope.operators = tables::operators;
 
   zhdata.sttree = res;
   auto cur = main_block->nodes.begin();

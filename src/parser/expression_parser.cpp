@@ -29,17 +29,13 @@ Exp *buildExp(ScopeInfo& scope, const std::vector<Exp *>::iterator begin,
     if (Operator *op = dynamic_cast<Operator *>(*i)) {
       true_priority = op->priority;
       if (i == begin) {
-        if (!scope.containsPrOpP(op->val) and
-            !zhdata.fn_info.functions.contains(op->val))
-          throw ParserError(op->begin, "Unknown prefix operator '" + op->val + "'");
-        
         /** Prefix operator priority */
-        true_priority += 3;  // scope.getPrOpP(op->val);
+        true_priority += 3;
       } else if (i == end - 1) {
         if (!scope.containsPoOpP(op->val))
           throw ParserError(op->begin, "Unknown postfix operator");
         /** Postfix operator priority */
-        true_priority += 2;  // scope.getPoOpP(op->val);
+        true_priority += 2;
       } else {
         if (scope.containsBinOpP(op->val)) {
           true_priority += scope.getBinOpP(op->val);
@@ -99,7 +95,7 @@ std::vector<Exp *> preprocess(tokeniter begin, tokeniter end, const ScopeInfo &s
     return {new CCode(*begin, *begin, code)};
   }
 
-  if (begin->token == TOKEN::id and zhdata.fn_info.flow_ops.count(begin->val)) {
+  if (begin->token == TOKEN::id and tables::flow_ops.count(begin->val)) {
     res.push_back(new FlowOperator(*begin, *begin, begin->val, nullptr));
     ++begin;
   }
@@ -107,9 +103,9 @@ std::vector<Exp *> preprocess(tokeniter begin, tokeniter end, const ScopeInfo &s
   /** Find which tokens are operators */
   for (auto i = begin; i != end; ++i) {
     if (i->token == TOKEN::id) {
-      if (zhdata.fn_info.operators.count(i->val)) {
+      if (scope.containsOp(i->val)) {
         i->token = TOKEN::op;
-      } else if (zhdata.fn_info.functions.count(i->val)) {
+      } else {
         auto next = i + 1;
         if (next == end) continue;
         if (next->token == TOKEN::open_p) {
@@ -149,7 +145,7 @@ std::vector<Exp *> preprocess(tokeniter begin, tokeniter end, const ScopeInfo &s
       if (lhs and rhs) {
         res.push_back(new Operator(*i, *i, ",", -zhdata.parentheses_offset * pcount));
       }
-      if (zhdata.fn_info.operators.count(i->val)) rhs = false;
+      if (scope.containsOp(i->val)) rhs = false;
     }
 
     if (i->token == TOKEN::open_p) {
