@@ -78,256 +78,262 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo& parent_scope, types
           }
         }
       } else {
-        /* not variable declaration so normal parsing */
-        auto exp_preprocessed =
-            zhexp::preprocess(line->begin, line->end, res->scope_info);
-        auto exp_builded =
-            buildExp(res->scope_info, exp_preprocessed.begin(), exp_preprocessed.end());
+        const auto& id = line->begin->val;
+        if (id == "op" or id == "lop" or id == "rop" or id == "fn") {
+          parceFn(zhdata.sttree, res->scope_info, line, main_block, i);
+          --i;
+        } else {
+          /* not variable declaration so normal parsing */
+          auto exp_preprocessed =
+              zhexp::preprocess(line->begin, line->end, res->scope_info);
+          auto exp_builded =
+              buildExp(res->scope_info, exp_preprocessed.begin(), exp_preprocessed.end());
 
-        // auto exp = zhexp::parse(line->begin, line->end, cur_scope, &res->scope_info);
-        if (auto ctr_ = dynamic_cast<zhexp::FlowOperator*>(exp_builded)) {
+          // auto exp = zhexp::parse(line->begin, line->end, cur_scope, &res->scope_info);
+          if (auto ctr_ = dynamic_cast<zhexp::FlowOperator*>(exp_builded)) {
 
-          /* "?" (if) statement parsing */
-          if (ctr_->val == "?") {
-            auto ctr = dynamic_cast<zhexp::FlowOperator*>(
-                zhexp::postprocess(exp_builded, res->scope_info));
-            if (ctr->operand->type.getTypeId() == types::TYPE::boolT) {
-              auto tmp_if = new STIf;
-              tmp_if->condition = ctr->operand;
-              if (i + 1 != main_block->nodes.end()) {
-                if (auto body = dynamic_cast<ast::ASTBlock*>(*(i + 1))) {
-                  tmp_if->body = parseASTblock(body, res->scope_info, retT);
-                  ++i;
-                  while (i + 1 != main_block->nodes.end()) {
-                    if (auto elseif_body = dynamic_cast<ast::ASTBlock*>(*(i + 1))) {
-                      if (elseif_body->btype != ast::ASTBlock::nextB) break;
-                      if (elseif_body->nodes.size() == 2) {
-                        if (auto line = dynamic_cast<ast::ASTLine*>(elseif_body->nodes[0])) {
-                          auto exp =
-                              zhexp::parse(line->begin, line->end, res->scope_info);
-                          if (auto block = dynamic_cast<ast::ASTBlock*>(elseif_body->nodes[1])) {
-                            tmp_if->elseif_body.emplace_back(
-                                exp, parseASTblock(block, res->scope_info, retT));
-                          } else throw ParserError("Exprected block in '|(else if)' statement");
-                        } else throw ParserError("Expected expression in '|(else if)' statement");
-                      } else {
-                        throw ParserError("Expected condition and block in '|(else if)' statement");
-                      }
-                      ++i;
-                    } else break;
-                  }
-                  if (i + 1 != main_block->nodes.end()) {
-                    if (auto else_body = dynamic_cast<ast::ASTBlock*>(*(i + 1))) {
-                      tmp_if->else_body =
-                          parseASTblock(else_body, res->scope_info, retT);
-                      ++i;
-                    }
-                  }
-                  res->nodes.push_back(tmp_if);
-                } else {
-                  throw ParserError("Expected block after '?(if)' statement");
-                }
-              }
-            } else {
-              throw ParserError(ctr->begin, ctr->end, "Expected int expression in '?(if)' condition");
-            }
-          }
-            /* "@" (for) statement parsing */
-          else if (ctr_->val == "@") {
-            auto tuple_ = castTreeToTuple(ctr_->operand);
-
-            if (tuple_->content.size() < 1) {
-              throw ParserError("Empty '@(while)' statement");
-            }
-
-            if (tuple_->content.size() > 3) {
-              throw ParserError(ctr_->begin, ctr_->end,
-                                "You can privide max 3 expressions (init condition iteration) '@(for)' in statement");
-            }
-
-            if (tuple_->content.size() == 1 or tuple_->content.size() == 3) {
+            /* "?" (if) statement parsing */
+            if (ctr_->val == "?") {
               auto ctr = dynamic_cast<zhexp::FlowOperator*>(
                   zhexp::postprocess(exp_builded, res->scope_info));
-              auto tuple = castToTuple(ctr->operand);
-              /* for (;condition;) */
-              if (tuple->content.size() == 1) {
-                tuple->content.insert(tuple->content.begin(), nullptr);
-                tuple->content.insert(tuple->content.end(), nullptr);
-              }
-              /** else for (init;condition;repeat) */
-              if (tuple->content[1]->type.getTypeId() == types::TYPE::boolT) {
-                if (tuple->content[0]) {
-                  auto init = new STExp;
-                  init->exp = tuple->content[0];
-                  res->nodes.push_back(init);
-                }
-                auto tmp_while = new STWhile;
-                tmp_while->condition = tuple->content[1];
+              if (ctr->operand->type.getTypeId() == types::TYPE::boolT) {
+                auto tmp_if = new STIf;
+                tmp_if->condition = ctr->operand;
                 if (i + 1 != main_block->nodes.end()) {
                   if (auto body = dynamic_cast<ast::ASTBlock*>(*(i + 1))) {
-                    tmp_while->body =
-                        parseASTblock(body, res->scope_info, retT);
-                    if (tuple->content[2]) {
-                      auto iter = new STExp;
-                      iter->exp = tuple->content[2];
-                      tmp_while->body->nodes.push_back(iter);
-                    }
-                    res->nodes.push_back(tmp_while);
+                    tmp_if->body = parseASTblock(body, res->scope_info, retT);
                     ++i;
+                    while (i + 1 != main_block->nodes.end()) {
+                      if (auto elseif_body = dynamic_cast<ast::ASTBlock*>(*(i + 1))) {
+                        if (elseif_body->btype != ast::ASTBlock::nextB) break;
+                        if (elseif_body->nodes.size() == 2) {
+                          if (auto line = dynamic_cast<ast::ASTLine*>(elseif_body->nodes[0])) {
+                            auto exp =
+                                zhexp::parse(line->begin, line->end, res->scope_info);
+                            if (auto block = dynamic_cast<ast::ASTBlock*>(elseif_body->nodes[1])) {
+                              tmp_if->elseif_body.emplace_back(
+                                  exp, parseASTblock(block, res->scope_info, retT));
+                            } else throw ParserError("Exprected block in '|(else if)' statement");
+                          } else throw ParserError("Expected expression in '|(else if)' statement");
+                        } else {
+                          throw ParserError("Expected condition and block in '|(else if)' statement");
+                        }
+                        ++i;
+                      } else break;
+                    }
+                    if (i + 1 != main_block->nodes.end()) {
+                      if (auto else_body = dynamic_cast<ast::ASTBlock*>(*(i + 1))) {
+                        tmp_if->else_body =
+                            parseASTblock(else_body, res->scope_info, retT);
+                        ++i;
+                      }
+                    }
+                    res->nodes.push_back(tmp_if);
                   } else {
-                    throw ParserError(0, "Expected block after '@(for)' statement");
+                    throw ParserError("Expected block after '?(if)' statement");
                   }
                 }
               } else {
-                throw ParserError(
-                    ctr->begin, ctr->end,
-                    "Expected int expression in '@(for)' condition, but '" +
-                        tuple->content[1]->type.toString() + "' found");
+                throw ParserError(ctr->begin, ctr->end, "Expected int expression in '?(if)' condition");
               }
             }
-              /* foreach loop */
-            else {
-              auto id_l = dynamic_cast<zhexp::IdLiteral*>(tuple_->content[0]);
-              if (!id_l) throw ParserError(
-                    tuple_->content[0]->begin,
-                    tuple_->content[0]->end,
-                    "Expected id literal"
+            /* "@" (for) statement parsing */
+            else if (ctr_->val == "@") {
+              auto tuple_ = castTreeToTuple(ctr_->operand);
+
+              if (tuple_->content.size() < 1) {
+                throw ParserError("Empty '@(while)' statement");
+              }
+
+              if (tuple_->content.size() > 3) {
+                throw ParserError(ctr_->begin, ctr_->end,
+                                  "You can privide max 3 expressions (init condition iteration) '@(for)' in statement");
+              }
+
+              if (tuple_->content.size() == 1 or tuple_->content.size() == 3) {
+                auto ctr = dynamic_cast<zhexp::FlowOperator*>(
+                    zhexp::postprocess(exp_builded, res->scope_info));
+                auto tuple = castToTuple(ctr->operand);
+                /* for (;condition;) */
+                if (tuple->content.size() == 1) {
+                  tuple->content.insert(tuple->content.begin(), nullptr);
+                  tuple->content.insert(tuple->content.end(), nullptr);
+                }
+                /** else for (init;condition;repeat) */
+                if (tuple->content[1]->type.getTypeId() == types::TYPE::boolT) {
+                  if (tuple->content[0]) {
+                    auto init = new STExp;
+                    init->exp = tuple->content[0];
+                    res->nodes.push_back(init);
+                  }
+                  auto tmp_while = new STWhile;
+                  tmp_while->condition = tuple->content[1];
+                  if (i + 1 != main_block->nodes.end()) {
+                    if (auto body = dynamic_cast<ast::ASTBlock*>(*(i + 1))) {
+                      tmp_while->body =
+                          parseASTblock(body, res->scope_info, retT);
+                      if (tuple->content[2]) {
+                        auto iter = new STExp;
+                        iter->exp = tuple->content[2];
+                        tmp_while->body->nodes.push_back(iter);
+                      }
+                      res->nodes.push_back(tmp_while);
+                      ++i;
+                    } else {
+                      throw ParserError(0, "Expected block after '@(for)' statement");
+                    }
+                  }
+                } else {
+                  throw ParserError(
+                      ctr->begin, ctr->end,
+                      "Expected int expression in '@(for)' condition, but '" +
+                          tuple->content[1]->type.toString() + "' found");
+                }
+              }
+                /* foreach loop */
+              else {
+                auto id_l = dynamic_cast<zhexp::IdLiteral*>(tuple_->content[0]);
+                if (!id_l) throw ParserError(
+                      tuple_->content[0]->begin,
+                      tuple_->content[0]->end,
+                      "Expected id literal"
+                  );
+
+                /** begin & end check */
+                auto foreach_block = new STBlock(&res->scope_info);
+
+                auto range_init = new STExp;
+                range_init->exp = new zhexp::BinOperator(
+                    tuple_->content[1]->begin, tuple_->content[1]->end, ":=", 666,
+                    new zhexp::IdLiteral(tuple_->content[1]->begin,
+                                        tuple_->content[1]->end, "__range"),
+                    tuple_->content[1]
+                );
+                auto begin_exp = new STExp;
+                begin_exp->exp = new zhexp::BinOperator(
+                    tuple_->content[1]->begin, tuple_->content[1]->end, ":=", 666,
+                    new zhexp::IdLiteral(tuple_->content[1]->begin,
+                                        tuple_->content[1]->end, "__begin"),
+                    new zhexp::BinOperator(
+                        tuple_->content[1]->begin, tuple_->content[1]->end,
+                        ".call.begin", 666,
+                        new zhexp::PrefixOperator(
+                            tuple_->content[1]->begin, tuple_->content[1]->end,
+                            "&", 666,
+                            new zhexp::IdLiteral(tuple_->content[1]->begin,
+                                                tuple_->content[1]->end,
+                                                "__range")),
+                        new zhexp::Tuple(tuple_->content[1]->begin,
+                                        tuple_->content[1]->end)
+                    )
+
+                );
+                auto end_exp = new STExp;
+                end_exp->exp = new zhexp::BinOperator(
+                    tuple_->content[1]->begin, tuple_->content[1]->end, ":=", 666,
+                    new zhexp::IdLiteral(tuple_->content[1]->begin,
+                                        tuple_->content[1]->end, "__end"),
+                    new zhexp::BinOperator(
+                        tuple_->content[1]->begin, tuple_->content[1]->end,
+                        ".call.end", 666,
+                        new zhexp::PrefixOperator(
+                            tuple_->content[1]->begin, tuple_->content[1]->end,
+                            "&", 666,
+                            new zhexp::IdLiteral(tuple_->content[1]->begin,
+                                                tuple_->content[1]->end,
+                                                "__range")),
+                        new zhexp::Tuple(tuple_->content[1]->begin,
+                                        tuple_->content[1]->end)
+                    )
+
+                );
+                auto cur_init = new STExp;
+                cur_init->exp = new zhexp::BinOperator(
+                    tuple_->content[0]->begin, tuple_->content[1]->end, ":=", 666,
+                    new zhexp::IdLiteral(tuple_->content[0]->begin,
+                                        tuple_->content[0]->end, id_l->val),
+                    new zhexp::IdLiteral(tuple_->content[1]->begin,
+                                        tuple_->content[1]->end, "__begin")
                 );
 
-              /** begin & end check */
-              auto foreach_block = new STBlock(&res->scope_info);
+                zhexp::Exp* condition = new zhexp::BinOperator(
+                    tuple_->content[0]->begin, tuple_->content[1]->end, "!=", 666,
+                    new zhexp::IdLiteral(tuple_->content[0]->begin,
+                                        tuple_->content[0]->end, id_l->val),
+                    new zhexp::IdLiteral(tuple_->content[1]->begin,
+                                        tuple_->content[1]->end, "__end"));
+                auto iter = new STExp;
+                iter->exp = new zhexp::PrefixOperator(
+                    tuple_->content[1]->begin, tuple_->content[1]->end, "++", 666,
+                    new zhexp::IdLiteral(tuple_->content[0]->begin,
+                                        tuple_->content[0]->end, id_l->val)
+                );
+                range_init->exp = zhexp::postprocess(range_init->exp, foreach_block->scope_info);
+                begin_exp->exp = zhexp::postprocess(begin_exp->exp, foreach_block->scope_info);
+                end_exp->exp = zhexp::postprocess(end_exp->exp, foreach_block->scope_info);
+                cur_init->exp = zhexp::postprocess(cur_init->exp, foreach_block->scope_info);
+                condition = zhexp::postprocess(condition, foreach_block->scope_info);
+                iter->exp = zhexp::postprocess(iter->exp, foreach_block->scope_info);
 
-              auto range_init = new STExp;
-              range_init->exp = new zhexp::BinOperator(
-                  tuple_->content[1]->begin, tuple_->content[1]->end, ":=", 666,
-                  new zhexp::IdLiteral(tuple_->content[1]->begin,
-                                       tuple_->content[1]->end, "__range"),
-                  tuple_->content[1]
-              );
-              auto begin_exp = new STExp;
-              begin_exp->exp = new zhexp::BinOperator(
-                  tuple_->content[1]->begin, tuple_->content[1]->end, ":=", 666,
-                  new zhexp::IdLiteral(tuple_->content[1]->begin,
-                                       tuple_->content[1]->end, "__begin"),
-                  new zhexp::BinOperator(
-                      tuple_->content[1]->begin, tuple_->content[1]->end,
-                      ".call.begin", 666,
-                      new zhexp::PrefixOperator(
-                          tuple_->content[1]->begin, tuple_->content[1]->end,
-                          "&", 666,
-                          new zhexp::IdLiteral(tuple_->content[1]->begin,
-                                               tuple_->content[1]->end,
-                                               "__range")),
-                      new zhexp::Tuple(tuple_->content[1]->begin,
-                                       tuple_->content[1]->end)
-                  )
+                foreach_block->nodes.push_back(range_init);
+                foreach_block->nodes.push_back(begin_exp);
+                foreach_block->nodes.push_back(end_exp);
+                foreach_block->nodes.push_back(cur_init);
 
-              );
-              auto end_exp = new STExp;
-              end_exp->exp = new zhexp::BinOperator(
-                  tuple_->content[1]->begin, tuple_->content[1]->end, ":=", 666,
-                  new zhexp::IdLiteral(tuple_->content[1]->begin,
-                                       tuple_->content[1]->end, "__end"),
-                  new zhexp::BinOperator(
-                      tuple_->content[1]->begin, tuple_->content[1]->end,
-                      ".call.end", 666,
-                      new zhexp::PrefixOperator(
-                          tuple_->content[1]->begin, tuple_->content[1]->end,
-                          "&", 666,
-                          new zhexp::IdLiteral(tuple_->content[1]->begin,
-                                               tuple_->content[1]->end,
-                                               "__range")),
-                      new zhexp::Tuple(tuple_->content[1]->begin,
-                                       tuple_->content[1]->end)
-                  )
-
-              );
-              auto cur_init = new STExp;
-              cur_init->exp = new zhexp::BinOperator(
-                  tuple_->content[0]->begin, tuple_->content[1]->end, ":=", 666,
-                  new zhexp::IdLiteral(tuple_->content[0]->begin,
-                                       tuple_->content[0]->end, id_l->val),
-                  new zhexp::IdLiteral(tuple_->content[1]->begin,
-                                       tuple_->content[1]->end, "__begin")
-              );
-
-              zhexp::Exp* condition = new zhexp::BinOperator(
-                  tuple_->content[0]->begin, tuple_->content[1]->end, "!=", 666,
-                  new zhexp::IdLiteral(tuple_->content[0]->begin,
-                                       tuple_->content[0]->end, id_l->val),
-                  new zhexp::IdLiteral(tuple_->content[1]->begin,
-                                       tuple_->content[1]->end, "__end"));
-              auto iter = new STExp;
-              iter->exp = new zhexp::PrefixOperator(
-                  tuple_->content[1]->begin, tuple_->content[1]->end, "++", 666,
-                  new zhexp::IdLiteral(tuple_->content[0]->begin,
-                                       tuple_->content[0]->end, id_l->val)
-              );
-              range_init->exp = zhexp::postprocess(range_init->exp, foreach_block->scope_info);
-              begin_exp->exp = zhexp::postprocess(begin_exp->exp, foreach_block->scope_info);
-              end_exp->exp = zhexp::postprocess(end_exp->exp, foreach_block->scope_info);
-              cur_init->exp = zhexp::postprocess(cur_init->exp, foreach_block->scope_info);
-              condition = zhexp::postprocess(condition, foreach_block->scope_info);
-              iter->exp = zhexp::postprocess(iter->exp, foreach_block->scope_info);
-
-              foreach_block->nodes.push_back(range_init);
-              foreach_block->nodes.push_back(begin_exp);
-              foreach_block->nodes.push_back(end_exp);
-              foreach_block->nodes.push_back(cur_init);
-
-              /** else for (init;condition;repeat) */
-              if (condition->type.getTypeId() == types::TYPE::boolT) {
-                auto tmp_while = new STWhile;
-                tmp_while->condition = condition;
-                if (i + 1 != main_block->nodes.end()) {
-                  if (auto body = dynamic_cast<ast::ASTBlock*>(*(i + 1))) {
-                    tmp_while->body =
-                        parseASTblock(body, foreach_block->scope_info, retT);
-                    tmp_while->body->nodes.push_back(iter);
-                    foreach_block->nodes.push_back(tmp_while);
-                  } else {
-                    throw ParserError(
-                        0, "Expected block after '@(for)' statement");
+                /** else for (init;condition;repeat) */
+                if (condition->type.getTypeId() == types::TYPE::boolT) {
+                  auto tmp_while = new STWhile;
+                  tmp_while->condition = condition;
+                  if (i + 1 != main_block->nodes.end()) {
+                    if (auto body = dynamic_cast<ast::ASTBlock*>(*(i + 1))) {
+                      tmp_while->body =
+                          parseASTblock(body, foreach_block->scope_info, retT);
+                      tmp_while->body->nodes.push_back(iter);
+                      foreach_block->nodes.push_back(tmp_while);
+                    } else {
+                      throw ParserError(
+                          0, "Expected block after '@(for)' statement");
+                    }
                   }
+                } else {
+                  throw ParserError(
+                      condition->begin, condition->end,
+                      "Expected int expression in '@(for)' condition, but '" +
+                          condition->type.toString() + "' found");
                 }
-              } else {
-                throw ParserError(
-                    condition->begin, condition->end,
-                    "Expected int expression in '@(for)' condition, but '" +
-                        condition->type.toString() + "' found");
-              }
 
-              res->nodes.push_back(foreach_block);
-              ++i;
+                res->nodes.push_back(foreach_block);
+                ++i;
+              }
             }
-          }
             /* <(return) statement parsing */
-          else if (ctr_->val == "<<<") {
-            auto ctr = dynamic_cast<zhexp::FlowOperator*>(
-                zhexp::postprocess(exp_builded, res->scope_info));
-            auto tmp_ret = new STRet;
-            tmp_ret->exp = ctr->operand;
-            if (retT.getTypeId() == types::TYPE::voidT) {
-              if (tmp_ret->exp)
-                throw ParserError(ctr->begin, ctr->end, "You cannot return something becouse return type is 'void'");
+            else if (ctr_->val == "<<<") {
+              auto ctr = dynamic_cast<zhexp::FlowOperator*>(
+                  zhexp::postprocess(exp_builded, res->scope_info));
+              auto tmp_ret = new STRet;
+              tmp_ret->exp = ctr->operand;
+              if (retT.getTypeId() == types::TYPE::voidT) {
+                if (tmp_ret->exp)
+                  throw ParserError(ctr->begin, ctr->end, "You cannot return something becouse return type is 'void'");
+              } else {
+                if (!tmp_ret->exp)
+                  throw ParserError(ctr->begin, ctr->end, "Expected return value");
+                if (tmp_ret->exp->type.getTypeId() != retT.getTypeId())
+                  throw ParserError(ctr->begin, ctr->end,
+                                    "Return type must be '" + retT.toString() + "', but '" +
+                                        tmp_ret->exp->type.toString() + "' found");
+              }
+              res->nodes.push_back(tmp_ret);
             } else {
-              if (!tmp_ret->exp)
-                throw ParserError(ctr->begin, ctr->end, "Expected return value");
-              if (tmp_ret->exp->type.getTypeId() != retT.getTypeId())
-                throw ParserError(ctr->begin, ctr->end,
-                                  "Return type must be '" + retT.toString() + "', but '" +
-                                      tmp_ret->exp->type.toString() + "' found");
+              throw ParserError("Random error lol (unknown flow control operator)");
             }
-            res->nodes.push_back(tmp_ret);
           } else {
-            throw ParserError("Random error lol (unknown flow control operator)");
+            auto exp = zhexp::postprocess(exp_builded, res->scope_info);
+            /* just normal expression */
+            auto tmp = new STExp;
+            tmp->exp = exp;
+            res->nodes.push_back(tmp); 
           }
-        } else {
-          auto exp = zhexp::postprocess(exp_builded, res->scope_info);
-          /* just normal expression */
-          auto tmp = new STExp;
-          tmp->exp = exp;
-          res->nodes.push_back(tmp); 
         }
       }
     } else if (auto block = dynamic_cast<ast::ASTBlock*>(*i)) {
@@ -382,6 +388,73 @@ std::vector<Function*> parseImpl(ast::ASTBlock* block, const types::Type& type,
     res.push_back(func);
   }
   return res;
+}
+
+void parceFn(STTree* res, ScopeInfo& push_scope, ast::ASTLine* line, ast::ASTBlock* main_block,
+             std::vector<ast::ASTNode*>::iterator& cur) {
+  /** Parse function header */
+  res->functions.push_back(parseOpHeader(line->begin, line->end, push_scope));
+  auto& func = res->functions.back();
+
+  /** Regiester function */
+  std::vector<types::Type> types;
+  for (const auto& [_, type] : func->args) {
+    types.push_back(type);
+    types.back().setLval(false);
+    types.back().setRef(false);
+  }
+  if (func->is_fn) {
+    try {
+      push_scope.setFn({func->name, types}, func);
+      zhdata.fn_info.functions.insert(func->name);
+    } catch (const std::runtime_error& err) {
+      throw ParserError(*line->begin, *line->end, err.what());
+    }
+  } else {
+    zhdata.fn_info.operators.insert(func->name);
+    if (func->op_type == Function::OpType::bin) {
+      push_scope.setBinOp({func->name, types}, func);
+      if (push_scope.containsBinOpP(func->name)) {
+        if (func->priority != push_scope.getBinOpP(func->name))
+          throw ParserError(
+              *line->begin, *line->end,
+              "Operator priority doesn't match old one (" +
+                  std::to_string(push_scope.getBinOpP(func->name)) +
+                  " <- old vs new -> " + std::to_string(func->priority) + ")");
+      } else {
+        push_scope.setBinOpP(func->name, func->priority);
+      }
+    } else if (func->op_type == Function::OpType::lhs) {
+      push_scope.setPrOp({func->name, types}, func);
+      if (!push_scope.containsPrOpP(func->name)) {
+        push_scope.setPrOpP(func->name, func->priority);
+      }
+    } else if (func->op_type == Function::OpType::rhs) {
+      push_scope.setPoOp({func->name, types}, func);
+      if (!push_scope.containsPoOpP(func->name)) {
+        push_scope.setPoOpP(func->name, func->priority);
+      }
+    }
+  }
+
+  ++cur;
+  // TODO add global scope
+  ScopeInfo scope(&push_scope);
+  for (auto& [name, type] : func->args) {
+    scope.setVar(name, type);
+    scope.getVar(name).setLval(true);
+  }
+
+  /** And then parse body */
+  if (cur == main_block->nodes.end())
+    throw ParserError(*line->end, "Expected function body");
+  if (auto block = dynamic_cast<ast::ASTBlock*>(*cur)) {
+    auto& t = res->functions.back()->body;
+    t = parseASTblock(block, scope, func->type);
+  } else {
+    throw ParserError(*line->end, "Expected function body");
+  }
+  ++cur;
 }
 
 STTree* parseAST(ast::ASTBlock* main_block) {
@@ -484,67 +557,7 @@ STTree* parseAST(ast::ASTBlock* main_block) {
 
         ++cur;
       } else if (id == "op" or id == "lop" or id == "rop" or id == "fn") {
-        /** Parse function header */
-        res->functions.push_back(
-            parseOpHeader(line->begin, line->end, res->scope));
-        auto& func = res->functions.back();
-
-        /** Regiester function */
-        std::vector<types::Type> types;
-        for (const auto& [_, type] : func->args) {
-          types.push_back(type);
-          types.back().setLval(false);
-          types.back().setRef(false);
-        }
-        if (func->is_fn) {
-          zhdata.fn_info.functions.insert(func->name);
-          res->scope.setFn({func->name, types}, func);
-        } else {
-          zhdata.fn_info.operators.insert(func->name);
-          if (func->op_type == Function::OpType::bin) {
-            res->scope.setBinOp({func->name, types}, func);
-            if (res->scope.containsBinOpP(func->name)) {
-              if (func->priority != res->scope.getBinOpP(func->name))
-                throw ParserError(
-                    *line->begin, *line->end,
-                    "Operator priority doesn't match old one (" +
-                        std::to_string(res->scope.getBinOpP(func->name)) +
-                        " <- old vs new -> " + std::to_string(func->priority) +
-                        ")");
-            } else {
-              res->scope.setBinOpP(func->name, func->priority);
-            }
-          } else if (func->op_type == Function::OpType::lhs) {
-            res->scope.setPrOp({func->name, types}, func);
-            if (!res->scope.containsPrOpP(func->name)) {
-              res->scope.setPrOpP(func->name, func->priority);
-            }
-          } else if (func->op_type == Function::OpType::rhs) {
-            res->scope.setPoOp({func->name, types}, func);
-            if (!res->scope.containsPoOpP(func->name)) {
-              res->scope.setPoOpP(func->name, func->priority);
-            }
-          }
-        }
-
-        ++cur;
-        // TODO add global scope
-        ScopeInfo scope(&res->scope);
-        for (auto& [name, type] : func->args) {
-          scope.setVar(name, type);
-          scope.getVar(name).setLval(true);
-        }
-
-        /** And then parse body */
-        if (cur == main_block->nodes.end())
-          throw ParserError(*line->end, "Expected function body");
-        if (auto block = dynamic_cast<ast::ASTBlock*>(*cur)) {
-          auto& t = res->functions.back()->body;
-          t = parseASTblock(block, scope, func->type);
-        } else {
-          throw ParserError(*line->end, "Expected function body");
-        }
-        ++cur;
+        parceFn(res, res->scope, line, main_block, cur);
       } else {
         throw ParserError(*line->begin, "Exptected declaratiion");
       }

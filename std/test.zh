@@ -1,11 +1,24 @@
 use range
 use out
+use tuple
 
 fn fizz_buzz int mx
+  fn da int x: < x <
+
+  < 'aboba' <
   @ i 1..mx+1
     ? i %% 15: <'FizzBuzz'<
     | i %% 3: <'Fizz'<
     | i %% 5: <'Buzz'<
     \ <i<
 
-fn main: fizz_buzz(20)
+fn fizz_buzz int mx
+  < 'aboba2' <
+  @ i 1..mx+1
+    ? i %% 15: <'FizzBuzz'<
+    | i %% 3: <'Fizz'<
+    | i %% 5: <'Buzz'<
+    \ <i<
+
+fn main
+  fizz_buzz(20)
