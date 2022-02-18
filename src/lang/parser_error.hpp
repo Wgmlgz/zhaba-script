@@ -20,4 +20,5 @@ struct ParserError : std::exception {
   ParserError(const Token &begin, const Token &end, const std::string &new_message);
   explicit ParserError(const std::string &new_message);
   virtual const char *what();
+  void print();
 };

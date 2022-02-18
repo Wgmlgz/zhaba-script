@@ -35,7 +35,8 @@ int main(int argc, char **argv) {
 
       compileFile(file_path);
     } catch (ParserError &error) {
-      std::cout << error.what();
+      // std::cout << error.what();
+      error.print();
     } catch (zhin::RuntimeError &error) {
       std::cout << error.what();
     } catch (std::exception &err) {
