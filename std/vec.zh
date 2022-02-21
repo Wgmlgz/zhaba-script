@@ -47,13 +47,16 @@ impl Vec
 
   fn dtor: slf.free_mem()
   fn ctor int size
+    Vec<T> slf
     slf.head = 0 as TP
     slf.size = 0
     slf.capacity = 0
     @ slf.capacity < size: slf.double_capacity()
     slf.size = size
   
-  fn ctor: slf.ctor(0)
+  fn ctor
+    Vec<T> slf
+    <<< Vec<T>(0)
 
   fn print
     int i = 0

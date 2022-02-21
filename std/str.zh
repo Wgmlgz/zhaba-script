@@ -12,7 +12,7 @@ type Str
 
 impl Str
   fn ctor
-    slf.data.ctor()
+    ctor(&slf.data)
     slf.data.push_back(0u8 as char)
     slf.size = 0
   fn dtor: slf.data.dtor()

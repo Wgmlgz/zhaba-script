@@ -1,25 +1,39 @@
-use range
-use out
-use tuple
+use vec
+// use range
+// use out
+// use tuple
 
-fn fizz_buzz int mx
-  fn da int x: < x <
+// fn fizz_buzz int mx
+//   fn da int x: < x <
 
-  < 'aboba' <
-  @ i 1..mx+1
-    ? i %% 15: <'FizzBuzz'<
-    | i %% 3: <'Fizz'<
-    | i %% 5: <'Buzz'<
-    \ <i<
+//   < 'aboba' <
+//   @ i 1..mx+1
+//     ? i %% 15: <'FizzBuzz'<
+//     | i %% 3: <'Fizz'<
+//     | i %% 5: <'Buzz'<
+//     \ <i<
 
-fn fizz_buzz int mx int mn
-  < 'aboba2' <
-  @ i 1..mx+1
-    ? i %% 15: <'FizzBuzz'<
-    | i %% 3: <'Fizz'<
-    | i %% 5: <'Buzz'<
-    \ <i<
+// fn fizz_buzz int mx int mn
+//   < 'aboba2' <
+//   @ i 1..mx+1
+//     ? i %% 15: <'FizzBuzz'<
+//     | i %% 3: <'Fizz'<
+//     | i %% 5: <'Buzz'<
+//     \ <i<
+
+// type Vec
+//   int v
+
+// impl Vec
+//   fn ctor int n
+//     Vec slf
+//     slf.v = n
+//     <<< slf
+
 
 fn main
-  f := fizz_buzz
-  fizz_buzz(20)
+  out 54
+  v := Vec<int>()
+
+  v.print()
+

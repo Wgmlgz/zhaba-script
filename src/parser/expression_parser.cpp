@@ -561,6 +561,18 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
       return exp;
     }
 
+    // try {
+    //   auto type = types::parse(op->val, scope);
+    //   type.setLval(true);
+    //   auto tmp_var_name = "tmp_ctor_" + std::to_string(zhdata.rng());
+    //   scope.setVar(tmp_var_name, type);
+    //   // scope.getVar(id_l->val).setLval(true);
+
+    //   auto tmp = new Variable(op->begin, op->end, tmp_var_name, type);
+    //   tmp->type = type;
+
+    // } catch (const types::TypeParsingError &err) {}
+
     std::vector<types::Type> types;
     if (auto tuple = dynamic_cast<Tuple *>(op->child)) {
       for (auto exp : tuple->content) {
@@ -578,7 +590,7 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
       op->func = scope.getPrOp(func_head);
       exp->type =  scope.getPrOp(func_head)->type;
     } else if (scope.containsFn(func_head)) {
-      op->func =  scope.getFn(func_head);
+      op->func = scope.getFn(func_head);
       exp->type = scope.getFn(func_head)->type;
     } else {
       std::string types_str;

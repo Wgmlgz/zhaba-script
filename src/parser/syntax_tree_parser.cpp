@@ -361,12 +361,19 @@ std::vector<Function*> parseImpl(ast::ASTBlock* block, const types::Type& type,
 
     auto block = dynamic_cast<ast::ASTBlock*>(*i);
     if (!block) throw ParserError("Expected block");
-
-    func->args.insert(
-        func->args.begin(),
-        {"slf", types::Type(type.getTypeId(), type.getPtr() + 1, 1)});
-    func->op_type = Function::OpType::bin;
-    func->name = ".call." + func->name;
+  
+    if (func->name == "ctor") {
+      if (func->type.getTypeId() != types::TYPE::voidT)
+        throw ParserError(*line->begin, *line->end, "You cannot change constructor return value");
+      func->type = type;
+      func->op_type = Function::OpType::lhs;
+    } else {
+      func->args.insert(
+          func->args.begin(),
+          {"slf", types::Type(type.getTypeId(), type.getPtr() + 1, 1)});
+      func->name = ".call." + func->name;
+      func->op_type = Function::OpType::bin;
+    }
     std::vector<types::Type> types;
     for (auto& [name, type] : func->args) {
       scope.setVar(name, type);
@@ -376,13 +383,22 @@ std::vector<Function*> parseImpl(ast::ASTBlock* block, const types::Type& type,
       types.back().setRef(false);
     }
 
-    push_scope.setBinOp({func->name, types}, func);
-    /** '.' priority */
-    int64_t p = 2;
-    if (!push_scope.containsBinOpP(func->name)) {
-      push_scope.setOp(func->name);
-      push_scope.setBinOpP(func->name, p);
+    if (func->name == "ctor") {
+      func->name = type.toString();
+      std::cout << type.toString() << std::endl;
+      push_scope.setPrOp({func->name, types}, func);
+      /** prefix operator priority */
+      int64_t p = 3;
+      if (!push_scope.containsPrOpP(func->name)) 
+        push_scope.setPrOpP(func->name, p);
+    } else {
+      push_scope.setBinOp({func->name, types}, func);
+      /** '.' priority */
+      int64_t p = 2;
+      if (!push_scope.containsBinOpP(func->name)) 
+        push_scope.setBinOpP(func->name, p);
     }
+    if (push_scope.containsOp(func->name)) push_scope.setOp(func->name);
 
     func->body = parseASTblock(block, scope, func->type);
 

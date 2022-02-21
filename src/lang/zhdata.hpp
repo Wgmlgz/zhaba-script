@@ -1,16 +1,17 @@
 #pragma once
 #include <filesystem>
+#include <iostream>
 #include <list>
 #include <map>
+#include <random>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
-#include <iostream>
+
+#include "generics.hpp"
+#include "lang.hpp"
 #include "lang_tables.hpp"
 #include "syntax_tree.hpp"
-#include "types.hpp"
-#include "lang.hpp"
-#include "generics.hpp"
 #include "types.hpp"
 
 struct ZHDATA {
@@ -19,7 +20,8 @@ struct ZHDATA {
   std::unordered_map<std::string, types::TYPE> prim_types = tables::prim_types;
 
   std::unordered_map<types::TYPE, std::string> type_names = tables::type_names;
-  std::unordered_map<types::TYPE, std::string> cpp_type_names = tables::cpp_type_names;
+  std::unordered_map<types::TYPE, std::string> cpp_type_names =
+      tables::cpp_type_names;
 
   std::unordered_map<types::TYPE, size_t> sizes = tables::sizes;
 
@@ -41,7 +43,8 @@ struct ZHDATA {
   Lexer lexer = tables::lexer_tokens;
 
   std::set<std::string> used_modules;
-  std::list<std::string> included_files_names;  /** std::list because need valid iterators */
+  std::list<std::string>
+      included_files_names; /** std::list because need valid iterators */
   std::vector<std::string> included_files;
   std::map<std::string, std::vector<std::string>> files_lines;
   std::filesystem::path bin_path;
@@ -52,6 +55,9 @@ struct ZHDATA {
   std::ostream *out = &std::cout;
 
   std::unordered_map<std::string, bool> flags = tables::flags;
+  
+  std::random_device rd;
+  std::mt19937 rng = std::mt19937(rd());
 };
 
 extern ZHDATA zhdata;
