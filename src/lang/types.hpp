@@ -44,6 +44,7 @@ class Type {
 
   /** Util */
   [[nodiscard]] Type rvalClone() const;
+  [[nodiscard]] Type nonRefClone() const;
   [[nodiscard]] std::string toString() const;
 
  private:

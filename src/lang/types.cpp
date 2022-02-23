@@ -81,6 +81,9 @@ std::vector<uint32_t> types::Type::getMask() const { return {getSelfMask()}; }
 types::Type types::Type::rvalClone() const {
   return Type(typeid_, ptr_, false, ref_);
 }
+types::Type types::Type::nonRefClone() const {
+  return Type(typeid_, ptr_, lval_, false);
+}
 
 std::string types::Type::toString() const {
   std::string res;

@@ -326,17 +326,18 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
       auto lhs = op->lhs->type.rvalClone();
       auto rhs = op->rhs->type.rvalClone();
       lhs.setRef(false);
-      if (lhs <=> rhs != 0) {
+      if (lhs.rvalClone().nonRefClone() <=> rhs.rvalClone().nonRefClone() !=
+          0) {
         throw ParserError(op->begin, op->end, "Types (" +
             op->lhs->type.toString() + " " +
             op->rhs->type.toString() +
             ") for '=' are different");
       }
 
-      if (op->lhs->type.getLval()) {
+      if (op->lhs->type.getLval() || op->lhs->type.getRef()) {
         op->type = types::Type(types::TYPE::voidT);
       } else {
-        throw ParserError(op->lhs->begin, op->end, "Left operant for '=' must be lval");
+        throw ParserError(op->lhs->begin, op->end, "Left operant for '=' must be lval or ref");
       }
     }
       /** Variable creation & assingment */
@@ -347,7 +348,7 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
           throw ParserError(op->begin, op->rhs->end, "Variable type cannot be void");
 
         try {
-          scope.setVar(id_l->val, op->rhs->type);
+          scope.setVar(id_l->val, op->rhs->type.nonRefClone());
         } catch (const std::runtime_error &err) {
           throw ParserError(op->begin, op->rhs->end, err.what());
         }

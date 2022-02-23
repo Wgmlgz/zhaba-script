@@ -30,10 +30,20 @@ use vec
 //     slf.v = n
 //     <<< slf
 
+fn add intR n
+  n += 1
+lop print i8 n
+  out n
 
 fn main
-  out 54
-  v := Vec<int>()
-
+  v := Vec<i8>(5)
+  t := v.at(0)
+  t = t + 1i8
+  out t
+  t = t + 1i8
+  print t
+  // out v.at(0)
+  // print(v.at(0))
+  // v.at(0)
   v.print()
 

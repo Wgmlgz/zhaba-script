@@ -20,7 +20,8 @@ void argsToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, Function* fn,
   for (int i = 0; i < tuple->content.size(); ++i) {
     expToB(bytecode, tuple->content[i], funcdata);
     if (fn->args[i].type.getRef()) {
-      if (!tuple->content[i]->type.getLval())
+      if (!tuple->content[i]->type.getLval() &&
+          !tuple->content[i]->type.getRef())
         throw ParserError(
             tuple->content[i]->begin, tuple->content[i]->end,
             "Expression must be lval to be able pass by reference");
@@ -104,11 +105,17 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
       bytecode.pushVal(zhin::instr::add_i64);
       bytecode.pushVal(zhin::instr::deref);
       bytecode.pushVal((int32_t)(op->type.getSize()));
+      if (op->type.getRef()) {
+        bytecode.pushVal(zhin::instr::deref);
+        bytecode.pushVal((int32_t)(op->type.getSizeNonRef()));
+      }
     } else {
       /** C operators */
       if (op->func && op->func->is_C) {
-        expToB(bytecode, op->lhs, funcdata);
-        expToB(bytecode, op->rhs, funcdata);
+        auto lhs_tuple = castToTuple(op->lhs);
+        auto rhs_tuple = castToTuple(op->rhs);
+        *lhs_tuple += *rhs_tuple;
+        argsToB(bytecode, lhs_tuple, op->func, funcdata);
         if (false) {
         }
 #define BOP_BYTECODE(name, type_, instr_)                     \
@@ -236,14 +243,17 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
         bytecode.pushVal(zhin::instr::call);
         bytecode.pushVal(
             (int32_t)(bytecode.func_labels[op->func->toUniqueStr()]));
+        if (op->type.getRef()) {
+          bytecode.pushVal(zhin::instr::deref);
+          bytecode.pushVal((int32_t)(op->type.getSizeNonRef()));
+        }
       }
     }
   } else if (auto op = dynamic_cast<zhexp::PrefixOperator*>(exp)) {
     /** C operators */
 
-    auto a = (&"aboba");
     if (op->func && op->func->is_C) {
-      expToB(bytecode, op->child, funcdata);
+      argsToB(bytecode, op->child, op->func, funcdata);
       if (0) {
       }
 #define MAKE_LOP_BYTECODE(name, type_, impl_)                   \
@@ -355,14 +365,17 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
       bytecode.pushVal(zhin::instr::call);
       bytecode.pushVal(
           (int32_t)(bytecode.func_labels[op->func->toUniqueStr()]));
+      if (op->type.getRef()) {
+        bytecode.pushVal(zhin::instr::deref);
+        bytecode.pushVal((int32_t)(op->type.getSizeNonRef()));
+      }
     }
   } else if (auto var = dynamic_cast<zhexp::Variable*>(exp)) {
     bytecode.pushVal(zhin::instr::push_stack_ptr);
     bytecode.pushVal((int64_t)(funcdata.offsets[var->getName()].back()));
-
     if (var->getType().getRef()) {
       bytecode.pushVal(zhin::instr::deref);
-      bytecode.pushVal((int32_t)(8));
+      bytecode.pushVal((int32_t)(var->type.getSizeNonRef()));
     }
     bytecode.pushVal(zhin::instr::deref);
     bytecode.pushVal((int32_t)(var->type.getSizeNonRef()));
@@ -370,6 +383,10 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
     argsToB(bytecode, op->child, op->func, funcdata);
     bytecode.pushVal(zhin::instr::call);
     bytecode.pushVal((int32_t)(bytecode.func_labels[op->func->toUniqueStr()]));
+    if (op->type.getRef()) {
+      bytecode.pushVal(zhin::instr::deref);
+      bytecode.pushVal((int32_t)(op->type.getSizeNonRef()));
+    }
   } else if (auto tuple = dynamic_cast<zhexp::Tuple*>(exp)) {
     for (auto& i : tuple->content) expToB(bytecode, i, funcdata);
   } else {

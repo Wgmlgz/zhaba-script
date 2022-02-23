@@ -16,7 +16,7 @@ impl Vec
   fn TP atP int pos
     <<< (((slf.head) as int) + pos * sizeof T) as TP
 
-  fn T at int pos: <<< *slf.atP(pos)
+  fn TR at int pos: <<< slf.atP(pos) as TR
     
   fn double_capacity
     new_capacity := slf.capacity
