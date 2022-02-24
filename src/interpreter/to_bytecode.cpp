@@ -375,7 +375,7 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
     bytecode.pushVal((int64_t)(funcdata.offsets[var->getName()].back()));
     if (var->getType().getRef()) {
       bytecode.pushVal(zhin::instr::deref);
-      bytecode.pushVal((int32_t)(var->type.getSizeNonRef()));
+      bytecode.pushVal((int32_t)(var->type.getSize()));
     }
     bytecode.pushVal(zhin::instr::deref);
     bytecode.pushVal((int32_t)(var->type.getSizeNonRef()));
@@ -394,7 +394,7 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
   }
 }
 
-void nodeToB(zhin::ByteCode& bytecode, STNode* node, FuncData& funcdata) {
+void nodeToB(zhin::ByteCode& bytecode, STNode* node, FuncData& funcdata, Function* func) {
   if (auto exp = dynamic_cast<STExp*>(node)) {
     expToB(bytecode, exp->exp, funcdata);
     /** pop unused return value */
@@ -404,7 +404,7 @@ void nodeToB(zhin::ByteCode& bytecode, STNode* node, FuncData& funcdata) {
     /** Write return value to args pos */
     bytecode.pushVal(zhin::instr::ret);
     bytecode.pushVal((int32_t)(funcdata.args_size));
-    bytecode.pushVal((int32_t)(ret->exp->type.getSize()));
+    bytecode.pushVal((int32_t)(func->type.getSize()));
   } else if (auto stif = dynamic_cast<STIf*>(node)) {
     /**
      * exp_if
@@ -451,21 +451,21 @@ void nodeToB(zhin::ByteCode& bytecode, STNode* node, FuncData& funcdata) {
     }
 
     /** <else> */
-    if (stif->else_body) blockToB(bytecode, stif->else_body, funcdata);
+    if (stif->else_body) blockToB(bytecode, stif->else_body, funcdata, func);
     bytecode.pushVal(zhin::instr::jmp);
     bytecode.pushVal((int32_t)(end_l));
 
     /** <if> */
     bytecode.pushVal(zhin::instr::label);
     bytecode.pushVal((int32_t)(if_l));
-    blockToB(bytecode, stif->body, funcdata);
+    blockToB(bytecode, stif->body, funcdata, func);
     bytecode.pushVal(zhin::instr::jmp);
     bytecode.pushVal((int32_t)(end_l));
 
     for (int i = 0; i < stif->elseif_body.size(); ++i) {
       bytecode.pushVal(zhin::instr::label);
       bytecode.pushVal((int32_t)(elif_l[i]));
-      blockToB(bytecode, stif->elseif_body[i].second, funcdata);
+      blockToB(bytecode, stif->elseif_body[i].second, funcdata, func);
       bytecode.pushVal(zhin::instr::jmp);
       bytecode.pushVal((int32_t)(end_l));
     }
@@ -495,19 +495,19 @@ void nodeToB(zhin::ByteCode& bytecode, STNode* node, FuncData& funcdata) {
     bytecode.pushVal((int32_t)(end_l));
     bytecode.pushVal(zhin::instr::label);
     bytecode.pushVal((int32_t)(loop_l));
-    blockToB(bytecode, stwhile->body, funcdata);
+    blockToB(bytecode, stwhile->body, funcdata, func);
     bytecode.pushVal(zhin::instr::jmp);
     bytecode.pushVal((int32_t)(begin_l));
     bytecode.pushVal(zhin::instr::label);
     bytecode.pushVal((int32_t)(end_l));
   } else if (auto block = dynamic_cast<STBlock*>(node)) {
-    blockToB(bytecode, block, funcdata);
+    blockToB(bytecode, block, funcdata, func);
   } else {
     throw ParserError("unimplemented nodeToB");
   }
 }
 
-void blockToB(zhin::ByteCode& bytecode, STBlock* block, FuncData& funcdata) {
+void blockToB(zhin::ByteCode& bytecode, STBlock* block, FuncData& funcdata, Function* func) {
   /** Push local vars info */
   size_t local_vars_size = 0;
   for (const auto& [name, type] : *block->scope_info.getVars()) {
@@ -517,7 +517,7 @@ void blockToB(zhin::ByteCode& bytecode, STBlock* block, FuncData& funcdata) {
   }
   bytecode.push_push_bytes(local_vars_size);
 
-  for (auto& i : block->nodes) nodeToB(bytecode, i, funcdata);
+  for (auto& i : block->nodes) nodeToB(bytecode, i, funcdata, func);
 
   /** Pop local vars info */
   for (const auto& [name, type] : *block->scope_info.getVars()) {
@@ -543,7 +543,7 @@ void funcToB(zhin::ByteCode& bytecode, Function* func) {
 
   bytecode.pushVal(zhin::instr::label);
   bytecode.pushVal((int32_t)(bytecode.func_labels[func->toUniqueStr()]));
-  blockToB(bytecode, func->body, funcdata);
+  blockToB(bytecode, func->body, funcdata, func);
 
   /** Implicit return for safety when flow reached end of the function */
   bytecode.push_push_bytes(func->type.getSize());

@@ -439,7 +439,7 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
         op->lhs->type = int_type;
 
         auto int_literal =
-            new I64Literal(op->begin, op->end, orig_type.getSizeNonRef());
+            new I64Literal(op->begin, op->end, orig_type.getSizeNonPtr());
         int_literal->type = int_type;
         auto t = new BinOperator(
             op->begin, op->end, "*", 0, op->rhs, int_literal

@@ -14,7 +14,7 @@ impl Vec
     slf.head = 0 as TP
 
   fn TP atP int pos
-    <<< (((slf.head) as int) + pos * sizeof T) as TP
+    <<< (slf.head + pos) as TP
 
   fn TR at int pos: <<< slf.atP(pos) as TR
     
@@ -34,7 +34,7 @@ impl Vec
 
   fn push_back T val
     ? slf.size == slf.capacity: slf.double_capacity()
-    *slf.atP(slf.size) = val
+    slf.at(slf.size) = val
     ++slf.size
   fn pop_back: --slf.size
   

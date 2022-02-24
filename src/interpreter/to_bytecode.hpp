@@ -13,10 +13,12 @@ struct FuncData {
 int getLabel();
 
 int pushLiteral(zhin::ByteCode &bytecode, const byte *begin, const byte *end);
-void blockToB(zhin::ByteCode &bytecode, STBlock *block, FuncData &funcdata);
+void blockToB(zhin::ByteCode &bytecode, STBlock *block, FuncData &funcdata,
+              Function *func);
 void expToB(zhin::ByteCode &bytecode, zhexp::Exp *exp, FuncData &funcdata);
-void nodeToB(zhin::ByteCode &bytecode, STNode *node, FuncData &funcdata);
+void nodeToB(zhin::ByteCode &bytecode, STNode *node, FuncData &funcdata,
+             Function *func);
 void argsToB(zhin::ByteCode &bytecode, STNode *node, FuncData &funcdata);
 void toB(zhin::ByteCode &bytecode, STTree *block);
 
-}
+}  // namespace zhin

@@ -12,26 +12,38 @@ type Str
 
 impl Str
   fn ctor
-    ctor(&slf.data)
+    Str slf
+    slf.data = Vec<char>()
     slf.data.push_back(0u8 as char)
     slf.size = 0
   fn dtor: slf.data.dtor()
   fn str cstr: <<< slf.data.begin() as str
-  fn char at int pos: <<< slf.data.at(pos)
+  fn char at int pos
+    <<< slf.data.at(pos)
   fn charP atP int pos: <<< slf.data.atP(pos)
   fn push_back char ch
     slf.data.pop_back()
     slf.data.push_back(ch)
     slf.data.push_back(0u8 as char)
+    ++slf.size
   fn pop_back
     slf.data.pop_back()
     slf.data.pop_back()
     slf.data.push_back(0u8 as char)
+    --slf.size
   fn sort
     slf.data.pop_back()
     slf.data.sort()
     slf.data.push_back(0u8 as char)
-
+  fn ctor str s
+    res := Str()
+    res.data.pop_back()
+    @ *(s as charP) != 0u8 as char
+      res.data.push_back(*(s as charP))
+      s = (s as int + 1) as str
+    res.data.push_back(0u8 as char)
+    res.size = res.data.size - 1
+    <<< res
 fn int strlen str s
   res := 0
   @ *(s as charP) != 0u8 as char
@@ -39,33 +51,19 @@ fn int strlen str s
     s = (s as int + 1) as str
   <<< res
 
-lop Str asStr str s
-  Str res
-  res.ctor()
-  res.data.pop_back()
-  @ *(s as charP) != 0u8 as char
-    res.data.push_back(*(s as charP))
-    s = (s as int + 1) as str
-  res.data.push_back(0u8 as char)
-  res.size = res.data.size - 1
-  <<< res
-
-
-// append
-op 16 int += StrR a char ch: a.push_back(ch)
-op 16 += StrR a StrR b: @ i 0..b.size: a += b.at(i)
-op 16 += StrR a str b
-  out b
-  len := strlen(b)
-  out len
-  @ i 0..len: 
-    out i
-    put '"'
-    put b.at(i)
-    put '"'
-
-    a += b.at(i)
-    out i
-
 lop out StrR s: out s.cstr()
 lop put StrR s: put s.cstr()
+
+// append
+op 16 += StrR a char ch
+  a.push_back(ch)
+op 16 += StrR a StrR b
+  @ i 0..b.size
+    ch := 115i8 as char
+    ch = b.at(i)
+    a += ch
+op 16 += StrR a str b
+  len := strlen(b)
+  @ i 0..len: 
+    a += b.at(i)
+

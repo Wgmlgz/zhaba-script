@@ -1,49 +1,16 @@
 use vec
-// use range
-// use out
-// use tuple
-
-// fn fizz_buzz int mx
-//   fn da int x: < x <
-
-//   < 'aboba' <
-//   @ i 1..mx+1
-//     ? i %% 15: <'FizzBuzz'<
-//     | i %% 3: <'Fizz'<
-//     | i %% 5: <'Buzz'<
-//     \ <i<
-
-// fn fizz_buzz int mx int mn
-//   < 'aboba2' <
-//   @ i 1..mx+1
-//     ? i %% 15: <'FizzBuzz'<
-//     | i %% 3: <'Fizz'<
-//     | i %% 5: <'Buzz'<
-//     \ <i<
-
-// type Vec
-//   int v
-
-// impl Vec
-//   fn ctor int n
-//     Vec slf
-//     slf.v = n
-//     <<< slf
-
-fn add intR n
-  n += 1
-lop print i8 n
-  out n
+use range
+use out
+use frog
 
 fn main
-  v := Vec<i8>(5)
-  t := v.at(0)
-  t = t + 1i8
-  out t
-  t = t + 1i8
-  print t
-  // out v.at(0)
-  // print(v.at(0))
-  // v.at(0)
-  v.print()
+  frog1 := Str(frog())
+  frog2 := Str(frog())
 
+  frog1 += frog2
+
+  out frog1.size
+  out frog1
+
+  out frog2.size
+  out frog2
