@@ -1,74 +1,70 @@
+![](https://img.shields.io/github/stars/wgmlgz/zhaba-script)
 # Zhaba script programming language🐸
 
-Zhaba script (Russian: ˈʐabə, жаба(frog)) - is a multi-paradigm, high-level, statically typed programming language, that compiles to C and focuses at minimaizing your code size. It has partial OOP support, including user-created types, member functions and operators overloading, also there is support for generic types such as Vec\<T\>.
+Zhaba script (Russian: ˈʐabə, жаба(frog)) - is a multi-paradigm, high-level, statically typed, interpreted or source to source compiled language, which focuses at minimizing programs size and maximizing development speed and comfort.
 
-Inspired by Rust, C++ and Python🐍
+Inspired by JS, Rust, C++, and Python🐍
 
-## Hello world
+## Hello world!
 
 ```ruby
-use 'std.zh'
+use std
 
-fn main: out 'hi world!'
+fn main
+  < 'hi world!' <
 ```
 
 ## Setup
 
-- Clone repo
-- Set enviroment variable `zhstd` to `repo_path/std`
-- Compile [repo_path/src/Zhaba/zhaba.cpp](./Src/Zhaba/zhaba.cpp) with C++20 compiler
-- use compiled binary to run your `.zh` files with `./zhaba <filename.zh>`
-
-_note_: To build Zhaba script compiler you can also use [this Makefile](./Src/Zhaba/Makefile) `$ make build`
+- Set environment variable `zhstd` to `repo_path/std`
+- If you are using VSCode you can install [this](https://marketplace.visualstudio.com/items?itemName=wgmlgz.zhaba-script) extension for syntax highlighting
+- Choose your destiny
+  - To develop
+    - This is a CMake project, so you need to check how to set up it in your IDE
+      - VSCode: I am using vscode with CMake extension, so to set up project run command `CMake: Configure`, and to add run arguments add `"cmake.debugConfig": { "args": [ your args here ] }` to settings.json
+      - CLion: You probably can just open it with none or some minimal configuration
+    - use compiled binary to run your `.zh` files with `./zhaba <filename.zh>`
+  - To use zhaba-script
+    - Download the latest binary from [releases](https://github.com/Wgmlgz/zhaba-script/releases)
 
 ## List of features
 
-### Lang
+- Basics:
+  - Basic types like int, bool or char
+  - All C operators like (+ - \* %)
+  - If, else, else if
+  - While loop
+  - C-style for loop
+  - Single and multi-line comments
+  - Functions
+  - Other files usage
 
-- basic types like `int` or `char`
-- all C operators like (+ - \* %)
-- if, else, else if
-- while loop
-- C-style for loop
-- foreach loop
-- single and multi line comments
-- functions
-- functions overloading
-- support for overloading any operator
-- C code injection
-- other files usage
-- functions overloading
-- custom types(structs)
-- member functions
-- pointers
-- references
-- generic types like `Vec<T>`
+- More advanced features:
+  - Foreach loop
+  - Functions overloading
+  - Any operator overloading
+  - New operators creation
+  - Local (relative to scope) functions and operators definition
+  - Pointers
+  - References
 
-### std
+- OOP:
+  - Classes
+  - Member functions
+  - Constructors
+  - Destructors
+  - generic types like `Vec<T>`
 
-- `Vec<T>` - generic Vector data structure
-- `Str` - String class, can be used in foreach
-- `Range` - int range, can be created with `..` operator
-- `Tp[1-9]` - tuple up to 9 types
-- `'frog.zh'` - file with cool ascii image of 🐸
+- Standard library
+  - `Vec<T>` - generic dynamic array
+  - `Str` - String class
+  - `Range` - int range, can be created with `..` operator
+  - `'frog.zh'` - file with cool ASCII image of 🐸
+  - `operators.zh` - more advanced operators like %%
+
 ## Docs
 
-Note: features with TODO are existing in language, but don't have docs😞
-
-- [Syntax](./docs/syntax.pdf)
-- [TODO introduction](./docs/introduction.md)
-- [TODO compiler](./docs/compiler.md)
-- [TODO program structure](./docs/program.md)
-- [Expressions](./docs/expressions.md)
-- [if, else if, else](./docs/if.md)
-- [Loops](./docs/loops.md)
-- [Functions](./docs/functions.md)
-- [TODO operators overload](./docs/operators_overload.md)
-- [Custom types](./docs/struct.md)
-- [Generic types](./docs/generic_types.md)
-- [TODO standart lib](./docs/std.md)
-- More later...
-
+!!!revorking!!!
 # Examples
 
 ## Game of life
