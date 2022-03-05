@@ -1,6 +1,6 @@
 # Expressions
 
-Expressions in Zhaba-script are very different from expressions in most other languages. They consists from operators and literals. Brackets `()` are used only to manipulate operator's priorities and detect function calls. Here is some basic expression example:
+Expressions in Zhaba-script are very different from expressions in most other languages. They consist of operators and literals. Brackets `()` are used only to manipulate the operator's priorities and detect function calls. Here is some basic expression example:
 
 ```c
 // In this expression out is prefix operator and 'Hi frogs' is a str literal.
@@ -19,13 +19,13 @@ sum(1, 2)
 ```
 
 is in fact a prefix operator that actepts **_inline tuple_** of 1 and 2.
-But the main goal of Zhaba-script is minimizing code size so in most cases `,` are optional. And because of that it is possible to write expression above like that:
+But the main goal of Zhaba-script is minimizing code size so in most cases `,` are optional. And because of that, it is possible to write expression above like that:
 
 ```c
 sum(1 2)
 ```
 
-**_Inline tuples_** can also be empty, and to create one of thouse just use `()`:
+**_Inline tuples_** can also be empty, and to create one of those just use `()`:
 
 ```c
 // In this case `begin` is a prefix operator that accepts empty inline tuple
@@ -58,7 +58,7 @@ Binary operator is an operator that accepts 2 arguments from different sides:
 1 + 2 * 3
 ```
 
-But binary operators can also accept more or less then 2 arguments. In this case they have 1 argument at left side and others at right size. At first it may seem useless, but in fact all member function calls are implicetly converted to binary operators:
+But binary operators can also accept more or less than 2 arguments. In this case, they have 1 argument on the left side and others on the right size. At first, it may seem useless, but in fact all member function calls are implicitly converted to binary operators:
 
 ```c
 // .push_back acts like binary operator

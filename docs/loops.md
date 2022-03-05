@@ -1,6 +1,6 @@
 # Loops
 
-Zhaba-script has 3 types of loops: while, for and foreach. To create a loop, use the `@` symbol and after that write your loop expression. Loop type is defined by number of arguments, that have been passed to the loop: 1-while, 2-foreach, 3-for.
+Zhaba-script has 3 types of loops: while, for and foreach. To create a loop, use the `@` symbol and after that write your loop expression. Loop type is defined by a number of arguments, that have been passed to the loop: 1-while, 2-foreach, 3-for.
 
 ## Syntax
 
@@ -11,7 +11,7 @@ Zhaba-script has 3 types of loops: while, for and foreach. To create a loop, use
 
 ## While
 
-While loop accepts 1 argument and runs _while_ it's body while condition is still true.
+While loop accepts 1 argument and runs _while_ its body while the condition is still true.
 
 ### Examples
 
@@ -46,7 +46,7 @@ i:=0
 
 ## Foreach
 
-Foreach loop executes a for loop over a range and accepts 2 arguments: variable name and range expression. Variable name must be identifier and range expression must have `.begin()` and `.end()` methods. Value protected by `.begin()` must be able to be compared with `.end()` value by `!=` operator and also must be able to be incremented by prefix `++` operator. Produced code is equivalent to this:
+Foreach loop executes a for loop over a range and accepts 2 arguments: a variable name and range expression. Variable name must be identifier and range expression must have `.begin()` and `.end()` methods. Value protected by `.begin()` must be able to be compared with `.end()` value by `!=` operator and also must be able to be incremented by prefix `++` operator. Produced code is equivalent to this:
 
 ```go
 __range := range-expression
