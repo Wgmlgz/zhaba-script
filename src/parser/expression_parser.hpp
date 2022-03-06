@@ -10,7 +10,8 @@
 
 namespace zhexp {
 
-Exp *buildExp(ScopeInfo& scope, std::vector<Exp *>::iterator begin,
+Exp *copyExp(Exp *exp, ScopeInfo &scope);
+Exp *buildExp(ScopeInfo &scope, std::vector<Exp *>::iterator begin,
               std::vector<Exp *>::iterator end, int depth = 0);
 std::vector<Exp *> preprocess(tokeniter begin, tokeniter end,
                               const ScopeInfo &scope);

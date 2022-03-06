@@ -201,6 +201,9 @@ TreeNode<std::string> *toGenericTree(Exp *exp) {
 
   if (auto op = dynamic_cast<IdLiteral *>(exp))
     node->data = "'" + op->val + "' idL,";
+    
+  if (auto op = dynamic_cast<Variable *>(exp))
+    node->data = "var '" + op->getName() + "'";
 
   if (auto t = dynamic_cast<Tuple *>(exp)) {
     node->data = "tuple";

@@ -1,6 +1,30 @@
 #include "expression_parser.hpp"
 
 namespace zhexp {
+
+Exp *copyExp(Exp *exp, ScopeInfo &scope) {
+  if (!scope.containsPrOp({exp->type.nonRefClone().rvalClone().toString(),
+                           {exp->type.nonRefClone().rvalClone()}}))
+    return exp;
+  /** thicc */
+  // auto tmp_var_name =
+  //     std::to_string(zhdata.rng()) + std::to_string(zhdata.rng()) +
+  //     std::to_string(zhdata.rng()) + std::to_string(zhdata.rng()) +
+  //     std::to_string(zhdata.rng()) + std::to_string(zhdata.rng()) +
+  //     std::to_string(zhdata.rng()) + std::to_string(zhdata.rng());
+
+  // scope.setVar(tmp_var_name, exp->type.nonRefClone());
+  if (auto pr = dynamic_cast<PrefixOperator *>(exp))
+    if (pr->val == exp->type.nonRefClone().rvalClone().toString()) return exp;
+
+  auto new_exp = new zhexp::PrefixOperator(
+      exp->begin, exp->end, exp->type.nonRefClone().rvalClone().toString(), 0,
+      exp);
+  new_exp->func = scope.getPrOp({exp->type.nonRefClone().rvalClone().toString(),
+                                 {exp->type.nonRefClone().rvalClone()}});
+  return new_exp;
+};
+
 /**
  * @brief Converts expression to expression tree
  */
@@ -360,6 +384,8 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
         op->lhs = tmp;
         op->val = "=";
         op->type = types::Type(types::TYPE::voidT);
+
+        op->rhs = copyExp(op->rhs, scope);
       } else {
         throw ParserError(op->lhs->begin, op->lhs->end, "Expected id literal");
       }

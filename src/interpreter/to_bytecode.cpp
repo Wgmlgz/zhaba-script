@@ -401,6 +401,12 @@ void nodeToB(zhin::ByteCode& bytecode, STNode* node, FuncData& funcdata, Functio
     bytecode.push_pop_bytes(exp->exp->type.getSize());
   } else if (auto ret = dynamic_cast<STRet*>(node)) {
     expToB(bytecode, ret->exp, funcdata);
+
+    /** We need this because prev expToB already do deref and caller will also do deref afterwards, so this compencates */
+    if (func->type.getRef()) {
+      /** pop deref + int */
+      bytecode.popBytes(5);
+    }
     /** Write return value to args pos */
     bytecode.pushVal(zhin::instr::ret);
     bytecode.pushVal((int32_t)(funcdata.args_size));

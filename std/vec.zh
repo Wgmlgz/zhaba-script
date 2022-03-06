@@ -16,7 +16,7 @@ impl Vec
   fn TP atP int pos
     <<< (slf.head + pos) as TP
 
-  fn TR at int pos: <<< slf.atP(pos) as TR
+  fn TR at int pos: <<< *slf.atP(pos)
     
   fn double_capacity
     new_capacity := slf.capacity
@@ -53,20 +53,26 @@ impl Vec
     slf.capacity = 0
     @ slf.capacity < size: slf.double_capacity()
     slf.size = size
+    slf.capacity = 44
   
   fn ctor
     Vec<T> slf
     <<< Vec<T>(0)
+
+  fn ctor Vec<T>R other
+    out 'copy!!!!'
+    slf := Vec<T>(other.size)
+    @ i 0..other.size: slf.at(i) = other.at(i)
+    <<< slf
 
   fn print
     int i = 0
     put('[')
     @ i 0..slf.size
      ? ! !i: put(' ')
-     put(slf.at(i))
+     put(*slf.atP(i))
     out(']')
 
-impl Vec
   fn swap TP a TP b
     T t = *a
     *a = *b

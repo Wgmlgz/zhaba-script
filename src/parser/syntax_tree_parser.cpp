@@ -385,7 +385,6 @@ std::vector<Function*> parseImpl(ast::ASTBlock* block, const types::Type& type,
 
     if (func->name == "ctor") {
       func->name = type.toString();
-      std::cout << type.toString() << std::endl;
       push_scope.setPrOp({func->name, types}, func);
       /** prefix operator priority */
       int64_t p = 3;
