@@ -6,6 +6,12 @@
 
 use operators
 
+impl int
+  fn next
+    *slf = *slf + 1
+  fn bool uneq int other
+    <<< *slf != other
+    
 type Range: int begin end
 
 impl Range

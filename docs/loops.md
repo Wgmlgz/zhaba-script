@@ -53,9 +53,9 @@ __range := range-expression
 __begin := __range.begin()
 __end := __range.end()
 __cur := __begin
-@ __cur != end
+@ __cur.uneq(__end)
   <body>
-  ++ __cur
+  __cur.next()
 ```
 
 ### Examples

@@ -21,10 +21,11 @@ void validateFunction(const ScopeInfo& scope, const Function &func, tokeniter be
     if (func.name == "&") {
       throw ParserError(*begin, *end,
                         "You cannot overload prefix '&' operator");
-    } else if (func.name == "*") {
-      throw ParserError(*begin, *end,
-                        "You cannot overload prefix '*' operator");
-    }
+    } 
+    // else if (func.name == "*") {
+    //   throw ParserError(*begin, *end,
+    //                     "You cannot overload prefix '*' operator");
+    // }
   } else if (func.op_type == Function::OpType::rhs) {
     if (scope.containsPoOp(func.getHeadNonRefNonLval()))
       throw ParserError(*begin, *end,

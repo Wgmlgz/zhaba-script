@@ -363,6 +363,7 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
       } else {
         throw ParserError(op->lhs->begin, op->end, "Left operant for '=' must be lval or ref");
       }
+      op->rhs = copyExp(op->rhs, scope);
     }
       /** Variable creation & assingment */
     else if (op->val == ":=") {
@@ -528,11 +529,13 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
           op->func = scope.getBinOp(func_head);
           exp->type = scope.getBinOp(func_head)->type;
         } else {
+          std::string types_str;
+          for (auto &i : types) {
+            types_str += i.toString() + " ";
+          }
           throw ParserError(op->begin, op->end,
                             "There is no instance of binary operator '" +
-                                op->val +
-                                "' for types: " + op->lhs->type.toString() +
-                                ", " + op->rhs->type.toString());
+                                op->val + "' for types: " + types_str);
         }
       }
     }
@@ -554,10 +557,15 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
     if (scope.containsPoOp(func_head)) {
       op->func = scope.getPoOp(func_head);
       exp->type = scope.getPoOp(func_head)->type;
-    } else
-      throw ParserError(
-          op->begin, op->end, "There is no instance of postfix operator '" + op->val +
-              "' for type: " + op->child->type.toString());
+    } else {
+      std::string types_str;
+      for (auto &i : types) {
+        types_str += i.toString() + " ";
+      }
+      throw ParserError(op->begin, op->end,
+                        "There is no instance of postfix operator '" + op->val +
+                            "' for types: " + types_str);
+    }
   } else if (auto op = dynamic_cast<PrefixOperator *>(exp)) {
     op->child = postprocess(op->child, scope);
 

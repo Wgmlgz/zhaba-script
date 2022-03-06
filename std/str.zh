@@ -31,10 +31,10 @@ impl Str
     slf.data.pop_back()
     slf.data.push_back(0u8 as char)
     --slf.size
-  fn sort
-    slf.data.pop_back()
-    slf.data.sort()
-    slf.data.push_back(0u8 as char)
+  // fn sort
+  //   slf.data.pop_back()
+  //   slf.data.sort()
+  //   slf.data.push_back(0u8 as char)
   fn ctor str s
     res := Str()
     res.data.pop_back()

@@ -257,17 +257,24 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo& parent_scope, types
                 );
 
                 zhexp::Exp* condition = new zhexp::BinOperator(
-                    tuple_->content[0]->begin, tuple_->content[1]->end, "!=", 666,
-                    new zhexp::IdLiteral(tuple_->content[0]->begin,
-                                        tuple_->content[0]->end, id_l->val),
+                    tuple_->content[0]->begin, tuple_->content[1]->end,
+                    ".call.uneq", 666,
+                    new zhexp::PrefixOperator(
+                        tuple_->content[1]->begin, tuple_->content[1]->end, "&",
+                        666,
+                        new zhexp::IdLiteral(tuple_->content[0]->begin,
+                                             tuple_->content[0]->end,
+                                             id_l->val)),
                     new zhexp::IdLiteral(tuple_->content[1]->begin,
-                                        tuple_->content[1]->end, "__end"));
+                                         tuple_->content[1]->end, "__end"));
                 auto iter = new STExp;
-                iter->exp = new zhexp::PrefixOperator(
-                    tuple_->content[1]->begin, tuple_->content[1]->end, "++", 666,
+                iter->exp = new zhexp::BinOperator(
+                    tuple_->content[1]->begin, tuple_->content[1]->end,
+                    ".call.next", 666,
                     new zhexp::IdLiteral(tuple_->content[0]->begin,
-                                        tuple_->content[0]->end, id_l->val)
-                );
+                                         tuple_->content[0]->end, id_l->val),
+                    new zhexp::Tuple(tuple_->content[1]->begin,
+                                     tuple_->content[1]->end));
                 range_init->exp = zhexp::postprocess(range_init->exp, foreach_block->scope_info);
                 begin_exp->exp = zhexp::postprocess(begin_exp->exp, foreach_block->scope_info);
                 end_exp->exp = zhexp::postprocess(end_exp->exp, foreach_block->scope_info);
@@ -367,7 +374,7 @@ std::vector<Function*> parseImpl(ast::ASTBlock* block, const types::Type& type,
         throw ParserError(*line->begin, *line->end, "You cannot change constructor return value");
       func->type = type;
       func->op_type = Function::OpType::lhs;
-    } else {
+    } else if (func->is_fn) {
       func->args.insert(
           func->args.begin(),
           {"slf", types::Type(type.getTypeId(), type.getPtr() + 1, 1)});
@@ -390,14 +397,32 @@ std::vector<Function*> parseImpl(ast::ASTBlock* block, const types::Type& type,
       int64_t p = 3;
       if (!push_scope.containsPrOpP(func->name)) 
         push_scope.setPrOpP(func->name, p);
-    } else {
+    } else if (func->is_fn) {
       push_scope.setBinOp({func->name, types}, func);
       /** '.' priority */
       int64_t p = 2;
       if (!push_scope.containsBinOpP(func->name)) 
         push_scope.setBinOpP(func->name, p);
+    } else {
+      if (func->op_type == Function::OpType::bin) {
+        push_scope.setBinOp({func->name, types}, func);
+        if (!push_scope.containsBinOpP(func->name))
+          push_scope.setBinOpP(func->name, func->priority);
+      } else if (func->op_type == Function::OpType::lhs) {
+        push_scope.setPrOp({func->name, types}, func);
+        /** prefix operator priority */
+        int64_t p = 3;
+        if (!push_scope.containsPrOpP(func->name))
+            push_scope.setPrOpP(func->name, p);
+        } else {
+        push_scope.setPoOp({func->name, types}, func);
+        /** postfix operator priority */
+        int64_t p = 2;
+        if (!push_scope.containsPoOpP(func->name))
+          push_scope.setPoOpP(func->name, p);
+      }
     }
-    if (push_scope.containsOp(func->name)) push_scope.setOp(func->name);
+    if (!push_scope.containsOp(func->name)) push_scope.setOp(func->name);
 
     func->body = parseASTblock(block, scope, func->type);
 

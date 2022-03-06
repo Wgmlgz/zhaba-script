@@ -1,10 +1,21 @@
 use range
 use operators
 
-type Vec T
-  int size
+type Vec T: int size; 
   int capacity
   TP head
+
+type VecIter T: TP ptr
+
+impl VecIter
+  fn next
+    slf.ptr = slf.ptr + 1
+  fn bool uneq VecIter<T> other
+    <<< slf.ptr != other.ptr
+  lop TR * VecIter<T> slf
+    <<< *slf.ptr
+  fn TR get
+    <<< *slf.ptr
 
 impl Vec
   fn free_mem
@@ -13,11 +24,17 @@ impl Vec
     slf.capacity = 0
     slf.head = 0 as TP
 
-  fn TP atP int pos
-    <<< (slf.head + pos) as TP
-
+  fn TP atP int pos: <<< (slf.head + pos) as TP
   fn TR at int pos: <<< *slf.atP(pos)
     
+  fn print
+    int i = 0
+    put('[')
+    @ i 0..slf.size
+     ? ! !i: put(' ')
+     put(*slf.atP(i))
+    out(']')
+
   fn double_capacity
     new_capacity := slf.capacity
     ? new_capacity == 0
@@ -36,10 +53,13 @@ impl Vec
     ? slf.size == slf.capacity: slf.double_capacity()
     slf.at(slf.size) = val
     ++slf.size
+
+  op 16 += Vec<T>P slf T val: slf.push_back(val)
+    
   fn pop_back: --slf.size
   
-  fn TP begin: <<< slf.head
-  fn TP end: <<< slf.atP(slf.size)
+  fn VecIter<T> begin: <<< slf.head as VecIter<T> 
+  fn VecIter<T> end: <<< slf.atP(slf.size) as VecIter<T>
   fn T front: <<< *slf.head
   fn T back: <<< *slf.atP(slf.size-1)
   fn TP frontP: <<< slf.head
@@ -53,25 +73,23 @@ impl Vec
     slf.capacity = 0
     @ slf.capacity < size: slf.double_capacity()
     slf.size = size
-    slf.capacity = 44
+    slf.capacity = size
   
   fn ctor
     Vec<T> slf
     <<< Vec<T>(0)
 
   fn ctor Vec<T>R other
-    out 'copy!!!!'
     slf := Vec<T>(other.size)
     @ i 0..other.size: slf.at(i) = other.at(i)
     <<< slf
 
-  fn print
-    int i = 0
-    put('[')
-    @ i 0..slf.size
-     ? ! !i: put(' ')
-     put(*slf.atP(i))
-    out(']')
+  fn Vec<T> sub int begin int end
+    res := Vec<T>(0)
+    @ i begin..end
+      out slf.at(i)
+      res.push_back(slf.at(i))
+    <<< res
 
   fn swap TP a TP b
     T t = *a
@@ -102,4 +120,9 @@ impl Vec
       slf.next_ptr(&pi)
       slf.qsort(pi rhs)
   
-  fn sort: slf.qsort(slf.begin() slf.end())
+  // fn sort: slf.qsort(slf.begin() slf.end())
+
+fn Vec<int> iota int begin int end
+  v := Vec<int>(end - begin)
+  @ i begin..end: v.at(i - begin) = i
+  <<< v
