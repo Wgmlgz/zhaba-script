@@ -348,7 +348,7 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
       MAKE_LOP_BYTECODE(out, boolT, bytecode.pushVal(zhin::instr::out_u8))
 
       MAKE_LOP_BYTECODE(malloc, i64T, bytecode.pushVal(zhin::instr::malloc))
-      MAKE_LOP_BYTECODE(free, i64T, bytecode.pushVal(zhin::instr::malloc))
+      MAKE_LOP_BYTECODE(free, i64T, bytecode.pushVal(zhin::instr::free))
       else {
         throw ParserError("unimplemented C op");
       }
