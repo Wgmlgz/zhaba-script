@@ -1,6 +1,7 @@
 #pragma once
 #include <set>
 #include <utility>
+#include <ranges>
 
 #include "../lang/lang.hpp"
 #include "../tree_lib/TreeLib.hpp"
@@ -10,7 +11,7 @@
 
 namespace zhexp {
 
-Exp *copyExp(Exp *exp, ScopeInfo &scope);
+void copyExp(Exp *&exp, ScopeInfo &scope);
 Exp *buildExp(ScopeInfo &scope, std::vector<Exp *>::iterator begin,
               std::vector<Exp *>::iterator end, int depth = 0);
 std::vector<Exp *> preprocess(tokeniter begin, tokeniter end,

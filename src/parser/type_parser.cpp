@@ -86,6 +86,18 @@ Type parse(tokeniter &token, const ScopeInfo &parent_scope) {
     auto name = str + genericToStr(generic_types);
     auto id = getStructId(name);
 
+    std::string m_str = token->val;
+    int ptr_c = 0;
+    if (m_str.back() == 'R') {
+      res.setRef(true);
+      m_str.pop_back();
+    }
+    while (m_str.back() == 'P') {
+      ++ptr_c;
+      m_str.pop_back();
+    }
+    res.setPtr(ptr_c);
+
     /** Generate new implementation */
     if (id == static_cast<TYPE>(-1)) {
       /** Type substitution*/
@@ -95,12 +107,10 @@ Type parse(tokeniter &token, const ScopeInfo &parent_scope) {
                 std::to_string(generic_types.size()) + ", but " +
                 std::to_string(zhdata.generics[str].names.size()) + " expected");
 
-      //TODO proper scope
       ScopeInfo scope(&zhdata.sttree->scope);
       for (int i = 0; i < generic_types.size(); ++i) {
         scope.setTypedef(zhdata.generics[str].names[i], generic_types[i]);
       }
-      // for (auto i : generic)
       /** Try generate generic implementation */
       pushStruct(name, parseStruct(zhdata.generics[str].block, scope));
       for (auto &block : zhdata.generics[str].impl_blocks) {

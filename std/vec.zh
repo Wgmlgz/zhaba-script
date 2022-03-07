@@ -80,15 +80,14 @@ impl Vec
     <<< Vec<T>(0)
 
   fn ctor Vec<T>R other
+    out 'copy!'
     slf := Vec<T>(other.size)
     @ i 0..other.size: slf.at(i) = other.at(i)
     <<< slf
 
   fn Vec<T> sub int begin int end
     res := Vec<T>(0)
-    @ i begin..end
-      out slf.at(i)
-      res.push_back(slf.at(i))
+    @ i begin..end: res.push_back(slf.at(i))
     <<< res
 
   fn swap TP a TP b

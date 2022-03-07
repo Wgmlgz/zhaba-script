@@ -2,10 +2,10 @@
 
 namespace zhexp {
 
-Exp *copyExp(Exp *exp, ScopeInfo &scope) {
+void copyExp(Exp *&exp, ScopeInfo &scope) {
   if (!scope.containsPrOp({exp->type.nonRefClone().rvalClone().toString(),
                            {exp->type.nonRefClone().rvalClone()}}))
-    return exp;
+    return;
   /** thicc */
   // auto tmp_var_name =
   //     std::to_string(zhdata.rng()) + std::to_string(zhdata.rng()) +
@@ -15,14 +15,16 @@ Exp *copyExp(Exp *exp, ScopeInfo &scope) {
 
   // scope.setVar(tmp_var_name, exp->type.nonRefClone());
   if (auto pr = dynamic_cast<PrefixOperator *>(exp))
-    if (pr->val == exp->type.nonRefClone().rvalClone().toString()) return exp;
+    if (pr->val == exp->type.nonRefClone().rvalClone().toString()) return;
 
   auto new_exp = new zhexp::PrefixOperator(
       exp->begin, exp->end, exp->type.nonRefClone().rvalClone().toString(), 0,
       exp);
   new_exp->func = scope.getPrOp({exp->type.nonRefClone().rvalClone().toString(),
                                  {exp->type.nonRefClone().rvalClone()}});
-  return new_exp;
+  new_exp->type = new_exp->func->type;
+  exp = new_exp;
+  return;
 };
 
 /**
@@ -363,7 +365,7 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
       } else {
         throw ParserError(op->lhs->begin, op->end, "Left operant for '=' must be lval or ref");
       }
-      op->rhs = copyExp(op->rhs, scope);
+      copyExp(op->rhs, scope);
     }
       /** Variable creation & assingment */
     else if (op->val == ":=") {
@@ -386,7 +388,7 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
         op->val = "=";
         op->type = types::Type(types::TYPE::voidT);
 
-        op->rhs = copyExp(op->rhs, scope);
+        copyExp(op->rhs, scope);
       } else {
         throw ParserError(op->lhs->begin, op->lhs->end, "Expected id literal");
       }
@@ -511,14 +513,19 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
         }
 
         std::vector<types::Type> types;
+        std::vector<Exp**> exps;
         types.push_back(op->lhs->type);
+        exps.push_back(&op->lhs);
+
         types.back().setLval(false);
         if (auto tuple = dynamic_cast<Tuple *>(op->rhs)) {
           for (auto exp : tuple->content) {
             types.push_back(exp->type);
+            exps.push_back(&exp);
           }
         } else {
           types.push_back(op->rhs->type);
+          exps.push_back(&op->rhs);
         }
 
         for (auto &i : types) i.setLval(false);
@@ -526,8 +533,12 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
 
         types::funcHead func_head{op->val, types};
         if (scope.containsBinOp(func_head)) {
-          op->func = scope.getBinOp(func_head);
-          exp->type = scope.getBinOp(func_head)->type;
+          auto& bop = scope.getBinOp(func_head);
+          op->func = bop;
+          exp->type = bop->type;
+          for (int i = 0; i < bop->args.size(); ++i) {
+            // if (!bop->args[i].type.getRef()) copyExp(*exps[i], scope);
+          }
         } else {
           std::string types_str;
           for (auto &i : types) {
@@ -542,12 +553,15 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
   } else if (auto op = dynamic_cast<PostfixOperator *>(exp)) {
     op->child = postprocess(op->child, scope);
     std::vector<types::Type> types;
+    std::vector<Exp **> exps;
     if (auto tuple = dynamic_cast<Tuple *>(op->child)) {
       for (auto exp : tuple->content) {
         types.push_back(exp->type);
+        exps.push_back(&exp);
       }
     } else {
       types.push_back(op->child->type);
+      exps.push_back(&op->child);
     }
 
     for (auto &i : types) i.setLval(false);
@@ -555,8 +569,12 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
 
     types::funcHead func_head{op->val, types};
     if (scope.containsPoOp(func_head)) {
-      op->func = scope.getPoOp(func_head);
-      exp->type = scope.getPoOp(func_head)->type;
+      auto& poop = scope.getPoOp(func_head);
+      op->func = poop;
+      exp->type = poop->type;
+      for (int i = 0; i < poop->args.size(); ++i) {
+        // if (!poop->args[i].type.getRef()) copyExp(*exps[i], scope);
+      }
     } else {
       std::string types_str;
       for (auto &i : types) {
@@ -609,12 +627,15 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
     // } catch (const types::TypeParsingError &err) {}
 
     std::vector<types::Type> types;
+    std::vector<Exp**> exps;
     if (auto tuple = dynamic_cast<Tuple *>(op->child)) {
-      for (auto exp : tuple->content) {
+      for (auto& exp : tuple->content) {
         types.push_back(exp->type);
+        exps.push_back(&exp);
       }
     } else {
       types.push_back(op->child->type);
+      exps.push_back(&op->child);
     }
 
     for (auto &i : types) i.setLval(false);
@@ -622,11 +643,19 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
 
     types::funcHead func_head{op->val, types};
     if (scope.containsPrOp(func_head)) {
-      op->func = scope.getPrOp(func_head);
-      exp->type =  scope.getPrOp(func_head)->type;
+      auto& prop = scope.getPrOp(func_head);
+      op->func = prop;
+      exp->type = prop->type;
+      for (int i = 0; i < prop->args.size(); ++i) {
+        // if (!prop->args[i].type.getRef()) copyExp(*exps[i], scope);
+      }
     } else if (scope.containsFn(func_head)) {
-      op->func = scope.getFn(func_head);
-      exp->type = scope.getFn(func_head)->type;
+      auto &fn = scope.getFn(func_head);
+      op->func = fn;
+      exp->type = fn->type;
+      for (int i = 0; i < fn->args.size(); ++i) {
+        if (!fn->args[i].type.getRef()) copyExp(*exps[i], scope);
+      }
     } else {
       std::string types_str;
       for (auto &i : types) {

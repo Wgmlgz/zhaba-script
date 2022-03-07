@@ -16,21 +16,40 @@ use frog
 //   v.val = v.val +n
 //   <<< v
 
+fn prikol Vec<int>R v
+  out sizeof(v)
+  v.at(0) = 5
+
+fn prikol_copy Vec<int> v
+  out sizeof(v)
+  v.at(0) = 2
+
+fn prikol intR t
+  t = 4
 
 fn main
-  v := iota(5 10)
-  n := v.sub(2 5)
+  v := Vec<int>(4)
+  // v := iota(5 10)
+  // n := v.sub(2 5)
+  prikol(v)
+  prikol_copy(v)
   v.print()
-  n.print()
+  
+  t := 10
+  out t
+  prikol(t)
+  out t
+  
+  // n.print()
 
-  v.push_back(54)
-  v.push_back(54)
-  v.push_back(54)
-  v.push_back(54)
-  v.print()
-  n.print()
+  // v.push_back(54)
+  // v.push_back(54)
+  // v.push_back(54)
+  // v.push_back(54)
+  // v.print()
+  // n.print()
 
-  out (&v as int)
-  out (&n as int)
-  @ i v
-    out (*i)
+  // out (&v as int)
+  // out (&n as int)
+  // @ i v
+  //   out (*i)
