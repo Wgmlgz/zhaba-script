@@ -4,13 +4,22 @@
 #include <string>
 #include <unordered_map>
 #include <set>
+#include <iostream>
 #include "types.hpp"
 
 struct Function;
 
+int64_t genId();
+
 class ScopeInfo {
   const ScopeInfo* parent = nullptr;
-  std::unordered_map<std::string, types::Type> vars;
+  struct VarInfo {
+    std::string name;
+    types::Type type;
+    int64_t id;
+  };
+  std::unordered_map<std::string, VarInfo*> vars_name;
+  std::unordered_map<int64_t, VarInfo*> vars_id;
   std::map<std::string, types::Type> typedefs;
 
  public:
@@ -94,7 +103,9 @@ class ScopeInfo {
   }                                                                           \
   const auto get##properties() { return &container; }
 
-  MAKE_SCOPE_ACCESS(Var, Vars, variable, vars, types::Type, std::string);
+  // MAKE_SCOPE_ACCESS(Var, Vars, variable, vars, types::Type, std::string);
+
+
   MAKE_SCOPE_ACCESS(Typedef, Typedefs, typedef, typedefs, types::Type,
                     std::string);
   MAKE_SCOPE_ACCESS_NOMSG(BinOp, BinOps, binary_operator, B_OD_, Function*,
@@ -113,4 +124,66 @@ class ScopeInfo {
   MAKE_SCOPE_ACCESS_NOMSG(PoOpP, PoOpsP, postfix_operator_priority,
                           postfix_operators_, int64_t, std::string);
   MAKE_SCOPE_ACCESS_SET(Op, Ops, operators, operators, std::string);
+
+  bool containsVar(const std::string& name) const {
+    if (vars_name.contains(name)) return true;
+    if (parent) return parent->containsVar(name);
+    return false;
+  }
+  types::Type& getVarType(const std::string& name) {
+    if (!containsVar(name))
+      throw std::runtime_error("variable '" + name + "'" +
+                               "is not defined in this scope");
+    if (vars_name.contains(name)) return vars_name.at(name)->type;
+    return const_cast<types::Type&>(parent->getVarType(name));
+  }
+  const types::Type& getVarType(const std::string& name) const {
+    if (!containsVar(name))
+      throw std::runtime_error("variable '" + name + "'" +
+                               "is not defined in this scope");
+    if (vars_name.contains(name)) return vars_name.at(name)->type;
+    return parent->getVarType(name);
+  }
+  int64_t& getVarId(const std::string& name) {
+    if (!containsVar(name))
+      throw std::runtime_error("variable '" + name + "'" +
+                               "is not defined in this scope");
+    if (vars_name.contains(name)) return vars_name.at(name)->id;
+    return const_cast<int64_t&>(parent->getVarId(name));
+  }
+  const int64_t& getVarId(const std::string& name) const {
+    if (!containsVar(name))
+      throw std::runtime_error("variable '" + name + "'" +
+                               "is not defined in this scope");
+    if (vars_name.contains(name)) return vars_name.at(name)->id;
+    return parent->getVarId(name);
+  }
+  bool containsVar(const int64_t& id) const {
+    if (vars_id.contains(id)) return true;
+    if (parent) return parent->containsVar(id);
+    return false;
+  }
+  types::Type& getVarType(const int64_t& id) {
+    if (!containsVar(id))
+      throw std::runtime_error("variable '" + std::to_string(id) + "'" +
+                               "is not defined in this scope");
+    if (vars_id.contains(id)) return vars_id.at(id)->type;
+    return const_cast<types::Type&>(parent->getVarType(id));
+  }
+  const types::Type& getVarType(const int64_t& id) const {
+    if (!containsVar(id))
+      throw std::runtime_error("variable(id) '" + std::to_string(id) + "'" +
+                               "is not defined in this scope");
+    if (vars_id.contains(id)) return vars_id.at(id)->type;
+    return parent->getVarType(id);
+  }
+  void setVar(const std::string& name, const types::Type& val) {
+    if (vars_name.contains(name))
+      throw std::runtime_error("variable '" + name + "'" +
+                               "is already defined in this scope");
+    auto info = new VarInfo{name, val, genId()};
+    vars_name.insert({name, info});
+    vars_id.insert({info->id, info});
+  }
+  const auto getVars() { return &vars_name; }
 };

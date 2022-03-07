@@ -26,12 +26,14 @@ struct Tuple : public Exp {
 class Variable : public Exp {
   std::string name;
   types::Type var_type;
+  int64_t id;
  public:
-  Variable(const Token &new_begin, const Token &new_end,
-           std::string new_name, const types::Type &new_type);
+  Variable(const Token &new_begin, const Token &new_end, std::string new_name,
+           const types::Type &new_type, const int64_t &new_id);
   std::string toString() override;
   std::string getName();
   types::Type getType();
+  std::int64_t getId();
 };
 
 struct Literal : public Exp {

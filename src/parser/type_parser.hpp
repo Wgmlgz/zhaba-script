@@ -1,7 +1,7 @@
 #pragma once
+#include "../lang/lang.hpp"
 #include "../lang/parser_error.hpp"
 #include "../lang/types.hpp"
-#include "lang.hpp"
 #include "lexer.hpp"
 
 /** Defined in SyntaxTreeParser.hpp */

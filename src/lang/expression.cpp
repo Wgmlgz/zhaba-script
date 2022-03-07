@@ -23,14 +23,18 @@ std::string Tuple::toString() {
 }
 
 Variable::Variable(const Token &new_begin, const Token &new_end,
-                   std::string new_name, const types::Type &new_type)
-    : Exp(new_begin, new_end), name(std::move(new_name)), var_type(new_type) {}
+                   std::string new_name, const types::Type &new_type,
+                   const int64_t &new_id)
+    : Exp(new_begin, new_end), name(std::move(new_name)), var_type(new_type), id(new_id) {}
 std::string Variable::toString() {
   std::string res = "<variable'" + name + "'>";
   return res;
 }
 std::string Variable::getName() { return name; }
 types::Type Variable::getType() { return var_type; }
+int64_t Variable::getId() {
+  return id;
+}
 
 Literal::Literal(const Token &new_begin, const Token &new_end)
     : Exp(new_begin, new_end) {}

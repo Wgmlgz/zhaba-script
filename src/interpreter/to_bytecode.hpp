@@ -5,7 +5,7 @@
 
 namespace zhin {
 struct FuncData {
-  std::map<std::string, std::vector<size_t>> offsets;
+  std::map<int64_t, size_t> offsets;
   size_t offset = 0;
   size_t args_size = 0;
 };

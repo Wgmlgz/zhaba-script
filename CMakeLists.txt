@@ -17,7 +17,8 @@ set(lib
   src/compiler/Compiler.hpp
   src/compiler/CompilerTables.hpp
   src/compiler/FileCompiler.hpp
-  src/compiler/ToC.hpp
+  src/compiler/to_c.hpp
+  src/compiler/to_c.cpp
   src/interpreter/bytecode.hpp
   src/interpreter/heap.hpp
   src/interpreter/instructions.hpp

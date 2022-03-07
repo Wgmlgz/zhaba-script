@@ -52,6 +52,7 @@ struct Function {
   int64_t priority = -1;
 
   bool is_fn = false;
+  ScopeInfo args_scope{nullptr};
 
   [[nodiscard]] std::string headToStr() const;
   [[nodiscard]] std::string toUniqueStr() const;

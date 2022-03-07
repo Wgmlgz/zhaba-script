@@ -318,8 +318,9 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
   } else if (auto id = dynamic_cast<IdLiteral *>(exp)) {
     if (scope.containsVar(id->val)) {
       auto tmp =
-          new Variable(id->begin, id->end, id->val, scope.getVar(id->val));
-      tmp->type = scope.getVar(id->val);
+          new Variable(id->begin, id->end, id->val, scope.getVarType(id->val),
+                       scope.getVarId(id->val));
+      tmp->type = scope.getVarType(id->val);
       exp = tmp;
     } else
       throw ParserError(id->begin, id->end, "Unknown variable '" + id->val + "'");
@@ -379,11 +380,12 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
         } catch (const std::runtime_error &err) {
           throw ParserError(op->begin, op->rhs->end, err.what());
         }
-        scope.getVar(id_l->val).setLval(true) ;
+        scope.getVarType(id_l->val).setLval(true) ;
 
         auto tmp = new Variable(op->lhs->begin, op->lhs->end, id_l->val,
-                                scope.getVar(id_l->val));
-        tmp->type = scope.getVar(id_l->val);
+                                scope.getVarType(id_l->val),
+                                scope.getVarId(id_l->val));
+        tmp->type = scope.getVarType(id_l->val);
         op->lhs = tmp;
         op->val = "=";
         op->type = types::Type(types::TYPE::voidT);
@@ -613,18 +615,6 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
       exp = postprocess(exp, scope);
       return exp;
     }
-
-    // try {
-    //   auto type = types::parse(op->val, scope);
-    //   type.setLval(true);
-    //   auto tmp_var_name = "tmp_ctor_" + std::to_string(zhdata.rng());
-    //   scope.setVar(tmp_var_name, type);
-    //   // scope.getVar(id_l->val).setLval(true);
-
-    //   auto tmp = new Variable(op->begin, op->end, tmp_var_name, type);
-    //   tmp->type = type;
-
-    // } catch (const types::TypeParsingError &err) {}
 
     std::vector<types::Type> types;
     std::vector<Exp**> exps;

@@ -7,11 +7,11 @@ TreeNode<std::string> *STBlock::toGenericTree() {
   auto node = new TreeNode<std::string>;
   node->data = "<block>";
   auto vars = new TreeNode<std::string>("<vars>");
-  for (const auto& [name, type] : *scope_info.getVars())
+  for (const auto& [name, info] : *scope_info.getVars())
     vars->branches.push_back(
         new TreeNode<std::string>(
-            name,
-            {new TreeNode<std::string>(type.toString())}
+            "name: " + name + " id: " + std::to_string(info->id),
+            {new TreeNode<std::string>(info->type.toString())}
         )
     );
   node->branches.push_back(vars);

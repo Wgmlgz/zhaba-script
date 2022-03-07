@@ -35,7 +35,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo& parent_scope, types
             } catch (const std::runtime_error& err) {
               throw ParserError(i->begin, i->end, err.what());
             }
-            res->scope_info.getVar(id->val).setLval(true);
+            res->scope_info.getVarType(id->val).setLval(true);
           } else {
             /* variable with assignment */
             if (auto assign = dynamic_cast<zhexp::BinOperator*>(i)) {
@@ -64,7 +64,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo& parent_scope, types
                     throw ParserError(assign->begin, assign->end, err.what());
                   }
                 }
-                res->scope_info.getVar(id->val).setLval(true);
+                res->scope_info.getVarType(id->val).setLval(true);
 
                 /* push assignment expression */
                 assign->lhs = zhexp::postprocess(assign->lhs, res->scope_info);
@@ -360,8 +360,9 @@ std::vector<Function*> parseImpl(ast::ASTBlock* block, const types::Type& type,
     if (!line) throw ParserError("Expected function decl");
 
     /** Function scope */
-    ScopeInfo scope(&main_scope);
     auto func = parseOpHeader(line->begin, line->end, main_scope);
+    func->args_scope = ScopeInfo(&main_scope);
+    ScopeInfo& scope = func->args_scope;
 
     ++i;
     if (i == block->nodes.end()) throw ParserError("Expected block");
@@ -384,12 +385,11 @@ std::vector<Function*> parseImpl(ast::ASTBlock* block, const types::Type& type,
     std::vector<types::Type> types;
     for (auto& [name, type] : func->args) {
       scope.setVar(name, type);
-      scope.getVar(name).setLval(true);
+      scope.getVarType(name).setLval(true);
       types.push_back(type);
       types.back().setLval(false);
       types.back().setRef(false);
     }
-
     if (func->name == "ctor") {
       func->name = type.toString();
       push_scope.setPrOp({func->name, types}, func);
@@ -425,7 +425,7 @@ std::vector<Function*> parseImpl(ast::ASTBlock* block, const types::Type& type,
     if (!push_scope.containsOp(func->name)) push_scope.setOp(func->name);
 
     func->body = parseASTblock(block, scope, func->type);
-
+    func->args_scope = scope;
     res.push_back(func);
   }
   return res;
@@ -478,19 +478,21 @@ void parceFn(STTree* res, ScopeInfo& push_scope, ast::ASTLine* line, ast::ASTBlo
   }
 
   ++cur;
-  // TODO add global scope
-  ScopeInfo scope(&push_scope);
+  func->args_scope = ScopeInfo(&push_scope);
+  ScopeInfo& scope = func->args_scope;
+
   for (auto& [name, type] : func->args) {
     scope.setVar(name, type);
-    scope.getVar(name).setLval(true);
+    scope.getVarType(name).setLval(true);
   }
 
   /** And then parse body */
   if (cur == main_block->nodes.end())
     throw ParserError(*line->end, "Expected function body");
   if (auto block = dynamic_cast<ast::ASTBlock*>(*cur)) {
-    auto& t = res->functions.back()->body;
-    t = parseASTblock(block, scope, func->type);
+    auto& t = res->functions.back();
+    t->body = parseASTblock(block, scope, func->type);
+    t->args_scope = scope;
   } else {
     throw ParserError(*line->end, "Expected function body");
   }

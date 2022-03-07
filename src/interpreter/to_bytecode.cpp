@@ -372,7 +372,7 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
     }
   } else if (auto var = dynamic_cast<zhexp::Variable*>(exp)) {
     bytecode.pushVal(zhin::instr::push_stack_ptr);
-    bytecode.pushVal((int64_t)(funcdata.offsets[var->getName()].back()));
+    bytecode.pushVal((int64_t)(funcdata.offsets[var->getId()]));
     if (var->getType().getRef()) {
       bytecode.pushVal(zhin::instr::deref);
       bytecode.pushVal((int32_t)(var->type.getSize()));
@@ -516,19 +516,18 @@ void nodeToB(zhin::ByteCode& bytecode, STNode* node, FuncData& funcdata, Functio
 void blockToB(zhin::ByteCode& bytecode, STBlock* block, FuncData& funcdata, Function* func) {
   /** Push local vars info */
   size_t local_vars_size = 0;
-  for (const auto& [name, type] : *block->scope_info.getVars()) {
-    funcdata.offsets[name].push_back(funcdata.offset);
-    funcdata.offset += type.getSize();
-    local_vars_size += type.getSize();
+  for (const auto& [name, info] : *block->scope_info.getVars()) {
+    funcdata.offsets.emplace(info->id, funcdata.offset);
+    funcdata.offset += info->type.getSize();
+    local_vars_size += info->type.getSize();
   }
   bytecode.push_push_bytes(local_vars_size);
 
   for (auto& i : block->nodes) nodeToB(bytecode, i, funcdata, func);
 
   /** Pop local vars info */
-  for (const auto& [name, type] : *block->scope_info.getVars()) {
-    funcdata.offsets[name].pop_back();
-    funcdata.offset -= type.getSize();
+  for (const auto& [name, info] : *block->scope_info.getVars()) {
+    funcdata.offset -= info->type.getSize();
   }
   bytecode.push_pop_bytes(local_vars_size);
 }
@@ -543,7 +542,11 @@ void funcToB(zhin::ByteCode& bytecode, Function* func) {
     funcdata.args_size += type.getSize();
   }
   for (const auto& [name, type] : func->args) {
-    funcdata.offsets[name].push_back(funcdata.offset);
+    auto id = func->body->scope_info.getVarId(name);
+    // std::cout << func->body << std::endl;
+    // std::cout << func->args_scope.getVarId(name) << std::endl;
+
+    funcdata.offsets.emplace(id, funcdata.offset);
     funcdata.offset += type.getSize();
   }
 

@@ -69,10 +69,11 @@ lop free int ptr
 
 When dealing with continuos memory like array or string you can shift pointer forward and backward with `+` and `-`. Using this operators will shift pointer at the size of the underlying type multiplied by shift size.
 
-## Example: 
+## Example:
+
 ```c++
 size := 10
-p := (malloc(sizeof(int) * size) as intP)
+p := malloc(sizeof(int) * size) as intP
 out 'ptr + x'
 @ i 0..size: *(p + i) = i
 @ i 0..size: out(*(p + i))
