@@ -1,5 +1,3 @@
-use str
-
 type Out: u8 prikol
 fn Out _Out: <<< 0u8 as Out
 op 9 Out < Out a Out b: <<< _Out()
@@ -27,14 +25,6 @@ op 9 Out < Out o char i: put i, put ' '
 lop Out > charR i: i = in_char()
   <<< _Out()
 op 9 Out > Out o charR i: i = in_char()
-  <<< _Out()
-
-// Str
-rop Out < Str i: out i
-  <<< _Out()
-lop Out < Str i: put i, put ' '
-  <<< _Out()
-op 9 Out < Out o Str i: put i, put ' '
   <<< _Out()
 
 // i8

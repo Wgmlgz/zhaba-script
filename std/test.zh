@@ -2,19 +2,7 @@ use vec
 use range
 use out
 use frog
-
-// type Vec
-//   int val
-
-// impl Vec
-//   fn ctor VecR v
-//     out 'copy'
-//     Vec slf
-//     slf.val = v.val
-
-// fn VecR add VecR v int n
-//   v.val = v.val +n
-//   <<< v
+use str
 
 fn prikol Vec<int>R v
   out sizeof(v)
@@ -29,17 +17,24 @@ fn prikol intR t
 
 fn main
   v := Vec<int>(4)
-  // v := iota(5 10)
+  v += iota(-5 0)
   // n := v.sub(2 5)
   prikol(v)
+  v += 1
+  v += 2
+  v += 3
+  a := v
+  v += v
+  v = a
   prikol_copy(v)
-  v.print()
+  < v <
+  sort(v)  
+  < v <
+  v.free_mem()
+  < v <
   
-  t := 10
-  out t
-  prikol(t)
-  out t
-  
+  s := Str('aboba')
+  < s <
   // n.print()
 
   // v.push_back(54)

@@ -1,5 +1,6 @@
 use range
 use operators
+use out
 
 type Vec T: int size; 
   int capacity
@@ -8,18 +9,13 @@ type Vec T: int size;
 type VecIter T: TP ptr
 
 impl VecIter
-  fn next
-    slf.ptr = slf.ptr + 1
-  fn bool uneq VecIter<T> other
-    <<< slf.ptr != other.ptr
-  lop TR * VecIter<T> slf
-    <<< *slf.ptr
-  fn TR get
-    <<< *slf.ptr
+  fn next: slf.ptr = slf.ptr + 1
+  fn bool uneq VecIter<T> other: <<< slf.ptr != other.ptr
+  lop TR * VecIter<T> slf: <<< *slf.ptr
 
 impl Vec
   fn free_mem
-    // ? ! !(slf.head as int): free(slf.head as int)
+    ? ! !(slf.head as int): free(slf.head as int)
     slf.size = 0
     slf.capacity = 0
     slf.head = 0 as TP
@@ -28,12 +24,11 @@ impl Vec
   fn TR at int pos: <<< *slf.atP(pos)
     
   fn print
-    int i = 0
-    put('[')
+    put '['
     @ i 0..slf.size
-     ? ! !i: put(' ')
-     put(*slf.atP(i))
-    out(']')
+      ? ! !i: put ' '
+      put (*slf.atP(i))
+    put ']' 
 
   fn double_capacity
     new_capacity := slf.capacity
@@ -44,8 +39,7 @@ impl Vec
     \ new_capacity *= 2
       new_head := malloc(new_capacity * sizeof T) as TP
       @ i 0..slf.size: *(new_head + i) = slf.at(i)
-      //TODO fix free 
-      // free(slf.head as int)
+      free(slf.head as int)
       slf.head = new_head
     slf.capacity = new_capacity
 
@@ -53,19 +47,17 @@ impl Vec
     ? slf.size == slf.capacity: slf.double_capacity()
     slf.at(slf.size) = val
     ++slf.size
-
-  op 16 += Vec<T>P slf T val: slf.push_back(val)
     
   fn pop_back: --slf.size
   
   fn VecIter<T> begin: <<< slf.head as VecIter<T> 
   fn VecIter<T> end: <<< slf.atP(slf.size) as VecIter<T>
-  fn T front: <<< *slf.head
-  fn T back: <<< *slf.atP(slf.size-1)
-  fn TP frontP: <<< slf.head
-  fn TP backP: <<< slf.atP(slf.size-1)
+  fn TR front: <<< *slf.head
+  fn TR back: <<< *slf.atP(slf.size-1)
 
   fn dtor: slf.free_mem()
+
+  /** Constructors */
   fn ctor int size
     Vec<T> slf
     slf.head = 0 as TP
@@ -85,43 +77,51 @@ impl Vec
     @ i 0..other.size: slf.at(i) = other.at(i)
     <<< slf
 
+  /**  Overloaded operators */
+  op 16 += Vec<T>R slf T val: slf.push_back(val)
+  
+  op 16 += Vec<T>R slf Vec<T> other
+    @ i other: slf.push_back(*i)
+
+  lop put Vec<T>R slf: slf.print()
+  lop out Vec<T>R slf: slf.print(); out ''
+
+
+  rop Out < Vec<T>R i: out i
+    <<< _Out()
+  lop Out < Vec<T>R i: put i, put ' '
+    <<< _Out()
+  op 9 Out < Out o Vec<T>R i: put i, put ' '
+    <<< _Out()
+
   fn Vec<T> sub int begin int end
     res := Vec<T>(0)
     @ i begin..end: res.push_back(slf.at(i))
     <<< res
 
-  fn swap TP a TP b
-    T t = *a
-    *a = *b
-    *b = t
+  lop swap TP a TP b: T t = *a; *a = *b; *b = t
 
-  fn next_ptr TPP ptr: *ptr = (*ptr as int + sizeof(T)) as TP
-  fn prev_ptr TPP ptr: *ptr = (*ptr as int - sizeof(T)) as TP
-  
-  fn TP partition TP low TP high
-    slf.prev_ptr(&high)
-    TP pivot = high i = low j = low
-
-    @ j = low, j != pivot, slf.next_ptr(&j)
-      ? *j < *pivot
-        slf.swap(i j)
-        slf.next_ptr(&i)
-
-    slf.swap(i  pivot)
+  lop TP partition TP low TP high
+    pivot := high - 1 i := low j := low
+    @ j = low j != pivot j = j + 1
+      ? *j < *pivot: swap(i j); i = i + 1
+    swap(i  pivot)
     <<< i
 
-  fn qsort TP lhs TP rhs
+  lop qsort TP lhs TP rhs
     a := rhs as int - lhs as int
     b := sizeof(T)
     ? a > b
-      auto pi = slf.partition(lhs rhs)
-      slf.qsort(lhs pi)
-      slf.next_ptr(&pi)
-      slf.qsort(pi rhs)
+      pi := partition(lhs rhs)
+      qsort(lhs pi)
+      pi = pi + 1
+      qsort(pi rhs)
   
-  // fn sort: slf.qsort(slf.begin() slf.end())
+  fn sort: qsort(slf.begin() as TP slf.end() as TP)
+  lop sort Vec<T>R slf: slf.sort()
 
 fn Vec<int> iota int begin int end
   v := Vec<int>(end - begin)
   @ i begin..end: v.at(i - begin) = i
   <<< v
+
