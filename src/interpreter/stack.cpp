@@ -31,6 +31,8 @@ void Stack::pushBytes(size_t size) {
 void Stack::popBytes(size_t size) {
   if ((int) top - (int) size < 0) throw RuntimeError("pop below stack");
   top -= size;
+  // fill with zeros for safety
+  
 }
 
 std::string Stack::trace() {

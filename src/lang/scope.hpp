@@ -13,11 +13,15 @@ int64_t genId();
 
 class ScopeInfo {
   const ScopeInfo* parent = nullptr;
+
+ public:
   struct VarInfo {
     std::string name;
     types::Type type;
     int64_t id;
   };
+
+ private:
   std::unordered_map<std::string, VarInfo*> vars_name;
   std::unordered_map<int64_t, VarInfo*> vars_id;
   std::map<std::string, types::Type> typedefs;
@@ -186,4 +190,11 @@ class ScopeInfo {
     vars_id.insert({info->id, info});
   }
   const auto getVars() { return &vars_name; }
+
+  /** Collects all variables including `last` scope */
+  void collectVars(ScopeInfo* last, std::unordered_map<int64_t, VarInfo*>& push_map) const {
+    for (auto i : vars_id) push_map.insert(i);
+    if (this == last || !parent) return;
+    parent->collectVars(last, push_map);
+  }
 };

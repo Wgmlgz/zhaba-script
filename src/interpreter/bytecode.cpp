@@ -277,6 +277,16 @@ std::pair<std::string, std::map<size_t, std::string>> ByteCode::dis() {
     res += "\n";                          \
     cur += 4;                             \
     break;
+#define INSTR_I32_2(name)                 \
+  case instr::name:                       \
+    res += "    " #name " ";              \
+    res += std::to_string(*loadI32(cur)); \
+    res += " ";                           \
+    cur += 4;                             \
+    res += std::to_string(*loadI32(cur)); \
+    res += "\n";                          \
+    cur += 4;                             \
+    break;
 #define INSTR_I64(name)                   \
   case instr::name:                       \
     res += "    " #name " ";              \
@@ -334,7 +344,7 @@ std::pair<std::string, std::map<size_t, std::string>> ByteCode::dis() {
       INSTR_I32(jmp)
       INSTR_I32(call)
       INSTR_I32(jmp_if_bool)
-      INSTR_I64(ret)
+      INSTR_I32_2(ret)
       INSTR_I32(push_literal_ptr)
 
       INSTR(add_i8)

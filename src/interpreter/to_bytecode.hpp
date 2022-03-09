@@ -12,7 +12,8 @@ struct FuncData {
 
 int getLabel();
 
-int pushLiteral(zhin::ByteCode &bytecode, const byte *begin, const byte *end);
+int pushLiteral(zhin::ByteCode &bytecode, const byte *begin, const byte *end,
+                int id = 0);
 void blockToB(zhin::ByteCode &bytecode, STBlock *block, FuncData &funcdata,
               Function *func);
 void expToB(zhin::ByteCode &bytecode, zhexp::Exp *exp, FuncData &funcdata);

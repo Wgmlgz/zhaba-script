@@ -1,19 +1,12 @@
-#include "expression_parser.hpp"
+#include "./expression_parser.hpp"
 
 namespace zhexp {
 
 void copyExp(Exp *&exp, ScopeInfo &scope) {
+  if (!dynamic_cast<Variable *>(exp)) return;
   if (!scope.containsPrOp({exp->type.nonRefClone().rvalClone().toString(),
                            {exp->type.nonRefClone().rvalClone()}}))
     return;
-  /** thicc */
-  // auto tmp_var_name =
-  //     std::to_string(zhdata.rng()) + std::to_string(zhdata.rng()) +
-  //     std::to_string(zhdata.rng()) + std::to_string(zhdata.rng()) +
-  //     std::to_string(zhdata.rng()) + std::to_string(zhdata.rng()) +
-  //     std::to_string(zhdata.rng()) + std::to_string(zhdata.rng());
-
-  // scope.setVar(tmp_var_name, exp->type.nonRefClone());
   if (auto pr = dynamic_cast<PrefixOperator *>(exp))
     if (pr->val == exp->type.nonRefClone().rvalClone().toString()) return;
 

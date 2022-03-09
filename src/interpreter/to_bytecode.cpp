@@ -7,11 +7,12 @@ int getLabel() {
   return id++;
 }
 
-int pushLiteral(zhin::ByteCode& bytecode, const byte* begin, const byte* end) {
-  static int literal_id = 10;
+int pushLiteral(zhin::ByteCode& bytecode, const byte* begin, const byte* end,
+                int id) {
+  static int literal_id = 100;
   auto v = std::vector(begin, end);
-  bytecode.literals_data.emplace(literal_id, v);
-  return literal_id++;
+  bytecode.literals_data.emplace(id ? id : literal_id, v);
+  return id ? id : literal_id++;
 }
 
 void argsToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, Function* fn,
@@ -532,6 +533,7 @@ void blockToB(zhin::ByteCode& bytecode, STBlock* block, FuncData& funcdata, Func
   bytecode.push_pop_bytes(local_vars_size);
 }
 
+#define RUNTIME_ERROR_LABEL 2
 #define MAIN_LABEL 1
 #define END_LABEL 0
 
@@ -554,11 +556,21 @@ void funcToB(zhin::ByteCode& bytecode, Function* func) {
   bytecode.pushVal((int32_t)(bytecode.func_labels[func->toUniqueStr()]));
   blockToB(bytecode, func->body, funcdata, func);
 
-  /** Implicit return for safety when flow reached end of the function */
-  bytecode.push_push_bytes(func->type.getSize());
-  bytecode.pushVal(zhin::instr::ret);
-  bytecode.pushVal((int32_t)(funcdata.args_size));
-  bytecode.pushVal((int32_t)(func->type.getSize()));
+  if (func->type.getTypeId() == types::TYPE::voidT) {
+    /** Implicit return for safety when flow reached end of the function */
+    bytecode.push_push_bytes(func->type.getSize());
+    bytecode.pushVal(zhin::instr::ret);
+    bytecode.pushVal((int32_t)(funcdata.args_size));
+    bytecode.pushVal((int32_t)(func->type.getSize()));
+  } else {
+    /** Emergency exit */
+    static std::string msg = "reached function end without returning anything";
+    pushLiteral(bytecode, (byte*)msg.c_str(), (byte*)(msg.c_str() + msg.size() + 1), 2);
+    bytecode.pushVal(zhin::instr::push_literal_ptr);
+    bytecode.pushVal((int32_t)(2));
+    bytecode.pushVal(zhin::instr::jmp);
+    bytecode.pushVal((int32_t)(RUNTIME_ERROR_LABEL));
+  }
 }
 
 void toB(zhin::ByteCode& bytecode, STTree* block) {
@@ -595,6 +607,11 @@ void toB(zhin::ByteCode& bytecode, STTree* block) {
     bytecode.pushVal(static_cast<int32_t>(data.size()));
     bytecode.pushVal(data.begin(), data.end());
   }
+
+  /** Unique runtime label */
+  bytecode.pushVal(zhin::instr::label);
+  bytecode.pushVal((int32_t)(RUNTIME_ERROR_LABEL));
+  bytecode.pushVal(zhin::instr::out_str);
 
   /** Unique end label */
   bytecode.pushVal(zhin::instr::label);
