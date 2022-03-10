@@ -1,4 +1,4 @@
-lop 3 int + int a: <<< a;
+lop int + int a: <<< a;
 op 5  bool %% int a int b: <<< !(a % b);
 
 op 16 += intR a int b: a = a + b

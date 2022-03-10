@@ -15,7 +15,10 @@ fn prikol_copy Vec<int> v
 fn prikol intR t
   t = 4
 
-
+impl Vec<i8>
+  fn test int aboba
+    out 'aboba'
+    
 fn main
   v := Vec<int>(4)
   v += iota(-5 0)

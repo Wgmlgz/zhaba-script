@@ -9,31 +9,39 @@ To call function write its name followed by `()`.
 ### Declaration
 
 ```rust
-fn <return type(optional)> function_name <type name> <type name>...
-  <function body>
+fn [return-type(optional)] function-name [type name [type name [...type name]]]
+  code-block
 ```
 
 ### Call
 
+With args:
+
 ```
- <function name>(<args>)
+ function_name(args)
+```
+
+Without args:
+
+```
+ function_name()
 ```
 
 ## Examples
 
 ```rust
-// int return type 2 args
+/** int return type 2 args */
 fn int plus int a int b
   <<< a + b // to return use <<<
 ```
 
 ```rust
-// char return type 1 argument
+/** char return type 1 argument */
 fn char aschar str s: <<< *(s as charP) // body at the same line
 ```
 
 ```rust
-/// no return type 1 argument
+/** no return type 1 argument */
 fn fizz_buzz int mx
   auto r = 0..mx
   @ r.nxt()
@@ -45,7 +53,7 @@ fn fizz_buzz int mx
 ```
 
 ```rust
-// no return type and no args
+/** no return type and no args */
 fn main
   fizz_buzz(50) // call example
 ```

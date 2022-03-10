@@ -3,9 +3,10 @@
 Zhaba-script custom data types are similar to rust structs. To define a struct, enter the keyword `type` and name the entire struct. Then, inside the next block, define the type and names of the pieces of data, which are called members. The formal syntax is shown below.
 
 ```rust
-type <name>
-  <type> <name1> <name2>...
-  <type> <name1> <name2>...
+type TypeName
+  MemberType1 name [name[ name[ ...name]]]
+  MemberType2 name [name[ name[ ...name]]]
+  MemberType3 name [name[ name[ ...name]]]
   ...
 ```
 
@@ -18,22 +19,24 @@ type VecInt
   intP head
 ```
 
-### Code style
+# Code style
 
-In zhaba-script code style, you should name your custom types in `PascalCase` and members in `snake_case`
+In zhaba-script code style, you should name your custom types in `PascalCase` and members in `snake_case`.
 
 # Member functions
 
-Zhaba-script support member functions call. To define some of these functions you can use the keyword `impl` and then enter the type for which you are writing implementation. Note that this type can be any type, even primitive (like `int`). Inside this block just write regular functions. To call member function write `object.function_name(<args>)`
+Zhaba-script support member functions call. To define some of these functions you can use the keyword `impl` and then enter the type for which you are writing implementation. Note that this type can be any type, even primitive (like `int`). Inside this block just write regular functions. To call member function write `object.function_name(args)`
 
 ## Syntax
 
 ```rust
-impl <name>
-  fn <name> <args>
-    <body>
-  fn <name> <args>
-    <body>
+impl TypeName
+  fn func-header
+    func-body
+  fn func-header
+    func-body
+  fn func-header
+    func-body
   ...
 ```
 
