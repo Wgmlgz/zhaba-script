@@ -15,11 +15,11 @@ While loop accepts 1 argument and runs _while_ its body while the condition is s
 
 ### Examples
 
-```c
+```zh
 @ i < 5: out 'infinite loop!!!'
 ```
 
-```c
+```zh
 @ i < 5
   out 'hi'
 ```
@@ -30,14 +30,14 @@ For loop is similar to the C for loop and accepts 3 argument: init, condition an
 
 ### Examples
 
-```c
+```zh
 @ i:=0 i<100 i+=1
   out i
 ```
 
 The above syntax produces code equivalent to:
 
-```c
+```zh
 i:=0
 @ i<100
   out i
@@ -48,7 +48,7 @@ i:=0
 
 Foreach loop executes a for loop over a range and accepts 2 arguments: a variable name and range expression. Variable name must be identifier and range expression must have `.begin()` and `.end()` methods. Value protected by `.begin()` must be able to be compared with `.end()` value by `!=` operator and also must be able to be incremented by prefix `++` operator. Produced code is equivalent to this:
 
-```go
+```zh
 __range := range-expression
 __begin := __range.begin()
 __end := __range.end()
@@ -60,13 +60,13 @@ __cur := __begin
 
 ### Examples
 
-```c
+```zh
 use 'range.zh'
 @ i 0..10
   out i
 ```
 
-```c
+```zh
 @ i some_vector
   out *i
 ```

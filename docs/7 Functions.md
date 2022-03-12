@@ -8,7 +8,7 @@ To call function write its name followed by `()`.
 
 ### Declaration
 
-```rust
+```zh
 fn [return-type(optional)] function-name [type name [type name [...type name]]]
   code-block
 ```
@@ -29,18 +29,18 @@ Without args:
 
 ## Examples
 
-```rust
+```zh
 /** int return type 2 args */
 fn int plus int a int b
   <<< a + b // to return use <<<
 ```
 
-```rust
+```zh
 /** char return type 1 argument */
 fn char aschar str s: <<< *(s as charP) // body at the same line
 ```
 
-```rust
+```zh
 /** no return type 1 argument */
 fn fizz_buzz int mx
   auto r = 0..mx
@@ -52,7 +52,7 @@ fn fizz_buzz int mx
     \ out i
 ```
 
-```rust
+```zh
 /** no return type and no args */
 fn main
   fizz_buzz(50) // call example

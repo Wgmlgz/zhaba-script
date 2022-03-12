@@ -71,7 +71,7 @@ When dealing with continuos memory like array or string you can shift pointer fo
 
 ## Example:
 
-```c++
+```zh
 size := 10
 p := malloc(sizeof(int) * size) as intP
 out 'ptr + x'

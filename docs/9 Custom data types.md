@@ -1,8 +1,8 @@
-# Custom data types (structs)
+# Custom data types
 
-Zhaba-script custom data types are similar to rust structs. To define a struct, enter the keyword `type` and name the entire struct. Then, inside the next block, define the type and names of the pieces of data, which are called members. The formal syntax is shown below.
+Zhaba-script custom data types are similar to rust structs. To define a data type, enter the keyword `type` and name the entire data type. Then, inside the next block, define the type and names of the pieces of data, which are called members. The formal syntax is shown below.
 
-```rust
+```zh
 type TypeName
   MemberType1 name [name[ name[ ...name]]]
   MemberType2 name [name[ name[ ...name]]]
@@ -12,7 +12,7 @@ type TypeName
 
 This is an example of Vector data structure.
 
-```rust
+```zh
 type VecInt
   int size
   int capacity
@@ -29,7 +29,7 @@ Zhaba-script support member functions call. To define some of these functions yo
 
 ## Syntax
 
-```rust
+```zh
 impl TypeName
   fn func-header
     func-body
@@ -43,7 +43,7 @@ impl TypeName
 To access the object for which you are writing implementation you can use `slf` who is the first argument that is provided implicitly to your function. `slf` has the type of a pointer to a type written after `impl`.
 Continuing the example about the Vector, this is some example of `impl` and `slf` usage.
 
-```rust
+```zh
 impl VecInt // implementation block for VecInt
   fn intP begin
     <<< slf.head

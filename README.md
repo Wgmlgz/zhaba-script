@@ -7,7 +7,7 @@ Inspired by JS, Rust, C++, and Python🐍
 
 ## Hello world!
 
-```ruby
+```zh
 use std
 
 fn main
@@ -69,7 +69,7 @@ fn main
 
 ## Game of life
 
-```c++
+```zh
 fn main
   w := 30 h := 30
   c := newCnv(w h)
@@ -105,7 +105,7 @@ fn main
 
 And because zhaba script main goal is to minimize your code, Game of life from above can be written in 8 lines like so:
 
-```c++
+```zh
 fn main: w:=30 h:=30 c:=newCnv(w h) r:=54 d:=asch('.') l:=asch('#') c.fill(d)
   @i 0..c.h: @ j 0..c.w: ?rng() as int%2: *c.at(i j)=l
   @k 0..500: nc:=newCnv(w h) nc.fill(d)

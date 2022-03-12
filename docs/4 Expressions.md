@@ -2,7 +2,7 @@
 
 Expressions in Zhaba-script are very different from expressions in most other languages. They consist of operators and literals. Brackets `()` are used only to manipulate the operator's priorities and detect function calls. Here is some basic expression example:
 
-```c
+```zh
 // In this expression out is prefix operator and 'Hi frogs' is a str literal.
 out 'Hi frogs'
 ```
@@ -11,7 +11,7 @@ out 'Hi frogs'
 
 Any operator in Zhaba-script accepts **_inline tuple_** which in fact just a collection of other expressions separated by `,`. So this expression
 
-```c
+```zh
 //  sum
 //    \
 //  (1, 2)
@@ -21,13 +21,13 @@ sum(1, 2)
 is in fact a prefix operator that actepts **_inline tuple_** of 1 and 2.
 But the main goal of Zhaba-script is minimizing code size so in most cases `,` are optional. And because of that, it is possible to write expression above like that:
 
-```c
+```zh
 sum(1 2)
 ```
 
 **_Inline tuples_** can also be empty, and to create one of those just use `()`:
 
-```c
+```zh
 // In this case `begin` is a prefix operator that accepts empty inline tuple
 //   begin
 //      \
@@ -39,7 +39,7 @@ begin()
 
 Binary operator is an operator that accepts 2 arguments from different sides:
 
-```c
+```zh
 //     +
 //    / \
 //   2   2
@@ -60,7 +60,7 @@ Binary operator is an operator that accepts 2 arguments from different sides:
 
 But binary operators can also accept more or less than 2 arguments. In this case, they have 1 argument on the left side and others on the right size. At first, it may seem useless, but in fact all member function calls are implicitly converted to binary operators:
 
-```c
+```zh
 // .push_back acts like binary operator
 
 //   .push_back

@@ -4,7 +4,7 @@ Zhaba-script supports generic types. Generics is the idea to allow type (int, st
 
 ## Syntax:
 
-```rust
+```zh
 type TypeName [TypeName1 [TypeName2 [TypeName3]]]
   MemberType1 [name1 [name2 [...name3]]]
   MemberType2 [name1 [name2 [...name3]]]
@@ -15,14 +15,14 @@ type TypeName [TypeName1 [TypeName2 [TypeName3]]]
 
 ## Examples:
 
-```rust
+```zh
 type Vec T
   int size
   int capacity
   TP head
 ```
 
-```rust
+```zh
 type Tp3 T1 T2 T3
   T1 v1
   T2 v2
@@ -31,17 +31,17 @@ type Tp3 T1 T2 T3
 
 To use generic types use following syntax:
 
-```rust
+```zh
 TypeName<T1[ T2[ ...T3]]>
 ```
 
 ## Examples:
 
-```rust
+```zh
 Vec<char> data
 ```
 
-```rust
+```zh
 Tp3<char i32 bool> data
 ```
 
@@ -49,7 +49,7 @@ Tp3<char i32 bool> data
 
 When you are using generic type inside another generic type you need to separate closing `>`.
 
-```rust
+```zh
 Vec<Vec<char>> data // wrong
 Vec<Vec<char> > data // correct
 ```
@@ -59,7 +59,7 @@ Vec<Vec<char> > data // correct
 Like a normal types, generic types can also have member functions. To define them create `impl` block followed by the type name, but without generic parameters.
 ## Syntax:
 
-```rust
+```zh
 impl TypeName
   fn func-header
     func-body
@@ -73,7 +73,7 @@ impl TypeName
 
 ## Examples:
 
-```rust
+```zh
 impl Vec
   fn free_mem
     ? ! !(slf.head as int): free(slf.head as int)
@@ -86,7 +86,7 @@ impl Vec
 
 Generic `impl` block allows you not only to create member function, but also to overload prefix, postfix or binary operators. They would behave like other overloaded operators and would not have implicit `slf` argument. The main difference and benefit is that you can use generic parameters in them.
 
-```rust
+```zh
 impl Vec
   op 16 += Vec<T>R slf T val: slf.push_back(val)
   

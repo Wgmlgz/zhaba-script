@@ -4,7 +4,7 @@ In zhaba-script you can use `?` to create _if_ statements, `|` for elif(else if)
 
 ## Syntax
 
-```rust
+```zh
          ? <condition> <if block>
 optional | <condition> <else if block>
 optional | <condition> <else if block>
@@ -16,7 +16,7 @@ optional \ <else block>
 
 Regular style:
 
-```c
+```zh
 ? 2 + 2 == 4
   out 'Seems'
   out 'legit'
@@ -24,13 +24,13 @@ Regular style:
 
 One liner:
 
-```c
+```zh
 ? 666 > 2: out '666 is greater then 2'
 ```
 
 Nested also works:
 
-```c
+```zh
 ? 1 < 2
   ? 2 > 1
     out 'Double check'
@@ -38,14 +38,14 @@ Nested also works:
 
 if else
 
-```c
+```zh
 ? 2 + 2 == 4: out 'cool!'
 \ out 'how?'
 ```
 
 if elseif elseif else
 
-```c
+```zh
 ? i %% 15: out 'FizzBuzz'
 | i %% 3: out 'Fizz'
 | i %% 5: out 'Buzz'
@@ -54,7 +54,7 @@ if elseif elseif else
 
 other variant
 
-```c
+```zh
 ? i %% 15
   out 'FizzBuzz'
 | i %% 3
