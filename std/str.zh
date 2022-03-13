@@ -16,6 +16,7 @@ impl Str
     slf.data = Vec<char>()
     slf.data.push_back(0u8 as char)
     slf.size = 0
+    <<< slf
   fn dtor: slf.data.dtor()
   fn str cstr: <<< slf.data.begin() as str
   fn char at int pos
@@ -67,9 +68,9 @@ op 16 += StrR a str b
   @ i 0..len: 
     a += b.at(i)
 
-rop Out < Str i: out i
+rop Out < StrR i: out i
   <<< _Out()
-lop Out < Str i: put i, put ' '
+lop Out < StrR i: put i, put ' '
   <<< _Out()
-op 9 Out < Out o Str i: put i, put ' '
+op 9 Out < Out o StrR i: put i, put ' '
   <<< _Out()

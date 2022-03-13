@@ -6,7 +6,7 @@
 #include "../lang/lang.hpp"
 #include "../tree_lib/TreeLib.hpp"
 #include "lexer.hpp"
-#include "parser_error.hpp"
+#include "../lang/parser_error.hpp"
 #include "type_parser.hpp"
 
 namespace zhexp {

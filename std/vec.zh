@@ -66,10 +66,9 @@ impl Vec
     @ slf.capacity < size: slf.double_capacity()
     slf.size = size
     slf.capacity = size
-  
-  fn ctor
-    Vec<T> slf
-    <<< Vec<T>(0)
+    <<< slf
+
+  fn ctor: <<< Vec<T>(0)
 
   fn ctor Vec<T>R other
     out 'copy!'
@@ -78,9 +77,11 @@ impl Vec
     <<< slf
 
   /**  Overloaded operators */
-  op 16 += Vec<T>R slf T val: slf.push_back(val)
+  op 16 += Vec<T>R slf T val:
+    slf.push_back(val)
+    out 'a'
   
-  op 16 += Vec<T>R slf Vec<T> other
+  op 16 += Vec<T>R slf Vec<T>R other
     @ i other: slf.push_back(*i)
 
   lop put Vec<T>R slf: slf.print()

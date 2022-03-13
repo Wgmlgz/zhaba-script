@@ -1,6 +1,6 @@
 #include "syntax_tree_parser.hpp"
 
-STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo& parent_scope, types::Type retT) {
+STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo& parent_scope, Function* fn) {
   auto res = new STBlock(&parent_scope);
 
   for (auto i = main_block->nodes.begin(); i != main_block->nodes.end(); ++i) {
@@ -101,7 +101,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo& parent_scope, types
                 tmp_if->condition = ctr->operand;
                 if (i + 1 != main_block->nodes.end()) {
                   if (auto body = dynamic_cast<ast::ASTBlock*>(*(i + 1))) {
-                    tmp_if->body = parseASTblock(body, res->scope_info, retT);
+                    tmp_if->body = parseASTblock(body, res->scope_info, fn);
                     ++i;
                     while (i + 1 != main_block->nodes.end()) {
                       if (auto elseif_body = dynamic_cast<ast::ASTBlock*>(*(i + 1))) {
@@ -112,7 +112,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo& parent_scope, types
                                 zhexp::parse(line->begin, line->end, res->scope_info);
                             if (auto block = dynamic_cast<ast::ASTBlock*>(elseif_body->nodes[1])) {
                               tmp_if->elseif_body.emplace_back(
-                                  exp, parseASTblock(block, res->scope_info, retT));
+                                  exp, parseASTblock(block, res->scope_info, fn));
                             } else throw ParserError("Exprected block in '|(else if)' statement");
                           } else throw ParserError("Expected expression in '|(else if)' statement");
                         } else {
@@ -124,7 +124,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo& parent_scope, types
                     if (i + 1 != main_block->nodes.end()) {
                       if (auto else_body = dynamic_cast<ast::ASTBlock*>(*(i + 1))) {
                         tmp_if->else_body =
-                            parseASTblock(else_body, res->scope_info, retT);
+                            parseASTblock(else_body, res->scope_info, fn);
                         ++i;
                       }
                     }
@@ -171,7 +171,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo& parent_scope, types
                   if (i + 1 != main_block->nodes.end()) {
                     if (auto body = dynamic_cast<ast::ASTBlock*>(*(i + 1))) {
                       tmp_while->body =
-                          parseASTblock(body, res->scope_info, retT);
+                          parseASTblock(body, res->scope_info, fn);
                       if (tuple->content[2]) {
                         auto iter = new STExp;
                         iter->exp = tuple->content[2];
@@ -294,7 +294,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo& parent_scope, types
                   if (i + 1 != main_block->nodes.end()) {
                     if (auto body = dynamic_cast<ast::ASTBlock*>(*(i + 1))) {
                       tmp_while->body =
-                          parseASTblock(body, foreach_block->scope_info, retT);
+                          parseASTblock(body, foreach_block->scope_info, fn);
                       tmp_while->body->nodes.push_back(iter);
                       foreach_block->nodes.push_back(tmp_while);
                     } else {
@@ -319,15 +319,15 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo& parent_scope, types
                   zhexp::postprocess(exp_builded, res->scope_info));
               auto tmp_ret = new STRet;
               tmp_ret->exp = ctr->operand;
-              if (retT.getTypeId() == types::TYPE::voidT) {
+              if (fn->type.getTypeId() == types::TYPE::voidT) {
                 if (tmp_ret->exp)
                   throw ParserError(ctr->begin, ctr->end, "You cannot return something becouse return type is 'void'");
               } else {
                 if (!tmp_ret->exp)
                   throw ParserError(ctr->begin, ctr->end, "Expected return value");
-                if (tmp_ret->exp->type.getTypeId() != retT.getTypeId())
+                if (tmp_ret->exp->type.getTypeId() != fn->type.getTypeId())
                   throw ParserError(ctr->begin, ctr->end,
-                                    "Return type must be '" + retT.toString() + "', but '" +
+                                    "Return type must be '" + fn->type.toString() + "', but '" +
                                         tmp_ret->exp->type.toString() + "' found");
               }
               res->nodes.push_back(tmp_ret);
@@ -349,6 +349,38 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo& parent_scope, types
       throw ParserError("Random error lol (cannot cast ast node)");
     }
   }
+
+  /** Collect all destruction candidates */
+  std::unordered_map<int64_t, ScopeInfo::VarInfo*> raw_map;
+  res->scope_info.collectVars(&fn->args_scope, raw_map);
+
+  std::vector<ScopeInfo::VarInfo*> to_destroy;
+  // int64_t ret_id = -666;
+  // if (auto var = dynamic_cast<zhexp::Variable*>(tmp_ret->exp)) {
+  //   ret_id = var->getId();
+  // }
+
+  for (auto [id, var_info] : raw_map) {
+    if (!var_info->type.getPtr() && !var_info->type.getRef() 
+    // && id != ret_id
+    ) {
+      auto type = var_info->type;
+      type.setPtr(1);
+      type.setLval(false);
+      // std::cout << type.toString() << std::endl;
+      if (res->scope_info.containsBinOp(
+              {".call.dtor", {type}})) {
+        to_destroy.push_back(var_info);
+      }
+    }
+  }
+  if (to_destroy.size()) {
+    std::cout << fn->name << ":" << std::endl;
+    for (auto b : to_destroy) std::cout << b->name << std::endl;
+  }
+
+  // push dtors here
+
   return res;
 }
 
@@ -424,7 +456,7 @@ std::vector<Function*> parseImpl(ast::ASTBlock* block, const types::Type& type,
     }
     if (!push_scope.containsOp(func->name)) push_scope.setOp(func->name);
 
-    func->body = parseASTblock(block, scope, func->type);
+    func->body = parseASTblock(block, scope, func);
     func->args_scope = scope;
     res.push_back(func);
   }
@@ -491,7 +523,7 @@ void parceFn(STTree* res, ScopeInfo& push_scope, ast::ASTLine* line, ast::ASTBlo
     throw ParserError(*line->end, "Expected function body");
   if (auto block = dynamic_cast<ast::ASTBlock*>(*cur)) {
     auto& t = res->functions.back();
-    t->body = parseASTblock(block, scope, func->type);
+    t->body = parseASTblock(block, scope, func);
     t->args_scope = scope;
   } else {
     throw ParserError(*line->end, "Expected function body");
