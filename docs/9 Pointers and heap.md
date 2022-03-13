@@ -1,6 +1,6 @@
 # Pointers
 
-While Zhaba-script is designed for fast development, the other goal is to do this without sacrificing the performance. Unlike JS or python there is no garbage collector, and you need to manually manage memory like in C or C++. A pointer is a variable whose value is the address of another variable, i.e., direct address of the memory location. Under the hood pointer is just a 64-bit integer or `i64` in zhaba-script.
+While Zhaba-script is designed for fast development, but the other goal is to do this without sacrificing the performance. Unlike JS or python there is no garbage collector, and you need to manually manage memory like in C or C++. A pointer is a variable whose value is the address of another variable, i.e., direct address of the memory location. Under the hood pointer is just a 64-bit integer or `i64` in zhaba-script.
 
 # Declaring pointers
 
@@ -64,6 +64,10 @@ lop free int ptr
 ## Description:
 
 `free` is a built in operator that deallocates the space previously allocated by `malloc`.
+
+# Heap in interpreter
+
+Zhaba-script virtual machine tries to make work with pointers as safe as possible, and to achieve that it does some slow checks.
 
 # Pointer arithmetics
 
