@@ -6,10 +6,14 @@ void Heap::free(int64_t ptr) {
   if ((ptr & 0xff15000000000000) != 0xff15000000000000)
     throw RuntimeError("ptr is not heap member");
   if (!mem.contains(ptr)) throw RuntimeError("cannot free non existing ptr");
+  auto size = mem.at(ptr).size();
+  for (auto i = ptr; i < ptr + size; ++i)
+    owned_ptrs.erase(i);
   mem.erase(ptr);
 }
 int64_t Heap::malloc(int64_t size) {
-  if (size > 100000 or size < 0)
+  /* 1 gb limit */
+  if (size > 1 * 1024 * 1024 * 1024  or size < 0)
     throw RuntimeError("cannot malloc " + std::to_string(size) + " bytes");
   int64_t ptr;
   do {

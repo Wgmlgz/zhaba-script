@@ -11,6 +11,7 @@
 
 namespace zhexp {
 
+STExp *callDtor(std::pair<ScopeInfo::VarInfo *, Function *> info);
 void copyExp(Exp *&exp, ScopeInfo &scope);
 Exp *buildExp(ScopeInfo &scope, std::vector<Exp *>::iterator begin,
               std::vector<Exp *>::iterator end, int depth = 0);

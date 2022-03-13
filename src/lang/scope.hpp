@@ -1,10 +1,11 @@
 #pragma once
+#include <iostream>
 #include <map>
+#include <set>
 #include <stdexcept>
 #include <string>
 #include <unordered_map>
-#include <set>
-#include <iostream>
+
 #include "types.hpp"
 
 struct Function;
@@ -109,7 +110,6 @@ class ScopeInfo {
 
   // MAKE_SCOPE_ACCESS(Var, Vars, variable, vars, types::Type, std::string);
 
-
   MAKE_SCOPE_ACCESS(Typedef, Typedefs, typedef, typedefs, types::Type,
                     std::string);
   MAKE_SCOPE_ACCESS_NOMSG(BinOp, BinOps, binary_operator, B_OD_, Function*,
@@ -134,6 +134,7 @@ class ScopeInfo {
     if (parent) return parent->containsVar(name);
     return false;
   }
+
   types::Type& getVarType(const std::string& name) {
     if (!containsVar(name))
       throw std::runtime_error("variable '" + name + "'" +
@@ -141,6 +142,7 @@ class ScopeInfo {
     if (vars_name.contains(name)) return vars_name.at(name)->type;
     return const_cast<types::Type&>(parent->getVarType(name));
   }
+
   const types::Type& getVarType(const std::string& name) const {
     if (!containsVar(name))
       throw std::runtime_error("variable '" + name + "'" +
@@ -148,6 +150,7 @@ class ScopeInfo {
     if (vars_name.contains(name)) return vars_name.at(name)->type;
     return parent->getVarType(name);
   }
+
   int64_t& getVarId(const std::string& name) {
     if (!containsVar(name))
       throw std::runtime_error("variable '" + name + "'" +
@@ -155,6 +158,7 @@ class ScopeInfo {
     if (vars_name.contains(name)) return vars_name.at(name)->id;
     return const_cast<int64_t&>(parent->getVarId(name));
   }
+
   const int64_t& getVarId(const std::string& name) const {
     if (!containsVar(name))
       throw std::runtime_error("variable '" + name + "'" +
@@ -162,11 +166,29 @@ class ScopeInfo {
     if (vars_name.contains(name)) return vars_name.at(name)->id;
     return parent->getVarId(name);
   }
+  
   bool containsVar(const int64_t& id) const {
     if (vars_id.contains(id)) return true;
     if (parent) return parent->containsVar(id);
     return false;
   }
+
+  const std::string& getVarName(int64_t id) const {
+    if (!containsVar(id))
+      throw std::runtime_error("variable '" + std::to_string(id) + "'" +
+                               "is not defined in this scope");
+    if (vars_id.contains(id)) return vars_id.at(id)->name;
+    return parent->getVarName(id);
+  }
+
+  const VarInfo* const& getVarInfo(int64_t id) const {
+    if (!containsVar(id))
+      throw std::runtime_error("variable '" + std::to_string(id) + "'" +
+                               "is not defined in this scope");
+    if (vars_id.contains(id)) return vars_id.at(id);
+    return parent->getVarInfo(id);
+  }
+
   types::Type& getVarType(const int64_t& id) {
     if (!containsVar(id))
       throw std::runtime_error("variable '" + std::to_string(id) + "'" +
@@ -174,6 +196,7 @@ class ScopeInfo {
     if (vars_id.contains(id)) return vars_id.at(id)->type;
     return const_cast<types::Type&>(parent->getVarType(id));
   }
+
   const types::Type& getVarType(const int64_t& id) const {
     if (!containsVar(id))
       throw std::runtime_error("variable(id) '" + std::to_string(id) + "'" +
@@ -181,6 +204,7 @@ class ScopeInfo {
     if (vars_id.contains(id)) return vars_id.at(id)->type;
     return parent->getVarType(id);
   }
+
   void setVar(const std::string& name, const types::Type& val) {
     if (vars_name.contains(name))
       throw std::runtime_error("variable '" + name + "'" +
@@ -189,10 +213,12 @@ class ScopeInfo {
     vars_name.insert({name, info});
     vars_id.insert({info->id, info});
   }
+
   const auto getVars() { return &vars_name; }
 
   /** Collects all variables including `last` scope */
-  void collectVars(ScopeInfo* last, std::unordered_map<int64_t, VarInfo*>& push_map) const {
+  void collectVars(ScopeInfo* last,
+                   std::unordered_map<int64_t, VarInfo*>& push_map) const {
     for (auto i : vars_id) push_map.insert(i);
     if (this == last || !parent) return;
     parent->collectVars(last, push_map);

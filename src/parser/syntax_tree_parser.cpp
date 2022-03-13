@@ -330,6 +330,33 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo& parent_scope, Funct
                                     "Return type must be '" + fn->type.toString() + "', but '" +
                                         tmp_ret->exp->type.toString() + "' found");
               }
+
+              /** Collect all destruction candidates */
+              std::unordered_map<int64_t, ScopeInfo::VarInfo*> raw_map;
+              res->scope_info.collectVars(&fn->args_scope, raw_map);
+
+              std::vector<std::pair<ScopeInfo::VarInfo*, Function*>> to_destroy;
+              int64_t ret_id = -666;
+              if (auto var = dynamic_cast<zhexp::Variable*>(tmp_ret->exp)) {
+                ret_id = var->getId();
+              }
+
+              for (auto [id, var_info] : raw_map) {
+                if (!var_info->type.getPtr() && !var_info->type.getRef() &&
+                    id != ret_id) {
+                  auto type = var_info->type;
+                  type.setPtr(1);
+                  type.setLval(false);
+                  if (res->scope_info.containsBinOp({".call.dtor", {type}})) {
+                    to_destroy.push_back(
+                        {var_info,
+                         res->scope_info.getBinOp({".call.dtor", {type}})});
+                  }
+                }
+              }
+              for (auto info : to_destroy)
+                res->nodes.push_back(zhexp::callDtor(info));
+
               res->nodes.push_back(tmp_ret);
             } else {
               throw ParserError("Random error lol (unknown flow control operator)");
@@ -352,34 +379,24 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo& parent_scope, Funct
 
   /** Collect all destruction candidates */
   std::unordered_map<int64_t, ScopeInfo::VarInfo*> raw_map;
-  res->scope_info.collectVars(&fn->args_scope, raw_map);
+  res->scope_info.collectVars(&res->scope_info, raw_map);
 
-  std::vector<ScopeInfo::VarInfo*> to_destroy;
-  // int64_t ret_id = -666;
-  // if (auto var = dynamic_cast<zhexp::Variable*>(tmp_ret->exp)) {
-  //   ret_id = var->getId();
-  // }
+  std::vector<std::pair<ScopeInfo::VarInfo*, Function*>> to_destroy;
 
   for (auto [id, var_info] : raw_map) {
     if (!var_info->type.getPtr() && !var_info->type.getRef() 
-    // && id != ret_id
     ) {
       auto type = var_info->type;
       type.setPtr(1);
       type.setLval(false);
-      // std::cout << type.toString() << std::endl;
       if (res->scope_info.containsBinOp(
               {".call.dtor", {type}})) {
-        to_destroy.push_back(var_info);
+        to_destroy.push_back(
+            {var_info, res->scope_info.getBinOp({".call.dtor", {type}})});
       }
     }
   }
-  if (to_destroy.size()) {
-    std::cout << fn->name << ":" << std::endl;
-    for (auto b : to_destroy) std::cout << b->name << std::endl;
-  }
-
-  // push dtors here
+  for (auto info : to_destroy) res->nodes.push_back(zhexp::callDtor(info));
 
   return res;
 }

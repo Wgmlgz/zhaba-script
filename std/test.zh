@@ -1,59 +1,9 @@
 use vec
 use range
-use out
-// use frog
-// use str
 
-fn prikol Vec<int>R v
-  out sizeof(v)
-  v.at(0) = 5
-
-fn prikol_copy Vec<int> v
-  out sizeof(v)
-  v.at(0) = 2
-
-fn prikol intR t
-  t = 4
-
-impl Vec<i8>
-  fn test int aboba
-    out 'aboba'
-    
 fn main
-  v := Vec<int>(4)
-  out v
-
-  v += iota(-5 0)
-  out 'b'
-  // n := v.sub(2 5)
-  prikol(v)
-  v += 1
-  out 'v'
-  // v += 2
-  // v += 3
-  // a := v
-  // v += v
-  // v = a
-  // prikol_copy(v)
+  // v := Vec<int>(10)
   // < v <
-  // sort(v)  
-  // < v <
-  // v.free_mem()
-  // < v <
-  
-  // s := Str('aboba')
-  // s.dtor()
-  // < s <
-  // n.print()
-
-  // v.push_back(54)
-  // v.push_back(54)
-  // v.push_back(54)
-  // v.push_back(54)
-  // v.print()
-  // n.print()
-
-  // out (&v as int)
-  // out (&n as int)
-  // @ i v
-  //   out (*i)
+  int a b c
+  a = b = b = c = 2
+  < a < b < c <

@@ -2,6 +2,22 @@
 
 namespace zhexp {
 
+STExp *callDtor(std::pair<ScopeInfo::VarInfo *, Function *> info) {
+  auto token = Token(TOKEN::id, "tmp", 0, 0, "tmp");
+
+  auto exp = new zhexp::BinOperator(
+      token, token, ".call.dtor", 0,
+      new zhexp::PrefixOperator(
+          token, token, "&", 3,
+          new zhexp::Variable(token, token, info.first->name, info.first->type,
+                              info.first->id)),
+      new zhexp::Tuple(token, token));
+  exp->func = info.second;
+  auto tmp = new STExp;
+  tmp->exp = exp;
+  return tmp;
+};
+
 void copyExp(Exp *&exp, ScopeInfo &scope) {
   if (!dynamic_cast<Variable *>(exp)) return;
   if (!scope.containsPrOp({exp->type.nonRefClone().rvalClone().toString(),

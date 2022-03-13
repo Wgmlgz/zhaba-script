@@ -4,10 +4,10 @@
 namespace zhin {
 
 class Heap {
-  /** Probably slow as fck */
+  bool safe = false;
   std::mt19937_64 gen = std::mt19937_64(std::random_device()());
-  std::map<int64_t, bytevec> mem;
-  std::map<int64_t, byte *> owned_ptrs;
+  std::unordered_map<int64_t, bytevec> mem;
+  std::unordered_map<int64_t, byte *> owned_ptrs;
 
  public:
   void free(int64_t ptr);

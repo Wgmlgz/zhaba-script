@@ -14,12 +14,6 @@ impl VecIter
   lop TR * VecIter<T> slf: <<< *slf.ptr
 
 impl Vec
-  fn free_mem
-    ? ! !(slf.head as int): free(slf.head as int)
-    slf.size = 0
-    slf.capacity = 0
-    slf.head = 0 as TP
-
   fn TP atP int pos: <<< (slf.head + pos) as TP
   fn TR at int pos: <<< *slf.atP(pos)
     
@@ -55,7 +49,12 @@ impl Vec
   fn TR front: <<< *slf.head
   fn TR back: <<< *slf.atP(slf.size-1)
 
-  fn dtor: slf.free_mem()
+  fn dtor
+    ? ! !(slf.head as int)
+      free(slf.head as int)
+      slf.size = 0
+      slf.capacity = 0
+      slf.head = 0 as TP
 
   /** Constructors */
   fn ctor int size
@@ -71,15 +70,12 @@ impl Vec
   fn ctor: <<< Vec<T>(0)
 
   fn ctor Vec<T>R other
-    out 'copy!'
     slf := Vec<T>(other.size)
     @ i 0..other.size: slf.at(i) = other.at(i)
     <<< slf
 
   /**  Overloaded operators */
-  op 16 += Vec<T>R slf T val:
-    slf.push_back(val)
-    out 'a'
+  op 16 += Vec<T>R slf T val: slf.push_back(val)
   
   op 16 += Vec<T>R slf Vec<T>R other
     @ i other: slf.push_back(*i)
