@@ -4,16 +4,16 @@ Zhaba-script has 3 types of loops: while, for and foreach. To create a loop, use
 
 ## Syntax
 
-```
+```zh
 @ <exp>
  <body>
 ```
 
-## While
+# While
 
 While loop accepts 1 argument and runs _while_ its body while the condition is still true.
 
-### Examples
+## Examples
 
 ```zh
 @ i < 5: out 'infinite loop!!!'
@@ -24,11 +24,11 @@ While loop accepts 1 argument and runs _while_ its body while the condition is s
   out 'hi'
 ```
 
-## For
+# For
 
 For loop is similar to the C for loop and accepts 3 argument: init, condition and loop expression.
 
-### Examples
+## Examples
 
 ```zh
 @ i:=0 i<100 i+=1
@@ -44,7 +44,7 @@ i:=0
   i+=1
 ```
 
-## Foreach
+# Foreach
 
 Foreach loop executes a for loop over a range and accepts 2 arguments: a variable name and range expression. Variable name must be identifier and range expression must have `.begin()` and `.end()` methods. Value protected by `.begin()` must be able to be compared with `.end()` value by `!=` operator and also must be able to be incremented by prefix `++` operator. Produced code is equivalent to this:
 

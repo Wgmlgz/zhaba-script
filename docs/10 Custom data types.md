@@ -1,6 +1,8 @@
 # Custom data types
 
-Zhaba-script custom data types are similar to rust structs. To define a data type, enter the keyword `type` and name the entire data type. Then, inside the next block, define the type and names of the pieces of data, which are called members. The formal syntax is shown below.
+Zhaba-script custom data types are similar to rust structs. To define a data type, enter the keyword `type` and name the entire data type. Then, inside the next block, define the type and names of the pieces of data, which are called members. To access member use `.` operator.
+
+## Syntax
 
 ```zh
 type TypeName
@@ -10,6 +12,8 @@ type TypeName
   ...
 ```
 
+# Examples
+
 This is an example of Vector data structure.
 
 ```zh
@@ -17,6 +21,10 @@ type VecInt
   int size
   int capacity
   intP head
+
+fn main
+  VecInt v
+  < v.size <
 ```
 
 # Code style

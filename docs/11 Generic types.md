@@ -38,9 +38,7 @@ TypeName<T1[ T2[ ...T3]]>
 
 ```zh
 Vec<char> data
-```
 
-```zh
 Tp3<char i32 bool> data
 ```
 

@@ -87,27 +87,26 @@ Zhaba-script built-in operator precedence table:
 | Precedence | Operator          | Description                                               |
 | ---------- | ----------------- | --------------------------------------------------------- |
 | 2          | `a.b`             | Member access                                             |
-| 3          | `*a`              | Ddereference                                              |
+| 3          | `*a`              | Dereference                                               |
 |            | `&a`              | Address-of                                                |
 |            | `-a`              | Unary minus                                               |
 |            | `+a`              | Unary plus                                                |
 |            | `!a`              | Logical NOT                                               |
 | 4          | `a as T`          | type cast                                                 |
 | 5          | `a*b` `a/b` `a%b` | Multiplication, division, and remainder                   |
-|            | `a%%b`            | Is b an a divisor                                         |
 | 6          | `a+b` `a-b`       | Addition and subtraction                                  |
-|            | `a+b` `a-b`       | Addition and subtraction                                  |
 | 9          | `<` `<=` `>` `>=` | For relational operators < and ≤ and > and ≥ respectively |
 | 10         | `==` `!=`         | For equality operators = and ≠ respectively               |
 | 14         | `&&`              | Logical AND                                               |
 | 15         | `\|\|`            | Logical OR                                                |
 | 16         | `=`               | Assignment                                                |
-|            | `+=` `-=`         | Compound assignment by sum and difference                 |
-|            | `*=` `/=` `%=`    | Compound assignment by product, quotient, and remainder   |
 | 17         | `,` ` `           | Inline tuple comma, Implicit inline tuple comma           |
 
 Zhaba-script std operator precedence table:
 
-| Precedence | Operator | Description    |
-| ---------- | -------- | -------------- |
-| 9          | `a..b`   | range creation |
+| Precedence | Operator       | Description                                             |
+| ---------- | -------------- | ------------------------------------------------------- |
+| 5          | `a%%b`         | Is b an a divisor                                       |
+| 9          | `a..b`         | range creation                                          |
+| 16         | `+=` `-=`      | Compound assignment by sum and difference               |
+|            | `*=` `/=` `%=` | Compound assignment by product, quotient, and remainder |
