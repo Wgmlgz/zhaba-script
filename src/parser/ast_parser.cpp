@@ -95,6 +95,7 @@ ASTBlock *parseBlock(tokeniter begin, tokeniter end) {
       st.top()->nodes.push_back(tmp);
       st.emplace(tmp);
     } else if (cur->token == TOKEN::block_end) {
+      if (st.empty()) throw new ParserError(*cur, "Too many `;;`");
       st.pop();
     }
     if (cur->token == TOKEN::line_end) {

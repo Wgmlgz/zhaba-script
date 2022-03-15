@@ -1,14 +1,12 @@
 #pragma once
-#include <string>
-
-#include "../parser/parser.hpp"
-// Deprecated
-// #include "ToC.hpp"
 #include <filesystem>
 #include <fstream>
+#include <string>
 
 #include "../interpreter/to_bytecode.hpp"
 #include "../interpreter/zhvm.hpp"
+#include "../parser/parser.hpp"
+#include "./to_c.hpp"
 
 void compileFile(std::filesystem::path file_path) {
   auto start_time = clock();
@@ -51,11 +49,10 @@ void compileFile(std::filesystem::path file_path) {
     printASCII(st_generic);
   }
 
-  if (zhdata.flags["B"] or true) {
+  if (zhdata.flags["B"]) {
     if (!zhdata.flags["pure"])
-      std::cout << "[INFO] compiling complete in " +
-                       std::to_string((clock() - start_time) * 1.0 /
-                                      CLOCKS_PER_SEC)
+      std::cout << "[INFO] compiling complete in "
+                << std::to_string((clock() - start_time) * 1.0 / CLOCKS_PER_SEC)
                 << std::endl;
     zhin::ByteCode bytecode;
     zhin::toB(bytecode, stree);
@@ -66,25 +63,22 @@ void compileFile(std::filesystem::path file_path) {
     }
 
     if (!zhdata.flags["pure"])
-      std::cout << "[INFO] run complete in " +
-                       std::to_string((clock() - run_time) * 1.0 /
-                                      CLOCKS_PER_SEC)
+      std::cout << "[INFO] run complete in "
+                << std::to_string((clock() - run_time) * 1.0 / CLOCKS_PER_SEC)
                 << std::endl;
   } else {
-    // Deprecated
-    // std::string c_code = toC(stree);
-    // if (zhdata.flags["show_cpp"]) {
-    //   std::cout << "C:" << std::endl << c_code << std::endl;
-    // }
-    // std::cout << "[INFO] compiling complete in " +
-    //                  std::to_string((clock() - start_time) * 1.0 /
-    //                                 CLOCKS_PER_SEC)
-    //           << std::endl;
+    std::string c_code = toC(stree);
+    if (zhdata.flags["show_c"]) {
+      std::cout << "C:" << std::endl << c_code << std::endl;
+    }
+    std::cout << "[INFO] compiling complete in "
+              << std::to_string((clock() - start_time) * 1.0 / CLOCKS_PER_SEC)
+              << std::endl;
 
-    // auto tmp_file = std::ofstream("zhaba_tmp.c");
-    // tmp_file << c_code;
-    // tmp_file.close();
-    // system("gcc zhaba_tmp.c -o zhaba_tmp -O3");
-    // system(".\\zhaba_tmp.exe");
+    auto tmp_file = std::ofstream("zhaba_tmp.c");
+    tmp_file << c_code;
+    tmp_file.close();
+    system("gcc zhaba_tmp.c -o zhaba_tmp -O3");
+    system(".\\zhaba_tmp.exe");
   }
 }

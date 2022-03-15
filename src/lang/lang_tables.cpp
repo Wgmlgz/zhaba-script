@@ -9,11 +9,11 @@ const std::unordered_map<std::string, bool> flags{
     {"show_st", false},
     {"show_st_cool", false},
     {"show_err", false},
-    {"show_cpp", false},
+    {"show_c", true},
     {"show_original", false},
     {"show_preprocessed", false},
     {"show_exp_tmp_tree", false},
-    {"B", true},
+    {"B", false},
     {"stack_trace", false},
     {"show_bytecode", false},
     {"show_type", false},
@@ -122,12 +122,25 @@ const std::unordered_map<types::TYPE, std::string> type_names{
 
 const std::unordered_map<types::TYPE, std::string> cpp_type_names{
     {types::TYPE::voidT, "void"},
+
     {types::TYPE::charT, "char"},
-    {types::TYPE::i64T, "i64"},
+    {types::TYPE::strT, "str"},
+
+    {types::TYPE::boolT, "bool"},
+
+    {types::TYPE::i8T, "i8"},
+    {types::TYPE::i16T, "i16"},
     {types::TYPE::i32T, "i32"},
-    {types::TYPE::u64T, "u64"},
+    {types::TYPE::i64T, "i64"},
+
+    {types::TYPE::u8T, "u8"},
+    {types::TYPE::u16T, "u16"},
     {types::TYPE::u32T, "u32"},
-    {types::TYPE::strT, "char*"},
+    {types::TYPE::u64T, "u64"},
+
+    {types::TYPE::f4T, "f4"},
+    {types::TYPE::f8T, "f8"},
+    {types::TYPE::f10T, "f10"}
 };
 
 const std::unordered_map<types::TYPE, size_t> sizes{
