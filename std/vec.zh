@@ -9,6 +9,7 @@ type Vec T: int size;
 type VecIter T: TP ptr
 
 impl VecIter
+  fn ctor TP ptr: VecIter<T> slf; slf.ptr = ptr; <<< slf
   fn next: slf.ptr = slf.ptr + 1
   fn bool uneq VecIter<T> other: <<< slf.ptr != other.ptr
   lop TR * VecIter<T> slf: <<< *slf.ptr
@@ -44,8 +45,8 @@ impl Vec
     
   fn pop_back: --slf.size
   
-  fn VecIter<T> begin: <<< slf.head as VecIter<T> 
-  fn VecIter<T> end: <<< slf.atP(slf.size) as VecIter<T>
+  fn VecIter<T> begin: <<< VecIter<T>(slf.head) 
+  fn VecIter<T> end: <<< VecIter<T>(slf.atP(slf.size))
   fn TR front: <<< *slf.head
   fn TR back: <<< *slf.atP(slf.size-1)
 

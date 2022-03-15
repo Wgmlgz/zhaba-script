@@ -11,6 +11,11 @@ void ByteCode::push_push_bytes(int val) {
   pushVal(zhin::instr::push_bytes);
   pushVal((int32_t) (val));
 }
+void ByteCode::pushLabel(int32_t label, const std::string &comment) {
+  pushVal(zhin::instr::label);
+  pushVal((int32_t)(label));
+  labels_comments.emplace(label, comment);
+}
 int ByteCode::label(int t) {
   if (labels[t] == -1) throw std::runtime_error("undefined label");
   return labels[t];
@@ -323,11 +328,15 @@ std::pair<std::string, std::map<size_t, std::string>> ByteCode::dis() {
     cur += 8;                             \
     break;
       INSTR(nop)
-      case instr::label:res += "  label ";
-        res += std::to_string(*loadI32(cur));
+      case instr::label: {
+        res += "  label ";
+        auto label = *loadI32(cur);
+        res += std::to_string(label);
+        res += " ";
+        res += labels_comments[label];
         res += "\n";
         cur += 4;
-        break;
+      } break;
       case instr::label_data: {
         auto id = *loadI32(cur);
         // literals_labels[id] = cur + 4;

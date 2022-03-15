@@ -19,7 +19,8 @@ void blockToB(zhin::ByteCode &bytecode, STBlock *block, FuncData &funcdata,
 void expToB(zhin::ByteCode &bytecode, zhexp::Exp *exp, FuncData &funcdata);
 void nodeToB(zhin::ByteCode &bytecode, STNode *node, FuncData &funcdata,
              Function *func);
-void argsToB(zhin::ByteCode &bytecode, STNode *node, FuncData &funcdata);
+void argsToB(zhin::ByteCode &bytecode, zhexp::Exp *exp, Function *fn,
+             FuncData &funcdata);
 void toB(zhin::ByteCode &bytecode, STTree *block);
 
 }  // namespace zhin

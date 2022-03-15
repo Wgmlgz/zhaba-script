@@ -23,12 +23,14 @@ class ByteCode {
 
   std::mt19937_64 gen = std::mt19937_64(time(0));
   std::array<int, 100000> labels;
+  std::map<int, std::string> labels_comments;
   std::array<int, 100000> literals_labels;
   /**           string,  ptr */
   std::map<int64_t, byte *> owned_ptrs;
   std::map<int32_t, std::vector<byte>> literals_data;
   void push_pop_bytes(int val);
   void push_push_bytes(int val);
+  void pushLabel(int32_t label, const std::string& comment);
   std::map<std::string, int> func_labels;
   std::map<types::TYPE, std::map<std::string, int>> structs_members_offsets;
   int label(int t);
@@ -46,7 +48,6 @@ class ByteCode {
   uint64_t *loadU64(size_t index);
   void popBytes(size_t size);
   byte *loadLiteral(int64_t ptr, int size);
-
 
   template<typename T>
   void pushVal(const T &object) {

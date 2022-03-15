@@ -357,10 +357,16 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
       expToB(bytecode, op->child, funcdata);
       /** pop deref + int */
       bytecode.popBytes(5);
-    } else if (op->val == "*") {
+    } else if (op->val == "*"
+    //  && op->func == nullptr
+     ) {
       expToB(bytecode, op->child, funcdata);
       bytecode.pushVal(zhin::instr::deref);
       bytecode.pushVal((int32_t)(op->type.getSize()));
+      // if (op->type.getRef()) {
+      //   bytecode.pushVal(zhin::instr::deref);
+      //   bytecode.pushVal((int32_t)(op->type.getSizeNonRef()));
+      // }
     } else {
       argsToB(bytecode, op->child, op->func, funcdata);
       bytecode.pushVal(zhin::instr::call);
@@ -463,21 +469,18 @@ void nodeToB(zhin::ByteCode& bytecode, STNode* node, FuncData& funcdata, Functio
     bytecode.pushVal((int32_t)(end_l));
 
     /** <if> */
-    bytecode.pushVal(zhin::instr::label);
-    bytecode.pushVal((int32_t)(if_l));
+    bytecode.pushLabel(if_l, "if");
     blockToB(bytecode, stif->body, funcdata, func);
     bytecode.pushVal(zhin::instr::jmp);
     bytecode.pushVal((int32_t)(end_l));
 
     for (int i = 0; i < stif->elseif_body.size(); ++i) {
-      bytecode.pushVal(zhin::instr::label);
-      bytecode.pushVal((int32_t)(elif_l[i]));
+      bytecode.pushLabel(elif_l[i], "elif");
       blockToB(bytecode, stif->elseif_body[i].second, funcdata, func);
       bytecode.pushVal(zhin::instr::jmp);
       bytecode.pushVal((int32_t)(end_l));
     }
-    bytecode.pushVal(zhin::instr::label);
-    bytecode.pushVal((int32_t)(end_l));
+    bytecode.pushLabel(end_l, "end_if");
   } else if (auto stwhile = dynamic_cast<STWhile*>(node)) {
     /**
      *  label: begin
@@ -552,8 +555,8 @@ void funcToB(zhin::ByteCode& bytecode, Function* func) {
     funcdata.offset += type.getSize();
   }
 
-  bytecode.pushVal(zhin::instr::label);
-  bytecode.pushVal((int32_t)(bytecode.func_labels[func->toUniqueStr()]));
+  bytecode.pushLabel(bytecode.func_labels[func->toUniqueStr()],
+                     func->toUniqueStr());
   blockToB(bytecode, func->body, funcdata, func);
 
   if (func->type.getTypeId() == types::TYPE::voidT) {
