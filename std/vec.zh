@@ -115,7 +115,10 @@ impl Vec
       pi = pi + 1
       qsort(pi rhs)
   
-  fn sort: qsort(slf.begin() as TP slf.end() as TP)
+  fn sort
+    begin := slf.begin()
+    end := slf.end()
+    qsort(begin.ptr end.ptr)
   lop sort Vec<T>R slf: slf.sort()
 
 fn Vec<int> iota int begin int end
