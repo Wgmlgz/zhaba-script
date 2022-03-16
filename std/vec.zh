@@ -67,6 +67,10 @@ impl Vec
     slf.size = size
     slf.capacity = size
     <<< slf
+  fn ctor int size T default
+    slf := Vec<T>(size)
+    @ i 0..slf.size: slf.at(i) = default
+    <<< slf
 
   fn ctor: <<< Vec<T>(0)
 

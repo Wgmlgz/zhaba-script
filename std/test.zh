@@ -6,8 +6,14 @@ fn main
   out(fn + op + ? + @)
 
   v := iota(10 15)
-  t := Vec<int>(5)
+  t := Vec<int>(5 0)
+  v += t
+  v += t
+  v += t
+  v += t
   v += t
   out v
+
   sort(v)
+  
   out v

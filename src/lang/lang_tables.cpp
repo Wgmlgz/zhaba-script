@@ -9,7 +9,7 @@ const std::unordered_map<std::string, bool> flags{
     {"show_st", false},
     {"show_st_cool", false},
     {"show_err", false},
-    {"show_c", true},
+    {"show_c", false},
     {"show_original", false},
     {"show_preprocessed", false},
     {"show_exp_tmp_tree", false},

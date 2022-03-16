@@ -58,6 +58,28 @@ typedef long double f10;
 
 )";
 
+#define MAKE_ABOBA(name, type, mod)  \
+res += #type " " #name"() {\n";                      \
+res +=  "  " #type " tmp;\n"     ;                    \
+res +=  "  scanf(" #mod ", &tmp);\n" ;                 \
+res +=  "  return tmp;\n"          ;               \
+res += "}\n";
+
+MAKE_ABOBA(in_i8, i8, "%i")
+MAKE_ABOBA(in_i16, i16, "%i")
+MAKE_ABOBA(in_i32, i32, "%i")
+MAKE_ABOBA(in_i64, i64, "%i")
+MAKE_ABOBA(in_u8, u8, "%i")
+MAKE_ABOBA(in_u16, u16, "%i")
+MAKE_ABOBA(in_u32, u32, "%i")
+MAKE_ABOBA(in_u64, u64, "%i")
+MAKE_ABOBA(in_char, char, "%i")
+MAKE_ABOBA(in_str, char*, "%i")
+MAKE_ABOBA(in_bool, bool, "%i")
+MAKE_ABOBA(in_f4, float, "%i")
+MAKE_ABOBA(in_f8, double, "%i")
+MAKE_ABOBA(in_f10, long double, "%i")
+
   for (int i = zhdata.first_struct_id; i < zhdata.last_struct_id; ++i) {
     auto id = static_cast<types::TYPE>(i);
     res += structHead2C(id);
@@ -217,10 +239,80 @@ std::string exp2C(zhexp::Exp* exp, Function* fn) {
     }
   } else if (auto op = dynamic_cast<zhexp::PrefixOperator*>(exp)) {
     if (op->func && op->func->is_C) {
-      res += op->func->name;
-      res += "(";
-      res += args2C(op->child, op->func);
-      res += ")";
+      if (0) {
+      }
+#define MAKE_LOP_C(name, type_, impl_)                          \
+  else if (op->val == #name &&                                  \
+           op->child->type.getTypeId() == types::TYPE::type_) { \
+    res += impl_;                                               \
+    res += args2C(op->child, op->func);                         \
+    res += ")";                                                 \
+  }
+      MAKE_LOP_C(in_i8, voidT, "in_i8(")
+      MAKE_LOP_C(in_i16, voidT, "in_i16(")
+      MAKE_LOP_C(in_i32, voidT, "in_i32(")
+      MAKE_LOP_C(in_i64, voidT, "in_i64(")
+      MAKE_LOP_C(in_u8, voidT, "in_u8(")
+      MAKE_LOP_C(in_u16, voidT, "in_u16(")
+      MAKE_LOP_C(in_u32, voidT, "in_u32(")
+      MAKE_LOP_C(in_u64, voidT, "in_u64(")
+      MAKE_LOP_C(in_char, voidT, "in_char(")
+      MAKE_LOP_C(in_str, voidT, "in_str(")
+      MAKE_LOP_C(in_bool, voidT, "in_bool(")
+      MAKE_LOP_C(in_f4, voidT, "in_f4(")
+      MAKE_LOP_C(in_f8, voidT, "in_f8(")
+      MAKE_LOP_C(in_f10, voidT, "in_f10(")
+
+      MAKE_LOP_C(!, boolT, "!(")
+      MAKE_LOP_C(!, charT, "!(")
+      MAKE_LOP_C(!, i8T, "!(")
+      MAKE_LOP_C(!, i16T, "!(")
+      MAKE_LOP_C(!, i32T, "!(")
+      MAKE_LOP_C(!, i64T, "!(")
+      MAKE_LOP_C(!, u8T, "!(")
+      MAKE_LOP_C(!, u16T, "!(")
+      MAKE_LOP_C(!, u32T, "!(")
+      MAKE_LOP_C(!, u64T, "!(")
+
+      MAKE_LOP_C(put, i8T, "printf(\"%d\", ")
+      MAKE_LOP_C(out, i8T, "printf(\"%d\\n\", ")
+
+      MAKE_LOP_C(put, i16T, "printf(\"%hd\", ")
+      MAKE_LOP_C(out, i16T, "printf(\"%hd\\n\", ")
+
+      MAKE_LOP_C(put, i32T, "printf(\"%d\", ")
+      MAKE_LOP_C(out, i32T, "printf(\"%d\\n\", ")
+
+      MAKE_LOP_C(put, i64T, "printf(\"%lld\", ")
+      MAKE_LOP_C(out, i64T, "printf(\"%lld\\n\", ")
+
+      MAKE_LOP_C(put, u8T, "printf(\"%d\", ")
+      MAKE_LOP_C(out, u8T, "printf(\"%d\\n\", ")
+
+      MAKE_LOP_C(put, u16T, "printf(\"%hd\", ")
+      MAKE_LOP_C(out, u16T, "printf(\"%hd\\n\", ")
+
+      MAKE_LOP_C(put, u32T, "printf(\"%u\", ")
+      MAKE_LOP_C(out, u32T, "printf(\"%u\\n\", ")
+
+      MAKE_LOP_C(put, u64T, "printf(\"%llu\", ")
+      MAKE_LOP_C(out, u64T, "printf(\"%llu\\n\", ")
+
+      MAKE_LOP_C(put, strT, "printf(\"%s\", ")
+      MAKE_LOP_C(out, strT, "printf(\"%s\\n\", ")
+
+      MAKE_LOP_C(put, charT, "printf(\"%c\", ")
+      MAKE_LOP_C(out, charT, "printf(\"%c\\n\", ")
+
+      MAKE_LOP_C(put, boolT, "printf(\"%d\", ")
+      MAKE_LOP_C(out, boolT, "printf(\"%d\\n\", ")
+
+      MAKE_LOP_C(malloc, i64T, "malloc(")
+      MAKE_LOP_C(free, i64T, "free((void*) ")
+
+      else {
+        throw ParserError("unimplemented C op " + op->val);
+      }
     } else if (op->val == "&") {
       res += "&";
       res += "(";

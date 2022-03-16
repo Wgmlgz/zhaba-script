@@ -11,8 +11,6 @@ lop ++ intR val: val += 1
 lop -- intR val: val -= 1
 lop ++ u8R val: val = val + 1u8
 lop -- u8R val: val = val - 1u8
-lop ++ charR val: val = (val as u8R + 1u8) as char
-lop -- charR val: val = (val as u8R - 1u8) as char
 
 lop i8 - i8 val: <<< 0i8 - val
 lop i16 - i16 val: <<< 0i16 - val
