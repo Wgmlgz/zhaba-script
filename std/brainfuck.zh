@@ -1,11 +1,32 @@
 use out
+use operators
+use str
 
-fn brainfuck str s: p := malloc(3000) as charP b := 0; @ i 0..strlen(s): v := *p c := s^i
-  ? c == '>': ++(p as i64)
-  | c == '<': --(p as i64)
-  | c == '+': ++(*p)
-  | c == '-': --(*p)
-  | c == '.': put v
-  | c == ',': >(*p)
-  | c == '[': ? !v: ++b; @ ! !b: ++i; ? s^i == '[': ++b;; ? s^i == ']': --b
-  | c == ']': ? ! !v: ? c == ']': ++b;; @ ! !b: --i; ?s^i=='[': --b;; ?s^i==']': ++b;; ;; --i
+fn brainfuck str s
+  p := malloc(3000) as u8P
+  b := 0
+  @ i 0..len(s)
+    v := *p
+    c := s^i
+    ?? c
+      '>': p = p + 1
+      '<': p = p - 1
+      '+': ++(*p)
+      '-': --(*p)
+      '.': put (v as char)
+      ',': >(*p)
+      '[':
+        ? !v
+          ++b
+          @ ! !b 
+            ++i
+            ? s^i == '[': ++b
+            ? s^i == ']': --b
+      ']'
+        ? ! !v
+          ? c == ']': ++b
+          @ ! !b
+            --i
+            ?s^i=='[': --b
+            ?s^i==']': ++b
+          --i

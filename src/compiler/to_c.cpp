@@ -41,13 +41,13 @@ std::string toC(STTree* block) {
 #include <stdio.h>
 #include <time.h>
 
-typedef int32_t i8;
-typedef int32_t i16;
+typedef int8_t i8;
+typedef int16_t i16;
 typedef int32_t i32;
 typedef int64_t i64;
 
-typedef uint32_t u8;
-typedef uint32_t u16;
+typedef uint8_t u8;
+typedef uint16_t u16;
 typedef uint32_t u32;
 typedef uint64_t u64;
 typedef char* str;
@@ -56,6 +56,10 @@ typedef float f4;
 typedef double f8;
 typedef long double f10;
 
+i64 alloc(i64 size) {
+  void* ptr = calloc(size, 1);
+  return ptr;
+}
 )";
 
 #define MAKE_ABOBA(name, type, mod)  \
@@ -151,6 +155,7 @@ std::string rop2C(const Function* head) {
 
 std::string exp2C(zhexp::Exp* exp, Function* fn) {
   std::string res;
+  res += "(";
   if (auto lt = dynamic_cast<zhexp::I8Literal*>(exp)) {
     res += "((i8)" + std::to_string(lt->val) + ")";
   } else if (auto lt = dynamic_cast<zhexp::I16Literal*>(exp)) {
@@ -172,7 +177,16 @@ std::string exp2C(zhexp::Exp* exp, Function* fn) {
   } else if (auto lt = dynamic_cast<zhexp::CharLiteral*>(exp)) {
     res += "((char)" + std::to_string(lt->val) + ")";
   } else if (auto lt = dynamic_cast<zhexp::StrLiteral*>(exp)) {
-    res += "\"" + lt->val + "\"";
+    res += "\"";
+    for (auto i : lt->val) {
+      if (i == '\n') {
+        res += "\\";
+        res += "n";
+      } else {
+        res += i;
+      }
+    }
+    res += "\"";
   } else if (auto op = dynamic_cast<zhexp::BinOperator*>(exp)) {
     if (op->val == "as") {
       /** I believe in weak typing supremacy 💪 */
@@ -307,7 +321,7 @@ std::string exp2C(zhexp::Exp* exp, Function* fn) {
       MAKE_LOP_C(put, boolT, "printf(\"%d\", ")
       MAKE_LOP_C(out, boolT, "printf(\"%d\\n\", ")
 
-      MAKE_LOP_C(malloc, i64T, "malloc(")
+      MAKE_LOP_C(malloc, i64T, "alloc(")
       MAKE_LOP_C(free, i64T, "free((void*) ")
 
       else {
@@ -348,7 +362,8 @@ std::string exp2C(zhexp::Exp* exp, Function* fn) {
   } else {
     throw std::runtime_error("unimplemented expToB ");
   }
-return res;
+  res += ")";
+  return res;
 }
 
 std::string args2C(zhexp::Exp* exp, Function* fn) {
@@ -407,22 +422,22 @@ std::string node2C(STNode* node, Function* fn, size_t depth) {
     res += exp2C(stif->condition, fn);
     res += ") ";
 
-    res += block2C(stif->body, fn, depth + 1);
+    res += block2C(stif->body, fn, depth);
     for (int i = 0; i < stif->elseif_body.size(); ++i) {
       res += "\n else if (";
       res += exp2C(stif->elseif_body[i].first, fn);
       res += ") ";
-      res += block2C(stif->elseif_body[i].second, fn, depth + 1);
+      res += block2C(stif->elseif_body[i].second, fn, depth);
     }
 
     /** <else> */
     if (stif->else_body) {
       res += " else ";
-      res += block2C(stif->else_body, fn, depth + 1);
+      res += block2C(stif->else_body, fn, depth);
     }
   } else if (auto stwhile = dynamic_cast<STWhile*>(node)) {
     res += "while (" + exp2C(stwhile->condition, fn) + ") ";
-    res += block2C(stwhile->body, fn, depth + 1);
+    res += block2C(stwhile->body, fn, depth);
   } else if (auto block = dynamic_cast<STBlock*>(node)) {
     res += block2C(block, fn, depth + 1);
   } else {

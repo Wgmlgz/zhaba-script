@@ -71,14 +71,23 @@ void compileFile(std::filesystem::path file_path) {
     if (zhdata.flags["show_c"]) {
       std::cout << "C:" << std::endl << c_code << std::endl;
     }
-    std::cout << "[INFO] compiling complete in "
-              << std::to_string((clock() - start_time) * 1.0 / CLOCKS_PER_SEC)
-              << std::endl;
 
     auto tmp_file = std::ofstream("zhaba_tmp.c");
     tmp_file << c_code;
     tmp_file.close();
-    system("gcc zhaba_tmp.c -o zhaba_tmp -O3");
+    system("gcc zhaba_tmp.c -o zhaba_tmp -O3 -w");
+
+    std::cout << "[INFO] compiling complete in "
+              << std::to_string((clock() - start_time) * 1.0 / CLOCKS_PER_SEC)
+              << std::endl;
+
+    auto run_time = clock();
+
     system(".\\zhaba_tmp.exe");
+
+    if (!zhdata.flags["pure"])
+      std::cout << "[INFO] run complete in "
+                << std::to_string((clock() - run_time) * 1.0 / CLOCKS_PER_SEC)
+                << std::endl;
   }
 }

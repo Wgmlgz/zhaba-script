@@ -33,12 +33,9 @@ const std::vector<std::pair<TOKEN, std::string>> lexer_tokens{
 };
 
 const std::unordered_set<std::string> banned_ids{
-    "?", "@", "<<<", ":=", "as", "|", "\\", ";"
-};
+    "?", "??", "@", "<<<", ":=", "as", "|", "\\", ";"};
 
-const std::unordered_set<std::string> flow_ops{
-    "?", "@", "<<<"
-};
+const std::unordered_set<std::string> flow_ops{"?", "??", "@", "<<<"};
 
 const std::unordered_map<std::string, int64_t> bin_operators{
     {".", 2}, {"=", 10}, {":=", 10}, {",", 17}, {"as", 4}, {"+", 6},

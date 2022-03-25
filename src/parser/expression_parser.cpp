@@ -452,7 +452,6 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
       op->lhs = postprocess(op->lhs, scope);
       if (auto type_l = dynamic_cast<TypeLiteral *>(op->rhs)) {
         op->type = type_l->literal_type;
-        op->type.setLval(op->lhs->type.getLval());
       } else {
         throw ParserError(
             op->begin, op->rhs->end,

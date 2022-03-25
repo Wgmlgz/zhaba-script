@@ -1,19 +1,8 @@
-use vec
-use range
+use brainfuck
 
 fn main
-  int fn = 5 op = 4 ? = 1 @ = 7
-  out(fn + op + ? + @)
-
-  v := iota(10 15)
-  t := Vec<int>(5 0)
-  v += t
-  v += t
-  v += t
-  v += t
-  v += t
-  out v
-
-  sort(v)
-  
-  out v
+  brainfuck(`
+  ++++++++[>++++[>++>+++>+++>+<<<<-]>+>->+>>
+  +[<]<-]>>.>>---.+++++++..+++.>.<<-.>.+++.-
+  -----.--------.>+.>++.
+  `)

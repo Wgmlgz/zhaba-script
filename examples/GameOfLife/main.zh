@@ -1,5 +1,4 @@
 use 'std.zh'
-use 'util.zh' // for rand and sleep
 use './canvas.zh'
 use 'range.zh'
 
