@@ -29,13 +29,13 @@ struct ZHDATA {
   std::unordered_map<types::TYPE, std::string> struct_names;
   std::unordered_map<types::TYPE, types::StructInfo> structs;
 
-  const int first_struct_id = 50;
+  int first_struct_id = 50;
   int last_struct_id = 50;
 
   /** Parsing related */
-  const int64_t INF = 1000000000000.0;
-  const int64_t priority_offset = 100;
-  const int64_t parentheses_offset = 1000000;
+  int64_t INF = 1000000000000.0;
+  int64_t priority_offset = 100;
+  int64_t parentheses_offset = 1000000;
 
   /** main syntax tree */
   STTree *sttree;
@@ -55,9 +55,8 @@ struct ZHDATA {
   std::ostream *out = &std::cout;
 
   std::unordered_map<std::string, bool> flags = tables::flags;
-  
-  std::random_device rd;
-  std::mt19937 rng = std::mt19937(rd());
+
+  std::mt19937 rng = std::mt19937(std::random_device()());
 };
 
 extern ZHDATA zhdata;

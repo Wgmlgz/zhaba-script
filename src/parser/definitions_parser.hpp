@@ -2,7 +2,7 @@
 #include <string>
 #include <vector>
 #include "lexer.hpp"
-#include "../Lang/lang.hpp"
+#include "../lang/lang.hpp"
 #include "type_parser.hpp"
 #include "parser_error.hpp"
 

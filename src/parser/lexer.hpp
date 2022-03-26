@@ -10,7 +10,7 @@
 #include <unordered_set>
 #include <utility>
 #include <vector>
-#include "../Lang/token.hpp"
+#include "../lang/token.hpp"
 
 class Lexer {
   std::vector<std::pair<TOKEN, std::string>> tokens;
