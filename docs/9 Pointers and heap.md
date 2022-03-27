@@ -6,7 +6,7 @@ While Zhaba-script is designed for fast development, but the other goal is to do
 
 Unlike C, in zhaba-script you can append `P` to the type to declare a pointer.
 
-```
+```zh
 int var
 intP ptr
 ```
@@ -17,7 +17,7 @@ In this example var is variable and ptr is a pointer.
 
 The address of a variable can be obtained by preceding the name of a variable with an ampersand sign '&', known as address-of operator. For example:
 
-```
+```zh
 ptr = &var;
 ```
 
@@ -31,7 +31,7 @@ An interesting property of pointers is that they can be used to access the varia
 
 Therefore, following with the values of the previous example, the following statement:
 
-```
+```zh
 baz = *ptr;
 ```
 
@@ -45,7 +45,7 @@ The heap is a large pool of memory that can be used dynamically. This is memory 
 
 ## Declaration:
 
-```
+```zh
 lop malloc int size
 ```
 
@@ -57,7 +57,7 @@ lop malloc int size
 
 ## Declaration:
 
-```
+```zh
 lop free int ptr
 ```
 
