@@ -226,44 +226,50 @@ std::vector<Exp *> preprocess(tokeniter begin, tokeniter end, const ScopeInfo &s
         str = str.substr(2, str.size() - 2);
       }
 
-      if (std::regex_match(str, std::regex("true|tru")))
-        res.push_back(new BoolLiteral(*i, *i, true));
-      else if (std::regex_match(str, std::regex("false|fls")))
-        res.push_back(new BoolLiteral(*i, *i, false));
+      try {
+        if (std::regex_match(str, std::regex("true|tru")))
+          res.push_back(new BoolLiteral(*i, *i, true));
+        else if (std::regex_match(str, std::regex("false|fls")))
+          res.push_back(new BoolLiteral(*i, *i, false));
 
-      else if (std::regex_match(str, std::regex(".+i8")))
-        res.push_back(new I8Literal(
-            *i, *i, std::stoll(str.substr(0, str.size() - 2), 0, base)));
-      else if (std::regex_match(str, std::regex(".+i16")))
-        res.push_back(new I16Literal(
-            *i, *i, std::stoll(str.substr(0, str.size() - 3), 0, base)));
-      else if (std::regex_match(str, std::regex(".+i32")))
-        res.push_back(new I32Literal(
-            *i, *i, std::stoll(str.substr(0, str.size() - 3), 0, base)));
-      else if (std::regex_match(str, std::regex(".+i64")))
-        res.push_back(new I64Literal(
-            *i, *i, std::stoll(str.substr(0, str.size() - 3), 0, base)));
+        else if (std::regex_match(str, std::regex(".+i8")))
+          res.push_back(new I8Literal(
+              *i, *i, std::stoll(str.substr(0, str.size() - 2), 0, base)));
+        else if (std::regex_match(str, std::regex(".+i16")))
+          res.push_back(new I16Literal(
+              *i, *i, std::stoll(str.substr(0, str.size() - 3), 0, base)));
+        else if (std::regex_match(str, std::regex(".+i32")))
+          res.push_back(new I32Literal(
+              *i, *i, std::stoll(str.substr(0, str.size() - 3), 0, base)));
+        else if (std::regex_match(str, std::regex(".+i64")))
+          res.push_back(new I64Literal(
+              *i, *i, std::stoll(str.substr(0, str.size() - 3), 0, base)));
 
-      else if (std::regex_match(str, std::regex(".+u8")))
-        res.push_back(new U8Literal(
-            *i, *i, std::stoull(str.substr(0, str.size() - 2), 0, base)));
-      else if (std::regex_match(str, std::regex(".+u16")))
-        res.push_back(new U16Literal(
-            *i, *i, std::stoull(str.substr(0, str.size() - 3), 0, base)));
-      else if (std::regex_match(str, std::regex(".+u32")))
-        res.push_back(new U32Literal(
-            *i, *i, std::stoull(str.substr(0, str.size() - 3), 0, base)));
-      else if (std::regex_match(str, std::regex(".+u64")))
-        res.push_back(new U64Literal(
-            *i, *i, std::stoull(str.substr(0, str.size() - 3), 0, base)));
-      else if (std::regex_match(str, std::regex(".+i")))
-        res.push_back(new I64Literal(*i, *i, std::stoll(str, 0, base)));
-      else if (std::regex_match(str, std::regex(".+u")))
-        res.push_back(new U64Literal(*i, *i, std::stoll(str, 0, base)));
-      else if (std::regex_match(str, std::regex(".+")))
-        res.push_back(new I64Literal(*i, *i, std::stoll(str, 0, base)));
-      else
-        throw ParserError(*i, "Wrong int literal");
+        else if (std::regex_match(str, std::regex(".+u8")))
+          res.push_back(new U8Literal(
+              *i, *i, std::stoull(str.substr(0, str.size() - 2), 0, base)));
+        else if (std::regex_match(str, std::regex(".+u16")))
+          res.push_back(new U16Literal(
+              *i, *i, std::stoull(str.substr(0, str.size() - 3), 0, base)));
+        else if (std::regex_match(str, std::regex(".+u32")))
+          res.push_back(new U32Literal(
+              *i, *i, std::stoull(str.substr(0, str.size() - 3), 0, base)));
+        else if (std::regex_match(str, std::regex(".+u64")))
+          res.push_back(new U64Literal(
+              *i, *i, std::stoull(str.substr(0, str.size() - 3), 0, base)));
+        else if (std::regex_match(str, std::regex(".+i")))
+          res.push_back(new I64Literal(*i, *i, std::stoll(str, 0, base)));
+        else if (std::regex_match(str, std::regex(".+u")))
+          res.push_back(new U64Literal(*i, *i, std::stoll(str, 0, base)));
+        else if (std::regex_match(str, std::regex(".+")))
+          res.push_back(new I64Literal(*i, *i, std::stoll(str, 0, base)));
+        else
+          throw ParserError(*i, "Wrong int literal");
+      } catch (const std::out_of_range& err) {
+        throw ParserError(
+            *i,
+            "The converted value fall out of the range of the result type ");
+      }
     } else if (i->token == TOKEN::str_literal) {
       bool do_escape = true;
       auto str = i->val;
