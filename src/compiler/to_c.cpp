@@ -179,12 +179,22 @@ std::string exp2C(zhexp::Exp* exp, Function* fn) {
   } else if (auto lt = dynamic_cast<zhexp::StrLiteral*>(exp)) {
     res += "\"";
     for (auto i : lt->val) {
-      if (i == '\n') {
-        res += "\\";
-        res += "n";
-      } else {
+      if (i == '\'')
+        res += R"(\\')";
+      else if (i == '\"')
+        res += R"(\\")";
+      else if (i == '\\')
+        res += R"(\\\\)";
+      else if (i == '\b')
+        res += R"(\\b)";
+      else if (i == '\n')
+        res += R"(\\n)";
+      else if (i == '\t')
+        res += R"(\\t)";
+      else if (i == '\0')
+        res += R"(\\0)";
+      else
         res += i;
-      }
     }
     res += "\"";
   } else if (auto op = dynamic_cast<zhexp::BinOperator*>(exp)) {
