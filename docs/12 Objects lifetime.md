@@ -6,15 +6,15 @@ A lifetime is a construct the compiler uses to ensure create and destroy object.
 
 ```zh
 fn main
-  i := 0  // lifetime for `v` starts. ──────┐
+  i := 0  // lifetime for `v` starts. ------┐
   > i                                   //  │
                                         //  │
   ? i == 4:                             //  │
-    a := 7  // `a` lifetime starts. ───────┐│
+    a := 7  // `a` lifetime starts. -------┐│
     < (a + i) <                         // ││
-    // `a` lifetime ends. ─────────────────┘│
+    // `a` lifetime ends. -----------------┘│
                                         //  │
-  // `i` lifetime ends. ────────────────────┘
+  // `i` lifetime ends. --------------------┘
 ```
 
 # Constructor
