@@ -1,6 +1,71 @@
-# Introduction
+# Zhaba script programming language🐸
 
 Zhaba script (Russian: ˈʐabə, жаба(frog)) - is a multi-paradigm, high-level, statically typed, interpreted or source to source compiled language, which focuses at minimizing programs size and maximizing development speed and comfort.
+
+Inspired by JS, Rust, C++, and Python🐍
+
+## Docs
+
+Here is a zhaba-script docs website with syntax highlighting -> https://wgmlgz.github.io/zhaba/?page=docs
+
+## Hello world!
+
+```zh
+use std
+
+fn main
+  < 'hi world!' <
+```
+
+## Setup
+
+- Set environment variable `zhstd` to `repo_path/std`
+- If you are using VSCode you can install [this](https://marketplace.visualstudio.com/items?itemName=wgmlgz.zhaba-script) extension for syntax highlighting
+- To develop
+  - This is a CMake project, so you need to check how to set up it in your IDE
+    - VSCode: I am using vscode with CMake extension, so to set up project run command `CMake: Configure`, and to add run arguments add `"cmake.debugConfig": { "args": [ your args here ] }` to settings.json
+    - CLion: You probably can just open it with none or some minimal configuration
+  - use compiled binary to run your `.zh` files with `./zhaba <filename.zh>`
+- To use zhaba-script
+  - Download the latest binary from [releases](https://github.com/Wgmlgz/zhaba-script/releases) / or use [web IDE](https://wgmlgz.github.io/zhaba/)
+
+## List of features
+
+- Basics:
+
+  - Basic types like int, bool or char
+  - All C operators like (+ - \* %)
+  - If, else, else if
+  - While loop
+  - C-style for loop
+  - Single and multi-line comments
+  - Functions
+  - Other files usage
+
+- More advanced features:
+
+  - Foreach loop
+  - Functions overloading
+  - Any operator overloading
+  - New operators creation
+  - Local (relative to scope) functions and operators definition
+  - Pointers
+  - References
+
+- OOP:
+
+  - Classes
+  - Member functions
+  - Constructors
+  - Destructors
+  - generic types like `Vec<T>`
+
+- Standard library
+  - `Vec<T>` - generic dynamic array
+  - `Str` - String class
+  - `Range` - int range, can be created with `..` operator
+  - `'frog.zh'` - file with cool ASCII image of 🐸
+  - `operators.zh` - more advanced operators like %%
 
 ## Motivation
 

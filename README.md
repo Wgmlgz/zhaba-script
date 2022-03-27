@@ -1,9 +1,12 @@
-![](https://img.shields.io/github/stars/wgmlgz/zhaba-script)
 # Zhaba script programming language🐸
 
 Zhaba script (Russian: ˈʐabə, жаба(frog)) - is a multi-paradigm, high-level, statically typed, interpreted or source to source compiled language, which focuses at minimizing programs size and maximizing development speed and comfort.
 
 Inspired by JS, Rust, C++, and Python🐍
+
+## Docs
+
+Here is a zhaba-script docs website with syntax highlighting -> https://wgmlgz.github.io/zhaba/?page=docs
 
 ## Hello world!
 
@@ -18,18 +21,18 @@ fn main
 
 - Set environment variable `zhstd` to `repo_path/std`
 - If you are using VSCode you can install [this](https://marketplace.visualstudio.com/items?itemName=wgmlgz.zhaba-script) extension for syntax highlighting
-- Choose your destiny
-  - To develop
-    - This is a CMake project, so you need to check how to set up it in your IDE
-      - VSCode: I am using vscode with CMake extension, so to set up project run command `CMake: Configure`, and to add run arguments add `"cmake.debugConfig": { "args": [ your args here ] }` to settings.json
-      - CLion: You probably can just open it with none or some minimal configuration
-    - use compiled binary to run your `.zh` files with `./zhaba <filename.zh>`
-  - To use zhaba-script
-    - Download the latest binary from [releases](https://github.com/Wgmlgz/zhaba-script/releases)
+- To develop
+  - This is a CMake project, so you need to check how to set up it in your IDE
+    - VSCode: I am using vscode with CMake extension, so to set up project run command `CMake: Configure`, and to add run arguments add `"cmake.debugConfig": { "args": [ your args here ] }` to settings.json
+    - CLion: You probably can just open it with none or some minimal configuration
+  - use compiled binary to run your `.zh` files with `./zhaba <filename.zh>`
+- To use zhaba-script
+  - Download the latest binary from [releases](https://github.com/Wgmlgz/zhaba-script/releases) / or use [web IDE](https://wgmlgz.github.io/zhaba/)
 
 ## List of features
 
 - Basics:
+
   - Basic types like int, bool or char
   - All C operators like (+ - \* %)
   - If, else, else if
@@ -40,6 +43,7 @@ fn main
   - Other files usage
 
 - More advanced features:
+
   - Foreach loop
   - Functions overloading
   - Any operator overloading
@@ -49,6 +53,7 @@ fn main
   - References
 
 - OOP:
+
   - Classes
   - Member functions
   - Constructors
@@ -62,60 +67,18 @@ fn main
   - `'frog.zh'` - file with cool ASCII image of 🐸
   - `operators.zh` - more advanced operators like %%
 
-## Docs
+## Motivation
 
-!!!revorking!!!
-# Examples
+C++ is one of my favorite languages because of it's power and performance, but at the same time it is very old and doest't have lots of amazing features of modern programming languages. For example to simply loop over int range you have to use something like this: `for (int i = 0; i < n; ++i)`. Can we do better? In python you can use `for i in range(0, n)`, this is already a huge improvement, but can we do even better? Of course! Zhaba-script solution to this task looks like this: `@ i 0..n`. This example can show how some of the syntax elements are not necessary and can be reduced. To be fair in C++20 we can do `for (auto i : std::ranges::iota_view(0, 10))` or with reduced namespaces `for (auto i : iota_view(0, 10))`, this is definitely good, but still longer then python.
 
-## Game of life
+## Goal
 
-```zh
-fn main
-  w := 30 h := 30
-  c := newCnv(w h)
-  r := 54
-  dead := asch('.') live := asch('#')
-  c.fill(dead)
+So, the main goal of zhaba-script is to make your programs smaller while also maintain readability and performance. To do this, zhaba-script is using C++ low level semantic concepts and bringing them with python-like syntax.
 
-  @ i 0..c.h
-    @ j 0..c.w
-      ? rng() as int % 2
-        *c.at(i j) = live
+## Syntax
 
-  @ k 0..500
-    nc := newCnv(w h)
-    nc.fill(dead)
+The zhaba-script syntax is the most different and interesting part from other programming languages and mostly resembles python, which does't use `{}` to declare blocks of code. But zhaba-script takes a step forward by removing almost all unnecessary syntax elements like `,` in some places. For example in this expression: `print(1, 2, 4)` it is obvious where commas should be so you don't need to explicitly write them. Other syntax elements like `;` or `:` are not required, but their use is put to make your code even shorter. Also most common keywords such as `if` or `return` are reduced to simple symbols, to make code shorter and even more readable. You can read more about all the syntax elements TODO [here]().
 
-    @ i 1..c.h-1
-      @ j 1..c.h-1
-        near := 0
-        @ x, -1..2
-          @ y, -1..2
-            ? !(y == 0 && x == 0) && c.get(i+x j+y) == live
-              &near += 1
+## Memory model
 
-        ? *c.at(i j) == live && near == 2 || near == 3: *nc.at(i j) = live
-        | near == 3: *nc.at(i j) = live
-
-    c = nc
-    cls()
-    out &c
-    sleep(50)
-```
-
-And because zhaba script main goal is to minimize your code, Game of life from above can be written in 8 lines like so:
-
-```zh
-fn main: w:=30 h:=30 c:=newCnv(w h) r:=54 d:=asch('.') l:=asch('#') c.fill(d)
-  @i 0..c.h: @ j 0..c.w: ?rng() as int%2: *c.at(i j)=l
-  @k 0..500: nc:=newCnv(w h) nc.fill(d)
-    @i 1..c.h-1: @ j 1..c.h-1: n:=0
-      @x, -1..2: @ y, -1..2: ? !(y==0&&x==0)&&c.get(i+x j+y)==l: &n+=1
-      ? *c.at(i j)==l&&n==2||n==3: *nc.at(i j)=l
-      | n==3: *nc.at(i j)=l
-    c = nc, cls(), out &c, sleep(50)
-```
-
-- [std](./std) (most code here)
-- [examples](./examples) (less code here)
-- More later...
+Zhaba-script memory model is similar to the C memory model, which consists of stack, heap and pointers to manage it. In general: stack is faster and used for storing variables, while heap is slower, but can be accessed in any part of a program thought pointers.
