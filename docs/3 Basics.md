@@ -88,10 +88,10 @@ fn main
 
 # Types
 
-# Literals
-
 ## String
 
 ## Int
+
+## Bool
 
 # Input and output
