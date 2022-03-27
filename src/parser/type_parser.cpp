@@ -126,9 +126,6 @@ Type parse(tokeniter &token, const ScopeInfo &parent_scope) {
   } else if (is_generic) {
     throw ParserError(*token, "Generic type parsing failed, expected '<'");
   }
-  if (zhdata.flags["show_type"]) {
-    std::cout << res.toString() << std::endl;
-  }
   return res;
 }
 std::vector<Type> parseTemplate(tokeniter &token, const ScopeInfo &scope) {

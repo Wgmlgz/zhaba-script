@@ -28,6 +28,10 @@ void preprocess(std::filesystem::path file_path, std::vector<Token> &res,
   ss << fin.rdbuf();
   std::string file_data = ss.str();
   fin >> file_data;
+
+  if (depth == 0 && zhdata.flags["show_original"])
+    std::cout << file_data << std::endl;
+
   file_data = "\n" + file_data + "\n";
   fin.close();
   zhdata.included_files.push_back(file_data);
