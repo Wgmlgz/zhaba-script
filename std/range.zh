@@ -18,9 +18,22 @@ impl Range
   fn int begin: <<< slf.begin
   fn int end: <<< slf.end
 
+/**  begin..end */
 op 9 Range .. int begin int end
   Range slf
   slf.begin = begin
   slf.end = end
   <<< slf
+
+/**  begin.. */
+rop Range .. int begin: <<< begin..9223372036854775807
+
+/**  ..end */
+lop Range .. int end: <<< -9223372036854775807..end
+
+/** int in range */
+op 10 bool == int i Range r
+  ? r.begin < r.end: <<< r.begin <= i && i < r.end
+  \ <<< r.end <= i && i < r.begin
+
   
