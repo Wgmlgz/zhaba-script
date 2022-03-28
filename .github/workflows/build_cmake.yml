@@ -41,6 +41,13 @@ jobs:
     steps:
     - uses: actions/checkout@v1
 
+    - name: Install dependencies on windows
+      if: startsWith(matrix.config.os, 'windows')
+      run: |
+        choco install ninja cmake
+        ninja --version
+        cmake --version
+        
     - name: Install dependencies on ubuntu10
       shell: bash
       if: startsWith(matrix.config.name, 'Ubuntu Latest GCC')
