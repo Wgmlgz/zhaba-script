@@ -109,7 +109,7 @@ struct __PROT_ZH_TYPE_Str;
 typedef struct __PROT_ZH_TYPE_Str __ZH_TYPE_Str;
 
 struct __PROT_ZH_TYPE_Out {
-  u8 prikol;
+  bool complex;
 };
 struct __PROT_ZH_TYPE_Range {
   i64 end;
@@ -209,102 +209,113 @@ bool __ZH_BOP__dotcall_dotuneq_i64P_ampersandi64(i64* v197, i64 v198);
 i64 __ZH_BOP__dotcall_dotbegin_RangeP_ampersand(__ZH_TYPE_Range* v199);
 i64 __ZH_BOP__dotcall_dotend_RangeP_ampersand(__ZH_TYPE_Range* v200);
 __ZH_TYPE_Range __ZH_BOP__dot_dot_i64i64(i64 v201, i64 v202);
-__ZH_TYPE_Range __ZH_ROP__dot_dot_i64(i64 v204);
-__ZH_TYPE_Range __ZH_LOP__dot_dot_i64(i64 v205);
-bool __ZH_BOP__equal_equal_i64Range(i64 v206, __ZH_TYPE_Range v207);
-__ZH_TYPE_VecIter_lessi64_greater __ZH_LOP_VecIter_lessi64_greater_i64P(i64* v227);
-void __ZH_BOP__dotcall_dotnext_VecIter_lessi64_greaterP_ampersand(__ZH_TYPE_VecIter_lessi64_greater* v229);
-bool __ZH_BOP__dotcall_dotuneq_VecIter_lessi64_greaterP_ampersandVecIter_lessi64_greater(__ZH_TYPE_VecIter_lessi64_greater* v230, __ZH_TYPE_VecIter_lessi64_greater v231);
-i64* __ZH_LOP__asterisk_VecIter_lessi64_greater(__ZH_TYPE_VecIter_lessi64_greater v232);
-i64* __ZH_BOP__dotcall_dotatP_Vec_lessi64_greaterP_ampersandi64(__ZH_TYPE_Vec_lessi64_greater* v208, i64 v209);
-i64* __ZH_BOP__dotcall_dotat_Vec_lessi64_greaterP_ampersandi64(__ZH_TYPE_Vec_lessi64_greater* v210, i64 v211);
-void __ZH_BOP__dotcall_dotprint_Vec_lessi64_greaterP_ampersand(__ZH_TYPE_Vec_lessi64_greater* v212);
-void __ZH_BOP__dotcall_dotdouble_capacity_Vec_lessi64_greaterP_ampersand(__ZH_TYPE_Vec_lessi64_greater* v217);
-void __ZH_BOP__dotcall_dotpush_back_Vec_lessi64_greaterP_ampersandi64(__ZH_TYPE_Vec_lessi64_greater* v224, i64 v225);
-void __ZH_BOP__dotcall_dotpop_back_Vec_lessi64_greaterP_ampersand(__ZH_TYPE_Vec_lessi64_greater* v226);
-__ZH_TYPE_VecIter_lessi64_greater __ZH_BOP__dotcall_dotbegin_Vec_lessi64_greaterP_ampersand(__ZH_TYPE_Vec_lessi64_greater* v233);
-__ZH_TYPE_VecIter_lessi64_greater __ZH_BOP__dotcall_dotend_Vec_lessi64_greaterP_ampersand(__ZH_TYPE_Vec_lessi64_greater* v234);
-i64* __ZH_BOP__dotcall_dotfront_Vec_lessi64_greaterP_ampersand(__ZH_TYPE_Vec_lessi64_greater* v235);
-i64* __ZH_BOP__dotcall_dotback_Vec_lessi64_greaterP_ampersand(__ZH_TYPE_Vec_lessi64_greater* v236);
-void __ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP_ampersand(__ZH_TYPE_Vec_lessi64_greater* v237);
-__ZH_TYPE_Vec_lessi64_greater __ZH_LOP_Vec_lessi64_greater_i64(i64 v238);
-__ZH_TYPE_Vec_lessi64_greater __ZH_LOP_Vec_lessi64_greater_i64i64(i64 v240, i64 v241);
+__ZH_TYPE_Range __ZH_BOP__dot_dot_minus_i64i64(i64 v204, i64 v205);
+i64 __ZH_LOP_rangeMin_();
+i64 __ZH_LOP_rangeMax_();
+__ZH_TYPE_Range __ZH_ROP__dot_dot_i64(i64 v206);
+__ZH_TYPE_Range __ZH_LOP__dot_dot_i64(i64 v207);
+__ZH_TYPE_Range __ZH_LOP__dot_dot_minus_i64(i64 v208);
+__ZH_TYPE_Range __ZH_LOP__minus_Range(__ZH_TYPE_Range v209);
+bool __ZH_BOP__equal_equal_i64Range(i64 v210, __ZH_TYPE_Range v211);
+__ZH_TYPE_VecIter_lessi64_greater __ZH_LOP_VecIter_lessi64_greater_i64P(i64* v231);
+void __ZH_BOP__dotcall_dotnext_VecIter_lessi64_greaterP_ampersand(__ZH_TYPE_VecIter_lessi64_greater* v233);
+bool __ZH_BOP__dotcall_dotuneq_VecIter_lessi64_greaterP_ampersandVecIter_lessi64_greater(__ZH_TYPE_VecIter_lessi64_greater* v234, __ZH_TYPE_VecIter_lessi64_greater v235);
+i64* __ZH_LOP__asterisk_VecIter_lessi64_greater(__ZH_TYPE_VecIter_lessi64_greater v236);
+i64* __ZH_BOP__dotcall_dotatP_Vec_lessi64_greaterP_ampersandi64(__ZH_TYPE_Vec_lessi64_greater* v212, i64 v213);
+i64* __ZH_BOP__dotcall_dotat_Vec_lessi64_greaterP_ampersandi64(__ZH_TYPE_Vec_lessi64_greater* v214, i64 v215);
+void __ZH_BOP__dotcall_dotprint_Vec_lessi64_greaterP_ampersand(__ZH_TYPE_Vec_lessi64_greater* v216);
+void __ZH_BOP__dotcall_dotdouble_capacity_Vec_lessi64_greaterP_ampersand(__ZH_TYPE_Vec_lessi64_greater* v221);
+void __ZH_BOP__dotcall_dotpush_back_Vec_lessi64_greaterP_ampersandi64(__ZH_TYPE_Vec_lessi64_greater* v228, i64 v229);
+void __ZH_BOP__dotcall_dotpop_back_Vec_lessi64_greaterP_ampersand(__ZH_TYPE_Vec_lessi64_greater* v230);
+__ZH_TYPE_VecIter_lessi64_greater __ZH_BOP__dotcall_dotbegin_Vec_lessi64_greaterP_ampersand(__ZH_TYPE_Vec_lessi64_greater* v237);
+__ZH_TYPE_VecIter_lessi64_greater __ZH_BOP__dotcall_dotend_Vec_lessi64_greaterP_ampersand(__ZH_TYPE_Vec_lessi64_greater* v238);
+i64* __ZH_BOP__dotcall_dotfront_Vec_lessi64_greaterP_ampersand(__ZH_TYPE_Vec_lessi64_greater* v239);
+i64* __ZH_BOP__dotcall_dotback_Vec_lessi64_greaterP_ampersand(__ZH_TYPE_Vec_lessi64_greater* v240);
+void __ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP_ampersand(__ZH_TYPE_Vec_lessi64_greater* v241);
+__ZH_TYPE_Vec_lessi64_greater __ZH_LOP_Vec_lessi64_greater_i64(i64 v242);
+__ZH_TYPE_Vec_lessi64_greater __ZH_LOP_Vec_lessi64_greater_i64i64(i64 v244, i64 v245);
 __ZH_TYPE_Vec_lessi64_greater __ZH_LOP_Vec_lessi64_greater_();
-__ZH_TYPE_Vec_lessi64_greater __ZH_LOP_Vec_lessi64_greater_Vec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v247);
-void __ZH_BOP__plus_equal_Vec_lessi64_greaterRi64(__ZH_TYPE_Vec_lessi64_greater* v253, i64 v254);
-void __ZH_BOP__plus_equal_Vec_lessi64_greaterRVec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v255, __ZH_TYPE_Vec_lessi64_greater* v256);
-void __ZH_LOP_put_Vec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v261);
-void __ZH_LOP_out_Vec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v262);
-__ZH_TYPE_Out __ZH_ROP__less_Vec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v263);
-__ZH_TYPE_Out __ZH_LOP__less_Vec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v264);
-__ZH_TYPE_Out __ZH_BOP__less_OutVec_lessi64_greaterR(__ZH_TYPE_Out v265, __ZH_TYPE_Vec_lessi64_greater* v266);
-__ZH_TYPE_Vec_lessi64_greater __ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterP_ampersandi64i64(__ZH_TYPE_Vec_lessi64_greater* v267, i64 v268, i64 v269);
-void __ZH_LOP_swap_i64Pi64P(i64* v275, i64* v276);
-i64* __ZH_LOP_partition_i64Pi64P(i64* v278, i64* v279);
-void __ZH_LOP_qsort_i64Pi64P(i64* v283, i64* v284);
-void __ZH_BOP__dotcall_dotsort_Vec_lessi64_greaterP_ampersand(__ZH_TYPE_Vec_lessi64_greater* v288);
-void __ZH_LOP_sort_Vec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v291);
-__ZH_TYPE_Vec_lessi64_greater __ZH_LOP_iota_i64i64(i64 v292, i64 v293);
-char __ZH_BOP__dotcall_dotat_strP_ampersandi64(str* v299, i64 v300);
-char __ZH_BOP__caret_stri64(str v301, i64 v302);
-bool __ZH_BOP__equal_equal_charstr(char v303, str v304);
-__ZH_TYPE_VecIter_lesschar_greater __ZH_LOP_VecIter_lesschar_greater_charP(char* v324);
-void __ZH_BOP__dotcall_dotnext_VecIter_lesschar_greaterP_ampersand(__ZH_TYPE_VecIter_lesschar_greater* v326);
-bool __ZH_BOP__dotcall_dotuneq_VecIter_lesschar_greaterP_ampersandVecIter_lesschar_greater(__ZH_TYPE_VecIter_lesschar_greater* v327, __ZH_TYPE_VecIter_lesschar_greater v328);
-char* __ZH_LOP__asterisk_VecIter_lesschar_greater(__ZH_TYPE_VecIter_lesschar_greater v329);
-char* __ZH_BOP__dotcall_dotatP_Vec_lesschar_greaterP_ampersandi64(__ZH_TYPE_Vec_lesschar_greater* v305, i64 v306);
-char* __ZH_BOP__dotcall_dotat_Vec_lesschar_greaterP_ampersandi64(__ZH_TYPE_Vec_lesschar_greater* v307, i64 v308);
-void __ZH_BOP__dotcall_dotprint_Vec_lesschar_greaterP_ampersand(__ZH_TYPE_Vec_lesschar_greater* v309);
-void __ZH_BOP__dotcall_dotdouble_capacity_Vec_lesschar_greaterP_ampersand(__ZH_TYPE_Vec_lesschar_greater* v314);
-void __ZH_BOP__dotcall_dotpush_back_Vec_lesschar_greaterP_ampersandchar(__ZH_TYPE_Vec_lesschar_greater* v321, char v322);
-void __ZH_BOP__dotcall_dotpop_back_Vec_lesschar_greaterP_ampersand(__ZH_TYPE_Vec_lesschar_greater* v323);
-__ZH_TYPE_VecIter_lesschar_greater __ZH_BOP__dotcall_dotbegin_Vec_lesschar_greaterP_ampersand(__ZH_TYPE_Vec_lesschar_greater* v330);
-__ZH_TYPE_VecIter_lesschar_greater __ZH_BOP__dotcall_dotend_Vec_lesschar_greaterP_ampersand(__ZH_TYPE_Vec_lesschar_greater* v331);
-char* __ZH_BOP__dotcall_dotfront_Vec_lesschar_greaterP_ampersand(__ZH_TYPE_Vec_lesschar_greater* v332);
-char* __ZH_BOP__dotcall_dotback_Vec_lesschar_greaterP_ampersand(__ZH_TYPE_Vec_lesschar_greater* v333);
-void __ZH_BOP__dotcall_dotdtor_Vec_lesschar_greaterP_ampersand(__ZH_TYPE_Vec_lesschar_greater* v334);
-__ZH_TYPE_Vec_lesschar_greater __ZH_LOP_Vec_lesschar_greater_i64(i64 v335);
-__ZH_TYPE_Vec_lesschar_greater __ZH_LOP_Vec_lesschar_greater_i64char(i64 v337, char v338);
+__ZH_TYPE_Vec_lessi64_greater __ZH_LOP_Vec_lessi64_greater_Vec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v251);
+void __ZH_BOP__plus_equal_Vec_lessi64_greaterRi64(__ZH_TYPE_Vec_lessi64_greater* v257, i64 v258);
+void __ZH_BOP__plus_equal_Vec_lessi64_greaterRVec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v259, __ZH_TYPE_Vec_lessi64_greater* v260);
+void __ZH_LOP_put_Vec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v265);
+void __ZH_LOP_out_Vec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v266);
+__ZH_TYPE_Out __ZH_ROP__less_Vec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v267);
+__ZH_TYPE_Out __ZH_LOP__less_Vec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v268);
+__ZH_TYPE_Out __ZH_BOP__less_OutVec_lessi64_greaterR(__ZH_TYPE_Out v269, __ZH_TYPE_Vec_lessi64_greater* v270);
+i64* __ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterP_ampersandi64(__ZH_TYPE_Vec_lessi64_greater* v271, i64 v272);
+__ZH_TYPE_Vec_lessi64_greater __ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterP_ampersandi64i64(__ZH_TYPE_Vec_lessi64_greater* v273, i64 v274, i64 v275);
+__ZH_TYPE_Vec_lessi64_greater __ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterP_ampersandRange(__ZH_TYPE_Vec_lessi64_greater* v281, __ZH_TYPE_Range v282);
+__ZH_TYPE_Vec_lessi64_greater __ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterP_ampersand(__ZH_TYPE_Vec_lessi64_greater* v285);
+bool __ZH_BOP__less_Vec_lessi64_greaterRVec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v286, __ZH_TYPE_Vec_lessi64_greater* v287);
+void __ZH_LOP_swap_i64Pi64P(i64* v288, i64* v289);
+i64* __ZH_LOP_partition_i64Pi64P(i64* v291, i64* v292);
+void __ZH_LOP_qsort_i64Pi64P(i64* v296, i64* v297);
+void __ZH_BOP__dotcall_dotsort_Vec_lessi64_greaterP_ampersand(__ZH_TYPE_Vec_lessi64_greater* v301);
+void __ZH_LOP_sort_Vec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v304);
+__ZH_TYPE_Vec_lessi64_greater __ZH_LOP_iota_i64i64(i64 v305, i64 v306);
+__ZH_TYPE_Vec_lessi64_greater __ZH_BOP__dotcall_dotcall_RangeP_ampersand(__ZH_TYPE_Range* v312);
+char __ZH_BOP__dotcall_dotat_strP_ampersandi64(str* v318, i64 v319);
+char __ZH_BOP__caret_stri64(str v320, i64 v321);
+bool __ZH_BOP__equal_equal_charstr(char v322, str v323);
+__ZH_TYPE_VecIter_lesschar_greater __ZH_LOP_VecIter_lesschar_greater_charP(char* v343);
+void __ZH_BOP__dotcall_dotnext_VecIter_lesschar_greaterP_ampersand(__ZH_TYPE_VecIter_lesschar_greater* v345);
+bool __ZH_BOP__dotcall_dotuneq_VecIter_lesschar_greaterP_ampersandVecIter_lesschar_greater(__ZH_TYPE_VecIter_lesschar_greater* v346, __ZH_TYPE_VecIter_lesschar_greater v347);
+char* __ZH_LOP__asterisk_VecIter_lesschar_greater(__ZH_TYPE_VecIter_lesschar_greater v348);
+char* __ZH_BOP__dotcall_dotatP_Vec_lesschar_greaterP_ampersandi64(__ZH_TYPE_Vec_lesschar_greater* v324, i64 v325);
+char* __ZH_BOP__dotcall_dotat_Vec_lesschar_greaterP_ampersandi64(__ZH_TYPE_Vec_lesschar_greater* v326, i64 v327);
+void __ZH_BOP__dotcall_dotprint_Vec_lesschar_greaterP_ampersand(__ZH_TYPE_Vec_lesschar_greater* v328);
+void __ZH_BOP__dotcall_dotdouble_capacity_Vec_lesschar_greaterP_ampersand(__ZH_TYPE_Vec_lesschar_greater* v333);
+void __ZH_BOP__dotcall_dotpush_back_Vec_lesschar_greaterP_ampersandchar(__ZH_TYPE_Vec_lesschar_greater* v340, char v341);
+void __ZH_BOP__dotcall_dotpop_back_Vec_lesschar_greaterP_ampersand(__ZH_TYPE_Vec_lesschar_greater* v342);
+__ZH_TYPE_VecIter_lesschar_greater __ZH_BOP__dotcall_dotbegin_Vec_lesschar_greaterP_ampersand(__ZH_TYPE_Vec_lesschar_greater* v349);
+__ZH_TYPE_VecIter_lesschar_greater __ZH_BOP__dotcall_dotend_Vec_lesschar_greaterP_ampersand(__ZH_TYPE_Vec_lesschar_greater* v350);
+char* __ZH_BOP__dotcall_dotfront_Vec_lesschar_greaterP_ampersand(__ZH_TYPE_Vec_lesschar_greater* v351);
+char* __ZH_BOP__dotcall_dotback_Vec_lesschar_greaterP_ampersand(__ZH_TYPE_Vec_lesschar_greater* v352);
+void __ZH_BOP__dotcall_dotdtor_Vec_lesschar_greaterP_ampersand(__ZH_TYPE_Vec_lesschar_greater* v353);
+__ZH_TYPE_Vec_lesschar_greater __ZH_LOP_Vec_lesschar_greater_i64(i64 v354);
+__ZH_TYPE_Vec_lesschar_greater __ZH_LOP_Vec_lesschar_greater_i64char(i64 v356, char v357);
 __ZH_TYPE_Vec_lesschar_greater __ZH_LOP_Vec_lesschar_greater_();
-__ZH_TYPE_Vec_lesschar_greater __ZH_LOP_Vec_lesschar_greater_Vec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v344);
-void __ZH_BOP__plus_equal_Vec_lesschar_greaterRchar(__ZH_TYPE_Vec_lesschar_greater* v350, char v351);
-void __ZH_BOP__plus_equal_Vec_lesschar_greaterRVec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v352, __ZH_TYPE_Vec_lesschar_greater* v353);
-void __ZH_LOP_put_Vec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v358);
-void __ZH_LOP_out_Vec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v359);
-__ZH_TYPE_Out __ZH_ROP__less_Vec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v360);
-__ZH_TYPE_Out __ZH_LOP__less_Vec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v361);
-__ZH_TYPE_Out __ZH_BOP__less_OutVec_lesschar_greaterR(__ZH_TYPE_Out v362, __ZH_TYPE_Vec_lesschar_greater* v363);
-__ZH_TYPE_Vec_lesschar_greater __ZH_BOP__dotcall_dotsub_Vec_lesschar_greaterP_ampersandi64i64(__ZH_TYPE_Vec_lesschar_greater* v364, i64 v365, i64 v366);
-void __ZH_LOP_swap_charPcharP(char* v372, char* v373);
-char* __ZH_LOP_partition_charPcharP(char* v375, char* v376);
-void __ZH_LOP_qsort_charPcharP(char* v380, char* v381);
-void __ZH_BOP__dotcall_dotsort_Vec_lesschar_greaterP_ampersand(__ZH_TYPE_Vec_lesschar_greater* v385);
-void __ZH_LOP_sort_Vec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v388);
+__ZH_TYPE_Vec_lesschar_greater __ZH_LOP_Vec_lesschar_greater_Vec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v363);
+void __ZH_BOP__plus_equal_Vec_lesschar_greaterRchar(__ZH_TYPE_Vec_lesschar_greater* v369, char v370);
+void __ZH_BOP__plus_equal_Vec_lesschar_greaterRVec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v371, __ZH_TYPE_Vec_lesschar_greater* v372);
+void __ZH_LOP_put_Vec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v377);
+void __ZH_LOP_out_Vec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v378);
+__ZH_TYPE_Out __ZH_ROP__less_Vec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v379);
+__ZH_TYPE_Out __ZH_LOP__less_Vec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v380);
+__ZH_TYPE_Out __ZH_BOP__less_OutVec_lesschar_greaterR(__ZH_TYPE_Out v381, __ZH_TYPE_Vec_lesschar_greater* v382);
+char* __ZH_BOP__dotcall_dotsub_Vec_lesschar_greaterP_ampersandi64(__ZH_TYPE_Vec_lesschar_greater* v383, i64 v384);
+__ZH_TYPE_Vec_lesschar_greater __ZH_BOP__dotcall_dotsub_Vec_lesschar_greaterP_ampersandi64i64(__ZH_TYPE_Vec_lesschar_greater* v385, i64 v386, i64 v387);
+__ZH_TYPE_Vec_lesschar_greater __ZH_BOP__dotcall_dotsub_Vec_lesschar_greaterP_ampersandRange(__ZH_TYPE_Vec_lesschar_greater* v393, __ZH_TYPE_Range v394);
+__ZH_TYPE_Vec_lesschar_greater __ZH_BOP__dotcall_dotsub_Vec_lesschar_greaterP_ampersand(__ZH_TYPE_Vec_lesschar_greater* v397);
+bool __ZH_BOP__less_Vec_lesschar_greaterRVec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v398, __ZH_TYPE_Vec_lesschar_greater* v399);
+void __ZH_LOP_swap_charPcharP(char* v400, char* v401);
+char* __ZH_LOP_partition_charPcharP(char* v403, char* v404);
+void __ZH_LOP_qsort_charPcharP(char* v408, char* v409);
+void __ZH_BOP__dotcall_dotsort_Vec_lesschar_greaterP_ampersand(__ZH_TYPE_Vec_lesschar_greater* v413);
+void __ZH_LOP_sort_Vec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v416);
 __ZH_TYPE_Str __ZH_LOP_Str_();
-void __ZH_BOP__dotcall_dotdtor_StrP_ampersand(__ZH_TYPE_Str* v390);
-str __ZH_BOP__dotcall_dotcstr_StrP_ampersand(__ZH_TYPE_Str* v391);
-char __ZH_BOP__dotcall_dotat_StrP_ampersandi64(__ZH_TYPE_Str* v393, i64 v394);
-char* __ZH_BOP__dotcall_dotatP_StrP_ampersandi64(__ZH_TYPE_Str* v395, i64 v396);
-void __ZH_BOP__dotcall_dotpush_back_StrP_ampersandchar(__ZH_TYPE_Str* v397, char v398);
-void __ZH_BOP__dotcall_dotpop_back_StrP_ampersand(__ZH_TYPE_Str* v399);
-__ZH_TYPE_Str __ZH_LOP_Str_str(str v400);
-i64 __ZH_LOP_len_str(str v402);
-void __ZH_LOP_out_StrR(__ZH_TYPE_Str* v404);
-void __ZH_LOP_put_StrR(__ZH_TYPE_Str* v405);
-void __ZH_BOP__plus_equal_StrRchar(__ZH_TYPE_Str* v406, char v407);
-void __ZH_BOP__plus_equal_StrRStrR(__ZH_TYPE_Str* v408, __ZH_TYPE_Str* v409);
-void __ZH_BOP__plus_equal_StrRstr(__ZH_TYPE_Str* v415, str v416);
-__ZH_TYPE_Out __ZH_ROP__less_StrR(__ZH_TYPE_Str* v422);
-__ZH_TYPE_Out __ZH_LOP__less_StrR(__ZH_TYPE_Str* v423);
-__ZH_TYPE_Out __ZH_BOP__less_OutStrR(__ZH_TYPE_Out v424, __ZH_TYPE_Str* v425);
+void __ZH_BOP__dotcall_dotdtor_StrP_ampersand(__ZH_TYPE_Str* v418);
+str __ZH_BOP__dotcall_dotcstr_StrP_ampersand(__ZH_TYPE_Str* v419);
+char __ZH_BOP__dotcall_dotat_StrP_ampersandi64(__ZH_TYPE_Str* v421, i64 v422);
+char* __ZH_BOP__dotcall_dotatP_StrP_ampersandi64(__ZH_TYPE_Str* v423, i64 v424);
+void __ZH_BOP__dotcall_dotpush_back_StrP_ampersandchar(__ZH_TYPE_Str* v425, char v426);
+void __ZH_BOP__dotcall_dotpop_back_StrP_ampersand(__ZH_TYPE_Str* v427);
+__ZH_TYPE_Str __ZH_LOP_Str_str(str v428);
+i64 __ZH_LOP_len_str(str v430);
+void __ZH_LOP_out_StrR(__ZH_TYPE_Str* v432);
+void __ZH_LOP_put_StrR(__ZH_TYPE_Str* v433);
+void __ZH_BOP__plus_equal_StrRchar(__ZH_TYPE_Str* v434, char v435);
+void __ZH_BOP__plus_equal_StrRStrR(__ZH_TYPE_Str* v436, __ZH_TYPE_Str* v437);
+void __ZH_BOP__plus_equal_StrRstr(__ZH_TYPE_Str* v443, str v444);
+__ZH_TYPE_Out __ZH_ROP__less_StrR(__ZH_TYPE_Str* v450);
+__ZH_TYPE_Out __ZH_LOP__less_StrR(__ZH_TYPE_Str* v451);
+__ZH_TYPE_Out __ZH_BOP__less_OutStrR(__ZH_TYPE_Out v452, __ZH_TYPE_Str* v453);
 __ZH_TYPE_Str __ZH_LOP_frog_escaped_();
 __ZH_TYPE_Str __ZH_LOP_frog_escaped_multiline_();
 str __ZH_LOP_frog_raw_();
 str __ZH_LOP_frog_();
-void __ZH_LOP_brainfuck_str(str v428);
-void __ZH_LOP_aboba_i64(i64 v438);
-i64 __ZH_BOP__dotcall_dotcall_i64P_ampersandi64(i64* v439, i64 v440);
-i64 __ZH_BOP__dotcall_dotsub_i64P_ampersandi64(i64* v441, i64 v442);
+void __ZH_LOP_brainfuck_str(str v456);
 int main(int argc, char *argv[]) ;
 
 i64 __ZH_LOP__plus_i64(i64 v101) {
@@ -583,703 +594,798 @@ __ZH_TYPE_Range __ZH_BOP__dot_dot_i64i64(i64 v201, i64 v202) {
   (((((&(v203))->end))=(v202)));
   return (v203);
 }
-__ZH_TYPE_Range __ZH_ROP__dot_dot_i64(i64 v204) {
-  return (__ZH_BOP__dot_dot_i64i64((v204), (((i64)9223372036854775807))));
+__ZH_TYPE_Range __ZH_BOP__dot_dot_minus_i64i64(i64 v204, i64 v205) {
+  return (__ZH_BOP__dot_dot_i64i64((v204), (__ZH_LOP__minus_i64((v205)))));
 }
-__ZH_TYPE_Range __ZH_LOP__dot_dot_i64(i64 v205) {
-  return (__ZH_BOP__dot_dot_i64i64((__ZH_LOP__minus_i64((((i64)9223372036854775807)))), (v205)));
+i64 __ZH_LOP_rangeMin_() {
+  return (__ZH_LOP__minus_i64((((i64)9223372036854775807))));
 }
-bool __ZH_BOP__equal_equal_i64Range(i64 v206, __ZH_TYPE_Range v207) {
-  if ((((((&(v207))->begin)))<((((&(v207))->end))))) {
-    return (((((((&(v207))->begin)))<=((v206))))&&((((v206))<((((&(v207))->end))))));
+i64 __ZH_LOP_rangeMax_() {
+  return (((i64)9223372036854775807));
+}
+__ZH_TYPE_Range __ZH_ROP__dot_dot_i64(i64 v206) {
+  return (__ZH_BOP__dot_dot_i64i64((v206), (__ZH_LOP_rangeMax_())));
+}
+__ZH_TYPE_Range __ZH_LOP__dot_dot_i64(i64 v207) {
+  return (__ZH_BOP__dot_dot_i64i64((__ZH_LOP_rangeMin_()), (v207)));
+}
+__ZH_TYPE_Range __ZH_LOP__dot_dot_minus_i64(i64 v208) {
+  return (__ZH_BOP__dot_dot_i64i64((__ZH_LOP_rangeMin_()), (__ZH_LOP__minus_i64((v208)))));
+}
+__ZH_TYPE_Range __ZH_LOP__minus_Range(__ZH_TYPE_Range v209) {
+  return (__ZH_BOP__dot_dot_i64i64((__ZH_LOP__minus_i64((((&(v209))->begin)))), (((&(v209))->end))));
+}
+bool __ZH_BOP__equal_equal_i64Range(i64 v210, __ZH_TYPE_Range v211) {
+  if ((((((&(v211))->begin)))<((((&(v211))->end))))) {
+    return (((((((&(v211))->begin)))<=((v210))))&&((((v210))<((((&(v211))->end))))));
   } else {
-    return (((((((&(v207))->end)))<=((v206))))&&((((v206))<((((&(v207))->begin))))));
+    return (((((((&(v211))->end)))<=((v210))))&&((((v210))<((((&(v211))->begin))))));
   }
 }
-__ZH_TYPE_VecIter_lessi64_greater __ZH_LOP_VecIter_lessi64_greater_i64P(i64* v227) {
-  __ZH_TYPE_VecIter_lessi64_greater v228;
-  (((((&(v228))->ptr))=(v227)));
-  return (v228);
+__ZH_TYPE_VecIter_lessi64_greater __ZH_LOP_VecIter_lessi64_greater_i64P(i64* v231) {
+  __ZH_TYPE_VecIter_lessi64_greater v232;
+  (((((&(v232))->ptr))=(v231)));
+  return (v232);
 }
-void __ZH_BOP__dotcall_dotnext_VecIter_lessi64_greaterP_ampersand(__ZH_TYPE_VecIter_lessi64_greater* v229) {
-  ((((((v229))->ptr))=(((i64*)(((((i64)((((v229))->ptr)))))+((((((i64)1)))*((((i64)8))))))))));
+void __ZH_BOP__dotcall_dotnext_VecIter_lessi64_greaterP_ampersand(__ZH_TYPE_VecIter_lessi64_greater* v233) {
+  ((((((v233))->ptr))=(((i64*)(((((i64)((((v233))->ptr)))))+((((((i64)1)))*((((i64)8))))))))));
 }
-bool __ZH_BOP__dotcall_dotuneq_VecIter_lessi64_greaterP_ampersandVecIter_lessi64_greater(__ZH_TYPE_VecIter_lessi64_greater* v230, __ZH_TYPE_VecIter_lessi64_greater v231) {
-  return (((((i64)((((v230))->ptr)))))!=((((i64)(((&(v231))->ptr))))));
+bool __ZH_BOP__dotcall_dotuneq_VecIter_lessi64_greaterP_ampersandVecIter_lessi64_greater(__ZH_TYPE_VecIter_lessi64_greater* v234, __ZH_TYPE_VecIter_lessi64_greater v235) {
+  return (((((i64)((((v234))->ptr)))))!=((((i64)(((&(v235))->ptr))))));
 }
-i64* __ZH_LOP__asterisk_VecIter_lessi64_greater(__ZH_TYPE_VecIter_lessi64_greater v232) {
-  return &(*((((&(v232))->ptr))));
+i64* __ZH_LOP__asterisk_VecIter_lessi64_greater(__ZH_TYPE_VecIter_lessi64_greater v236) {
+  return &(*((((&(v236))->ptr))));
 }
-i64* __ZH_BOP__dotcall_dotatP_Vec_lessi64_greaterP_ampersandi64(__ZH_TYPE_Vec_lessi64_greater* v208, i64 v209) {
-  return (((i64*)(((i64*)(((((i64)((((v208))->head)))))+((((v209))*((((i64)8))))))))));
+i64* __ZH_BOP__dotcall_dotatP_Vec_lessi64_greaterP_ampersandi64(__ZH_TYPE_Vec_lessi64_greater* v212, i64 v213) {
+  return (((i64*)(((i64*)(((((i64)((((v212))->head)))))+((((v213))*((((i64)8))))))))));
 }
-i64* __ZH_BOP__dotcall_dotat_Vec_lessi64_greaterP_ampersandi64(__ZH_TYPE_Vec_lessi64_greater* v210, i64 v211) {
-  return &(*((__ZH_BOP__dotcall_dotatP_Vec_lessi64_greaterP_ampersandi64((v210), (v211)))));
+i64* __ZH_BOP__dotcall_dotat_Vec_lessi64_greaterP_ampersandi64(__ZH_TYPE_Vec_lessi64_greater* v214, i64 v215) {
+  return &(*((__ZH_BOP__dotcall_dotatP_Vec_lessi64_greaterP_ampersandi64((v214), (v215)))));
 }
-void __ZH_BOP__dotcall_dotprint_Vec_lessi64_greaterP_ampersand(__ZH_TYPE_Vec_lessi64_greater* v212) {
+void __ZH_BOP__dotcall_dotprint_Vec_lessi64_greaterP_ampersand(__ZH_TYPE_Vec_lessi64_greater* v216) {
   (printf("%s", ("[")));
   {
-      i64 v216;
-      i64 v215;
-      i64 v214;
-      __ZH_TYPE_Range v213;
-      (((v213)=(__ZH_BOP__dot_dot_i64i64((((i64)0)), ((((v212))->size))))));
-      (((v214)=(__ZH_BOP__dotcall_dotbegin_RangeP_ampersand((&((v213)))))));
-      (((v215)=(__ZH_BOP__dotcall_dotend_RangeP_ampersand((&((v213)))))));
-      (((v216)=(v214)));
-      while ((__ZH_BOP__dotcall_dotuneq_i64P_ampersandi64((&((v216))), (v215)))) {
-        if ((!((!((v216)))))) {
+      i64 v220;
+      i64 v219;
+      i64 v218;
+      __ZH_TYPE_Range v217;
+      (((v217)=(__ZH_BOP__dot_dot_i64i64((((i64)0)), ((((v216))->size))))));
+      (((v218)=(__ZH_BOP__dotcall_dotbegin_RangeP_ampersand((&((v217)))))));
+      (((v219)=(__ZH_BOP__dotcall_dotend_RangeP_ampersand((&((v217)))))));
+      (((v220)=(v218)));
+      while ((__ZH_BOP__dotcall_dotuneq_i64P_ampersandi64((&((v220))), (v219)))) {
+        if ((!((!((v220)))))) {
           (printf("%s", (" ")));
         }
-        (printf("%lld", (*((__ZH_BOP__dotcall_dotatP_Vec_lessi64_greaterP_ampersandi64((v212), (v216)))))));
-        (__ZH_BOP__dotcall_dotnext_i64P_ampersand((&((v216)))));
+        (printf("%lld", (*((__ZH_BOP__dotcall_dotatP_Vec_lessi64_greaterP_ampersandi64((v216), (v220)))))));
+        (__ZH_BOP__dotcall_dotnext_i64P_ampersand((&((v220)))));
       }
     }
   (printf("%s", ("]")));
 }
-void __ZH_BOP__dotcall_dotdouble_capacity_Vec_lessi64_greaterP_ampersand(__ZH_TYPE_Vec_lessi64_greater* v217) {
-  i64 v218;
-  (((v218)=((((v217))->capacity))));
-  if ((((v218))==((((i64)0))))) {
-    (((v218)=(((i64)1))));
-    ((((((v217))->head))=(((i64*)(alloc((((i64)8))))))));
-    ((((((v217))->capacity))=(v218)));
+void __ZH_BOP__dotcall_dotdouble_capacity_Vec_lessi64_greaterP_ampersand(__ZH_TYPE_Vec_lessi64_greater* v221) {
+  i64 v222;
+  (((v222)=((((v221))->capacity))));
+  if ((((v222))==((((i64)0))))) {
+    (((v222)=(((i64)1))));
+    ((((((v221))->head))=(((i64*)(alloc((((i64)8))))))));
+    ((((((v221))->capacity))=(v222)));
   } else {
-    i64* v219;
-    (__ZH_BOP__asterisk_equal_i64Ri64(&(v218), (((i64)2))));
-    (((v219)=(((i64*)(alloc((((v218))*((((i64)8))))))))));
+    i64* v223;
+    (__ZH_BOP__asterisk_equal_i64Ri64(&(v222), (((i64)2))));
+    (((v223)=(((i64*)(alloc((((v222))*((((i64)8))))))))));
     {
-        i64 v223;
-        i64 v222;
-        i64 v221;
-        __ZH_TYPE_Range v220;
-        (((v220)=(__ZH_BOP__dot_dot_i64i64((((i64)0)), ((((v217))->size))))));
-        (((v221)=(__ZH_BOP__dotcall_dotbegin_RangeP_ampersand((&((v220)))))));
-        (((v222)=(__ZH_BOP__dotcall_dotend_RangeP_ampersand((&((v220)))))));
-        (((v223)=(v221)));
-        while ((__ZH_BOP__dotcall_dotuneq_i64P_ampersandi64((&((v223))), (v222)))) {
-          (((*((((i64*)(((((i64)(v219))))+((((v223))*((((i64)8))))))))))=(*__ZH_BOP__dotcall_dotat_Vec_lessi64_greaterP_ampersandi64((v217), (v223)))));
-          (__ZH_BOP__dotcall_dotnext_i64P_ampersand((&((v223)))));
+        i64 v227;
+        i64 v226;
+        i64 v225;
+        __ZH_TYPE_Range v224;
+        (((v224)=(__ZH_BOP__dot_dot_i64i64((((i64)0)), ((((v221))->size))))));
+        (((v225)=(__ZH_BOP__dotcall_dotbegin_RangeP_ampersand((&((v224)))))));
+        (((v226)=(__ZH_BOP__dotcall_dotend_RangeP_ampersand((&((v224)))))));
+        (((v227)=(v225)));
+        while ((__ZH_BOP__dotcall_dotuneq_i64P_ampersandi64((&((v227))), (v226)))) {
+          (((*((((i64*)(((((i64)(v223))))+((((v227))*((((i64)8))))))))))=(*__ZH_BOP__dotcall_dotat_Vec_lessi64_greaterP_ampersandi64((v221), (v227)))));
+          (__ZH_BOP__dotcall_dotnext_i64P_ampersand((&((v227)))));
         }
       }
-    (free((void*) (((i64)((((v217))->head))))));
-    ((((((v217))->head))=(v219)));
+    (free((void*) (((i64)((((v221))->head))))));
+    ((((((v221))->head))=(v223)));
   }
-  ((((((v217))->capacity))=(v218)));
+  ((((((v221))->capacity))=(v222)));
 }
-void __ZH_BOP__dotcall_dotpush_back_Vec_lessi64_greaterP_ampersandi64(__ZH_TYPE_Vec_lessi64_greater* v224, i64 v225) {
-  if (((((((v224))->size)))==(((((v224))->capacity))))) {
-    (__ZH_BOP__dotcall_dotdouble_capacity_Vec_lessi64_greaterP_ampersand((v224)));
+void __ZH_BOP__dotcall_dotpush_back_Vec_lessi64_greaterP_ampersandi64(__ZH_TYPE_Vec_lessi64_greater* v228, i64 v229) {
+  if (((((((v228))->size)))==(((((v228))->capacity))))) {
+    (__ZH_BOP__dotcall_dotdouble_capacity_Vec_lessi64_greaterP_ampersand((v228)));
   }
-  (((*__ZH_BOP__dotcall_dotat_Vec_lessi64_greaterP_ampersandi64((v224), ((((v224))->size))))=(v225)));
-  (__ZH_LOP__plus_plus_i64R(&((((v224))->size))));
+  (((*__ZH_BOP__dotcall_dotat_Vec_lessi64_greaterP_ampersandi64((v228), ((((v228))->size))))=(v229)));
+  (__ZH_LOP__plus_plus_i64R(&((((v228))->size))));
 }
-void __ZH_BOP__dotcall_dotpop_back_Vec_lessi64_greaterP_ampersand(__ZH_TYPE_Vec_lessi64_greater* v226) {
-  (__ZH_LOP__minus_minus_i64R(&((((v226))->size))));
+void __ZH_BOP__dotcall_dotpop_back_Vec_lessi64_greaterP_ampersand(__ZH_TYPE_Vec_lessi64_greater* v230) {
+  (__ZH_LOP__minus_minus_i64R(&((((v230))->size))));
 }
-__ZH_TYPE_VecIter_lessi64_greater __ZH_BOP__dotcall_dotbegin_Vec_lessi64_greaterP_ampersand(__ZH_TYPE_Vec_lessi64_greater* v233) {
-  return (__ZH_LOP_VecIter_lessi64_greater_i64P(((((v233))->head))));
+__ZH_TYPE_VecIter_lessi64_greater __ZH_BOP__dotcall_dotbegin_Vec_lessi64_greaterP_ampersand(__ZH_TYPE_Vec_lessi64_greater* v237) {
+  return (__ZH_LOP_VecIter_lessi64_greater_i64P(((((v237))->head))));
 }
-__ZH_TYPE_VecIter_lessi64_greater __ZH_BOP__dotcall_dotend_Vec_lessi64_greaterP_ampersand(__ZH_TYPE_Vec_lessi64_greater* v234) {
-  return (__ZH_LOP_VecIter_lessi64_greater_i64P((__ZH_BOP__dotcall_dotatP_Vec_lessi64_greaterP_ampersandi64((v234), ((((v234))->size))))));
+__ZH_TYPE_VecIter_lessi64_greater __ZH_BOP__dotcall_dotend_Vec_lessi64_greaterP_ampersand(__ZH_TYPE_Vec_lessi64_greater* v238) {
+  return (__ZH_LOP_VecIter_lessi64_greater_i64P((__ZH_BOP__dotcall_dotatP_Vec_lessi64_greaterP_ampersandi64((v238), ((((v238))->size))))));
 }
-i64* __ZH_BOP__dotcall_dotfront_Vec_lessi64_greaterP_ampersand(__ZH_TYPE_Vec_lessi64_greater* v235) {
-  return &(*(((((v235))->head))));
+i64* __ZH_BOP__dotcall_dotfront_Vec_lessi64_greaterP_ampersand(__ZH_TYPE_Vec_lessi64_greater* v239) {
+  return &(*(((((v239))->head))));
 }
-i64* __ZH_BOP__dotcall_dotback_Vec_lessi64_greaterP_ampersand(__ZH_TYPE_Vec_lessi64_greater* v236) {
-  return &(*((__ZH_BOP__dotcall_dotatP_Vec_lessi64_greaterP_ampersandi64((v236), ((((((v236))->size)))-((((i64)1))))))));
+i64* __ZH_BOP__dotcall_dotback_Vec_lessi64_greaterP_ampersand(__ZH_TYPE_Vec_lessi64_greater* v240) {
+  return &(*((__ZH_BOP__dotcall_dotatP_Vec_lessi64_greaterP_ampersandi64((v240), ((((((v240))->size)))-((((i64)1))))))));
 }
-void __ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP_ampersand(__ZH_TYPE_Vec_lessi64_greater* v237) {
-  if ((!((!((((i64)((((v237))->head))))))))) {
-    (free((void*) (((i64)((((v237))->head))))));
-    ((((((v237))->size))=(((i64)0))));
-    ((((((v237))->capacity))=(((i64)0))));
-    ((((((v237))->head))=(((i64*)(((i64)0))))));
+void __ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP_ampersand(__ZH_TYPE_Vec_lessi64_greater* v241) {
+  if ((!((!((((i64)((((v241))->head))))))))) {
+    (free((void*) (((i64)((((v241))->head))))));
+    ((((((v241))->size))=(((i64)0))));
+    ((((((v241))->capacity))=(((i64)0))));
+    ((((((v241))->head))=(((i64*)(((i64)0))))));
   }
 }
-__ZH_TYPE_Vec_lessi64_greater __ZH_LOP_Vec_lessi64_greater_i64(i64 v238) {
-  __ZH_TYPE_Vec_lessi64_greater v239;
-  (((((&(v239))->head))=(((i64*)(((i64)0))))));
-  (((((&(v239))->size))=(((i64)0))));
-  (((((&(v239))->capacity))=(((i64)0))));
-  while ((((((&(v239))->capacity)))<((v238)))) {
-    (__ZH_BOP__dotcall_dotdouble_capacity_Vec_lessi64_greaterP_ampersand((&((v239)))));
+__ZH_TYPE_Vec_lessi64_greater __ZH_LOP_Vec_lessi64_greater_i64(i64 v242) {
+  __ZH_TYPE_Vec_lessi64_greater v243;
+  (((((&(v243))->head))=(((i64*)(((i64)0))))));
+  (((((&(v243))->size))=(((i64)0))));
+  (((((&(v243))->capacity))=(((i64)0))));
+  while ((((((&(v243))->capacity)))<((v242)))) {
+    (__ZH_BOP__dotcall_dotdouble_capacity_Vec_lessi64_greaterP_ampersand((&((v243)))));
   }
-  (((((&(v239))->size))=(v238)));
-  (((((&(v239))->capacity))=(v238)));
-  return (v239);
-  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP_ampersand((&((v239)))));
+  (((((&(v243))->size))=(v242)));
+  (((((&(v243))->capacity))=(v242)));
+  return (v243);
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP_ampersand((&((v243)))));
 }
-__ZH_TYPE_Vec_lessi64_greater __ZH_LOP_Vec_lessi64_greater_i64i64(i64 v240, i64 v241) {
-  __ZH_TYPE_Vec_lessi64_greater v242;
-  (((v242)=(__ZH_LOP_Vec_lessi64_greater_i64((v240)))));
+__ZH_TYPE_Vec_lessi64_greater __ZH_LOP_Vec_lessi64_greater_i64i64(i64 v244, i64 v245) {
+  __ZH_TYPE_Vec_lessi64_greater v246;
+  (((v246)=(__ZH_LOP_Vec_lessi64_greater_i64((v244)))));
   {
-      i64 v246;
-      i64 v245;
-      i64 v244;
-      __ZH_TYPE_Range v243;
-      (((v243)=(__ZH_BOP__dot_dot_i64i64((((i64)0)), (((&(v242))->size))))));
-      (((v244)=(__ZH_BOP__dotcall_dotbegin_RangeP_ampersand((&((v243)))))));
-      (((v245)=(__ZH_BOP__dotcall_dotend_RangeP_ampersand((&((v243)))))));
-      (((v246)=(v244)));
-      while ((__ZH_BOP__dotcall_dotuneq_i64P_ampersandi64((&((v246))), (v245)))) {
-        (((*__ZH_BOP__dotcall_dotat_Vec_lessi64_greaterP_ampersandi64((&((v242))), (v246)))=(v241)));
-        (__ZH_BOP__dotcall_dotnext_i64P_ampersand((&((v246)))));
+      i64 v250;
+      i64 v249;
+      i64 v248;
+      __ZH_TYPE_Range v247;
+      (((v247)=(__ZH_BOP__dot_dot_i64i64((((i64)0)), (((&(v246))->size))))));
+      (((v248)=(__ZH_BOP__dotcall_dotbegin_RangeP_ampersand((&((v247)))))));
+      (((v249)=(__ZH_BOP__dotcall_dotend_RangeP_ampersand((&((v247)))))));
+      (((v250)=(v248)));
+      while ((__ZH_BOP__dotcall_dotuneq_i64P_ampersandi64((&((v250))), (v249)))) {
+        (((*__ZH_BOP__dotcall_dotat_Vec_lessi64_greaterP_ampersandi64((&((v246))), (v250)))=(v245)));
+        (__ZH_BOP__dotcall_dotnext_i64P_ampersand((&((v250)))));
       }
     }
-  return (v242);
-  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP_ampersand((&((v242)))));
+  return (v246);
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP_ampersand((&((v246)))));
 }
 __ZH_TYPE_Vec_lessi64_greater __ZH_LOP_Vec_lessi64_greater_() {
   return (__ZH_LOP_Vec_lessi64_greater_i64((((i64)0))));
 }
-__ZH_TYPE_Vec_lessi64_greater __ZH_LOP_Vec_lessi64_greater_Vec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v247) {
-  __ZH_TYPE_Vec_lessi64_greater v248;
-  (((v248)=(__ZH_LOP_Vec_lessi64_greater_i64((((&(*v247))->size))))));
+__ZH_TYPE_Vec_lessi64_greater __ZH_LOP_Vec_lessi64_greater_Vec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v251) {
+  __ZH_TYPE_Vec_lessi64_greater v252;
+  (((v252)=(__ZH_LOP_Vec_lessi64_greater_i64((((&(*v251))->size))))));
   {
-      i64 v252;
-      i64 v251;
-      i64 v250;
-      __ZH_TYPE_Range v249;
-      (((v249)=(__ZH_BOP__dot_dot_i64i64((((i64)0)), (((&(*v247))->size))))));
-      (((v250)=(__ZH_BOP__dotcall_dotbegin_RangeP_ampersand((&((v249)))))));
-      (((v251)=(__ZH_BOP__dotcall_dotend_RangeP_ampersand((&((v249)))))));
-      (((v252)=(v250)));
-      while ((__ZH_BOP__dotcall_dotuneq_i64P_ampersandi64((&((v252))), (v251)))) {
-        (((*__ZH_BOP__dotcall_dotat_Vec_lessi64_greaterP_ampersandi64((&((v248))), (v252)))=(*__ZH_BOP__dotcall_dotat_Vec_lessi64_greaterP_ampersandi64((&((*v247))), (v252)))));
-        (__ZH_BOP__dotcall_dotnext_i64P_ampersand((&((v252)))));
+      i64 v256;
+      i64 v255;
+      i64 v254;
+      __ZH_TYPE_Range v253;
+      (((v253)=(__ZH_BOP__dot_dot_i64i64((((i64)0)), (((&(*v251))->size))))));
+      (((v254)=(__ZH_BOP__dotcall_dotbegin_RangeP_ampersand((&((v253)))))));
+      (((v255)=(__ZH_BOP__dotcall_dotend_RangeP_ampersand((&((v253)))))));
+      (((v256)=(v254)));
+      while ((__ZH_BOP__dotcall_dotuneq_i64P_ampersandi64((&((v256))), (v255)))) {
+        (((*__ZH_BOP__dotcall_dotat_Vec_lessi64_greaterP_ampersandi64((&((v252))), (v256)))=(*__ZH_BOP__dotcall_dotat_Vec_lessi64_greaterP_ampersandi64((&((*v251))), (v256)))));
+        (__ZH_BOP__dotcall_dotnext_i64P_ampersand((&((v256)))));
       }
     }
-  return (v248);
-  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP_ampersand((&((v248)))));
+  return (v252);
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP_ampersand((&((v252)))));
 }
-void __ZH_BOP__plus_equal_Vec_lessi64_greaterRi64(__ZH_TYPE_Vec_lessi64_greater* v253, i64 v254) {
-  (__ZH_BOP__dotcall_dotpush_back_Vec_lessi64_greaterP_ampersandi64((&((*v253))), (v254)));
+void __ZH_BOP__plus_equal_Vec_lessi64_greaterRi64(__ZH_TYPE_Vec_lessi64_greater* v257, i64 v258) {
+  (__ZH_BOP__dotcall_dotpush_back_Vec_lessi64_greaterP_ampersandi64((&((*v257))), (v258)));
 }
-void __ZH_BOP__plus_equal_Vec_lessi64_greaterRVec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v255, __ZH_TYPE_Vec_lessi64_greater* v256) {
+void __ZH_BOP__plus_equal_Vec_lessi64_greaterRVec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v259, __ZH_TYPE_Vec_lessi64_greater* v260) {
   {
-      __ZH_TYPE_VecIter_lessi64_greater v260;
-      __ZH_TYPE_VecIter_lessi64_greater v259;
-      __ZH_TYPE_VecIter_lessi64_greater v258;
-      __ZH_TYPE_Vec_lessi64_greater v257;
-      (((v257)=(__ZH_LOP_Vec_lessi64_greater_Vec_lessi64_greaterR(&(*v256)))));
-      (((v258)=(__ZH_BOP__dotcall_dotbegin_Vec_lessi64_greaterP_ampersand((&((v257)))))));
-      (((v259)=(__ZH_BOP__dotcall_dotend_Vec_lessi64_greaterP_ampersand((&((v257)))))));
-      (((v260)=(v258)));
-      while ((__ZH_BOP__dotcall_dotuneq_VecIter_lessi64_greaterP_ampersandVecIter_lessi64_greater((&((v260))), (v259)))) {
-        (__ZH_BOP__dotcall_dotpush_back_Vec_lessi64_greaterP_ampersandi64((&((*v255))), (*__ZH_LOP__asterisk_VecIter_lessi64_greater((v260)))));
-        (__ZH_BOP__dotcall_dotnext_VecIter_lessi64_greaterP_ampersand((&((v260)))));
+      __ZH_TYPE_VecIter_lessi64_greater v264;
+      __ZH_TYPE_VecIter_lessi64_greater v263;
+      __ZH_TYPE_VecIter_lessi64_greater v262;
+      __ZH_TYPE_Vec_lessi64_greater v261;
+      (((v261)=(__ZH_LOP_Vec_lessi64_greater_Vec_lessi64_greaterR(&(*v260)))));
+      (((v262)=(__ZH_BOP__dotcall_dotbegin_Vec_lessi64_greaterP_ampersand((&((v261)))))));
+      (((v263)=(__ZH_BOP__dotcall_dotend_Vec_lessi64_greaterP_ampersand((&((v261)))))));
+      (((v264)=(v262)));
+      while ((__ZH_BOP__dotcall_dotuneq_VecIter_lessi64_greaterP_ampersandVecIter_lessi64_greater((&((v264))), (v263)))) {
+        (__ZH_BOP__dotcall_dotpush_back_Vec_lessi64_greaterP_ampersandi64((&((*v259))), (*__ZH_LOP__asterisk_VecIter_lessi64_greater((v264)))));
+        (__ZH_BOP__dotcall_dotnext_VecIter_lessi64_greaterP_ampersand((&((v264)))));
       }
     }
 }
-void __ZH_LOP_put_Vec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v261) {
-  (__ZH_BOP__dotcall_dotprint_Vec_lessi64_greaterP_ampersand((&((*v261)))));
+void __ZH_LOP_put_Vec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v265) {
+  (__ZH_BOP__dotcall_dotprint_Vec_lessi64_greaterP_ampersand((&((*v265)))));
 }
-void __ZH_LOP_out_Vec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v262) {
-  (__ZH_BOP__dotcall_dotprint_Vec_lessi64_greaterP_ampersand((&((*v262)))));
+void __ZH_LOP_out_Vec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v266) {
+  (__ZH_BOP__dotcall_dotprint_Vec_lessi64_greaterP_ampersand((&((*v266)))));
   (printf("%s\n", ("")));
 }
-__ZH_TYPE_Out __ZH_ROP__less_Vec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v263) {
-  (__ZH_LOP_out_Vec_lessi64_greaterR(&(*v263)));
+__ZH_TYPE_Out __ZH_ROP__less_Vec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v267) {
+  (__ZH_LOP_out_Vec_lessi64_greaterR(&(*v267)));
   return (__ZH_LOP__Out_());
 }
-__ZH_TYPE_Out __ZH_LOP__less_Vec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v264) {
-  ((__ZH_LOP_put_Vec_lessi64_greaterR(&(*v264))), (printf("%s", (" "))));
+__ZH_TYPE_Out __ZH_LOP__less_Vec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v268) {
+  ((__ZH_LOP_put_Vec_lessi64_greaterR(&(*v268))), (printf("%s", (" "))));
   return (__ZH_LOP__Out_());
 }
-__ZH_TYPE_Out __ZH_BOP__less_OutVec_lessi64_greaterR(__ZH_TYPE_Out v265, __ZH_TYPE_Vec_lessi64_greater* v266) {
-  ((__ZH_LOP_put_Vec_lessi64_greaterR(&(*v266))), (printf("%s", (" "))));
+__ZH_TYPE_Out __ZH_BOP__less_OutVec_lessi64_greaterR(__ZH_TYPE_Out v269, __ZH_TYPE_Vec_lessi64_greater* v270) {
+  ((__ZH_LOP_put_Vec_lessi64_greaterR(&(*v270))), (printf("%s", (" "))));
   return (__ZH_LOP__Out_());
 }
-__ZH_TYPE_Vec_lessi64_greater __ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterP_ampersandi64i64(__ZH_TYPE_Vec_lessi64_greater* v267, i64 v268, i64 v269) {
-  __ZH_TYPE_Vec_lessi64_greater v270;
-  (((v270)=(__ZH_LOP_Vec_lessi64_greater_i64((((i64)0))))));
+i64* __ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterP_ampersandi64(__ZH_TYPE_Vec_lessi64_greater* v271, i64 v272) {
+  if ((((v272))<((((i64)0))))) {
+    (__ZH_BOP__plus_equal_i64Ri64(&(v272), ((((v271))->size))));
+  }
+  return &(*__ZH_BOP__dotcall_dotat_Vec_lessi64_greaterP_ampersandi64((v271), (v272)));
+}
+__ZH_TYPE_Vec_lessi64_greater __ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterP_ampersandi64i64(__ZH_TYPE_Vec_lessi64_greater* v273, i64 v274, i64 v275) {
+  __ZH_TYPE_Vec_lessi64_greater v276;
+  (((v276)=(__ZH_LOP_Vec_lessi64_greater_i64((((i64)0))))));
   {
-      i64 v274;
-      i64 v273;
-      i64 v272;
-      __ZH_TYPE_Range v271;
-      (((v271)=(__ZH_BOP__dot_dot_i64i64((v268), (v269)))));
-      (((v272)=(__ZH_BOP__dotcall_dotbegin_RangeP_ampersand((&((v271)))))));
-      (((v273)=(__ZH_BOP__dotcall_dotend_RangeP_ampersand((&((v271)))))));
-      (((v274)=(v272)));
-      while ((__ZH_BOP__dotcall_dotuneq_i64P_ampersandi64((&((v274))), (v273)))) {
-        (__ZH_BOP__dotcall_dotpush_back_Vec_lessi64_greaterP_ampersandi64((&((v270))), (*__ZH_BOP__dotcall_dotat_Vec_lessi64_greaterP_ampersandi64((v267), (v274)))));
-        (__ZH_BOP__dotcall_dotnext_i64P_ampersand((&((v274)))));
+      i64 v280;
+      i64 v279;
+      i64 v278;
+      __ZH_TYPE_Range v277;
+      (((v277)=(__ZH_BOP__dot_dot_i64i64((v274), (v275)))));
+      (((v278)=(__ZH_BOP__dotcall_dotbegin_RangeP_ampersand((&((v277)))))));
+      (((v279)=(__ZH_BOP__dotcall_dotend_RangeP_ampersand((&((v277)))))));
+      (((v280)=(v278)));
+      while ((__ZH_BOP__dotcall_dotuneq_i64P_ampersandi64((&((v280))), (v279)))) {
+        (__ZH_BOP__dotcall_dotpush_back_Vec_lessi64_greaterP_ampersandi64((&((v276))), (*__ZH_BOP__dotcall_dotat_Vec_lessi64_greaterP_ampersandi64((v273), (v280)))));
+        (__ZH_BOP__dotcall_dotnext_i64P_ampersand((&((v280)))));
       }
     }
-  return (v270);
-  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP_ampersand((&((v270)))));
+  return (v276);
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP_ampersand((&((v276)))));
 }
-void __ZH_LOP_swap_i64Pi64P(i64* v275, i64* v276) {
-  i64 v277;
-  (((v277)=(*((v275)))));
-  (((*((v275)))=(*((v276)))));
-  (((*((v276)))=(v277)));
-}
-i64* __ZH_LOP_partition_i64Pi64P(i64* v278, i64* v279) {
-  i64* v282;
-  i64* v281;
-  i64* v280;
-  ((((v280)=(((i64*)(((((i64)(v279))))-((((((i64)1)))*((((i64)8)))))))))), (((v281)=(v278))), (((v282)=(v278))));
-  (((v282)=(v278)));
-  while ((((((i64)(v282))))!=((((i64)(v280)))))) {
-    if ((((*((v282))))<((*((v280)))))) {
-      (__ZH_LOP_swap_i64Pi64P((v281), (v282)));
-      (((v281)=(((i64*)(((((i64)(v281))))+((((((i64)1)))*((((i64)8))))))))));
-    }
-    (((v282)=(((i64*)(((((i64)(v282))))+((((((i64)1)))*((((i64)8))))))))));
+__ZH_TYPE_Vec_lessi64_greater __ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterP_ampersandRange(__ZH_TYPE_Vec_lessi64_greater* v281, __ZH_TYPE_Range v282) {
+  i64 v284;
+  i64 v283;
+  ((((v283)=(((&(v282))->begin)))), (((v284)=(((&(v282))->end)))));
+  if ((((v283))<((((i64)0))))) {
+    (__ZH_BOP__plus_equal_i64Ri64(&(v283), ((((v281))->size))));
   }
-  (__ZH_LOP_swap_i64Pi64P((v281), (v280)));
-  return (v281);
-}
-void __ZH_LOP_qsort_i64Pi64P(i64* v283, i64* v284) {
-  i64 v286;
-  i64 v285;
-  (((v285)=(((((i64)(v284))))-((((i64)(v283)))))));
-  (((v286)=(((i64)8))));
-  if ((((v285))>((v286)))) {
-    i64* v287;
-    (((v287)=(__ZH_LOP_partition_i64Pi64P((v283), (v284)))));
-    (__ZH_LOP_qsort_i64Pi64P((v283), (v287)));
-    (((v287)=(((i64*)(((((i64)(v287))))+((((((i64)1)))*((((i64)8))))))))));
-    (__ZH_LOP_qsort_i64Pi64P((v287), (v284)));
+  if ((((v283))<((((i64)0))))) {
+    (((v283)=(((i64)0))));
   }
+  if ((((v284))<((((i64)0))))) {
+    (__ZH_BOP__plus_equal_i64Ri64(&(v284), ((((v281))->size))));
+  }
+  if ((((v284))>(((((v281))->size))))) {
+    (((v284)=((((v281))->size))));
+  }
+  return (__ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterP_ampersandi64i64((v281), (v283), (v284)));
 }
-void __ZH_BOP__dotcall_dotsort_Vec_lessi64_greaterP_ampersand(__ZH_TYPE_Vec_lessi64_greater* v288) {
-  __ZH_TYPE_VecIter_lessi64_greater v290;
-  __ZH_TYPE_VecIter_lessi64_greater v289;
-  (((v289)=(__ZH_BOP__dotcall_dotbegin_Vec_lessi64_greaterP_ampersand((v288)))));
-  (((v290)=(__ZH_BOP__dotcall_dotend_Vec_lessi64_greaterP_ampersand((v288)))));
-  (__ZH_LOP_qsort_i64Pi64P((((&(v289))->ptr)), (((&(v290))->ptr))));
+__ZH_TYPE_Vec_lessi64_greater __ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterP_ampersand(__ZH_TYPE_Vec_lessi64_greater* v285) {
+  return (__ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterP_ampersandi64i64((v285), (((i64)0)), ((((v285))->size))));
 }
-void __ZH_LOP_sort_Vec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v291) {
-  (__ZH_BOP__dotcall_dotsort_Vec_lessi64_greaterP_ampersand((&((*v291)))));
+bool __ZH_BOP__less_Vec_lessi64_greaterRVec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v286, __ZH_TYPE_Vec_lessi64_greater* v287) {
+  return (((bool)0));
 }
-__ZH_TYPE_Vec_lessi64_greater __ZH_LOP_iota_i64i64(i64 v292, i64 v293) {
-  __ZH_TYPE_Vec_lessi64_greater v294;
-  (((v294)=(__ZH_LOP_Vec_lessi64_greater_i64((((v293))-((v292)))))));
-  {
-      i64 v298;
-      i64 v297;
-      i64 v296;
-      __ZH_TYPE_Range v295;
-      (((v295)=(__ZH_BOP__dot_dot_i64i64((v292), (v293)))));
-      (((v296)=(__ZH_BOP__dotcall_dotbegin_RangeP_ampersand((&((v295)))))));
-      (((v297)=(__ZH_BOP__dotcall_dotend_RangeP_ampersand((&((v295)))))));
-      (((v298)=(v296)));
-      while ((__ZH_BOP__dotcall_dotuneq_i64P_ampersandi64((&((v298))), (v297)))) {
-        (((*__ZH_BOP__dotcall_dotat_Vec_lessi64_greaterP_ampersandi64((&((v294))), (((v298))-((v292)))))=(v298)));
-        (__ZH_BOP__dotcall_dotnext_i64P_ampersand((&((v298)))));
-      }
+void __ZH_LOP_swap_i64Pi64P(i64* v288, i64* v289) {
+  i64 v290;
+  (((v290)=(*((v288)))));
+  (((*((v288)))=(*((v289)))));
+  (((*((v289)))=(v290)));
+}
+i64* __ZH_LOP_partition_i64Pi64P(i64* v291, i64* v292) {
+  i64* v295;
+  i64* v294;
+  i64* v293;
+  ((((v293)=(((i64*)(((((i64)(v292))))-((((((i64)1)))*((((i64)8)))))))))), (((v294)=(v291))), (((v295)=(v291))));
+  (((v295)=(v291)));
+  while ((((((i64)(v295))))!=((((i64)(v293)))))) {
+    if ((((*((v295))))<((*((v293)))))) {
+      (__ZH_LOP_swap_i64Pi64P((v294), (v295)));
+      (((v294)=(((i64*)(((((i64)(v294))))+((((((i64)1)))*((((i64)8))))))))));
     }
+    (((v295)=(((i64*)(((((i64)(v295))))+((((((i64)1)))*((((i64)8))))))))));
+  }
+  (__ZH_LOP_swap_i64Pi64P((v294), (v293)));
   return (v294);
-  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP_ampersand((&((v294)))));
 }
-char __ZH_BOP__dotcall_dotat_strP_ampersandi64(str* v299, i64 v300) {
-  return (*((((char*)(((((i64)(*((v299))))))+((v300)))))));
+void __ZH_LOP_qsort_i64Pi64P(i64* v296, i64* v297) {
+  i64 v299;
+  i64 v298;
+  (((v298)=(((((i64)(v297))))-((((i64)(v296)))))));
+  (((v299)=(((i64)8))));
+  if ((((v298))>((v299)))) {
+    i64* v300;
+    (((v300)=(__ZH_LOP_partition_i64Pi64P((v296), (v297)))));
+    (__ZH_LOP_qsort_i64Pi64P((v296), (v300)));
+    (((v300)=(((i64*)(((((i64)(v300))))+((((((i64)1)))*((((i64)8))))))))));
+    (__ZH_LOP_qsort_i64Pi64P((v300), (v297)));
+  }
 }
-char __ZH_BOP__caret_stri64(str v301, i64 v302) {
-  return (__ZH_BOP__dotcall_dotat_strP_ampersandi64((&((v301))), (v302)));
+void __ZH_BOP__dotcall_dotsort_Vec_lessi64_greaterP_ampersand(__ZH_TYPE_Vec_lessi64_greater* v301) {
+  __ZH_TYPE_VecIter_lessi64_greater v303;
+  __ZH_TYPE_VecIter_lessi64_greater v302;
+  (((v302)=(__ZH_BOP__dotcall_dotbegin_Vec_lessi64_greaterP_ampersand((v301)))));
+  (((v303)=(__ZH_BOP__dotcall_dotend_Vec_lessi64_greaterP_ampersand((v301)))));
+  (__ZH_LOP_qsort_i64Pi64P((((&(v302))->ptr)), (((&(v303))->ptr))));
 }
-bool __ZH_BOP__equal_equal_charstr(char v303, str v304) {
-  return (((v303))==((__ZH_BOP__caret_stri64((v304), (((i64)0))))));
+void __ZH_LOP_sort_Vec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v304) {
+  (__ZH_BOP__dotcall_dotsort_Vec_lessi64_greaterP_ampersand((&((*v304)))));
 }
-__ZH_TYPE_VecIter_lesschar_greater __ZH_LOP_VecIter_lesschar_greater_charP(char* v324) {
-  __ZH_TYPE_VecIter_lesschar_greater v325;
-  (((((&(v325))->ptr))=(v324)));
-  return (v325);
+__ZH_TYPE_Vec_lessi64_greater __ZH_LOP_iota_i64i64(i64 v305, i64 v306) {
+  __ZH_TYPE_Vec_lessi64_greater v307;
+  (((v307)=(__ZH_LOP_Vec_lessi64_greater_i64((((v306))-((v305)))))));
+  {
+      i64 v311;
+      i64 v310;
+      i64 v309;
+      __ZH_TYPE_Range v308;
+      (((v308)=(__ZH_BOP__dot_dot_i64i64((v305), (v306)))));
+      (((v309)=(__ZH_BOP__dotcall_dotbegin_RangeP_ampersand((&((v308)))))));
+      (((v310)=(__ZH_BOP__dotcall_dotend_RangeP_ampersand((&((v308)))))));
+      (((v311)=(v309)));
+      while ((__ZH_BOP__dotcall_dotuneq_i64P_ampersandi64((&((v311))), (v310)))) {
+        (((*__ZH_BOP__dotcall_dotat_Vec_lessi64_greaterP_ampersandi64((&((v307))), (((v311))-((v305)))))=(v311)));
+        (__ZH_BOP__dotcall_dotnext_i64P_ampersand((&((v311)))));
+      }
+    }
+  return (v307);
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP_ampersand((&((v307)))));
 }
-void __ZH_BOP__dotcall_dotnext_VecIter_lesschar_greaterP_ampersand(__ZH_TYPE_VecIter_lesschar_greater* v326) {
-  ((((((v326))->ptr))=(((char*)(((((i64)((((v326))->ptr)))))+((((((i64)1)))*((((i64)1))))))))));
+__ZH_TYPE_Vec_lessi64_greater __ZH_BOP__dotcall_dotcall_RangeP_ampersand(__ZH_TYPE_Range* v312) {
+  __ZH_TYPE_Vec_lessi64_greater v313;
+  (((v313)=(__ZH_LOP_Vec_lessi64_greater_())));
+  {
+      i64 v317;
+      i64 v316;
+      i64 v315;
+      __ZH_TYPE_Range v314;
+      (((v314)=(*((v312)))));
+      (((v315)=(__ZH_BOP__dotcall_dotbegin_RangeP_ampersand((&((v314)))))));
+      (((v316)=(__ZH_BOP__dotcall_dotend_RangeP_ampersand((&((v314)))))));
+      (((v317)=(v315)));
+      while ((__ZH_BOP__dotcall_dotuneq_i64P_ampersandi64((&((v317))), (v316)))) {
+        (__ZH_BOP__plus_equal_Vec_lessi64_greaterRi64(&(v313), (v317)));
+        (__ZH_BOP__dotcall_dotnext_i64P_ampersand((&((v317)))));
+      }
+    }
+  return (v313);
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP_ampersand((&((v313)))));
 }
-bool __ZH_BOP__dotcall_dotuneq_VecIter_lesschar_greaterP_ampersandVecIter_lesschar_greater(__ZH_TYPE_VecIter_lesschar_greater* v327, __ZH_TYPE_VecIter_lesschar_greater v328) {
-  return (((((i64)((((v327))->ptr)))))!=((((i64)(((&(v328))->ptr))))));
+char __ZH_BOP__dotcall_dotat_strP_ampersandi64(str* v318, i64 v319) {
+  return (*((((char*)(((((i64)(*((v318))))))+((v319)))))));
 }
-char* __ZH_LOP__asterisk_VecIter_lesschar_greater(__ZH_TYPE_VecIter_lesschar_greater v329) {
-  return &(*((((&(v329))->ptr))));
+char __ZH_BOP__caret_stri64(str v320, i64 v321) {
+  return (__ZH_BOP__dotcall_dotat_strP_ampersandi64((&((v320))), (v321)));
 }
-char* __ZH_BOP__dotcall_dotatP_Vec_lesschar_greaterP_ampersandi64(__ZH_TYPE_Vec_lesschar_greater* v305, i64 v306) {
-  return (((char*)(((char*)(((((i64)((((v305))->head)))))+((((v306))*((((i64)1))))))))));
+bool __ZH_BOP__equal_equal_charstr(char v322, str v323) {
+  return (((v322))==((__ZH_BOP__caret_stri64((v323), (((i64)0))))));
 }
-char* __ZH_BOP__dotcall_dotat_Vec_lesschar_greaterP_ampersandi64(__ZH_TYPE_Vec_lesschar_greater* v307, i64 v308) {
-  return &(*((__ZH_BOP__dotcall_dotatP_Vec_lesschar_greaterP_ampersandi64((v307), (v308)))));
+__ZH_TYPE_VecIter_lesschar_greater __ZH_LOP_VecIter_lesschar_greater_charP(char* v343) {
+  __ZH_TYPE_VecIter_lesschar_greater v344;
+  (((((&(v344))->ptr))=(v343)));
+  return (v344);
 }
-void __ZH_BOP__dotcall_dotprint_Vec_lesschar_greaterP_ampersand(__ZH_TYPE_Vec_lesschar_greater* v309) {
+void __ZH_BOP__dotcall_dotnext_VecIter_lesschar_greaterP_ampersand(__ZH_TYPE_VecIter_lesschar_greater* v345) {
+  ((((((v345))->ptr))=(((char*)(((((i64)((((v345))->ptr)))))+((((((i64)1)))*((((i64)1))))))))));
+}
+bool __ZH_BOP__dotcall_dotuneq_VecIter_lesschar_greaterP_ampersandVecIter_lesschar_greater(__ZH_TYPE_VecIter_lesschar_greater* v346, __ZH_TYPE_VecIter_lesschar_greater v347) {
+  return (((((i64)((((v346))->ptr)))))!=((((i64)(((&(v347))->ptr))))));
+}
+char* __ZH_LOP__asterisk_VecIter_lesschar_greater(__ZH_TYPE_VecIter_lesschar_greater v348) {
+  return &(*((((&(v348))->ptr))));
+}
+char* __ZH_BOP__dotcall_dotatP_Vec_lesschar_greaterP_ampersandi64(__ZH_TYPE_Vec_lesschar_greater* v324, i64 v325) {
+  return (((char*)(((char*)(((((i64)((((v324))->head)))))+((((v325))*((((i64)1))))))))));
+}
+char* __ZH_BOP__dotcall_dotat_Vec_lesschar_greaterP_ampersandi64(__ZH_TYPE_Vec_lesschar_greater* v326, i64 v327) {
+  return &(*((__ZH_BOP__dotcall_dotatP_Vec_lesschar_greaterP_ampersandi64((v326), (v327)))));
+}
+void __ZH_BOP__dotcall_dotprint_Vec_lesschar_greaterP_ampersand(__ZH_TYPE_Vec_lesschar_greater* v328) {
   (printf("%s", ("[")));
   {
-      i64 v313;
-      i64 v312;
-      i64 v311;
-      __ZH_TYPE_Range v310;
-      (((v310)=(__ZH_BOP__dot_dot_i64i64((((i64)0)), ((((v309))->size))))));
-      (((v311)=(__ZH_BOP__dotcall_dotbegin_RangeP_ampersand((&((v310)))))));
-      (((v312)=(__ZH_BOP__dotcall_dotend_RangeP_ampersand((&((v310)))))));
-      (((v313)=(v311)));
-      while ((__ZH_BOP__dotcall_dotuneq_i64P_ampersandi64((&((v313))), (v312)))) {
-        if ((!((!((v313)))))) {
+      i64 v332;
+      i64 v331;
+      i64 v330;
+      __ZH_TYPE_Range v329;
+      (((v329)=(__ZH_BOP__dot_dot_i64i64((((i64)0)), ((((v328))->size))))));
+      (((v330)=(__ZH_BOP__dotcall_dotbegin_RangeP_ampersand((&((v329)))))));
+      (((v331)=(__ZH_BOP__dotcall_dotend_RangeP_ampersand((&((v329)))))));
+      (((v332)=(v330)));
+      while ((__ZH_BOP__dotcall_dotuneq_i64P_ampersandi64((&((v332))), (v331)))) {
+        if ((!((!((v332)))))) {
           (printf("%s", (" ")));
         }
-        (printf("%c", (*((__ZH_BOP__dotcall_dotatP_Vec_lesschar_greaterP_ampersandi64((v309), (v313)))))));
-        (__ZH_BOP__dotcall_dotnext_i64P_ampersand((&((v313)))));
+        (printf("%c", (*((__ZH_BOP__dotcall_dotatP_Vec_lesschar_greaterP_ampersandi64((v328), (v332)))))));
+        (__ZH_BOP__dotcall_dotnext_i64P_ampersand((&((v332)))));
       }
     }
   (printf("%s", ("]")));
 }
-void __ZH_BOP__dotcall_dotdouble_capacity_Vec_lesschar_greaterP_ampersand(__ZH_TYPE_Vec_lesschar_greater* v314) {
-  i64 v315;
-  (((v315)=((((v314))->capacity))));
-  if ((((v315))==((((i64)0))))) {
-    (((v315)=(((i64)1))));
-    ((((((v314))->head))=(((char*)(alloc((((i64)1))))))));
-    ((((((v314))->capacity))=(v315)));
+void __ZH_BOP__dotcall_dotdouble_capacity_Vec_lesschar_greaterP_ampersand(__ZH_TYPE_Vec_lesschar_greater* v333) {
+  i64 v334;
+  (((v334)=((((v333))->capacity))));
+  if ((((v334))==((((i64)0))))) {
+    (((v334)=(((i64)1))));
+    ((((((v333))->head))=(((char*)(alloc((((i64)1))))))));
+    ((((((v333))->capacity))=(v334)));
   } else {
-    char* v316;
-    (__ZH_BOP__asterisk_equal_i64Ri64(&(v315), (((i64)2))));
-    (((v316)=(((char*)(alloc((((v315))*((((i64)1))))))))));
+    char* v335;
+    (__ZH_BOP__asterisk_equal_i64Ri64(&(v334), (((i64)2))));
+    (((v335)=(((char*)(alloc((((v334))*((((i64)1))))))))));
     {
-        i64 v320;
-        i64 v319;
-        i64 v318;
-        __ZH_TYPE_Range v317;
-        (((v317)=(__ZH_BOP__dot_dot_i64i64((((i64)0)), ((((v314))->size))))));
-        (((v318)=(__ZH_BOP__dotcall_dotbegin_RangeP_ampersand((&((v317)))))));
-        (((v319)=(__ZH_BOP__dotcall_dotend_RangeP_ampersand((&((v317)))))));
-        (((v320)=(v318)));
-        while ((__ZH_BOP__dotcall_dotuneq_i64P_ampersandi64((&((v320))), (v319)))) {
-          (((*((((char*)(((((i64)(v316))))+((((v320))*((((i64)1))))))))))=(*__ZH_BOP__dotcall_dotat_Vec_lesschar_greaterP_ampersandi64((v314), (v320)))));
-          (__ZH_BOP__dotcall_dotnext_i64P_ampersand((&((v320)))));
+        i64 v339;
+        i64 v338;
+        i64 v337;
+        __ZH_TYPE_Range v336;
+        (((v336)=(__ZH_BOP__dot_dot_i64i64((((i64)0)), ((((v333))->size))))));
+        (((v337)=(__ZH_BOP__dotcall_dotbegin_RangeP_ampersand((&((v336)))))));
+        (((v338)=(__ZH_BOP__dotcall_dotend_RangeP_ampersand((&((v336)))))));
+        (((v339)=(v337)));
+        while ((__ZH_BOP__dotcall_dotuneq_i64P_ampersandi64((&((v339))), (v338)))) {
+          (((*((((char*)(((((i64)(v335))))+((((v339))*((((i64)1))))))))))=(*__ZH_BOP__dotcall_dotat_Vec_lesschar_greaterP_ampersandi64((v333), (v339)))));
+          (__ZH_BOP__dotcall_dotnext_i64P_ampersand((&((v339)))));
         }
       }
-    (free((void*) (((i64)((((v314))->head))))));
-    ((((((v314))->head))=(v316)));
+    (free((void*) (((i64)((((v333))->head))))));
+    ((((((v333))->head))=(v335)));
   }
-  ((((((v314))->capacity))=(v315)));
+  ((((((v333))->capacity))=(v334)));
 }
-void __ZH_BOP__dotcall_dotpush_back_Vec_lesschar_greaterP_ampersandchar(__ZH_TYPE_Vec_lesschar_greater* v321, char v322) {
-  if (((((((v321))->size)))==(((((v321))->capacity))))) {
-    (__ZH_BOP__dotcall_dotdouble_capacity_Vec_lesschar_greaterP_ampersand((v321)));
+void __ZH_BOP__dotcall_dotpush_back_Vec_lesschar_greaterP_ampersandchar(__ZH_TYPE_Vec_lesschar_greater* v340, char v341) {
+  if (((((((v340))->size)))==(((((v340))->capacity))))) {
+    (__ZH_BOP__dotcall_dotdouble_capacity_Vec_lesschar_greaterP_ampersand((v340)));
   }
-  (((*__ZH_BOP__dotcall_dotat_Vec_lesschar_greaterP_ampersandi64((v321), ((((v321))->size))))=(v322)));
-  (__ZH_LOP__plus_plus_i64R(&((((v321))->size))));
+  (((*__ZH_BOP__dotcall_dotat_Vec_lesschar_greaterP_ampersandi64((v340), ((((v340))->size))))=(v341)));
+  (__ZH_LOP__plus_plus_i64R(&((((v340))->size))));
 }
-void __ZH_BOP__dotcall_dotpop_back_Vec_lesschar_greaterP_ampersand(__ZH_TYPE_Vec_lesschar_greater* v323) {
-  (__ZH_LOP__minus_minus_i64R(&((((v323))->size))));
+void __ZH_BOP__dotcall_dotpop_back_Vec_lesschar_greaterP_ampersand(__ZH_TYPE_Vec_lesschar_greater* v342) {
+  (__ZH_LOP__minus_minus_i64R(&((((v342))->size))));
 }
-__ZH_TYPE_VecIter_lesschar_greater __ZH_BOP__dotcall_dotbegin_Vec_lesschar_greaterP_ampersand(__ZH_TYPE_Vec_lesschar_greater* v330) {
-  return (__ZH_LOP_VecIter_lesschar_greater_charP(((((v330))->head))));
+__ZH_TYPE_VecIter_lesschar_greater __ZH_BOP__dotcall_dotbegin_Vec_lesschar_greaterP_ampersand(__ZH_TYPE_Vec_lesschar_greater* v349) {
+  return (__ZH_LOP_VecIter_lesschar_greater_charP(((((v349))->head))));
 }
-__ZH_TYPE_VecIter_lesschar_greater __ZH_BOP__dotcall_dotend_Vec_lesschar_greaterP_ampersand(__ZH_TYPE_Vec_lesschar_greater* v331) {
-  return (__ZH_LOP_VecIter_lesschar_greater_charP((__ZH_BOP__dotcall_dotatP_Vec_lesschar_greaterP_ampersandi64((v331), ((((v331))->size))))));
+__ZH_TYPE_VecIter_lesschar_greater __ZH_BOP__dotcall_dotend_Vec_lesschar_greaterP_ampersand(__ZH_TYPE_Vec_lesschar_greater* v350) {
+  return (__ZH_LOP_VecIter_lesschar_greater_charP((__ZH_BOP__dotcall_dotatP_Vec_lesschar_greaterP_ampersandi64((v350), ((((v350))->size))))));
 }
-char* __ZH_BOP__dotcall_dotfront_Vec_lesschar_greaterP_ampersand(__ZH_TYPE_Vec_lesschar_greater* v332) {
-  return &(*(((((v332))->head))));
+char* __ZH_BOP__dotcall_dotfront_Vec_lesschar_greaterP_ampersand(__ZH_TYPE_Vec_lesschar_greater* v351) {
+  return &(*(((((v351))->head))));
 }
-char* __ZH_BOP__dotcall_dotback_Vec_lesschar_greaterP_ampersand(__ZH_TYPE_Vec_lesschar_greater* v333) {
-  return &(*((__ZH_BOP__dotcall_dotatP_Vec_lesschar_greaterP_ampersandi64((v333), ((((((v333))->size)))-((((i64)1))))))));
+char* __ZH_BOP__dotcall_dotback_Vec_lesschar_greaterP_ampersand(__ZH_TYPE_Vec_lesschar_greater* v352) {
+  return &(*((__ZH_BOP__dotcall_dotatP_Vec_lesschar_greaterP_ampersandi64((v352), ((((((v352))->size)))-((((i64)1))))))));
 }
-void __ZH_BOP__dotcall_dotdtor_Vec_lesschar_greaterP_ampersand(__ZH_TYPE_Vec_lesschar_greater* v334) {
-  if ((!((!((((i64)((((v334))->head))))))))) {
-    (free((void*) (((i64)((((v334))->head))))));
-    ((((((v334))->size))=(((i64)0))));
-    ((((((v334))->capacity))=(((i64)0))));
-    ((((((v334))->head))=(((char*)(((i64)0))))));
+void __ZH_BOP__dotcall_dotdtor_Vec_lesschar_greaterP_ampersand(__ZH_TYPE_Vec_lesschar_greater* v353) {
+  if ((!((!((((i64)((((v353))->head))))))))) {
+    (free((void*) (((i64)((((v353))->head))))));
+    ((((((v353))->size))=(((i64)0))));
+    ((((((v353))->capacity))=(((i64)0))));
+    ((((((v353))->head))=(((char*)(((i64)0))))));
   }
 }
-__ZH_TYPE_Vec_lesschar_greater __ZH_LOP_Vec_lesschar_greater_i64(i64 v335) {
-  __ZH_TYPE_Vec_lesschar_greater v336;
-  (((((&(v336))->head))=(((char*)(((i64)0))))));
-  (((((&(v336))->size))=(((i64)0))));
-  (((((&(v336))->capacity))=(((i64)0))));
-  while ((((((&(v336))->capacity)))<((v335)))) {
-    (__ZH_BOP__dotcall_dotdouble_capacity_Vec_lesschar_greaterP_ampersand((&((v336)))));
+__ZH_TYPE_Vec_lesschar_greater __ZH_LOP_Vec_lesschar_greater_i64(i64 v354) {
+  __ZH_TYPE_Vec_lesschar_greater v355;
+  (((((&(v355))->head))=(((char*)(((i64)0))))));
+  (((((&(v355))->size))=(((i64)0))));
+  (((((&(v355))->capacity))=(((i64)0))));
+  while ((((((&(v355))->capacity)))<((v354)))) {
+    (__ZH_BOP__dotcall_dotdouble_capacity_Vec_lesschar_greaterP_ampersand((&((v355)))));
   }
-  (((((&(v336))->size))=(v335)));
-  (((((&(v336))->capacity))=(v335)));
-  return (v336);
-  (__ZH_BOP__dotcall_dotdtor_Vec_lesschar_greaterP_ampersand((&((v336)))));
+  (((((&(v355))->size))=(v354)));
+  (((((&(v355))->capacity))=(v354)));
+  return (v355);
+  (__ZH_BOP__dotcall_dotdtor_Vec_lesschar_greaterP_ampersand((&((v355)))));
 }
-__ZH_TYPE_Vec_lesschar_greater __ZH_LOP_Vec_lesschar_greater_i64char(i64 v337, char v338) {
-  __ZH_TYPE_Vec_lesschar_greater v339;
-  (((v339)=(__ZH_LOP_Vec_lesschar_greater_i64((v337)))));
+__ZH_TYPE_Vec_lesschar_greater __ZH_LOP_Vec_lesschar_greater_i64char(i64 v356, char v357) {
+  __ZH_TYPE_Vec_lesschar_greater v358;
+  (((v358)=(__ZH_LOP_Vec_lesschar_greater_i64((v356)))));
   {
-      i64 v343;
-      i64 v342;
-      i64 v341;
-      __ZH_TYPE_Range v340;
-      (((v340)=(__ZH_BOP__dot_dot_i64i64((((i64)0)), (((&(v339))->size))))));
-      (((v341)=(__ZH_BOP__dotcall_dotbegin_RangeP_ampersand((&((v340)))))));
-      (((v342)=(__ZH_BOP__dotcall_dotend_RangeP_ampersand((&((v340)))))));
-      (((v343)=(v341)));
-      while ((__ZH_BOP__dotcall_dotuneq_i64P_ampersandi64((&((v343))), (v342)))) {
-        (((*__ZH_BOP__dotcall_dotat_Vec_lesschar_greaterP_ampersandi64((&((v339))), (v343)))=(v338)));
-        (__ZH_BOP__dotcall_dotnext_i64P_ampersand((&((v343)))));
+      i64 v362;
+      i64 v361;
+      i64 v360;
+      __ZH_TYPE_Range v359;
+      (((v359)=(__ZH_BOP__dot_dot_i64i64((((i64)0)), (((&(v358))->size))))));
+      (((v360)=(__ZH_BOP__dotcall_dotbegin_RangeP_ampersand((&((v359)))))));
+      (((v361)=(__ZH_BOP__dotcall_dotend_RangeP_ampersand((&((v359)))))));
+      (((v362)=(v360)));
+      while ((__ZH_BOP__dotcall_dotuneq_i64P_ampersandi64((&((v362))), (v361)))) {
+        (((*__ZH_BOP__dotcall_dotat_Vec_lesschar_greaterP_ampersandi64((&((v358))), (v362)))=(v357)));
+        (__ZH_BOP__dotcall_dotnext_i64P_ampersand((&((v362)))));
       }
     }
-  return (v339);
-  (__ZH_BOP__dotcall_dotdtor_Vec_lesschar_greaterP_ampersand((&((v339)))));
+  return (v358);
+  (__ZH_BOP__dotcall_dotdtor_Vec_lesschar_greaterP_ampersand((&((v358)))));
 }
 __ZH_TYPE_Vec_lesschar_greater __ZH_LOP_Vec_lesschar_greater_() {
   return (__ZH_LOP_Vec_lesschar_greater_i64((((i64)0))));
 }
-__ZH_TYPE_Vec_lesschar_greater __ZH_LOP_Vec_lesschar_greater_Vec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v344) {
-  __ZH_TYPE_Vec_lesschar_greater v345;
-  (((v345)=(__ZH_LOP_Vec_lesschar_greater_i64((((&(*v344))->size))))));
+__ZH_TYPE_Vec_lesschar_greater __ZH_LOP_Vec_lesschar_greater_Vec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v363) {
+  __ZH_TYPE_Vec_lesschar_greater v364;
+  (((v364)=(__ZH_LOP_Vec_lesschar_greater_i64((((&(*v363))->size))))));
   {
-      i64 v349;
-      i64 v348;
-      i64 v347;
-      __ZH_TYPE_Range v346;
-      (((v346)=(__ZH_BOP__dot_dot_i64i64((((i64)0)), (((&(*v344))->size))))));
-      (((v347)=(__ZH_BOP__dotcall_dotbegin_RangeP_ampersand((&((v346)))))));
-      (((v348)=(__ZH_BOP__dotcall_dotend_RangeP_ampersand((&((v346)))))));
-      (((v349)=(v347)));
-      while ((__ZH_BOP__dotcall_dotuneq_i64P_ampersandi64((&((v349))), (v348)))) {
-        (((*__ZH_BOP__dotcall_dotat_Vec_lesschar_greaterP_ampersandi64((&((v345))), (v349)))=(*__ZH_BOP__dotcall_dotat_Vec_lesschar_greaterP_ampersandi64((&((*v344))), (v349)))));
-        (__ZH_BOP__dotcall_dotnext_i64P_ampersand((&((v349)))));
+      i64 v368;
+      i64 v367;
+      i64 v366;
+      __ZH_TYPE_Range v365;
+      (((v365)=(__ZH_BOP__dot_dot_i64i64((((i64)0)), (((&(*v363))->size))))));
+      (((v366)=(__ZH_BOP__dotcall_dotbegin_RangeP_ampersand((&((v365)))))));
+      (((v367)=(__ZH_BOP__dotcall_dotend_RangeP_ampersand((&((v365)))))));
+      (((v368)=(v366)));
+      while ((__ZH_BOP__dotcall_dotuneq_i64P_ampersandi64((&((v368))), (v367)))) {
+        (((*__ZH_BOP__dotcall_dotat_Vec_lesschar_greaterP_ampersandi64((&((v364))), (v368)))=(*__ZH_BOP__dotcall_dotat_Vec_lesschar_greaterP_ampersandi64((&((*v363))), (v368)))));
+        (__ZH_BOP__dotcall_dotnext_i64P_ampersand((&((v368)))));
       }
     }
-  return (v345);
-  (__ZH_BOP__dotcall_dotdtor_Vec_lesschar_greaterP_ampersand((&((v345)))));
+  return (v364);
+  (__ZH_BOP__dotcall_dotdtor_Vec_lesschar_greaterP_ampersand((&((v364)))));
 }
-void __ZH_BOP__plus_equal_Vec_lesschar_greaterRchar(__ZH_TYPE_Vec_lesschar_greater* v350, char v351) {
-  (__ZH_BOP__dotcall_dotpush_back_Vec_lesschar_greaterP_ampersandchar((&((*v350))), (v351)));
+void __ZH_BOP__plus_equal_Vec_lesschar_greaterRchar(__ZH_TYPE_Vec_lesschar_greater* v369, char v370) {
+  (__ZH_BOP__dotcall_dotpush_back_Vec_lesschar_greaterP_ampersandchar((&((*v369))), (v370)));
 }
-void __ZH_BOP__plus_equal_Vec_lesschar_greaterRVec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v352, __ZH_TYPE_Vec_lesschar_greater* v353) {
+void __ZH_BOP__plus_equal_Vec_lesschar_greaterRVec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v371, __ZH_TYPE_Vec_lesschar_greater* v372) {
   {
-      __ZH_TYPE_VecIter_lesschar_greater v357;
-      __ZH_TYPE_VecIter_lesschar_greater v356;
-      __ZH_TYPE_VecIter_lesschar_greater v355;
-      __ZH_TYPE_Vec_lesschar_greater v354;
-      (((v354)=(__ZH_LOP_Vec_lesschar_greater_Vec_lesschar_greaterR(&(*v353)))));
-      (((v355)=(__ZH_BOP__dotcall_dotbegin_Vec_lesschar_greaterP_ampersand((&((v354)))))));
-      (((v356)=(__ZH_BOP__dotcall_dotend_Vec_lesschar_greaterP_ampersand((&((v354)))))));
-      (((v357)=(v355)));
-      while ((__ZH_BOP__dotcall_dotuneq_VecIter_lesschar_greaterP_ampersandVecIter_lesschar_greater((&((v357))), (v356)))) {
-        (__ZH_BOP__dotcall_dotpush_back_Vec_lesschar_greaterP_ampersandchar((&((*v352))), (*__ZH_LOP__asterisk_VecIter_lesschar_greater((v357)))));
-        (__ZH_BOP__dotcall_dotnext_VecIter_lesschar_greaterP_ampersand((&((v357)))));
+      __ZH_TYPE_VecIter_lesschar_greater v376;
+      __ZH_TYPE_VecIter_lesschar_greater v375;
+      __ZH_TYPE_VecIter_lesschar_greater v374;
+      __ZH_TYPE_Vec_lesschar_greater v373;
+      (((v373)=(__ZH_LOP_Vec_lesschar_greater_Vec_lesschar_greaterR(&(*v372)))));
+      (((v374)=(__ZH_BOP__dotcall_dotbegin_Vec_lesschar_greaterP_ampersand((&((v373)))))));
+      (((v375)=(__ZH_BOP__dotcall_dotend_Vec_lesschar_greaterP_ampersand((&((v373)))))));
+      (((v376)=(v374)));
+      while ((__ZH_BOP__dotcall_dotuneq_VecIter_lesschar_greaterP_ampersandVecIter_lesschar_greater((&((v376))), (v375)))) {
+        (__ZH_BOP__dotcall_dotpush_back_Vec_lesschar_greaterP_ampersandchar((&((*v371))), (*__ZH_LOP__asterisk_VecIter_lesschar_greater((v376)))));
+        (__ZH_BOP__dotcall_dotnext_VecIter_lesschar_greaterP_ampersand((&((v376)))));
       }
     }
 }
-void __ZH_LOP_put_Vec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v358) {
-  (__ZH_BOP__dotcall_dotprint_Vec_lesschar_greaterP_ampersand((&((*v358)))));
+void __ZH_LOP_put_Vec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v377) {
+  (__ZH_BOP__dotcall_dotprint_Vec_lesschar_greaterP_ampersand((&((*v377)))));
 }
-void __ZH_LOP_out_Vec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v359) {
-  (__ZH_BOP__dotcall_dotprint_Vec_lesschar_greaterP_ampersand((&((*v359)))));
+void __ZH_LOP_out_Vec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v378) {
+  (__ZH_BOP__dotcall_dotprint_Vec_lesschar_greaterP_ampersand((&((*v378)))));
   (printf("%s\n", ("")));
 }
-__ZH_TYPE_Out __ZH_ROP__less_Vec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v360) {
-  (__ZH_LOP_out_Vec_lesschar_greaterR(&(*v360)));
+__ZH_TYPE_Out __ZH_ROP__less_Vec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v379) {
+  (__ZH_LOP_out_Vec_lesschar_greaterR(&(*v379)));
   return (__ZH_LOP__Out_());
 }
-__ZH_TYPE_Out __ZH_LOP__less_Vec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v361) {
-  ((__ZH_LOP_put_Vec_lesschar_greaterR(&(*v361))), (printf("%s", (" "))));
+__ZH_TYPE_Out __ZH_LOP__less_Vec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v380) {
+  ((__ZH_LOP_put_Vec_lesschar_greaterR(&(*v380))), (printf("%s", (" "))));
   return (__ZH_LOP__Out_());
 }
-__ZH_TYPE_Out __ZH_BOP__less_OutVec_lesschar_greaterR(__ZH_TYPE_Out v362, __ZH_TYPE_Vec_lesschar_greater* v363) {
-  ((__ZH_LOP_put_Vec_lesschar_greaterR(&(*v363))), (printf("%s", (" "))));
+__ZH_TYPE_Out __ZH_BOP__less_OutVec_lesschar_greaterR(__ZH_TYPE_Out v381, __ZH_TYPE_Vec_lesschar_greater* v382) {
+  ((__ZH_LOP_put_Vec_lesschar_greaterR(&(*v382))), (printf("%s", (" "))));
   return (__ZH_LOP__Out_());
 }
-__ZH_TYPE_Vec_lesschar_greater __ZH_BOP__dotcall_dotsub_Vec_lesschar_greaterP_ampersandi64i64(__ZH_TYPE_Vec_lesschar_greater* v364, i64 v365, i64 v366) {
-  __ZH_TYPE_Vec_lesschar_greater v367;
-  (((v367)=(__ZH_LOP_Vec_lesschar_greater_i64((((i64)0))))));
+char* __ZH_BOP__dotcall_dotsub_Vec_lesschar_greaterP_ampersandi64(__ZH_TYPE_Vec_lesschar_greater* v383, i64 v384) {
+  if ((((v384))<((((i64)0))))) {
+    (__ZH_BOP__plus_equal_i64Ri64(&(v384), ((((v383))->size))));
+  }
+  return &(*__ZH_BOP__dotcall_dotat_Vec_lesschar_greaterP_ampersandi64((v383), (v384)));
+}
+__ZH_TYPE_Vec_lesschar_greater __ZH_BOP__dotcall_dotsub_Vec_lesschar_greaterP_ampersandi64i64(__ZH_TYPE_Vec_lesschar_greater* v385, i64 v386, i64 v387) {
+  __ZH_TYPE_Vec_lesschar_greater v388;
+  (((v388)=(__ZH_LOP_Vec_lesschar_greater_i64((((i64)0))))));
   {
-      i64 v371;
-      i64 v370;
-      i64 v369;
-      __ZH_TYPE_Range v368;
-      (((v368)=(__ZH_BOP__dot_dot_i64i64((v365), (v366)))));
-      (((v369)=(__ZH_BOP__dotcall_dotbegin_RangeP_ampersand((&((v368)))))));
-      (((v370)=(__ZH_BOP__dotcall_dotend_RangeP_ampersand((&((v368)))))));
-      (((v371)=(v369)));
-      while ((__ZH_BOP__dotcall_dotuneq_i64P_ampersandi64((&((v371))), (v370)))) {
-        (__ZH_BOP__dotcall_dotpush_back_Vec_lesschar_greaterP_ampersandchar((&((v367))), (*__ZH_BOP__dotcall_dotat_Vec_lesschar_greaterP_ampersandi64((v364), (v371)))));
-        (__ZH_BOP__dotcall_dotnext_i64P_ampersand((&((v371)))));
+      i64 v392;
+      i64 v391;
+      i64 v390;
+      __ZH_TYPE_Range v389;
+      (((v389)=(__ZH_BOP__dot_dot_i64i64((v386), (v387)))));
+      (((v390)=(__ZH_BOP__dotcall_dotbegin_RangeP_ampersand((&((v389)))))));
+      (((v391)=(__ZH_BOP__dotcall_dotend_RangeP_ampersand((&((v389)))))));
+      (((v392)=(v390)));
+      while ((__ZH_BOP__dotcall_dotuneq_i64P_ampersandi64((&((v392))), (v391)))) {
+        (__ZH_BOP__dotcall_dotpush_back_Vec_lesschar_greaterP_ampersandchar((&((v388))), (*__ZH_BOP__dotcall_dotat_Vec_lesschar_greaterP_ampersandi64((v385), (v392)))));
+        (__ZH_BOP__dotcall_dotnext_i64P_ampersand((&((v392)))));
       }
     }
-  return (v367);
-  (__ZH_BOP__dotcall_dotdtor_Vec_lesschar_greaterP_ampersand((&((v367)))));
+  return (v388);
+  (__ZH_BOP__dotcall_dotdtor_Vec_lesschar_greaterP_ampersand((&((v388)))));
 }
-void __ZH_LOP_swap_charPcharP(char* v372, char* v373) {
-  char v374;
-  (((v374)=(*((v372)))));
-  (((*((v372)))=(*((v373)))));
-  (((*((v373)))=(v374)));
+__ZH_TYPE_Vec_lesschar_greater __ZH_BOP__dotcall_dotsub_Vec_lesschar_greaterP_ampersandRange(__ZH_TYPE_Vec_lesschar_greater* v393, __ZH_TYPE_Range v394) {
+  i64 v396;
+  i64 v395;
+  ((((v395)=(((&(v394))->begin)))), (((v396)=(((&(v394))->end)))));
+  if ((((v395))<((((i64)0))))) {
+    (__ZH_BOP__plus_equal_i64Ri64(&(v395), ((((v393))->size))));
+  }
+  if ((((v395))<((((i64)0))))) {
+    (((v395)=(((i64)0))));
+  }
+  if ((((v396))<((((i64)0))))) {
+    (__ZH_BOP__plus_equal_i64Ri64(&(v396), ((((v393))->size))));
+  }
+  if ((((v396))>(((((v393))->size))))) {
+    (((v396)=((((v393))->size))));
+  }
+  return (__ZH_BOP__dotcall_dotsub_Vec_lesschar_greaterP_ampersandi64i64((v393), (v395), (v396)));
 }
-char* __ZH_LOP_partition_charPcharP(char* v375, char* v376) {
-  char* v379;
-  char* v378;
-  char* v377;
-  ((((v377)=(((char*)(((((i64)(v376))))-((((((i64)1)))*((((i64)1)))))))))), (((v378)=(v375))), (((v379)=(v375))));
-  (((v379)=(v375)));
-  while ((((((i64)(v379))))!=((((i64)(v377)))))) {
-    if ((((*((v379))))<((*((v377)))))) {
-      (__ZH_LOP_swap_charPcharP((v378), (v379)));
-      (((v378)=(((char*)(((((i64)(v378))))+((((((i64)1)))*((((i64)1))))))))));
+__ZH_TYPE_Vec_lesschar_greater __ZH_BOP__dotcall_dotsub_Vec_lesschar_greaterP_ampersand(__ZH_TYPE_Vec_lesschar_greater* v397) {
+  return (__ZH_BOP__dotcall_dotsub_Vec_lesschar_greaterP_ampersandi64i64((v397), (((i64)0)), ((((v397))->size))));
+}
+bool __ZH_BOP__less_Vec_lesschar_greaterRVec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v398, __ZH_TYPE_Vec_lesschar_greater* v399) {
+  return (((bool)0));
+}
+void __ZH_LOP_swap_charPcharP(char* v400, char* v401) {
+  char v402;
+  (((v402)=(*((v400)))));
+  (((*((v400)))=(*((v401)))));
+  (((*((v401)))=(v402)));
+}
+char* __ZH_LOP_partition_charPcharP(char* v403, char* v404) {
+  char* v407;
+  char* v406;
+  char* v405;
+  ((((v405)=(((char*)(((((i64)(v404))))-((((((i64)1)))*((((i64)1)))))))))), (((v406)=(v403))), (((v407)=(v403))));
+  (((v407)=(v403)));
+  while ((((((i64)(v407))))!=((((i64)(v405)))))) {
+    if ((((*((v407))))<((*((v405)))))) {
+      (__ZH_LOP_swap_charPcharP((v406), (v407)));
+      (((v406)=(((char*)(((((i64)(v406))))+((((((i64)1)))*((((i64)1))))))))));
     }
-    (((v379)=(((char*)(((((i64)(v379))))+((((((i64)1)))*((((i64)1))))))))));
+    (((v407)=(((char*)(((((i64)(v407))))+((((((i64)1)))*((((i64)1))))))))));
   }
-  (__ZH_LOP_swap_charPcharP((v378), (v377)));
-  return (v378);
+  (__ZH_LOP_swap_charPcharP((v406), (v405)));
+  return (v406);
 }
-void __ZH_LOP_qsort_charPcharP(char* v380, char* v381) {
-  i64 v383;
-  i64 v382;
-  (((v382)=(((((i64)(v381))))-((((i64)(v380)))))));
-  (((v383)=(((i64)1))));
-  if ((((v382))>((v383)))) {
-    char* v384;
-    (((v384)=(__ZH_LOP_partition_charPcharP((v380), (v381)))));
-    (__ZH_LOP_qsort_charPcharP((v380), (v384)));
-    (((v384)=(((char*)(((((i64)(v384))))+((((((i64)1)))*((((i64)1))))))))));
-    (__ZH_LOP_qsort_charPcharP((v384), (v381)));
+void __ZH_LOP_qsort_charPcharP(char* v408, char* v409) {
+  i64 v411;
+  i64 v410;
+  (((v410)=(((((i64)(v409))))-((((i64)(v408)))))));
+  (((v411)=(((i64)1))));
+  if ((((v410))>((v411)))) {
+    char* v412;
+    (((v412)=(__ZH_LOP_partition_charPcharP((v408), (v409)))));
+    (__ZH_LOP_qsort_charPcharP((v408), (v412)));
+    (((v412)=(((char*)(((((i64)(v412))))+((((((i64)1)))*((((i64)1))))))))));
+    (__ZH_LOP_qsort_charPcharP((v412), (v409)));
   }
 }
-void __ZH_BOP__dotcall_dotsort_Vec_lesschar_greaterP_ampersand(__ZH_TYPE_Vec_lesschar_greater* v385) {
-  __ZH_TYPE_VecIter_lesschar_greater v387;
-  __ZH_TYPE_VecIter_lesschar_greater v386;
-  (((v386)=(__ZH_BOP__dotcall_dotbegin_Vec_lesschar_greaterP_ampersand((v385)))));
-  (((v387)=(__ZH_BOP__dotcall_dotend_Vec_lesschar_greaterP_ampersand((v385)))));
-  (__ZH_LOP_qsort_charPcharP((((&(v386))->ptr)), (((&(v387))->ptr))));
+void __ZH_BOP__dotcall_dotsort_Vec_lesschar_greaterP_ampersand(__ZH_TYPE_Vec_lesschar_greater* v413) {
+  __ZH_TYPE_VecIter_lesschar_greater v415;
+  __ZH_TYPE_VecIter_lesschar_greater v414;
+  (((v414)=(__ZH_BOP__dotcall_dotbegin_Vec_lesschar_greaterP_ampersand((v413)))));
+  (((v415)=(__ZH_BOP__dotcall_dotend_Vec_lesschar_greaterP_ampersand((v413)))));
+  (__ZH_LOP_qsort_charPcharP((((&(v414))->ptr)), (((&(v415))->ptr))));
 }
-void __ZH_LOP_sort_Vec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v388) {
-  (__ZH_BOP__dotcall_dotsort_Vec_lesschar_greaterP_ampersand((&((*v388)))));
+void __ZH_LOP_sort_Vec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v416) {
+  (__ZH_BOP__dotcall_dotsort_Vec_lesschar_greaterP_ampersand((&((*v416)))));
 }
 __ZH_TYPE_Str __ZH_LOP_Str_() {
-  __ZH_TYPE_Str v389;
-  (((((&(v389))->data))=(__ZH_LOP_Vec_lesschar_greater_())));
-  (__ZH_BOP__dotcall_dotpush_back_Vec_lesschar_greaterP_ampersandchar((&((((&(v389))->data)))), (((char)(((u8)0))))));
-  (((((&(v389))->size))=(((i64)0))));
-  return (v389);
+  __ZH_TYPE_Str v417;
+  (((((&(v417))->data))=(__ZH_LOP_Vec_lesschar_greater_())));
+  (__ZH_BOP__dotcall_dotpush_back_Vec_lesschar_greaterP_ampersandchar((&((((&(v417))->data)))), (((char)(((u8)0))))));
+  (((((&(v417))->size))=(((i64)0))));
+  return (v417);
 }
-void __ZH_BOP__dotcall_dotdtor_StrP_ampersand(__ZH_TYPE_Str* v390) {
-  (__ZH_BOP__dotcall_dotdtor_Vec_lesschar_greaterP_ampersand((&(((((v390))->data))))));
+void __ZH_BOP__dotcall_dotdtor_StrP_ampersand(__ZH_TYPE_Str* v418) {
+  (__ZH_BOP__dotcall_dotdtor_Vec_lesschar_greaterP_ampersand((&(((((v418))->data))))));
 }
-str __ZH_BOP__dotcall_dotcstr_StrP_ampersand(__ZH_TYPE_Str* v391) {
-  __ZH_TYPE_VecIter_lesschar_greater v392;
-  (((v392)=(__ZH_BOP__dotcall_dotbegin_Vec_lesschar_greaterP_ampersand((&(((((v391))->data))))))));
-  return (((str)(((&(v392))->ptr))));
+str __ZH_BOP__dotcall_dotcstr_StrP_ampersand(__ZH_TYPE_Str* v419) {
+  __ZH_TYPE_VecIter_lesschar_greater v420;
+  (((v420)=(__ZH_BOP__dotcall_dotbegin_Vec_lesschar_greaterP_ampersand((&(((((v419))->data))))))));
+  return (((str)(((&(v420))->ptr))));
 }
-char __ZH_BOP__dotcall_dotat_StrP_ampersandi64(__ZH_TYPE_Str* v393, i64 v394) {
-  return (*__ZH_BOP__dotcall_dotat_Vec_lesschar_greaterP_ampersandi64((&(((((v393))->data)))), (v394)));
+char __ZH_BOP__dotcall_dotat_StrP_ampersandi64(__ZH_TYPE_Str* v421, i64 v422) {
+  return (*__ZH_BOP__dotcall_dotat_Vec_lesschar_greaterP_ampersandi64((&(((((v421))->data)))), (v422)));
 }
-char* __ZH_BOP__dotcall_dotatP_StrP_ampersandi64(__ZH_TYPE_Str* v395, i64 v396) {
-  return (__ZH_BOP__dotcall_dotatP_Vec_lesschar_greaterP_ampersandi64((&(((((v395))->data)))), (v396)));
+char* __ZH_BOP__dotcall_dotatP_StrP_ampersandi64(__ZH_TYPE_Str* v423, i64 v424) {
+  return (__ZH_BOP__dotcall_dotatP_Vec_lesschar_greaterP_ampersandi64((&(((((v423))->data)))), (v424)));
 }
-void __ZH_BOP__dotcall_dotpush_back_StrP_ampersandchar(__ZH_TYPE_Str* v397, char v398) {
-  (__ZH_BOP__dotcall_dotpop_back_Vec_lesschar_greaterP_ampersand((&(((((v397))->data))))));
-  (__ZH_BOP__dotcall_dotpush_back_Vec_lesschar_greaterP_ampersandchar((&(((((v397))->data)))), (v398)));
-  (__ZH_BOP__dotcall_dotpush_back_Vec_lesschar_greaterP_ampersandchar((&(((((v397))->data)))), (((char)(((u8)0))))));
-  (__ZH_LOP__plus_plus_i64R(&((((v397))->size))));
+void __ZH_BOP__dotcall_dotpush_back_StrP_ampersandchar(__ZH_TYPE_Str* v425, char v426) {
+  (__ZH_BOP__dotcall_dotpop_back_Vec_lesschar_greaterP_ampersand((&(((((v425))->data))))));
+  (__ZH_BOP__dotcall_dotpush_back_Vec_lesschar_greaterP_ampersandchar((&(((((v425))->data)))), (v426)));
+  (__ZH_BOP__dotcall_dotpush_back_Vec_lesschar_greaterP_ampersandchar((&(((((v425))->data)))), (((char)(((u8)0))))));
+  (__ZH_LOP__plus_plus_i64R(&((((v425))->size))));
 }
-void __ZH_BOP__dotcall_dotpop_back_StrP_ampersand(__ZH_TYPE_Str* v399) {
-  (__ZH_BOP__dotcall_dotpop_back_Vec_lesschar_greaterP_ampersand((&(((((v399))->data))))));
-  (__ZH_BOP__dotcall_dotpop_back_Vec_lesschar_greaterP_ampersand((&(((((v399))->data))))));
-  (__ZH_BOP__dotcall_dotpush_back_Vec_lesschar_greaterP_ampersandchar((&(((((v399))->data)))), (((char)(((u8)0))))));
-  (__ZH_LOP__minus_minus_i64R(&((((v399))->size))));
+void __ZH_BOP__dotcall_dotpop_back_StrP_ampersand(__ZH_TYPE_Str* v427) {
+  (__ZH_BOP__dotcall_dotpop_back_Vec_lesschar_greaterP_ampersand((&(((((v427))->data))))));
+  (__ZH_BOP__dotcall_dotpop_back_Vec_lesschar_greaterP_ampersand((&(((((v427))->data))))));
+  (__ZH_BOP__dotcall_dotpush_back_Vec_lesschar_greaterP_ampersandchar((&(((((v427))->data)))), (((char)(((u8)0))))));
+  (__ZH_LOP__minus_minus_i64R(&((((v427))->size))));
 }
-__ZH_TYPE_Str __ZH_LOP_Str_str(str v400) {
-  __ZH_TYPE_Str v401;
-  (((v401)=(__ZH_LOP_Str_())));
-  (__ZH_BOP__dotcall_dotpop_back_Vec_lesschar_greaterP_ampersand((&((((&(v401))->data))))));
-  while ((((*((((char*)(v400))))))!=((((char)(((u8)0))))))) {
-    (__ZH_BOP__dotcall_dotpush_back_Vec_lesschar_greaterP_ampersandchar((&((((&(v401))->data)))), (*((((char*)(v400)))))));
-    (((v400)=(((str)(((((i64)(v400))))+((((i64)1))))))));
+__ZH_TYPE_Str __ZH_LOP_Str_str(str v428) {
+  __ZH_TYPE_Str v429;
+  (((v429)=(__ZH_LOP_Str_())));
+  (__ZH_BOP__dotcall_dotpop_back_Vec_lesschar_greaterP_ampersand((&((((&(v429))->data))))));
+  while ((((*((((char*)(v428))))))!=((((char)(((u8)0))))))) {
+    (__ZH_BOP__dotcall_dotpush_back_Vec_lesschar_greaterP_ampersandchar((&((((&(v429))->data)))), (*((((char*)(v428)))))));
+    (((v428)=(((str)(((((i64)(v428))))+((((i64)1))))))));
   }
-  (__ZH_BOP__dotcall_dotpush_back_Vec_lesschar_greaterP_ampersandchar((&((((&(v401))->data)))), (((char)(((u8)0))))));
-  (((((&(v401))->size))=(((((&(((&(v401))->data)))->size)))-((((i64)1))))));
-  return (v401);
-  (__ZH_BOP__dotcall_dotdtor_StrP_ampersand((&((v401)))));
+  (__ZH_BOP__dotcall_dotpush_back_Vec_lesschar_greaterP_ampersandchar((&((((&(v429))->data)))), (((char)(((u8)0))))));
+  (((((&(v429))->size))=(((((&(((&(v429))->data)))->size)))-((((i64)1))))));
+  return (v429);
+  (__ZH_BOP__dotcall_dotdtor_StrP_ampersand((&((v429)))));
 }
-i64 __ZH_LOP_len_str(str v402) {
-  i64 v403;
-  (((v403)=(((i64)0))));
-  while ((((*((((char*)(v402))))))!=((((char)(((u8)0))))))) {
-    (__ZH_LOP__plus_plus_i64R(&(v403)));
-    (((v402)=(((str)(((((i64)(v402))))+((((i64)1))))))));
+i64 __ZH_LOP_len_str(str v430) {
+  i64 v431;
+  (((v431)=(((i64)0))));
+  while ((((*((((char*)(v430))))))!=((((char)(((u8)0))))))) {
+    (__ZH_LOP__plus_plus_i64R(&(v431)));
+    (((v430)=(((str)(((((i64)(v430))))+((((i64)1))))))));
   }
-  return (v403);
+  return (v431);
 }
-void __ZH_LOP_out_StrR(__ZH_TYPE_Str* v404) {
-  (printf("%s\n", (__ZH_BOP__dotcall_dotcstr_StrP_ampersand((&((*v404)))))));
+void __ZH_LOP_out_StrR(__ZH_TYPE_Str* v432) {
+  (printf("%s\n", (__ZH_BOP__dotcall_dotcstr_StrP_ampersand((&((*v432)))))));
 }
-void __ZH_LOP_put_StrR(__ZH_TYPE_Str* v405) {
-  (printf("%s", (__ZH_BOP__dotcall_dotcstr_StrP_ampersand((&((*v405)))))));
+void __ZH_LOP_put_StrR(__ZH_TYPE_Str* v433) {
+  (printf("%s", (__ZH_BOP__dotcall_dotcstr_StrP_ampersand((&((*v433)))))));
 }
-void __ZH_BOP__plus_equal_StrRchar(__ZH_TYPE_Str* v406, char v407) {
-  (__ZH_BOP__dotcall_dotpush_back_StrP_ampersandchar((&((*v406))), (v407)));
+void __ZH_BOP__plus_equal_StrRchar(__ZH_TYPE_Str* v434, char v435) {
+  (__ZH_BOP__dotcall_dotpush_back_StrP_ampersandchar((&((*v434))), (v435)));
 }
-void __ZH_BOP__plus_equal_StrRStrR(__ZH_TYPE_Str* v408, __ZH_TYPE_Str* v409) {
+void __ZH_BOP__plus_equal_StrRStrR(__ZH_TYPE_Str* v436, __ZH_TYPE_Str* v437) {
   {
-      i64 v413;
-      i64 v412;
-      i64 v411;
-      __ZH_TYPE_Range v410;
-      (((v410)=(__ZH_BOP__dot_dot_i64i64((((i64)0)), (((&(*v409))->size))))));
-      (((v411)=(__ZH_BOP__dotcall_dotbegin_RangeP_ampersand((&((v410)))))));
-      (((v412)=(__ZH_BOP__dotcall_dotend_RangeP_ampersand((&((v410)))))));
-      (((v413)=(v411)));
-      while ((__ZH_BOP__dotcall_dotuneq_i64P_ampersandi64((&((v413))), (v412)))) {
-        char v414;
-        (((v414)=(((char)(((i8)115))))));
-        (((v414)=(__ZH_BOP__dotcall_dotat_StrP_ampersandi64((&((*v409))), (v413)))));
-        (__ZH_BOP__plus_equal_StrRchar(&(*v408), (v414)));
-        (__ZH_BOP__dotcall_dotnext_i64P_ampersand((&((v413)))));
+      i64 v441;
+      i64 v440;
+      i64 v439;
+      __ZH_TYPE_Range v438;
+      (((v438)=(__ZH_BOP__dot_dot_i64i64((((i64)0)), (((&(*v437))->size))))));
+      (((v439)=(__ZH_BOP__dotcall_dotbegin_RangeP_ampersand((&((v438)))))));
+      (((v440)=(__ZH_BOP__dotcall_dotend_RangeP_ampersand((&((v438)))))));
+      (((v441)=(v439)));
+      while ((__ZH_BOP__dotcall_dotuneq_i64P_ampersandi64((&((v441))), (v440)))) {
+        char v442;
+        (((v442)=(((char)(((i8)115))))));
+        (((v442)=(__ZH_BOP__dotcall_dotat_StrP_ampersandi64((&((*v437))), (v441)))));
+        (__ZH_BOP__plus_equal_StrRchar(&(*v436), (v442)));
+        (__ZH_BOP__dotcall_dotnext_i64P_ampersand((&((v441)))));
       }
     }
 }
-void __ZH_BOP__plus_equal_StrRstr(__ZH_TYPE_Str* v415, str v416) {
-  i64 v417;
-  (((v417)=(__ZH_LOP_len_str((v416)))));
+void __ZH_BOP__plus_equal_StrRstr(__ZH_TYPE_Str* v443, str v444) {
+  i64 v445;
+  (((v445)=(__ZH_LOP_len_str((v444)))));
   {
-      i64 v421;
-      i64 v420;
-      i64 v419;
-      __ZH_TYPE_Range v418;
-      (((v418)=(__ZH_BOP__dot_dot_i64i64((((i64)0)), (v417)))));
-      (((v419)=(__ZH_BOP__dotcall_dotbegin_RangeP_ampersand((&((v418)))))));
-      (((v420)=(__ZH_BOP__dotcall_dotend_RangeP_ampersand((&((v418)))))));
-      (((v421)=(v419)));
-      while ((__ZH_BOP__dotcall_dotuneq_i64P_ampersandi64((&((v421))), (v420)))) {
-        (__ZH_BOP__plus_equal_StrRchar(&(*v415), (__ZH_BOP__dotcall_dotat_strP_ampersandi64((&((v416))), (v421)))));
-        (__ZH_BOP__dotcall_dotnext_i64P_ampersand((&((v421)))));
+      i64 v449;
+      i64 v448;
+      i64 v447;
+      __ZH_TYPE_Range v446;
+      (((v446)=(__ZH_BOP__dot_dot_i64i64((((i64)0)), (v445)))));
+      (((v447)=(__ZH_BOP__dotcall_dotbegin_RangeP_ampersand((&((v446)))))));
+      (((v448)=(__ZH_BOP__dotcall_dotend_RangeP_ampersand((&((v446)))))));
+      (((v449)=(v447)));
+      while ((__ZH_BOP__dotcall_dotuneq_i64P_ampersandi64((&((v449))), (v448)))) {
+        (__ZH_BOP__plus_equal_StrRchar(&(*v443), (__ZH_BOP__dotcall_dotat_strP_ampersandi64((&((v444))), (v449)))));
+        (__ZH_BOP__dotcall_dotnext_i64P_ampersand((&((v449)))));
       }
     }
 }
-__ZH_TYPE_Out __ZH_ROP__less_StrR(__ZH_TYPE_Str* v422) {
-  (__ZH_LOP_out_StrR(&(*v422)));
+__ZH_TYPE_Out __ZH_ROP__less_StrR(__ZH_TYPE_Str* v450) {
+  (__ZH_LOP_out_StrR(&(*v450)));
   return (__ZH_LOP__Out_());
 }
-__ZH_TYPE_Out __ZH_LOP__less_StrR(__ZH_TYPE_Str* v423) {
-  ((__ZH_LOP_put_StrR(&(*v423))), (printf("%s", (" "))));
+__ZH_TYPE_Out __ZH_LOP__less_StrR(__ZH_TYPE_Str* v451) {
+  ((__ZH_LOP_put_StrR(&(*v451))), (printf("%s", (" "))));
   return (__ZH_LOP__Out_());
 }
-__ZH_TYPE_Out __ZH_BOP__less_OutStrR(__ZH_TYPE_Out v424, __ZH_TYPE_Str* v425) {
-  ((__ZH_LOP_put_StrR(&(*v425))), (printf("%s", (" "))));
+__ZH_TYPE_Out __ZH_BOP__less_OutStrR(__ZH_TYPE_Out v452, __ZH_TYPE_Str* v453) {
+  ((__ZH_LOP_put_StrR(&(*v453))), (printf("%s", (" "))));
   return (__ZH_LOP__Out_());
 }
 __ZH_TYPE_Str __ZH_LOP_frog_escaped_() {
-  __ZH_TYPE_Str v426;
-  (((v426)=(__ZH_LOP_Str_str(("")))));
-  (__ZH_BOP__plus_equal_StrRstr(&(v426), ("         _____ \\n")));
-  (__ZH_BOP__plus_equal_StrRstr(&(v426), ("       /       \\\\__ \\n")));
-  (__ZH_BOP__plus_equal_StrRstr(&(v426), ("     /             \\\\\\n")));
-  (__ZH_BOP__plus_equal_StrRstr(&(v426), ("   /   0    0        |\\n")));
-  (__ZH_BOP__plus_equal_StrRstr(&(v426), ("  |     ..            |\\n")));
-  (__ZH_BOP__plus_equal_StrRstr(&(v426), ("  /|        _/       /\\n")));
-  (__ZH_BOP__plus_equal_StrRstr(&(v426), (" / .\\\\_____/         /\\n")));
-  (__ZH_BOP__plus_equal_StrRstr(&(v426), ("/U\\\\|    \\\\___|   |__/\\n")));
-  (__ZH_BOP__plus_equal_StrRstr(&(v426), ("            /  /\\n")));
-  (__ZH_BOP__plus_equal_StrRstr(&(v426), ("            |/U\\\\\\n")));
-  return (v426);
-  (__ZH_BOP__dotcall_dotdtor_StrP_ampersand((&((v426)))));
+  __ZH_TYPE_Str v454;
+  (((v454)=(__ZH_LOP_Str_str(("")))));
+  (__ZH_BOP__plus_equal_StrRstr(&(v454), ("         _____ \\n")));
+  (__ZH_BOP__plus_equal_StrRstr(&(v454), ("       /       \\\\__ \\n")));
+  (__ZH_BOP__plus_equal_StrRstr(&(v454), ("     /             \\\\\\n")));
+  (__ZH_BOP__plus_equal_StrRstr(&(v454), ("   /   0    0        |\\n")));
+  (__ZH_BOP__plus_equal_StrRstr(&(v454), ("  |     ..            |\\n")));
+  (__ZH_BOP__plus_equal_StrRstr(&(v454), ("  /|        _/       /\\n")));
+  (__ZH_BOP__plus_equal_StrRstr(&(v454), (" / .\\\\_____/         /\\n")));
+  (__ZH_BOP__plus_equal_StrRstr(&(v454), ("/U\\\\|    \\\\___|   |__/\\n")));
+  (__ZH_BOP__plus_equal_StrRstr(&(v454), ("            /  /\\n")));
+  (__ZH_BOP__plus_equal_StrRstr(&(v454), ("            |/U\\\\\\n")));
+  return (v454);
+  (__ZH_BOP__dotcall_dotdtor_StrP_ampersand((&((v454)))));
 }
 __ZH_TYPE_Str __ZH_LOP_frog_escaped_multiline_() {
-  __ZH_TYPE_Str v427;
-  (((v427)=(__ZH_LOP_Str_str(("")))));
-  (__ZH_BOP__plus_equal_StrRstr(&(v427), ("         _____         \\n       /       \\\\__     \\n     /             \\\\   \\n   /   0    0        | \\n  |     ..            |\\n  /|        _/       / \\n / .\\\\_____/         /\\n/U\\\\|    \\\\___|   |__/\\n            /  /\\n            |/U\\\\")));
-  return (v427);
-  (__ZH_BOP__dotcall_dotdtor_StrP_ampersand((&((v427)))));
+  __ZH_TYPE_Str v455;
+  (((v455)=(__ZH_LOP_Str_str(("")))));
+  (__ZH_BOP__plus_equal_StrRstr(&(v455), ("         _____         \\n       /       \\\\__     \\n     /             \\\\   \\n   /   0    0        | \\n  |     ..            |\\n  /|        _/       / \\n / .\\\\_____/         /\\n/U\\\\|    \\\\___|   |__/\\n            /  /\\n            |/U\\\\")));
+  return (v455);
+  (__ZH_BOP__dotcall_dotdtor_StrP_ampersand((&((v455)))));
 }
 str __ZH_LOP_frog_raw_() {
   return ("         _____\\n       /       \\\\__\\n     /             \\\\\\n   /   0    0        |\\n  |     ..            |\\n  /|        _/       / \\n / .\\\\_____/         /\\n/U\\\\|    \\\\___|   |__/\\n            /  /\\n            |/U\\\\ ");
@@ -1287,94 +1393,125 @@ str __ZH_LOP_frog_raw_() {
 str __ZH_LOP_frog_() {
   return (__ZH_LOP_frog_raw_());
 }
-void __ZH_LOP_brainfuck_str(str v428) {
-  i64 v430;
-  u8* v429;
-  (((v429)=(((u8*)(alloc((((i64)3000))))))));
-  (((v430)=(((i64)0))));
+void __ZH_LOP_brainfuck_str(str v456) {
+  i64 v458;
+  u8* v457;
+  (((v457)=(((u8*)(alloc((((i64)3000))))))));
+  (((v458)=(((i64)0))));
   {
-      i64 v434;
-      i64 v433;
-      i64 v432;
-      __ZH_TYPE_Range v431;
-      (((v431)=(__ZH_BOP__dot_dot_i64i64((((i64)0)), (__ZH_LOP_len_str((v428)))))));
-      (((v432)=(__ZH_BOP__dotcall_dotbegin_RangeP_ampersand((&((v431)))))));
-      (((v433)=(__ZH_BOP__dotcall_dotend_RangeP_ampersand((&((v431)))))));
-      (((v434)=(v432)));
-      while ((__ZH_BOP__dotcall_dotuneq_i64P_ampersandi64((&((v434))), (v433)))) {
-        char v436;
-        u8 v435;
-        (((v435)=(*((v429)))));
-        (((v436)=(__ZH_BOP__caret_stri64((v428), (v434)))));
+      i64 v462;
+      i64 v461;
+      i64 v460;
+      __ZH_TYPE_Range v459;
+      (((v459)=(__ZH_BOP__dot_dot_i64i64((((i64)0)), (__ZH_LOP_len_str((v456)))))));
+      (((v460)=(__ZH_BOP__dotcall_dotbegin_RangeP_ampersand((&((v459)))))));
+      (((v461)=(__ZH_BOP__dotcall_dotend_RangeP_ampersand((&((v459)))))));
+      (((v462)=(v460)));
+      while ((__ZH_BOP__dotcall_dotuneq_i64P_ampersandi64((&((v462))), (v461)))) {
+        char v464;
+        u8 v463;
+        (((v463)=(*((v457)))));
+        (((v464)=(__ZH_BOP__caret_stri64((v456), (v462)))));
         {
-            char v437;
-            (((v437)=(v436)));
-            if ((__ZH_BOP__equal_equal_charstr((v437), (">")))) {
-              (((v429)=(((u8*)(((((i64)(v429))))+((((((i64)1)))*((((i64)1))))))))));
+            char v465;
+            (((v465)=(v464)));
+            if ((__ZH_BOP__equal_equal_charstr((v465), (">")))) {
+              (((v457)=(((u8*)(((((i64)(v457))))+((((((i64)1)))*((((i64)1))))))))));
             }
- else if ((__ZH_BOP__equal_equal_charstr((v437), ("<")))) {
-              (((v429)=(((u8*)(((((i64)(v429))))-((((((i64)1)))*((((i64)1))))))))));
+ else if ((__ZH_BOP__equal_equal_charstr((v465), ("<")))) {
+              (((v457)=(((u8*)(((((i64)(v457))))-((((((i64)1)))*((((i64)1))))))))));
             }
- else if ((__ZH_BOP__equal_equal_charstr((v437), ("+")))) {
-              (__ZH_LOP__plus_plus_u8R(&(*((v429)))));
+ else if ((__ZH_BOP__equal_equal_charstr((v465), ("+")))) {
+              (__ZH_LOP__plus_plus_u8R(&(*((v457)))));
             }
- else if ((__ZH_BOP__equal_equal_charstr((v437), ("-")))) {
-              (__ZH_LOP__minus_minus_u8R(&(*((v429)))));
+ else if ((__ZH_BOP__equal_equal_charstr((v465), ("-")))) {
+              (__ZH_LOP__minus_minus_u8R(&(*((v457)))));
             }
- else if ((__ZH_BOP__equal_equal_charstr((v437), (".")))) {
-              (printf("%c", (((char)(v435)))));
+ else if ((__ZH_BOP__equal_equal_charstr((v465), (".")))) {
+              (printf("%c", (((char)(v463)))));
             }
- else if ((__ZH_BOP__equal_equal_charstr((v437), (",")))) {
-              (__ZH_LOP__greater_u8R(&(*((v429)))));
+ else if ((__ZH_BOP__equal_equal_charstr((v465), (",")))) {
+              (__ZH_LOP__greater_u8R(&(*((v457)))));
             }
- else if ((__ZH_BOP__equal_equal_charstr((v437), ("[")))) {
-              if ((!((v435)))) {
-                (__ZH_LOP__plus_plus_i64R(&(v430)));
-                while ((!((!((v430)))))) {
-                  (__ZH_LOP__plus_plus_i64R(&(v434)));
-                  if ((__ZH_BOP__equal_equal_charstr((__ZH_BOP__caret_stri64((v428), (v434))), ("[")))) {
-                    (__ZH_LOP__plus_plus_i64R(&(v430)));
+ else if ((__ZH_BOP__equal_equal_charstr((v465), ("[")))) {
+              if ((!((v463)))) {
+                (__ZH_LOP__plus_plus_i64R(&(v458)));
+                while ((!((!((v458)))))) {
+                  (__ZH_LOP__plus_plus_i64R(&(v462)));
+                  if ((__ZH_BOP__equal_equal_charstr((__ZH_BOP__caret_stri64((v456), (v462))), ("[")))) {
+                    (__ZH_LOP__plus_plus_i64R(&(v458)));
                   }
-                  if ((__ZH_BOP__equal_equal_charstr((__ZH_BOP__caret_stri64((v428), (v434))), ("]")))) {
-                    (__ZH_LOP__minus_minus_i64R(&(v430)));
+                  if ((__ZH_BOP__equal_equal_charstr((__ZH_BOP__caret_stri64((v456), (v462))), ("]")))) {
+                    (__ZH_LOP__minus_minus_i64R(&(v458)));
                   }
                 }
               }
             }
- else if ((__ZH_BOP__equal_equal_charstr((v437), ("]")))) {
-              if ((!((!((v435)))))) {
-                if ((__ZH_BOP__equal_equal_charstr((v436), ("]")))) {
-                  (__ZH_LOP__plus_plus_i64R(&(v430)));
+ else if ((__ZH_BOP__equal_equal_charstr((v465), ("]")))) {
+              if ((!((!((v463)))))) {
+                if ((__ZH_BOP__equal_equal_charstr((v464), ("]")))) {
+                  (__ZH_LOP__plus_plus_i64R(&(v458)));
                 }
-                while ((!((!((v430)))))) {
-                  (__ZH_LOP__minus_minus_i64R(&(v434)));
-                  if ((__ZH_BOP__equal_equal_charstr((__ZH_BOP__caret_stri64((v428), (v434))), ("[")))) {
-                    (__ZH_LOP__minus_minus_i64R(&(v430)));
+                while ((!((!((v458)))))) {
+                  (__ZH_LOP__minus_minus_i64R(&(v462)));
+                  if ((__ZH_BOP__equal_equal_charstr((__ZH_BOP__caret_stri64((v456), (v462))), ("[")))) {
+                    (__ZH_LOP__minus_minus_i64R(&(v458)));
                   }
-                  if ((__ZH_BOP__equal_equal_charstr((__ZH_BOP__caret_stri64((v428), (v434))), ("]")))) {
-                    (__ZH_LOP__plus_plus_i64R(&(v430)));
+                  if ((__ZH_BOP__equal_equal_charstr((__ZH_BOP__caret_stri64((v456), (v462))), ("]")))) {
+                    (__ZH_LOP__plus_plus_i64R(&(v458)));
                   }
                 }
-                (__ZH_LOP__minus_minus_i64R(&(v434)));
+                (__ZH_LOP__minus_minus_i64R(&(v462)));
               }
             }
           }
-        (__ZH_BOP__dotcall_dotnext_i64P_ampersand((&((v434)))));
+        (__ZH_BOP__dotcall_dotnext_i64P_ampersand((&((v462)))));
       }
     }
 }
-void __ZH_LOP_aboba_i64(i64 v438) {
-  (printf("%lld\n", (v438)));
-}
-i64 __ZH_BOP__dotcall_dotcall_i64P_ampersandi64(i64* v439, i64 v440) {
-  return (((*((v439))))+((v440)));
-}
-i64 __ZH_BOP__dotcall_dotsub_i64P_ampersandi64(i64* v441, i64 v442) {
-  return (((*((v441))))-((v442)));
-}
 int main(int argc, char *argv[])  {
-  i64 v443;
-  (((v443)=(((i64)5))));
-  (printf("%lld\n", (__ZH_BOP__dotcall_dotcall_i64P_ampersandi64((&((v443))), (((i64)2))))));
-  (printf("%lld\n", (__ZH_BOP__dotcall_dotsub_i64P_ampersandi64((&((v443))), (((i64)2))))));
+  __ZH_TYPE_Vec_lessi64_greater v477;
+  __ZH_TYPE_Range v476;
+  __ZH_TYPE_Vec_lessi64_greater v472;
+  __ZH_TYPE_Vec_lessi64_greater v471;
+  __ZH_TYPE_Vec_lessi64_greater v474;
+  __ZH_TYPE_Vec_lessi64_greater v470;
+  i64 v468;
+  __ZH_TYPE_Vec_lessi64_greater v473;
+  i64 v467;
+  __ZH_TYPE_Vec_lessi64_greater v475;
+  __ZH_TYPE_Vec_lessi64_greater v469;
+  __ZH_TYPE_Vec_lessi64_greater v466;
+  (((v466)=(__ZH_LOP_iota_i64i64((((i64)0)), (((i64)10))))));
+  (__ZH_LOP__less_Out((__ZH_ROP__less_Vec_lessi64_greaterR(&(v466)))));
+  (((v467)=(*__ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterP_ampersandi64((&((v466))), (((i64)2))))));
+  (__ZH_LOP__less_Out((__ZH_ROP__less_i64((v467)))));
+  (((v468)=(*__ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterP_ampersandi64((&((v466))), (__ZH_LOP__minus_i64((((i64)1))))))));
+  (__ZH_LOP__less_Out((__ZH_ROP__less_i64((v468)))));
+  (((v469)=(__ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterP_ampersandRange((&((v466))), (__ZH_BOP__dot_dot_i64i64((((i64)2)), (((i64)4))))))));
+  (__ZH_LOP__less_Out((__ZH_ROP__less_Vec_lessi64_greaterR(&(v469)))));
+  (((v470)=(__ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterP_ampersandRange((&((v466))), (__ZH_LOP__dot_dot_i64((((i64)3))))))));
+  (__ZH_LOP__less_Out((__ZH_ROP__less_Vec_lessi64_greaterR(&(v470)))));
+  (((v471)=(__ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterP_ampersandRange((&((v466))), (__ZH_ROP__dot_dot_i64((((i64)3))))))));
+  (__ZH_LOP__less_Out((__ZH_ROP__less_Vec_lessi64_greaterR(&(v471)))));
+  (((v472)=(__ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterP_ampersand((&((v466)))))));
+  (__ZH_LOP__less_Out((__ZH_ROP__less_Vec_lessi64_greaterR(&(v472)))));
+  (((v473)=(__ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterP_ampersandRange((&((v466))), (__ZH_BOP__dot_dot_minus_i64i64((__ZH_LOP__minus_i64((((i64)4)))), (((i64)2))))))));
+  (__ZH_LOP__less_Out((__ZH_ROP__less_Vec_lessi64_greaterR(&(v473)))));
+  (((v474)=(__ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterP_ampersandRange((&((v466))), (__ZH_LOP__minus_Range((__ZH_ROP__dot_dot_i64((((i64)4))))))))));
+  (__ZH_LOP__less_Out((__ZH_ROP__less_Vec_lessi64_greaterR(&(v474)))));
+  (((v475)=(__ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterP_ampersandRange((&((v466))), (__ZH_LOP__dot_dot_minus_i64((((i64)2))))))));
+  (__ZH_LOP__less_Out((__ZH_ROP__less_Vec_lessi64_greaterR(&(v475)))));
+  (((v476)=(__ZH_BOP__dot_dot_i64i64((((i64)0)), (((i64)10))))));
+  (((v477)=(__ZH_BOP__dotcall_dotcall_RangeP_ampersand((&((v476)))))));
+  (__ZH_LOP__less_Out((__ZH_ROP__less_Vec_lessi64_greaterR(&(v477)))));
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP_ampersand((&((v466)))));
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP_ampersand((&((v469)))));
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP_ampersand((&((v470)))));
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP_ampersand((&((v471)))));
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP_ampersand((&((v472)))));
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP_ampersand((&((v473)))));
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP_ampersand((&((v474)))));
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP_ampersand((&((v475)))));
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP_ampersand((&((v477)))));
 }

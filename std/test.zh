@@ -1,14 +1,16 @@
 use std
 
-fn aboba int a
-  out a
-
-impl int
-  fn int call int i
-    <<< *slf + i
-  fn int sub int i
-    <<< *slf - i
 fn main
-  t := 5
-  out (t(2))
-  out (t[2])
+  v := iota(0 10) ; < v  <         
+  g0 := v[2]      ; < g0 <  
+  g1 := v[-1]     ; < g1 <   
+  g2 := v[2..4]   ; < g2 <     
+  g3 := v[..3]    ; < g3 <    
+  g4 := v[3..]    ; < g4 <    
+  g5 := v[]       ; < g5 < 
+  g6 := v[-4..-2] ; < g6 <       
+  g7 := v[-4..]   ; < g7 <     
+  g8 := v[..-2]   ; < g8 <     
+
+  r := 0..10
+  g9 := r()       ; < g9 <

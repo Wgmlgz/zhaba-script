@@ -2,7 +2,8 @@ use range
 use operators
 use out
 
-type Vec T: int size; 
+type Vec T
+  int size 
   int capacity
   TP head
 
@@ -67,6 +68,7 @@ impl Vec
     slf.size = size
     slf.capacity = size
     <<< slf
+    
   fn ctor int size T default
     slf := Vec<T>(size)
     @ i 0..slf.size: slf.at(i) = default
@@ -89,6 +91,7 @@ impl Vec
   lop out Vec<T>R slf: slf.print(); out ''
 
 
+  /** Output overload */
   rop Out < Vec<T>R i: out i
     <<< _Out()
   lop Out < Vec<T>R i: put i, put ' '
@@ -96,10 +99,29 @@ impl Vec
   op 9 Out < Out o Vec<T>R i: put i, put ' '
     <<< _Out()
 
+  /** Subscripts */
+  fn TR sub int id
+    ? id < 0: id += slf.size
+    <<< slf.at(id)
+
   fn Vec<T> sub int begin int end
     res := Vec<T>(0)
     @ i begin..end: res.push_back(slf.at(i))
     <<< res
+
+  fn Vec<T> sub Range r
+    begin := r.begin end := r.end
+    ? begin < 0: begin += slf.size
+    ? begin < 0: begin = 0
+    ? end < 0: end += slf.size
+    ? end > slf.size: end = slf.size
+    <<< slf[begin end]
+
+  fn Vec<T> sub: <<< slf[0 slf.size]
+
+  /** Sorting */
+  op 9 bool < Vec<T>R a Vec<T>R b
+    <<< false
 
   lop swap TP a TP b: T t = *a; *a = *b; *b = t
 
@@ -125,8 +147,14 @@ impl Vec
     qsort(begin.ptr end.ptr)
   lop sort Vec<T>R slf: slf.sort()
 
+/** Util */
 fn Vec<int> iota int begin int end
   v := Vec<int>(end - begin)
   @ i begin..end: v.at(i - begin) = i
   <<< v
 
+impl Range
+  fn Vec<int> call
+    res := Vec<int>()
+    @ i, *slf: res += i
+    <<< res

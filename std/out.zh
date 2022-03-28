@@ -1,4 +1,4 @@
-type Out: u8 prikol
+type Out: bool complex
 
 impl Out: fn ctor: Out o; <<< o
 
