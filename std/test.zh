@@ -1,14 +1,14 @@
 use std
 
+fn aboba int a
+  out a
+
+impl int
+  fn int call int i
+    <<< *slf + i
+  fn int sub int i
+    <<< *slf - i
 fn main
   t := 5
-  ?? t
-    10.. : out '10..'
-    15.. : out '15..'
-    ..3: out '..3'
-    3..10: out '3..10'
-    0..2: out '0..2'
-    5: out 5
-    _: out 'any'
-
-  @ i 5..10 : < i
+  out (t(2))
+  out (t[2])

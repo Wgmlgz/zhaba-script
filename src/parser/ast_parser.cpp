@@ -35,15 +35,29 @@ ASTBlock *parseBlock(tokeniter begin, tokeniter end) {
     }
     auto line_begin = cur, line_end = end;
 
-    int p_count = 0;
+    std::vector<Token*> p_stack;
+
     while (true) {
       if (cur == end) {
         break;
       }
-      if (cur->token == TOKEN::open_p) ++p_count;
-      if (cur->token == TOKEN::close_p) --p_count;
+      if (cur->token == TOKEN::open_p) {
+        p_stack.push_back(&*cur);
+      }
+      if (cur->token == TOKEN::close_p) {
+        if (p_stack.empty()) throw new ParserError(*cur, "Extra " + cur->val);
+        auto last = p_stack.back()->val;
+        auto now = cur->val;
+        if (last == "(" && now != ")")
+          throw new ParserError(*cur, "Expected ')', but '" + now + "' found");
+        else if  (last == "[" && now != "]")
+          throw new ParserError(*cur, "Expected ']', but '" + now + "' found");
+        else if (last == "{" && now != "}")
+          throw new ParserError(*cur, "Expected '}', but '" + now + "' found");
+        p_stack.pop_back();
+      }
 
-      if (p_count == 0) {
+      if (p_stack.empty()) {
         if (cur->token == TOKEN::new_block) break;
         if (cur->token == TOKEN::next_block) break;
         if (cur->token == TOKEN::fin_block) break;

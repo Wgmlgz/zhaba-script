@@ -607,6 +607,22 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
                             "' for types: " + types_str);
     }
   } else if (auto op = dynamic_cast<PrefixOperator *>(exp)) {
+    if (scope.containsVar(op->val)) {
+      auto pr = (*((&op->begin) + 1)).val;
+      std::string call_name = ".call.call";
+      if (pr == "[") call_name = ".call.sub";
+      
+      auto var = scope.getVarInfo(scope.getVarId(op->val));
+      
+      auto var_exp =
+          new Variable(op->begin, op->end, var->name, var->type, var->id);
+      
+      var_exp->type = var->type;
+      exp = new BinOperator(op->begin, op->end, call_name, 0, var_exp, op->child);
+      exp = postprocess(exp, scope);
+      return exp;
+    }
+
     op->child = postprocess(op->child, scope);
 
     if (op->val == "&") {
@@ -663,14 +679,13 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
       auto &fn = scope.getFn(func_head);
       op->func = fn;
       exp->type = fn->type;
-      for (int i = 0; i < fn->args.size(); ++i) {
+      for (int i = 0; i < fn->args.size(); ++i) 
         if (!fn->args[i].type.getRef()) copyExp(*exps[i], scope);
-      }
     } else {
       std::string types_str;
-      for (auto &i : types) {
-        types_str += i.toString() + " ";
-      }
+
+      for (auto &i : types) types_str += i.toString() + " ";
+
       throw ParserError(op->begin, op->end, "There is no instance of prefix operator '" +
           op->val +
           "' for types: " + types_str);

@@ -302,6 +302,9 @@ __ZH_TYPE_Str __ZH_LOP_frog_escaped_multiline_();
 str __ZH_LOP_frog_raw_();
 str __ZH_LOP_frog_();
 void __ZH_LOP_brainfuck_str(str v428);
+void __ZH_LOP_aboba_i64(i64 v438);
+i64 __ZH_BOP__dotcall_dotcall_i64P_ampersandi64(i64* v439, i64 v440);
+i64 __ZH_BOP__dotcall_dotsub_i64P_ampersandi64(i64* v441, i64 v442);
 int main(int argc, char *argv[]) ;
 
 i64 __ZH_LOP__plus_i64(i64 v101) {
@@ -1360,46 +1363,18 @@ void __ZH_LOP_brainfuck_str(str v428) {
       }
     }
 }
+void __ZH_LOP_aboba_i64(i64 v438) {
+  (printf("%lld\n", (v438)));
+}
+i64 __ZH_BOP__dotcall_dotcall_i64P_ampersandi64(i64* v439, i64 v440) {
+  return (((*((v439))))+((v440)));
+}
+i64 __ZH_BOP__dotcall_dotsub_i64P_ampersandi64(i64* v441, i64 v442) {
+  return (((*((v441))))-((v442)));
+}
 int main(int argc, char *argv[])  {
-  i64 v438;
-  (((v438)=(((i64)5))));
-  {
-      i64 v439;
-      (((v439)=(v438)));
-      if ((__ZH_BOP__equal_equal_i64Range((v439), (__ZH_ROP__dot_dot_i64((((i64)10))))))) {
-        (printf("%s\n", ("10..")));
-      }
- else if ((__ZH_BOP__equal_equal_i64Range((v439), (__ZH_ROP__dot_dot_i64((((i64)15))))))) {
-        (printf("%s\n", ("15..")));
-      }
- else if ((__ZH_BOP__equal_equal_i64Range((v439), (__ZH_LOP__dot_dot_i64((((i64)3))))))) {
-        (printf("%s\n", ("..3")));
-      }
- else if ((__ZH_BOP__equal_equal_i64Range((v439), (__ZH_BOP__dot_dot_i64i64((((i64)3)), (((i64)10))))))) {
-        (printf("%s\n", ("3..10")));
-      }
- else if ((__ZH_BOP__equal_equal_i64Range((v439), (__ZH_BOP__dot_dot_i64i64((((i64)0)), (((i64)2))))))) {
-        (printf("%s\n", ("0..2")));
-      }
- else if ((((v439))==((((i64)5))))) {
-        (printf("%lld\n", (((i64)5))));
-      }
- else if ((((bool)1))) {
-        (printf("%s\n", ("any")));
-      }
-    }
-  {
-      i64 v443;
-      i64 v442;
-      i64 v441;
-      __ZH_TYPE_Range v440;
-      (((v440)=(__ZH_BOP__dot_dot_i64i64((((i64)5)), (((i64)10))))));
-      (((v441)=(__ZH_BOP__dotcall_dotbegin_RangeP_ampersand((&((v440)))))));
-      (((v442)=(__ZH_BOP__dotcall_dotend_RangeP_ampersand((&((v440)))))));
-      (((v443)=(v441)));
-      while ((__ZH_BOP__dotcall_dotuneq_i64P_ampersandi64((&((v443))), (v442)))) {
-        (__ZH_LOP__less_i64((v443)));
-        (__ZH_BOP__dotcall_dotnext_i64P_ampersand((&((v443)))));
-      }
-    }
+  i64 v443;
+  (((v443)=(((i64)5))));
+  (printf("%lld\n", (__ZH_BOP__dotcall_dotcall_i64P_ampersandi64((&((v443))), (((i64)2))))));
+  (printf("%lld\n", (__ZH_BOP__dotcall_dotsub_i64P_ampersandi64((&((v443))), (((i64)2))))));
 }
