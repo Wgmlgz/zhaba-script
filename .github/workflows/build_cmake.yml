@@ -49,7 +49,6 @@ jobs:
         sudo apt install gcc-10 g++-10
 
     - name: Install dependencies on Windows
-      shell: bash
       if: startsWith(matrix.config.name, 'Windows Latest MSVC')
       run: |
         pacman -Syu
