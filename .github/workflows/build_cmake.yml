@@ -16,12 +16,12 @@ jobs:
       fail-fast: false
       matrix:
         config:
-        - {
-            name: "Windows Latest MSVC", artifact: "Windows-MSVC.7z",
-            os: windows-latest,
-            cc: "cl", cxx: "cl",
-            environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat"
-          }
+        # - {
+        #     name: "Windows Latest MSVC", artifact: "Windows-MSVC.7z",
+        #     os: windows-latest,
+        #     cc: "cl", cxx: "cl",
+        #     environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat"
+        #   }
         - {
             name: "Windows Latest MinGW", artifact: "Windows-MinGW.7z",
             os: windows-latest,
@@ -41,13 +41,6 @@ jobs:
     steps:
     - uses: actions/checkout@v1
 
-    - name: Install dependencies on windows
-      if: startsWith(matrix.config.os, 'windows')
-      run: |
-        choco install ninja cmake
-        ninja --version
-        cmake --version
-        
     - name: Install dependencies on ubuntu10
       shell: bash
       if: startsWith(matrix.config.name, 'Ubuntu Latest GCC')
