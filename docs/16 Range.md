@@ -45,6 +45,8 @@ t := 5
 // 3..10
 ```
 
+Range can be also used to index array, more about that at [next chapter](https://wgmlgz.github.io/zhaba/?page=docs&chapter=15).
+
 ## P.S
 
-Inspired by Rust!
+Inspired by Rust and Python!
