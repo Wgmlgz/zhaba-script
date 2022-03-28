@@ -24,7 +24,7 @@ jobs:
         #   }
         - {
             name: "Windows Latest MinGW", artifact: "Windows-MinGW.7z",
-            os: windows-latest,
+            os: windows-2022,
             cc: "gcc", cxx: "g++"
           }
         - {
