@@ -4,7 +4,7 @@ Zhaba script (Russian: ˈʐabə, жаба(frog)) - is a multi-paradigm, high-lev
 
 Inspired by JS, Rust, C++, and Python🐍
 
-![frog_img](/img/frog.jpg)
+![frog_img](https://raw.githubusercontent.com/Wgmlgz/zhaba-script/main/img/frog.jpg)
 
 # Useful links 🔗
 
@@ -31,55 +31,56 @@ fn main
 
 # List of features
 
-- Complier & dev environment:
+Complier & dev environment:
 
-  - Interpretation (throw bytecode)
-  - Interpretation in web environment
-  - Web code editor
-  - Docs website
-  - Translation to C
+- Interpretation (throw bytecode)
+- Interpretation in web environment
+- Web code editor
+- Docs website
+- Translation to C
 
-- Basics:
+Basics:
 
-  - Basic types like int, bool or char
-  - Variables (and local redefinition)
-  - All C operators like (+ - \* %)
-  - If, else, elif
-  - While loop
-  - C-style for loop
-  - Single and multi-line comments
-  - Functions
-  - Other files usage
+- Basic types like int, bool or char
+- Variables (and local redefinition)
+- All C operators like (+ - \* %)
+- If, else, elif
+- While loop
+- C-style for loop
+- Single and multi-line comments
+- Functions
+- Other files usage
 
-- More advanced features:
+More advanced features:
 
-  - Foreach loop
-  - Patten matching
-  - Functions overloading
-  - Any operator overloading
-  - Subscript `[]` and call `()` overload
-  - New operators creation
-  - Local (relative to scope) functions and operators definition
-  - Pointers
-  - References (pass, return and store)
+- Foreach loop
+- Patten matching
+- Functions overloading
+- Any operator overloading
+- Subscript `[]` and call `()` overload
+- New operators creation
+- Local (relative to scope) functions and operators definition
+- Pointers
+- References (pass, return and store)
 
-- Objects:
+Objects:
 
-  - Custom types (classes/structs)
-  - Member functions
-  - Constructors
-  - Copy constructors (and implicit calls)
-  - Destructors (and implicit calls)
-  - Generic types like `Vec<T>`
+- Custom types (classes/structs)
+- Member functions
+- Constructors
+- Copy constructors (and implicit calls)
+- Destructors (and implicit calls)
+- Generic types like `Vec<T>`
 
-- Standard library
-  - `Vec<T>` - generic dynamic array
-  - `Str` - String class
-  - Easy input/output throw `<` and `>` overloaded operators
-  - `Range` - int range, can be created with `..` operator, used in loops or `Vec` slicing
-  - `frog.zh` - file with cool ASCII image of 🐸
-  - `operators.zh` - more advanced operators like %%
-  - `brainfuck.zh` - brainfuck interpreter
+Standard library
+
+- `Vec<T>` - generic dynamic array
+- `Str` - String class
+- Easy input/output throw `<` and `>` overloaded operators
+- `Range` - int range, can be created with `..` operator, used in loops or `Vec` slicing
+- `frog.zh` - file with cool ASCII image of 🐸
+- `operators.zh` - more advanced operators like %%
+- `brainfuck.zh` - brainfuck interpreter
 
 # Why? 🤔
 
@@ -101,7 +102,7 @@ Zhaba-script memory model is similar to the C memory model, which consists of st
 
 # Compatibility
 
-Zhaba-script currently requires zero external dependencies in interpretation mode and C compiler like GCC if you want to translate programs to C. Also You will need a C++20 compiler with Cmake to build it. Pinecone has been successfully tested on Linux, MacOS and Windows.
+Zhaba-script currently requires zero external dependencies in interpretation mode and C compiler like GCC if you want to translate programs to C. Also You will need a C++20 compiler with Cmake to build it. Zhaba-script has been successfully tested on Linux, MacOS and Windows.
 
 # Setup ⚙️
 
@@ -225,4 +226,4 @@ Love frogs and frogs will love you 🐸💖.
 
 ⭐ this repo if you liked it!
 
-![frog_img](/img/cute-frog.jpg)
+![frog_img](https://raw.githubusercontent.com/Wgmlgz/zhaba-script/main/img/cute-frog.jpg)
