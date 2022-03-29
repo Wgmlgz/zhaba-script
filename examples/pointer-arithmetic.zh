@@ -1,0 +1,17 @@
+use std
+
+fn main
+  size := 5
+  p := malloc(sizeof(int) * size) as intP
+  < 'ptr + x' <
+  @ i 0..size: *(p + i) = i
+  @ i 0..size: < (*(p + i)) <
+  
+  < 'x + ptr' <
+  @ i 0..size: *(i + p) = i
+  @ i 0..size: < (*(i + p)) <
+  
+  < 'ptr - x' <
+  t := p + 5
+  t = t - 2
+  < (*t) <

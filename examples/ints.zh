@@ -16,9 +16,6 @@ fn main
   _i32 := 32i32
   _i64 := 64i64
 
-  < 'Enter values of u8, u16, u32, u64, i8, i16, i32 and i64' < \\\
-  > _u8 > _u16 > _u32 > _u64 > _i8 > _i16 > _i32 > _i64
-
   < 'Unsinged:' < < _u8 < _u16 < _u32 < _u64 <
 
   < 'Singed:' < < _i8 < _i16 < _i32 < _i64 <

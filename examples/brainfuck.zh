@@ -1,6 +1,4 @@
-use out
-use operators
-use str
+use std
 
 fn brainfuck str s
   p := malloc(3000) as u8P
@@ -28,3 +26,10 @@ fn brainfuck str s
               ?s^i=='[': --b
               ?s^i==']': ++b
             --i
+
+/** Hello world! */
+fn main: brainfuck(`
+  ++++++++[>++++[>++>+++>+++>+<<<<-]>+>->+>>
+  +[<]<-]>>.>>---.+++++++..+++.>.<<-.>.+++.-
+  -----.--------.>+.>++.
+  `)
