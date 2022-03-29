@@ -6,17 +6,18 @@ type Range: int begin end
 
 A (half-open) range bounded inclusively below and exclusively above [start..end).
 
-The range start..end contains all values with start <= x < end. It is empty if start >= end.
+The range `start..end` contains all values with `start <= x < end`. It is empty if `start >= end`. To create range which includes `end` you can use `..=` operator.
 
 ## Creating range
 
-Range can be created using `..` operator with it's prefix, postfix or infix overloads. Prefix and postfix operators create infinite (limited by i64 min/max values) ranges:
+Range can be created using `..` or `..=` operator with it's prefix, postfix or infix overloads. Prefix and postfix operators create infinite (limited by i64 min/max values) ranges:
 
 ```zh
 
 10..  // 10..9223372036854775807
 ..40  // -9223372036854775807..40
 3..10 // 3..10
+3..=10 // 3..11
 
 ```
 

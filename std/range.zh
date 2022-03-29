@@ -38,6 +38,15 @@ lop Range ..- int end: <<< rangeMin().. -end
 /**  -begin..end */
 lop Range - Range r: <<< (-r.begin)..r.end
 
+
+/**  begin..=end */
+op 9 Range ..= int begin int end: <<< begin..(end+1)
+/**  ..=end */
+lop Range ..= int end: <<< rangeMin()..(end+1)
+/**  ..=-end */
+lop Range ..=- int end: <<< rangeMin()..(-end+1)
+
+
 /** int in range */
 op 10 bool == int i Range r
   ? r.begin < r.end: <<< r.begin <= i && i < r.end

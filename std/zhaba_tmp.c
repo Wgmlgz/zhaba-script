@@ -1470,48 +1470,7 @@ void __ZH_LOP_brainfuck_str(str v456) {
     }
 }
 int main(int argc, char *argv[])  {
-  __ZH_TYPE_Vec_lessi64_greater v477;
-  __ZH_TYPE_Range v476;
-  __ZH_TYPE_Vec_lessi64_greater v472;
-  __ZH_TYPE_Vec_lessi64_greater v471;
-  __ZH_TYPE_Vec_lessi64_greater v474;
-  __ZH_TYPE_Vec_lessi64_greater v470;
-  i64 v468;
-  __ZH_TYPE_Vec_lessi64_greater v473;
-  i64 v467;
-  __ZH_TYPE_Vec_lessi64_greater v475;
-  __ZH_TYPE_Vec_lessi64_greater v469;
-  __ZH_TYPE_Vec_lessi64_greater v466;
-  (((v466)=(__ZH_LOP_iota_i64i64((((i64)0)), (((i64)10))))));
-  (__ZH_LOP__less_Out((__ZH_ROP__less_Vec_lessi64_greaterR(&(v466)))));
-  (((v467)=(*__ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterP_ampersandi64((&((v466))), (((i64)2))))));
-  (__ZH_LOP__less_Out((__ZH_ROP__less_i64((v467)))));
-  (((v468)=(*__ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterP_ampersandi64((&((v466))), (__ZH_LOP__minus_i64((((i64)1))))))));
-  (__ZH_LOP__less_Out((__ZH_ROP__less_i64((v468)))));
-  (((v469)=(__ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterP_ampersandRange((&((v466))), (__ZH_BOP__dot_dot_i64i64((((i64)2)), (((i64)4))))))));
-  (__ZH_LOP__less_Out((__ZH_ROP__less_Vec_lessi64_greaterR(&(v469)))));
-  (((v470)=(__ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterP_ampersandRange((&((v466))), (__ZH_LOP__dot_dot_i64((((i64)3))))))));
-  (__ZH_LOP__less_Out((__ZH_ROP__less_Vec_lessi64_greaterR(&(v470)))));
-  (((v471)=(__ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterP_ampersandRange((&((v466))), (__ZH_ROP__dot_dot_i64((((i64)3))))))));
-  (__ZH_LOP__less_Out((__ZH_ROP__less_Vec_lessi64_greaterR(&(v471)))));
-  (((v472)=(__ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterP_ampersand((&((v466)))))));
-  (__ZH_LOP__less_Out((__ZH_ROP__less_Vec_lessi64_greaterR(&(v472)))));
-  (((v473)=(__ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterP_ampersandRange((&((v466))), (__ZH_BOP__dot_dot_minus_i64i64((__ZH_LOP__minus_i64((((i64)4)))), (((i64)2))))))));
-  (__ZH_LOP__less_Out((__ZH_ROP__less_Vec_lessi64_greaterR(&(v473)))));
-  (((v474)=(__ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterP_ampersandRange((&((v466))), (__ZH_LOP__minus_Range((__ZH_ROP__dot_dot_i64((((i64)4))))))))));
-  (__ZH_LOP__less_Out((__ZH_ROP__less_Vec_lessi64_greaterR(&(v474)))));
-  (((v475)=(__ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterP_ampersandRange((&((v466))), (__ZH_LOP__dot_dot_minus_i64((((i64)2))))))));
-  (__ZH_LOP__less_Out((__ZH_ROP__less_Vec_lessi64_greaterR(&(v475)))));
-  (((v476)=(__ZH_BOP__dot_dot_i64i64((((i64)0)), (((i64)10))))));
-  (((v477)=(__ZH_BOP__dotcall_dotcall_RangeP_ampersand((&((v476)))))));
-  (__ZH_LOP__less_Out((__ZH_ROP__less_Vec_lessi64_greaterR(&(v477)))));
-  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP_ampersand((&((v466)))));
-  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP_ampersand((&((v469)))));
-  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP_ampersand((&((v470)))));
-  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP_ampersand((&((v471)))));
-  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP_ampersand((&((v472)))));
-  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP_ampersand((&((v473)))));
-  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP_ampersand((&((v474)))));
-  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP_ampersand((&((v475)))));
-  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP_ampersand((&((v477)))));
+  str v466;
+  (((v466)=(__ZH_LOP_frog_())));
+  (__ZH_LOP__less_Out((__ZH_ROP__less_str((v466)))));
 }
