@@ -122,6 +122,24 @@ void ByteCode::loadLabels() {
       case instr::lesseq_u64: break;
       case instr::moreeq_u64: break;
 
+      case instr::add_f32: break;
+      case instr::sub_f32: break;
+      case instr::mul_f32: break;
+      case instr::div_f32: break;
+      case instr::less_f32: break;
+      case instr::more_f32: break;
+      case instr::lesseq_f32: break;
+      case instr::moreeq_f32: break;
+
+      case instr::add_f64: break;
+      case instr::sub_f64: break;
+      case instr::mul_f64: break;
+      case instr::div_f64: break;
+      case instr::less_f64: break;
+      case instr::more_f64: break;
+      case instr::lesseq_f64: break;
+      case instr::moreeq_f64: break;
+
       case instr::eq_8: break;
       case instr::uneq_8: break;
       case instr::eq_16: break;
@@ -194,6 +212,14 @@ void ByteCode::loadLabels() {
       case instr::out_u64: break;
       case instr::in_u64: break;
 
+      case instr::put_f32: break;
+      case instr::out_f32: break;
+      case instr::in_f32: break;
+
+      case instr::put_f64: break;
+      case instr::out_f64: break;
+      case instr::in_f64: break;
+
       case instr::put_str: break;
       case instr::out_str: break;
       case instr::in_str: break;
@@ -225,15 +251,33 @@ byte *ByteCode::loadBytes(size_t index, size_t size) {
     throw RuntimeError("read outside bytecode");
   return bytes.data() + index;
 }
-instr *ByteCode::loadInstr(size_t index) { return (instr *) (loadBytes(index, 1)); }
-int8_t *ByteCode::loadI8(size_t index) { return (int8_t *) (loadBytes(index, 1)); }
-int16_t *ByteCode::loadI16(size_t index) { return (int16_t *) (loadBytes(index, 2)); }
-int32_t *ByteCode::loadI32(size_t index) { return (int32_t *) (loadBytes(index, 4)); }
-int64_t *ByteCode::loadI64(size_t index) { return (int64_t *) (loadBytes(index, 8)); }
-uint8_t *ByteCode::loadU8(size_t index) { return (uint8_t *) (loadBytes(index, 1)); }
-uint16_t *ByteCode::loadU16(size_t index) { return (uint16_t *) (loadBytes(index, 2)); }
-uint32_t *ByteCode::loadU32(size_t index) { return (uint32_t *) (loadBytes(index, 4)); }
-uint64_t *ByteCode::loadU64(size_t index) { return (uint64_t *) (loadBytes(index, 8)); }
+instr *ByteCode::loadInstr(size_t index) {
+  return (instr *)(loadBytes(index, 1));
+}
+int8_t *ByteCode::loadI8(size_t index) {
+  return (int8_t *)(loadBytes(index, 1));
+}
+int16_t *ByteCode::loadI16(size_t index) {
+  return (int16_t *)(loadBytes(index, 2));
+}
+int32_t *ByteCode::loadI32(size_t index) {
+  return (int32_t *)(loadBytes(index, 4));
+}
+int64_t *ByteCode::loadI64(size_t index) {
+  return (int64_t *)(loadBytes(index, 8));
+}
+uint8_t *ByteCode::loadU8(size_t index) {
+  return (uint8_t *)(loadBytes(index, 1));
+}
+uint16_t *ByteCode::loadU16(size_t index) {
+  return (uint16_t *)(loadBytes(index, 2));
+}
+uint32_t *ByteCode::loadU32(size_t index) {
+  return (uint32_t *)(loadBytes(index, 4));
+}
+uint64_t *ByteCode::loadU64(size_t index) {
+  return (uint64_t *)(loadBytes(index, 8));
+}
 void ByteCode::popBytes(size_t size) {
   for (int i = 0; i < size; ++i) bytes.pop_back();
 }
@@ -460,6 +504,30 @@ std::pair<std::string, std::map<size_t, std::string>> ByteCode::dis() {
       INSTR(out_u64)
       INSTR(in_u64)
 
+      INSTR(add_f32)
+      INSTR(sub_f32)
+      INSTR(mul_f32)
+      INSTR(div_f32)
+      INSTR(less_f32)
+      INSTR(more_f32)
+      INSTR(lesseq_f32)
+      INSTR(moreeq_f32)
+      INSTR(put_f32)
+      INSTR(out_f32)
+      INSTR(in_f32)
+
+      INSTR(add_f64)
+      INSTR(sub_f64)
+      INSTR(mul_f64)
+      INSTR(div_f64)
+      INSTR(less_f64)
+      INSTR(more_f64)
+      INSTR(lesseq_f64)
+      INSTR(moreeq_f64)
+      INSTR(put_f64)
+      INSTR(out_f64)
+      INSTR(in_f64)
+
       INSTR(uneq_8)
       INSTR(eq_8)
 
@@ -497,12 +565,16 @@ std::pair<std::string, std::map<size_t, std::string>> ByteCode::dis() {
       INSTR_I32(not_bytes)
       INSTR(malloc)
       INSTR(free)
-      default:throw std::runtime_error("unimplemented dis");
+      default:
+        throw std::runtime_error("unimplemented dis" +
+                                 std::to_string(static_cast<int>(op)));
         break;
     }
     all += res;
     mp[old_cur] = res;
   }
+  std::cout << sizeof(float) << std::endl;
+  std::cout << sizeof(double) << std::endl;
   return {all, mp};
 }
 }  // namespace zhin

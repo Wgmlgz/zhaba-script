@@ -19,7 +19,7 @@ STExp *callDtor(std::pair<ScopeInfo::VarInfo *, Function *> info) {
 };
 
 void copyExp(Exp *&exp, ScopeInfo &scope) {
-  if (!dynamic_cast<Variable *>(exp)) return;
+  if (!(exp->type.getLval() || exp->type.getRef())) return;
   if (!scope.containsPrOp({exp->type.nonRefClone().rvalClone().toString(),
                            {exp->type.nonRefClone().rvalClone()}}))
     return;
@@ -234,33 +234,41 @@ std::vector<Exp *> preprocess(tokeniter begin, tokeniter end, const ScopeInfo &s
 
         else if (std::regex_match(str, std::regex(".+i8")))
           res.push_back(new I8Literal(
-              *i, *i, std::stoll(str.substr(0, str.size() - 2), 0, base)));
+              *i, *i, std::stoll(str, 0, base)));
         else if (std::regex_match(str, std::regex(".+i16")))
           res.push_back(new I16Literal(
-              *i, *i, std::stoll(str.substr(0, str.size() - 3), 0, base)));
+              *i, *i, std::stoll(str, 0, base)));
         else if (std::regex_match(str, std::regex(".+i32")))
           res.push_back(new I32Literal(
-              *i, *i, std::stoll(str.substr(0, str.size() - 3), 0, base)));
+              *i, *i, std::stoll(str, 0, base)));
         else if (std::regex_match(str, std::regex(".+i64")))
           res.push_back(new I64Literal(
-              *i, *i, std::stoll(str.substr(0, str.size() - 3), 0, base)));
+              *i, *i, std::stoll(str, 0, base)));
 
         else if (std::regex_match(str, std::regex(".+u8")))
           res.push_back(new U8Literal(
-              *i, *i, std::stoull(str.substr(0, str.size() - 2), 0, base)));
+              *i, *i, std::stoull(str, 0, base)));
         else if (std::regex_match(str, std::regex(".+u16")))
           res.push_back(new U16Literal(
-              *i, *i, std::stoull(str.substr(0, str.size() - 3), 0, base)));
+              *i, *i, std::stoull(str, 0, base)));
         else if (std::regex_match(str, std::regex(".+u32")))
           res.push_back(new U32Literal(
-              *i, *i, std::stoull(str.substr(0, str.size() - 3), 0, base)));
+              *i, *i, std::stoull(str, 0, base)));
         else if (std::regex_match(str, std::regex(".+u64")))
           res.push_back(new U64Literal(
-              *i, *i, std::stoull(str.substr(0, str.size() - 3), 0, base)));
+              *i, *i, std::stoull(str, 0, base)));
+        else if (std::regex_match(str, std::regex(".+f32")))
+          res.push_back(new F32Literal(
+              *i, *i, std::stof(str)));
+        else if (std::regex_match(str, std::regex(".+f64|.*\\..*")))
+          res.push_back(
+              new F64Literal(*i, *i, std::stod(str)));
         else if (std::regex_match(str, std::regex(".+i")))
           res.push_back(new I64Literal(*i, *i, std::stoll(str, 0, base)));
         else if (std::regex_match(str, std::regex(".+u")))
           res.push_back(new U64Literal(*i, *i, std::stoll(str, 0, base)));
+        else if (std::regex_match(str, std::regex(".+f")))
+          res.push_back(new F64Literal(*i, *i, std::stod(str)));
         else if (std::regex_match(str, std::regex(".+")))
           res.push_back(new I64Literal(*i, *i, std::stoll(str, 0, base)));
         else
@@ -324,12 +332,17 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
     exp->type = types::Type(types::TYPE::u32T);
   } else if (auto op = dynamic_cast<U64Literal *>(exp)) {
     exp->type = types::Type(types::TYPE::u64T);
+  } else if (auto op = dynamic_cast<F32Literal *>(exp)) {
+    exp->type = types::Type(types::TYPE::f32T);
+  } else if (auto op = dynamic_cast<F64Literal *>(exp)) {
+    exp->type = types::Type(types::TYPE::f64T);
   } else if (auto op = dynamic_cast<BoolLiteral *>(exp)) {
     exp->type = types::Type(types::TYPE::boolT);
   } else if (auto op = dynamic_cast<CharLiteral *>(exp)) {
     exp->type = types::Type(types::TYPE::charT);
   } else if (auto op = dynamic_cast<StrLiteral *>(exp)) {
     exp->type = types::Type(types::TYPE::strT);
+    exp->type.setLval(true);
   } else if (auto id = dynamic_cast<IdLiteral *>(exp)) {
     if (scope.containsVar(id->val)) {
       auto tmp =
@@ -523,8 +536,8 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
         /** Member call */
         if (op->val.size() >= 6 and op->val.substr(0, 6) == ".call.") {
           if (op->lhs->type.getPtr() == 0) {
-            if (!op->lhs->type.getLval()) {
-              throw ParserError("For now only lval member call");
+            if (!(op->lhs->type.getLval() || op->lhs->type.getRef())) {
+              throw ParserError(op->begin, op->end, "For now only lval or ref member call");
             }
             auto ltype = op->lhs->type;
             op->lhs = new PrefixOperator(op->begin, op->end, "&", 3, op->lhs);

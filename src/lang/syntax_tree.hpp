@@ -1,8 +1,10 @@
 #pragma once
-#include "ast.hpp"
+#include <list>
+
 #include "../tree_lib/Tree.hpp"
-#include "scope.hpp"
+#include "ast.hpp"
 #include "expression.hpp"
+#include "scope.hpp"
 
 struct STNode {
   virtual ~STNode();
@@ -62,7 +64,7 @@ struct Function {
 };
 
 struct STTree {
-  std::vector<Function *> functions;
+  std::list<Function *> functions;
   TreeNode<std::string> *toGenericTree();
   ScopeInfo scope;
   STTree(ScopeInfo* scope);

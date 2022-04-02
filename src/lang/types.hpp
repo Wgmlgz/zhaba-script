@@ -15,7 +15,7 @@ enum class TYPE : int32_t {
   boolT,
   i8T, i16T, i32T, i64T,
   u8T, u16T, u32T, u64T,
-  f4T, f8T, f10T
+  f32T, f64T
 };
 
 class Type {

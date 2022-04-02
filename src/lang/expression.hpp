@@ -65,6 +65,9 @@ MAKE_LITERAL_DECL(U16Literal, uint16_t, Literal, "u16");
 MAKE_LITERAL_DECL(U32Literal, uint32_t, Literal, "u32");
 MAKE_LITERAL_DECL(U64Literal, uint64_t, Literal, "u64");
 
+MAKE_LITERAL_DECL(F32Literal, float, Literal, "f32");
+MAKE_LITERAL_DECL(F64Literal, double, Literal, "f64");
+
 MAKE_LITERAL_DECL(BoolLiteral, bool, Literal, "bool");
 MAKE_LITERAL_DECL(CharLiteral, char, Literal, "char");
 

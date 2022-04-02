@@ -52,9 +52,8 @@ typedef uint32_t u32;
 typedef uint64_t u64;
 typedef char* str;
 
-typedef float f4;
-typedef double f8;
-typedef long double f10;
+typedef float f32;
+typedef double f64;
 
 i64 alloc(i64 size) {
   void* ptr = calloc(size, 1);
@@ -80,9 +79,8 @@ MAKE_ABOBA(in_u64, u64, "%i")
 MAKE_ABOBA(in_char, char, "%i")
 MAKE_ABOBA(in_str, char*, "%i")
 MAKE_ABOBA(in_bool, bool, "%i")
-MAKE_ABOBA(in_f4, float, "%i")
-MAKE_ABOBA(in_f8, double, "%i")
-MAKE_ABOBA(in_f10, long double, "%i")
+MAKE_ABOBA(in_f32, float, "%f")
+MAKE_ABOBA(in_f64, double, "%lf")
 
   for (int i = zhdata.first_struct_id; i < zhdata.last_struct_id; ++i) {
     auto id = static_cast<types::TYPE>(i);
@@ -172,6 +170,10 @@ std::string exp2C(zhexp::Exp* exp, Function* fn) {
     res += "((u32)" + std::to_string(lt->val) + ")";
   } else if (auto lt = dynamic_cast<zhexp::U64Literal*>(exp)) {
     res += "((u64)" + std::to_string(lt->val) + ")";
+  } else if (auto lt = dynamic_cast<zhexp::F32Literal*>(exp)) {
+    res += "((f32)" + std::to_string(lt->val) + ")";
+  } else if (auto lt = dynamic_cast<zhexp::F64Literal*>(exp)) {
+    res += "((f64)" + std::to_string(lt->val) + ")";
   } else if (auto lt = dynamic_cast<zhexp::BoolLiteral*>(exp)) {
     res += "((bool)" + std::to_string(lt->val) + ")";
   } else if (auto lt = dynamic_cast<zhexp::CharLiteral*>(exp)) {
@@ -283,9 +285,8 @@ std::string exp2C(zhexp::Exp* exp, Function* fn) {
       MAKE_LOP_C(in_char, voidT, "in_char(")
       MAKE_LOP_C(in_str, voidT, "in_str(")
       MAKE_LOP_C(in_bool, voidT, "in_bool(")
-      MAKE_LOP_C(in_f4, voidT, "in_f4(")
-      MAKE_LOP_C(in_f8, voidT, "in_f8(")
-      MAKE_LOP_C(in_f10, voidT, "in_f10(")
+      MAKE_LOP_C(in_f32, voidT, "in_f32(")
+      MAKE_LOP_C(in_f64, voidT, "in_f64(")
 
       MAKE_LOP_C(!, boolT, "!(")
       MAKE_LOP_C(!, charT, "!(")
@@ -322,6 +323,12 @@ std::string exp2C(zhexp::Exp* exp, Function* fn) {
       MAKE_LOP_C(put, u64T, "printf(\"%llu\", ")
       MAKE_LOP_C(out, u64T, "printf(\"%llu\\n\", ")
 
+      MAKE_LOP_C(put, f32T, "printf(\"%f\", ")
+      MAKE_LOP_C(out, f32T, "printf(\"%f\\n\", ")
+
+      MAKE_LOP_C(put, f64T, "printf(\"%f\", ")
+      MAKE_LOP_C(out, f64T, "printf(\"%f\\n\", ")
+
       MAKE_LOP_C(put, strT, "printf(\"%s\", ")
       MAKE_LOP_C(out, strT, "printf(\"%s\\n\", ")
 
@@ -335,7 +342,7 @@ std::string exp2C(zhexp::Exp* exp, Function* fn) {
       MAKE_LOP_C(free, i64T, "free((void*) ")
 
       else {
-        throw ParserError("unimplemented C op " + op->val);
+        throw ParserError(op->begin, op->end, "unimplemented C op " + op->val);
       }
     } else if (op->val == "&") {
       res += "&";
@@ -370,7 +377,7 @@ std::string exp2C(zhexp::Exp* exp, Function* fn) {
       res += exp2C(tuple->content[i], fn);
     }
   } else {
-    throw std::runtime_error("unimplemented expToB ");
+    throw std::runtime_error("unimplemented expToC ");
   }
   res += ")";
   return res;

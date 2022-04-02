@@ -57,6 +57,12 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
   } else if (auto lt = dynamic_cast<zhexp::U64Literal*>(exp)) {
     bytecode.pushVal(zhin::instr::push_64);
     bytecode.pushVal((uint64_t)(lt->val));
+  } else if (auto lt = dynamic_cast<zhexp::F32Literal*>(exp)) {
+    bytecode.pushVal(zhin::instr::push_32);
+    bytecode.pushVal((float)(lt->val));
+  } else if (auto lt = dynamic_cast<zhexp::F64Literal*>(exp)) {
+    bytecode.pushVal(zhin::instr::push_64);
+    bytecode.pushVal((double)(lt->val));
   } else if (auto lt = dynamic_cast<zhexp::BoolLiteral*>(exp)) {
     bytecode.pushVal(zhin::instr::push_8);
     bytecode.pushVal((bool)(lt->val));
@@ -228,11 +234,33 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
         BOP_BYTECODE(<=, u64T, lesseq_u64)
         BOP_BYTECODE(>=, u64T, moreeq_u64)
 
+        BOP_BYTECODE(+, f32T, add_f32)
+        BOP_BYTECODE(-, f32T, sub_f32)
+        BOP_BYTECODE(*, f32T, mul_f32)
+        BOP_BYTECODE(==, f32T, eq_32)
+        BOP_BYTECODE(!=, f32T, uneq_32)
+        BOP_BYTECODE(/, f32T, div_f32)
+        BOP_BYTECODE(<, f32T, less_f32)
+        BOP_BYTECODE(>, f32T, more_f32)
+        BOP_BYTECODE(<=, f32T, lesseq_f32)
+        BOP_BYTECODE(>=, f32T, moreeq_f32)
+
+        BOP_BYTECODE(+, f64T, add_f64)
+        BOP_BYTECODE(-, f64T, sub_f64)
+        BOP_BYTECODE(*, f64T, mul_f64)
+        BOP_BYTECODE(==, f64T, eq_64)
+        BOP_BYTECODE(!=, f64T, uneq_64)
+        BOP_BYTECODE(/, f64T, div_f64)
+        BOP_BYTECODE(<, f64T, less_f64)
+        BOP_BYTECODE(>, f64T, more_f64)
+        BOP_BYTECODE(<=, f64T, lesseq_f64)
+        BOP_BYTECODE(>=, f64T, moreeq_f64)
+
         BOP_BYTECODE(&&, boolT, and_bool)
         BOP_BYTECODE(||, boolT, or_bool)
         else {
           throw ParserError(op->begin, op->end,
-                            "unimplemented C op " + op->val + " " +
+                            "unimplemented B op " + op->val + " " +
                                 op->lhs->type.toString() + " " +
                                 op->rhs->type.toString());
         }
@@ -277,14 +305,13 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
       MAKE_VOID_LOP_BYTECODE(in_u32, bytecode.pushVal(zhin::instr::in_u32))
       MAKE_VOID_LOP_BYTECODE(in_u64, bytecode.pushVal(zhin::instr::in_u64))
 
+      MAKE_VOID_LOP_BYTECODE(in_f32, bytecode.pushVal(zhin::instr::in_f32))
+      MAKE_VOID_LOP_BYTECODE(in_f64, bytecode.pushVal(zhin::instr::in_f64))
+
       MAKE_VOID_LOP_BYTECODE(in_char, bytecode.pushVal(zhin::instr::in_char))
       MAKE_VOID_LOP_BYTECODE(in_str, bytecode.pushVal(zhin::instr::in_str))
 
       MAKE_VOID_LOP_BYTECODE(in_bool, bytecode.pushVal(zhin::instr::in_bool))
-
-      MAKE_VOID_LOP_BYTECODE(in_f4, bytecode.pushVal(zhin::instr::in_f4))
-      MAKE_VOID_LOP_BYTECODE(in_f8, bytecode.pushVal(zhin::instr::in_f8))
-      MAKE_VOID_LOP_BYTECODE(in_f10, bytecode.pushVal(zhin::instr::in_f10))
 
       MAKE_LOP_BYTECODE(!, boolT, bytecode.pushVal(zhin::instr::not_bool))
       MAKE_LOP_BYTECODE(!, charT,
@@ -339,6 +366,12 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
       MAKE_LOP_BYTECODE(put, u64T, bytecode.pushVal(zhin::instr::put_u64))
       MAKE_LOP_BYTECODE(out, u64T, bytecode.pushVal(zhin::instr::out_u64))
 
+      MAKE_LOP_BYTECODE(put, f32T, bytecode.pushVal(zhin::instr::put_f32))
+      MAKE_LOP_BYTECODE(out, f32T, bytecode.pushVal(zhin::instr::out_f32))
+
+      MAKE_LOP_BYTECODE(put, f64T, bytecode.pushVal(zhin::instr::put_f64))
+      MAKE_LOP_BYTECODE(out, f64T, bytecode.pushVal(zhin::instr::out_f64))
+
       MAKE_LOP_BYTECODE(put, strT, bytecode.pushVal(zhin::instr::put_str))
       MAKE_LOP_BYTECODE(out, strT, bytecode.pushVal(zhin::instr::out_str))
 
@@ -351,7 +384,7 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
       MAKE_LOP_BYTECODE(malloc, i64T, bytecode.pushVal(zhin::instr::malloc))
       MAKE_LOP_BYTECODE(free, i64T, bytecode.pushVal(zhin::instr::free))
       else {
-        throw ParserError("unimplemented C op");
+        throw ParserError(op->begin, op->end, "unimplemented B op");
       }
     } else if (op->val == "&") {
       expToB(bytecode, op->child, funcdata);

@@ -49,9 +49,8 @@ class ZHVM {
 
  public:
   ZHVM(ByteCode &run_bytecode) : bytecode(run_bytecode) {
-    bytecode.loadLabels();
-    std::string dis;
     auto t = bytecode.dis();
+    std::string dis;
 
     dis = t.first;
     mp = t.second;
@@ -59,6 +58,7 @@ class ZHVM {
     if (zhdata.flags["show_bytecode"]) {
       std::cout << "bytecode:\n" << dis << std::endl;
     }
+    bytecode.loadLabels();
   }
   /**
    * @brief 
@@ -69,7 +69,7 @@ class ZHVM {
   bool runChunk(size_t max_commands = 1000) {
     for (size_t done = 0; cur < bytecode.size() && done < max_commands; ++done) {
       auto op = *bytecode.loadInstr(cur);
-      if (do_stack_trace) std::cout << mp[cur];
+      if (do_stack_trace) std::cout << mp.at(cur);
       ++cur;
       switch (op) {
         case instr::nop:break;
@@ -180,6 +180,24 @@ class ZHVM {
         ARITHMETIC_BIN(lesseq_u64, uint64_t, bool, <=, 8)
         ARITHMETIC_BIN(moreeq_u64, uint64_t, bool, >=, 8)
 
+        ARITHMETIC_BIN(add_f32, float, float, +, 4)
+        ARITHMETIC_BIN(sub_f32, float, float, -, 4)
+        ARITHMETIC_BIN(mul_f32, float, float, *, 4)
+        ARITHMETIC_BIN(div_f32, float, float, /, 4)
+        ARITHMETIC_BIN(less_f32, float, bool, <, 4)
+        ARITHMETIC_BIN(more_f32, float, bool, >, 4)
+        ARITHMETIC_BIN(lesseq_f32, float, bool, <=, 4)
+        ARITHMETIC_BIN(moreeq_f32, float, bool, >=, 4)
+
+        ARITHMETIC_BIN(add_f64, double, double, +, 8)
+        ARITHMETIC_BIN(sub_f64, double, double, -, 8)
+        ARITHMETIC_BIN(mul_f64, double, double, *, 8)
+        ARITHMETIC_BIN(div_f64, double, double, /, 8)
+        ARITHMETIC_BIN(less_f64, double, bool, <, 8)
+        ARITHMETIC_BIN(more_f64, double, bool, >, 8)
+        ARITHMETIC_BIN(lesseq_f64, double, bool, <=, 8)
+        ARITHMETIC_BIN(moreeq_f64, double, bool, >=, 8)
+
         ARITHMETIC_BIN(and_bool, bool, bool, &&, 1)
         ARITHMETIC_BIN(or_bool, bool, bool, ||, 1)
         ARITHMETIC_PR(not_bool, bool, bool, !, 1)
@@ -193,6 +211,9 @@ class ZHVM {
 #define TOSu16 *reinterpret_cast<uint16_t *>(stack.getBytes(-2, 2))
 #define TOSu32 *reinterpret_cast<uint32_t *>(stack.getBytes(-4, 4))
 #define TOSu64 *reinterpret_cast<uint64_t *>(stack.getBytes(-8, 8))
+
+#define TOSf32 *reinterpret_cast<float *>(stack.getBytes(-4, 4))
+#define TOSf64 *reinterpret_cast<double *>(stack.getBytes(-8, 8))
 
         case instr::jmp: {
           auto target = *bytecode.loadI32(cur);
@@ -246,8 +267,7 @@ class ZHVM {
           auto val = *bytecode.loadU32(cur);
           cur += 4;
           stack.push(val);
-        }
-          break;
+        } break;
         case instr::push_64: {
           auto val = *bytecode.loadU64(cur);
           cur += 8;
@@ -340,6 +360,9 @@ class ZHVM {
         MAKE_IO(u32, uint64_t, uint32_t, 4)
         MAKE_IO(u64, uint64_t, uint64_t, 8)
 
+        MAKE_IO(f32, float, float, 4)
+        MAKE_IO(f64, double, double, 8)
+
         case instr::put_str: {
           auto char_ptr = TOSi64;
           stack.popBytes(8);
@@ -407,7 +430,8 @@ class ZHVM {
         }
           break;
         default: {
-          throw std::runtime_error("unimplemented op");
+          throw std::runtime_error("unimplemented op" +
+                                   std::to_string(static_cast<int>(op)));
         }
           break;
       }

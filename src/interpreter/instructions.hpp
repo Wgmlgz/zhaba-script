@@ -98,6 +98,24 @@ enum class instr : byte {
   lesseq_u64,
   moreeq_u64,
 
+  add_f32,
+  sub_f32,
+  mul_f32,
+  div_f32,
+  less_f32,
+  more_f32,
+  lesseq_f32,
+  moreeq_f32,
+
+  add_f64,
+  sub_f64,
+  mul_f64,
+  div_f64,
+  less_f64,
+  more_f64,
+  lesseq_f64,
+  moreeq_f64,
+
   eq_8,
   uneq_8,
 
@@ -176,17 +194,13 @@ enum class instr : byte {
   out_bool,  // out TOS bool with \n to stdin :: bool -> void
   in_bool,   // reads bool from stdin         :: void -> bool
 
-  put_f4,  // out TOS f4 to stdin         :: f4 -> void
-  out_f4,  // out TOS f4 with \n to stdin :: f4 -> void
-  in_f4,   // reads f4 from stdin         :: void -> f4
+  put_f32,  // out TOS f32 to stdin         :: f32 -> void
+  out_f32,  // out TOS f32 with \n to stdin :: f32 -> void
+  in_f32,   // reads f32 from stdin         :: void -> f32
 
-  put_f8,  // out TOS f8 to stdin         :: f8 -> void
-  out_f8,  // out TOS f8 with \n to stdin :: f8 -> void
-  in_f8,   // reads f8 from stdin         :: void -> f8
-
-  put_f10,  // out TOS f10 to stdin         :: f10 -> void
-  out_f10,  // out TOS f10 with \n to stdin :: f10 -> void
-  in_f10,   // reads f10 from stdin         :: void -> f10
+  put_f64,  // out TOS f64 to stdin         :: f64 -> void
+  out_f64,  // out TOS f64 with \n to stdin :: f64 -> void
+  in_f64,   // reads f64 from stdin         :: void -> f64
 
   /** logic */
   and_bool,   // a && b :: bool bool -> bool

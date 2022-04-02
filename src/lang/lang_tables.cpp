@@ -21,8 +21,10 @@ const std::vector<std::pair<TOKEN, std::string>> lexer_tokens{
     {TOKEN::comment_block, R"(((\/\*[\s\S]*?\*\/)))"},
     {TOKEN::comment_line, R"((((\/\/.*))))"},
     {TOKEN::str_literal, R"(('(\\.|[^'\\])*'|`(?:\\`|[^`])*`))"},
+    {TOKEN::id,
+     R"((([\~\,\.\+\-\*\\\%\<\>\=\^\&\:\;\|\/\!\#\$\@\?]*\.[\.]+[\~\,\.\+\-\*\\\%\<\>\=\^\&\:\;\|\/\!\#\$\@\?]*)))"},
     {TOKEN::int_literal,
-     R"(((?:0x[0-9a-fA-F]+|0b[01]+|[0-9]+)([iu][0-9]*)?|true|false|tru|fls))"},
+     R"(((?:0x[0-9a-fA-F]+|0b[01]+|[0-9]+(?:\.(?!\.)[0-9]*)?|\.[0-9]+)([iuf][0-9]*)?|true|false|tru|fls))"},
     {TOKEN::space, R"((( |\\\\\\ *\n)+))"},
     {TOKEN::id,
      R"((([_a-zA-Z][_a-zA-Z0-9]*|[\~\,\.\+\-\*\\\%\<\>\=\^\&\:\;\|\/\!\#\$\@\?]+)))"},
@@ -86,9 +88,8 @@ const std::unordered_map<std::string, types::TYPE> prim_types{
     {"u32", types::TYPE::u32T},
     {"u64", types::TYPE::u64T},
 
-    {"f4", types::TYPE::f4T},
-    {"f8", types::TYPE::f8T},
-    {"f10", types::TYPE::f10T},
+    {"f32", types::TYPE::f32T},
+    {"f64", types::TYPE::f64T},
 
     {"int", types::TYPE::i64T},
 };
@@ -111,9 +112,8 @@ const std::unordered_map<types::TYPE, std::string> type_names{
     {types::TYPE::u32T, "u32"},
     {types::TYPE::u64T, "u64"},
 
-    {types::TYPE::f4T, "f4"},
-    {types::TYPE::f8T, "f8"},
-    {types::TYPE::f10T, "f10"},
+    {types::TYPE::f32T, "f32"},
+    {types::TYPE::f64T, "f64"},
 };
 
 const std::unordered_map<types::TYPE, std::string> cpp_type_names{
@@ -134,9 +134,8 @@ const std::unordered_map<types::TYPE, std::string> cpp_type_names{
     {types::TYPE::u32T, "u32"},
     {types::TYPE::u64T, "u64"},
 
-    {types::TYPE::f4T, "f4"},
-    {types::TYPE::f8T, "f8"},
-    {types::TYPE::f10T, "f10"}
+    {types::TYPE::f32T, "f32"},
+    {types::TYPE::f64T, "f64"},
 };
 
 const std::unordered_map<types::TYPE, size_t> sizes{
@@ -157,9 +156,8 @@ const std::unordered_map<types::TYPE, size_t> sizes{
     {types::TYPE::u32T, 4},
     {types::TYPE::u64T, 8},
 
-    {types::TYPE::f4T, 4},
-    {types::TYPE::f8T, 8},
-    {types::TYPE::f10T, 10},
+    {types::TYPE::f32T, 4},
+    {types::TYPE::f64T, 8},
 };
 
 const std::map<types::funcHead, Function *> B_OD = {
@@ -270,6 +268,28 @@ const std::map<types::funcHead, Function *> B_OD = {
     MAKE_C_BOP(<=, u64T, u64T, boolT),
     MAKE_C_BOP(>=, u64T, u64T, boolT),
 
+    MAKE_C_BOP(+, f32T, f32T, f32T),
+    MAKE_C_BOP(-, f32T, f32T, f32T),
+    MAKE_C_BOP(*, f32T, f32T, f32T),
+    MAKE_C_BOP(/, f32T, f32T, f32T),
+    MAKE_C_BOP(==, f32T, f32T, boolT),
+    MAKE_C_BOP(!=, f32T, f32T, boolT),
+    MAKE_C_BOP(<, f32T, f32T, boolT),
+    MAKE_C_BOP(>, f32T, f32T, boolT),
+    MAKE_C_BOP(<=, f32T, f32T, boolT),
+    MAKE_C_BOP(>=, f32T, f32T, boolT),
+
+    MAKE_C_BOP(+, f64T, f64T, f64T),
+    MAKE_C_BOP(-, f64T, f64T, f64T),
+    MAKE_C_BOP(*, f64T, f64T, f64T),
+    MAKE_C_BOP(/, f64T, f64T, f64T),
+    MAKE_C_BOP(==, f64T, f64T, boolT),
+    MAKE_C_BOP(!=, f64T, f64T, boolT),
+    MAKE_C_BOP(<, f64T, f64T, boolT),
+    MAKE_C_BOP(>, f64T, f64T, boolT),
+    MAKE_C_BOP(<=, f64T, f64T, boolT),
+    MAKE_C_BOP(>=, f64T, f64T, boolT),
+
     MAKE_C_BOP(==, charT, charT, boolT),
     MAKE_C_BOP(!=, charT, charT, boolT),
     MAKE_C_BOP(<, charT, charT, boolT),
@@ -322,9 +342,8 @@ const std::map<types::funcHead, Function *> PR_OD{
 
     MAKE_C_FN_1_ARGS(out, boolT, voidT),
 
-    MAKE_C_FN_1_ARGS(out, f4T, voidT),
-    MAKE_C_FN_1_ARGS(out, f8T, voidT),
-    MAKE_C_FN_1_ARGS(out, f10T, voidT),
+    MAKE_C_FN_1_ARGS(out, f32T, voidT),
+    MAKE_C_FN_1_ARGS(out, f64T, voidT),
 
     MAKE_C_FN_1_ARGS(put, i8T, voidT),
     MAKE_C_FN_1_ARGS(put, i16T, voidT),
@@ -341,9 +360,8 @@ const std::map<types::funcHead, Function *> PR_OD{
 
     MAKE_C_FN_1_ARGS(put, boolT, voidT),
 
-    MAKE_C_FN_1_ARGS(put, f4T, voidT),
-    MAKE_C_FN_1_ARGS(put, f8T, voidT),
-    MAKE_C_FN_1_ARGS(put, f10T, voidT),
+    MAKE_C_FN_1_ARGS(put, f32T, voidT),
+    MAKE_C_FN_1_ARGS(put, f64T, voidT),
 
     MAKE_C_FN_0_ARGS(in_i8, i8T),
     MAKE_C_FN_0_ARGS(in_i16, i16T),
@@ -360,9 +378,8 @@ const std::map<types::funcHead, Function *> PR_OD{
 
     MAKE_C_FN_0_ARGS(in_bool, boolT),
 
-    MAKE_C_FN_0_ARGS(in_f4, f4T),
-    MAKE_C_FN_0_ARGS(in_f8, f8T),
-    MAKE_C_FN_0_ARGS(in_f10, f10T),
+    MAKE_C_FN_0_ARGS(in_f32, f32T),
+    MAKE_C_FN_0_ARGS(in_f64, f64T),
 
     MAKE_C_FN_1_ARGS(malloc, i64T, i64T),
     MAKE_C_FN_1_ARGS(calloc, i64T, voidT),

@@ -49,7 +49,7 @@ std::string Stack::trace64() {
   res += "stack: ";
   for (int i = 0; i + 8 <= top; i += 8) {
     res += " ";
-    res += std::to_string(*(int64_t *) &stack[i]);
+    res += std::to_string(*(uint64_t *) &stack[i]);
   }
   return res;
 }
