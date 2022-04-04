@@ -126,3 +126,27 @@ lop Out > u64R i: i = in_u64()
   <<< _Out()
 op 9 Out > Out o u64R i: i = in_u64()
   <<< _Out()
+
+// // f32
+// rop Out < f32 i: out i
+//   <<< _Out()
+// lop Out < f32 i: put i, put ' '
+//   <<< _Out()
+// op 9 Out < Out o f32 i: put i, put ' '
+//   <<< _Out()
+// lop Out > f32R i: i = in_f32()
+//   <<< _Out()
+// op 9 Out > Out o f32R i: i = in_f32()
+//   <<< _Out()
+
+// // f64
+// rop Out < f64 i: out i
+//   <<< _Out()
+// lop Out < f64 i: put i, put ' '
+//   <<< _Out()
+// op 9 Out < Out o f64 i: put i, put ' '
+//   <<< _Out()
+// lop Out > f64R i: i = in_f64()
+//   <<< _Out()
+// op 9 Out > Out o f64R i: i = in_f64()
+//   <<< _Out()

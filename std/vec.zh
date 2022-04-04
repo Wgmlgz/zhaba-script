@@ -26,6 +26,8 @@ impl Vec
       put (*slf.atP(i))
     put ']' 
 
+  fn println: @ i 0..slf.size: out (*slf.atP(i))
+  
   fn double_capacity
     new_capacity := slf.capacity
     ? new_capacity == 0
@@ -67,6 +69,8 @@ impl Vec
     @ slf.capacity < size: slf.double_capacity()
     slf.size = size
     slf.capacity = size
+
+    @ i 0..slf.size: slf.at(i) = T()
     <<< slf
     
   fn ctor int size T default

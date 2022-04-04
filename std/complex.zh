@@ -1,0 +1,49 @@
+use operators
+use out
+
+
+fn f64 sqrt f64 x
+  z := 1.
+  @ i 0 .. 10: z -= (z*z - x) / (2.0*z)
+  <<< z
+
+type V2: f64 x y
+
+impl V2
+  fn ctor f64 x f64 y
+    V2 slf
+    slf.x = x 
+    slf.y = y 
+    <<< slf
+
+op 6 V2 + V2 a V2 b
+  a.x += b.x
+  a.y += b.y
+  <<< a
+
+op 5 V2 * V2 a V2 b
+  V2 res
+  res.x = a.x * b.x - a.y * b.y
+  res.y = a.x * b.y + a.y * b.x
+  <<< res
+
+fn f64 abs V2 a
+  <<< sqrt(a.x * a.x + a.y * a.y)
+
+fn put V2 a
+  put a.x
+  put ' '
+  put a.y
+
+fn out V2 a
+  put a.x
+  put ' '
+  put a.y
+  out ''
+
+rop Out < V2 i: out i
+  <<< _Out()
+lop Out < V2 i: put i, put ' '
+  <<< _Out()
+op 9 Out < Out o V2 i: put i, put ' '
+  <<< _Out()

@@ -1,18 +1,87 @@
 lop int + int a: <<< a;
 op 5  bool %% int a int b: <<< !(a % b);
 
-op 16 += intR a int b: a = a + b
-op 16 -= intR a int b: a = a - b
-op 16 /= intR a int b: a = a / b
-op 16 %= intR a int b: a = a % b
-op 16 *= intR a int b: a = a * b
+op 16 += u8R a u8 b: a = a + b
+op 16 -= u8R a u8 b: a = a - b
+op 16 /= u8R a u8 b: a = a / b
+op 16 %= u8R a u8 b: a = a % b
+op 16 *= u8R a u8 b: a = a * b
+
+
+op 16 += u16R a u16 b: a = a + b
+op 16 -= u16R a u16 b: a = a - b
+op 16 /= u16R a u16 b: a = a / b
+op 16 %= u16R a u16 b: a = a % b
+op 16 *= u16R a u16 b: a = a * b
+
+op 16 += u32R a u32 b: a = a + b
+op 16 -= u32R a u32 b: a = a - b
+op 16 /= u32R a u32 b: a = a / b
+op 16 %= u32R a u32 b: a = a % b
+op 16 *= u32R a u32 b: a = a * b
+
+op 16 += u64R a u64 b: a = a + b
+op 16 -= u64R a u64 b: a = a - b
+op 16 /= u64R a u64 b: a = a / b
+op 16 %= u64R a u64 b: a = a % b
+op 16 *= u64R a u64 b: a = a * b
+
+
+lop i8 - i8 val: <<< 0i8 - val
+op 16 += i8R a i8 b: a = a + b
+op 16 -= i8R a i8 b: a = a - b
+op 16 /= i8R a i8 b: a = a / b
+op 16 %= i8R a i8 b: a = a % b
+op 16 *= i8R a i8 b: a = a * b
+
+lop i16 - i16 val: <<< 0i16 - val
+op 16 += i16R a i16 b: a = a + b
+op 16 -= i16R a i16 b: a = a - b
+op 16 /= i16R a i16 b: a = a / b
+op 16 %= i16R a i16 b: a = a % b
+op 16 *= i16R a i16 b: a = a * b
+
+lop i32 - i32 val: <<< 0i32 - val
+op 16 += i32R a i32 b: a = a + b
+op 16 -= i32R a i32 b: a = a - b
+op 16 /= i32R a i32 b: a = a / b
+op 16 %= i32R a i32 b: a = a % b
+op 16 *= i32R a i32 b: a = a * b
+
+lop i64 - i64 val: <<< 0i64 - val
+op 16 += i64R a i64 b: a = a + b
+op 16 -= i64R a i64 b: a = a - b
+op 16 /= i64R a i64 b: a = a / b
+op 16 %= i64R a i64 b: a = a % b
+op 16 *= i64R a i64 b: a = a * b
+
+
+lop f32 - f32 val: <<< 0f32 - val
+op 16 += f32R a f32 b: a = a + b
+op 16 -= f32R a f32 b: a = a - b
+op 16 /= f32R a f32 b: a = a / b
+op 16 *= f32R a f32 b: a = a * b
+
+lop f64 - f64 val: <<< 0f64 - val
+op 16 += f64R a f64 b: a = a + b
+op 16 -= f64R a f64 b: a = a - b
+op 16 /= f64R a f64 b: a = a / b
+op 16 *= f64R a f64 b: a = a * b
 
 lop ++ intR val: val += 1
 lop -- intR val: val -= 1
 lop ++ u8R val: val = val + 1u8
 lop -- u8R val: val = val - 1u8
 
-lop i8 - i8 val: <<< 0i8 - val
-lop i16 - i16 val: <<< 0i16 - val
-lop i32 - i32 val: <<< 0i32 - val
-lop i64 - i64 val: <<< 0i64- val
+
+impl i8:  fn ctor: <<< 0i8
+impl i16: fn ctor: <<< 0i16
+impl i32: fn ctor: <<< 0i32
+impl i64: fn ctor: <<< 0i64
+
+impl u8:  fn ctor: <<< 0u8
+impl u16: fn ctor: <<< 0u16
+impl u32: fn ctor: <<< 0u32
+impl u64: fn ctor: <<< 0u64
+
+impl char: fn ctor: <<< 0i8 as char

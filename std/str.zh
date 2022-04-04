@@ -19,7 +19,7 @@ impl Str
     <<< slf
   fn dtor: slf.data.dtor()
   fn str cstr: iter := slf.data.begin(); <<< iter.ptr as str
-  fn char at int pos
+  fn charR at int pos
     <<< slf.data.at(pos)
   fn charP atP int pos: <<< slf.data.atP(pos)
   fn push_back char ch
@@ -45,6 +45,11 @@ impl Str
     res.data.push_back(0u8 as char)
     res.size = res.data.size - 1
     <<< res
+  fn ctor StrR s
+    slf := Str()
+    slf.data = s.data
+    slf.size = s.size
+    <<< slf
 fn int len str s
   res := 0
   @ *(s as charP) != 0u8 as char
@@ -74,3 +79,12 @@ lop Out < StrR i: put i, put ' '
   <<< _Out()
 op 9 Out < Out o StrR i: put i, put ' '
   <<< _Out()
+  
+op 9 bool < StrR a StrR b: <<< false
+
+op 5 Str * str s int i
+  slf := Str()
+  t := Str(s)
+  @ j 0..i: slf += t
+  <<< slf
+  <<< Str()
