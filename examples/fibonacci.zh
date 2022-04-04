@@ -1,3 +1,8 @@
+/**
+ * Fibonacci numbers
+ * [recursion]
+ */
+
 use std
 
 fn int fib int n

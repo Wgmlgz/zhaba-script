@@ -1,4 +1,4 @@
-use 'out.zh'
+use std
 
 fn main
   < 'Literals:' <
