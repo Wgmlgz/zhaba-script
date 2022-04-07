@@ -1,17 +1,16 @@
 /**
  * The Mandelbrot set
  * 
- * [floating point numbers,
- * complex numbers, `Vec<T>`, `Str`]
+ * [floating point numbers, complex numbers]
  */
 
 use std
 
 fn mandelbrot int steps f64 ox f64 oy f64 scale
   v := Vec<Str>()
-  @ y:=oy-1.5*scale y<oy+1.5*scale y+= .1 *scale
+  @ y:=oy-1.0*scale y<oy+1.0*scale y+= .1 *scale
     s := Str()
-    @ x:=ox-1.5*scale x<ox+1.5*scale x+= .05 *scale
+    @ x:=ox-1.0*scale x<ox+1.0*scale x+= .05 *scale
       z := V2(0. 0.) c := V2(x y) 
       f := tru
       @ i:=0 i<steps&&f i+=1
@@ -24,7 +23,7 @@ fn mandelbrot int steps f64 ox f64 oy f64 scale
 
 fn main
   < 'Mandelbrot set:' <
-  mandelbrot(25, -0.75, 0.0, 1.)
+  mandelbrot(50, -0.75 0.0 1.3)
   < 'Zooming [-1.39, 0.0]:' <
   @ scale:=2.0 scale>0.05 scale*=0.5
-    mandelbrot(100, -1.39, 0.0, scale)
+    mandelbrot(50, -1.39, 0.0, scale)
