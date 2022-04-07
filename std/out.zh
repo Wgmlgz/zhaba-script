@@ -2,151 +2,150 @@ type Out: bool complex
 
 impl Out: fn ctor: Out o; <<< o
 
-fn Out _Out: <<< Out()
-op 9 Out < Out a Out b: <<< _Out()
-lop Out < Out o: <<< _Out()
+op 9 Out < Out a Out b: <<< Out()
+lop Out < Out o: <<< Out()
 
 // str
 rop Out < str i: out i
-  <<< _Out()
+  <<< Out()
 lop Out < str i: put i, put ' '
-  <<< _Out()
+  <<< Out()
 op 9 Out < Out o str i: put i, put ' '
-  <<< _Out()
+  <<< Out()
 lop Out > strR i: i = in_str()
-  <<< _Out()
+  <<< Out()
 op 9 Out > Out o strR i: i = in_str()
-  <<< _Out()
+  <<< Out()
 
 // char
 rop Out < char i: out i
-  <<< _Out()
+  <<< Out()
 lop Out < char i: put i, put ' '
-  <<< _Out()
+  <<< Out()
 op 9 Out < Out o char i: put i, put ' '
-  <<< _Out()
+  <<< Out()
 lop Out > charR i: i = in_char()
-  <<< _Out()
+  <<< Out()
 op 9 Out > Out o charR i: i = in_char()
-  <<< _Out()
+  <<< Out()
 
 // i8
 rop Out < i8 i: out i
-  <<< _Out()
+  <<< Out()
 lop Out < i8 i: put i, put ' '
-  <<< _Out()
+  <<< Out()
 op 9 Out < Out o i8 i: put i, put ' '
-  <<< _Out()
+  <<< Out()
 lop Out > i8R i: i = in_i8()
-  <<< _Out()
+  <<< Out()
 op 9 Out > Out o i8R i: i = in_i8()
-  <<< _Out()
+  <<< Out()
 
 // i16
 rop Out < i16 i: out i
-  <<< _Out()
+  <<< Out()
 lop Out < i16 i: put i, put ' '
-  <<< _Out()
+  <<< Out()
 op 9 Out < Out o i16 i: put i, put ' '
-  <<< _Out()
+  <<< Out()
 lop Out > i16R i: i = in_i16()
-  <<< _Out()
+  <<< Out()
 op 9 Out > Out o i16R i: i = in_i16()
-  <<< _Out()
+  <<< Out()
 
 // i32
 rop Out < i32 i: out i
-  <<< _Out()
+  <<< Out()
 lop Out < i32 i: put i, put ' '
-  <<< _Out()
+  <<< Out()
 op 9 Out < Out o i32 i: put i, put ' '
-  <<< _Out()
+  <<< Out()
 lop Out > i32R i: i = in_i32()
-  <<< _Out()
+  <<< Out()
 op 9 Out > Out o i32R i: i = in_i32()
-  <<< _Out()
+  <<< Out()
 
 // i64
 rop Out < i64 i: out i
-  <<< _Out()
+  <<< Out()
 lop Out < i64 i: put i, put ' '
-  <<< _Out()
+  <<< Out()
 op 9 Out < Out o i64 i: put i, put ' '
-  <<< _Out()
+  <<< Out()
 lop Out > i64R i: i = in_i64()
-  <<< _Out()
+  <<< Out()
 op 9 Out > Out o i64R i: i = in_i64()
-  <<< _Out()
+  <<< Out()
 
 
 // u8
 rop Out < u8 i: out i
-  <<< _Out()
+  <<< Out()
 lop Out < u8 i: put i, put ' '
-  <<< _Out()
+  <<< Out()
 op 9 Out < Out o u8 i: put i, put ' '
-  <<< _Out()
+  <<< Out()
 lop Out > u8R i: i = in_u8()
-  <<< _Out()
+  <<< Out()
 op 9 Out > Out o u8R i: i = in_u8()
-  <<< _Out()
+  <<< Out()
 
 // u16
 rop Out < u16 i: out i
-  <<< _Out()
+  <<< Out()
 lop Out < u16 i: put i, put ' '
-  <<< _Out()
+  <<< Out()
 op 9 Out < Out o u16 i: put i, put ' '
-  <<< _Out()
+  <<< Out()
 lop Out > u16R i: i = in_u16()
-  <<< _Out()
+  <<< Out()
 op 9 Out > Out o u16R i: i = in_u16()
-  <<< _Out()
+  <<< Out()
 
 // u32
 rop Out < u32 i: out i
-  <<< _Out()
+  <<< Out()
 lop Out < u32 i: put i, put ' '
-  <<< _Out()
+  <<< Out()
 op 9 Out < Out o u32 i: put i, put ' '
-  <<< _Out()
+  <<< Out()
 lop Out > u32R i: i = in_u32()
-  <<< _Out()
+  <<< Out()
 op 9 Out > Out o u32R i: i = in_u32()
-  <<< _Out()
+  <<< Out()
 
 // u64
 rop Out < u64 i: out i
-  <<< _Out()
+  <<< Out()
 lop Out < u64 i: put i, put ' '
-  <<< _Out()
+  <<< Out()
 op 9 Out < Out o u64 i: put i, put ' '
-  <<< _Out()
+  <<< Out()
 lop Out > u64R i: i = in_u64()
-  <<< _Out()
+  <<< Out()
 op 9 Out > Out o u64R i: i = in_u64()
-  <<< _Out()
+  <<< Out()
 
-// // f32
-// rop Out < f32 i: out i
-//   <<< _Out()
-// lop Out < f32 i: put i, put ' '
-//   <<< _Out()
-// op 9 Out < Out o f32 i: put i, put ' '
-//   <<< _Out()
-// lop Out > f32R i: i = in_f32()
-//   <<< _Out()
-// op 9 Out > Out o f32R i: i = in_f32()
-//   <<< _Out()
+// f32
+rop Out < f32 i: out i
+  <<< Out()
+lop Out < f32 i: put i, put ' '
+  <<< Out()
+op 9 Out < Out o f32 i: put i, put ' '
+  <<< Out()
+lop Out > f32R i: i = in_f32()
+  <<< Out()
+op 9 Out > Out o f32R i: i = in_f32()
+  <<< Out()
 
-// // f64
-// rop Out < f64 i: out i
-//   <<< _Out()
-// lop Out < f64 i: put i, put ' '
-//   <<< _Out()
-// op 9 Out < Out o f64 i: put i, put ' '
-//   <<< _Out()
-// lop Out > f64R i: i = in_f64()
-//   <<< _Out()
-// op 9 Out > Out o f64R i: i = in_f64()
-//   <<< _Out()
+// f64
+rop Out < f64 i: out i
+  <<< Out()
+lop Out < f64 i: put i, put ' '
+  <<< Out()
+op 9 Out < Out o f64 i: put i, put ' '
+  <<< Out()
+lop Out > f64R i: i = in_f64()
+  <<< Out()
+op 9 Out > Out o f64R i: i = in_f64()
+  <<< Out()

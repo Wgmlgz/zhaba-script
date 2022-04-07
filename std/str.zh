@@ -74,11 +74,11 @@ op 16 += StrR a str b
     a += b.at(i)
 
 rop Out < StrR i: out i
-  <<< _Out()
+  <<< Out()
 lop Out < StrR i: put i, put ' '
-  <<< _Out()
+  <<< Out()
 op 9 Out < Out o StrR i: put i, put ' '
-  <<< _Out()
+  <<< Out()
   
 op 9 bool < StrR a StrR b: <<< false
 

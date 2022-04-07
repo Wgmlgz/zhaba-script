@@ -97,11 +97,11 @@ impl Vec
 
   /** Output overload */
   rop Out < Vec<T>R i: out i
-    <<< _Out()
+    <<< Out()
   lop Out < Vec<T>R i: put i, put ' '
-    <<< _Out()
+    <<< Out()
   op 9 Out < Out o Vec<T>R i: put i, put ' '
-    <<< _Out()
+    <<< Out()
 
   /** Subscripts */
   fn TR sub int id
