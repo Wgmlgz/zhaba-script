@@ -9,7 +9,7 @@ Think of a variable name as a label attached to the variable's location in memor
 ## Syntax
 
 ```zh
-nameR
+TypeNameR
 ```
 
 ## Passing references as arguments
