@@ -15,7 +15,7 @@ In this example var is variable and ptr is a pointer.
 
 ## Address-of operator `&`
 
-The address of a variable can be obtained by preceding the name of a variable with an ampersand sign '&', known as address-of operator. For example:
+The address of a variable can be obtained by preceding the name of a variable with an ampersand sign '&', known as address-of operator. You can use address-of operator only with lval expression, because getting address of rval expression can result in undefined behavior. Read more about rval/lval TODO [here](). For example:
 
 ```zh
 ptr = &var;
