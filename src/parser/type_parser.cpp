@@ -102,6 +102,7 @@ Type parse(tokeniter &token, const ScopeInfo &parent_scope) {
 
     std::string m_str = token->val;
     int ptr_c = 0;
+    if (m_str.back() == 'R' || m_str.back() == 'P') ++token;
     if (m_str.back() == 'R') {
       res.setRef(true);
       m_str.pop_back();
@@ -116,7 +117,7 @@ Type parse(tokeniter &token, const ScopeInfo &parent_scope) {
     if (id == static_cast<TYPE>(-1)) {
       /** Type substitution*/
       if (generic_types.size() != zhdata.generics[str].names.size())
-        throw ParserError(
+        throw ParserError(begin_token,
             *token, "Number of generic types doesn't match: found " +
                 std::to_string(generic_types.size()) + ", but " +
                 std::to_string(zhdata.generics[str].names.size()) + " expected");
