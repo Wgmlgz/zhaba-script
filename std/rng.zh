@@ -1,0 +1,11 @@
+type Rng: int seed
+
+impl Rng
+  fn ctor int seed
+    Rng slf
+    slf.seed = seed
+    <<< slf
+  fn ctor: <<< Rng(5323)
+  fn int call
+    slf.seed = 8253729 * slf.seed + 2396403
+    <<< slf.seed % 32767

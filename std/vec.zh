@@ -1,6 +1,7 @@
 use range
 use operators
 use out
+use util
 
 type Vec T
   int size 

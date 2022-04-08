@@ -72,16 +72,3 @@ lop ++ intR val: val += 1
 lop -- intR val: val -= 1
 lop ++ u8R val: val = val + 1u8
 lop -- u8R val: val = val - 1u8
-
-
-impl i8:  fn ctor: <<< 0i8
-impl i16: fn ctor: <<< 0i16
-impl i32: fn ctor: <<< 0i32
-impl i64: fn ctor: <<< 0i64
-
-impl u8:  fn ctor: <<< 0u8
-impl u16: fn ctor: <<< 0u16
-impl u32: fn ctor: <<< 0u32
-impl u64: fn ctor: <<< 0u64
-
-impl char: fn ctor: <<< 0i8 as char

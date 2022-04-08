@@ -1,32 +1,15 @@
-use tuple
+impl i8:  fn ctor: <<< 0i8
+impl i16: fn ctor: <<< 0i16
+impl i32: fn ctor: <<< 0i32
+impl i64: fn ctor: <<< 0i64
 
-fn sleep int n
-  #unsigned int retTime = clock() + n;
-  #while (clock() < retTime);
+impl u8:  fn ctor: <<< 0u8
+impl u16: fn ctor: <<< 0u16
+impl u32: fn ctor: <<< 0u32
+impl u64: fn ctor: <<< 0u64
 
-fn cls
-  #'system("cls")'
+impl char: fn ctor: <<< 0i8 as char
 
-fn u64 rng
-  #static unsigned long long x = 666
-  #x ^= x << 13
-  #x ^= x >> 7
-  #x ^= x << 17
-  #return x
-  
-fn swap intP a intP b
-  int t = *a
-  *a = *b
-  *b = t
-
-fn char asch str s: <<< *(s as charP)
-
-impl Arg1
-  fn swap T1P a T1P b 
-    auto t = *a
-    *a = *b
-    *b = t
-
-  fn int sizeof
-    T1 val
-    #'return sizeof(val)'
+fn int max int a int b
+  ? a > b: <<< a
+  \ <<< b

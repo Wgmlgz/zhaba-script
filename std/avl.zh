@@ -1,0 +1,102 @@
+use vec
+use str
+
+type AVLNode T
+  int h
+  T val
+  AVLNode<T>P lhs rhs
+
+type AVLTree T: AVLNode<T>P root
+
+impl AVLNode
+  fn ctor TR val
+    AVLNode<T> slf
+    slf.h = 1
+    slf.val = val
+    slf.lhs = 0 as AVLNode<T>P
+    slf.rhs = 0 as AVLNode<T>P
+    <<< slf
+
+  lop AVLNode<T>P new AVLNode<T> slf
+    ptr := malloc(sizeof(AVLNode<T>)) as AVLNode<T>P
+    *ptr = slf
+    <<< ptr
+
+  /** bool cast */
+  lop bool !! AVLNode<T>P ptr: <<< ptr as int != 0
+  lop bool ! AVLNode<T>P ptr: <<< ptr as int == 0
+
+  /** AVL-scecific stuff */
+  fn int h
+    ? !slf: <<< 0
+    \ <<< slf.h
+  fn int bf: <<< slf.rhs.h() - slf.lhs.h()
+  fn fix: slf.h = 1 + max(slf.rhs.h() slf.lhs.h())
+
+  fn AVLNode<T>P rrot
+    tmp := slf.lhs
+    slf.lhs = tmp.rhs
+    tmp.rhs = slf
+    slf.fix() tmp.fix()
+    <<< tmp
+  fn AVLNode<T>P lrot
+    tmp := slf.rhs
+    slf.rhs = tmp.lhs
+    tmp.lhs = slf
+    slf.fix() tmp.fix()
+    <<< tmp
+
+  fn AVLNode<T>P balance
+    slf.fix()
+    ? slf.bf() == 2
+      ? slf.rhs.bf() < 0: slf.rhs = slf.rhs.rrot()
+      <<< slf.lrot()
+    | slf.bf() == -2:
+      ? slf.lhs.bf() > 0: slf.lhs = slf.lhs.lrot()
+      <<< slf.rrot()
+    <<< slf
+
+  fn AVLNode<T>P insert TR val
+    ? !slf
+      ptr := new AVLNode<T>(val)
+      <<< ptr
+    | val < slf.val: slf.lhs = slf.lhs.insert(val) 
+    \ slf.rhs = slf.rhs.insert(val)
+    slf = slf.balance()
+    <<< slf 
+
+  fn show StrR prefix
+    ? !!slf
+      out slf.val, put prefix, put '|--'
+      p1 := prefix p1 += '|  '
+      slf.lhs.show(p1)
+      put prefix, put '\'--'
+      p2 := prefix p2 += '   '
+      slf.rhs.show(p2)
+    \ < 'null' <
+
+
+impl AVLTree
+  /** ctor */
+  fn ctor
+    AVLTree<T> slf
+    slf.root = 0 as AVLNode<T>P
+    <<< slf
+
+  /** inserts element */
+  fn insert T val: slf.root = slf.root.insert(val)
+  op 16 += AVLTree<T>R slf T val: slf.root = slf.root.insert(val)
+
+  /** inorder traversal (convertation to Vec<T>) */
+  lop toVec Vec<T>R vec AVLNode<T>P ptr
+    ? !!ptr
+      toVec(vec ptr.lhs)
+      vec += ptr.val
+      toVec(vec ptr.rhs)
+  fn Vec<T> call
+    vec := Vec<int>()
+    toVec(vec slf.root)
+    <<< vec
+
+  /** pretty-print */
+  fn show: s := Str(); slf.root.show(s)
