@@ -134,7 +134,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo& parent_scope, Funct
                   }
                 }
               } else {
-                throw ParserError(ctr->begin, ctr->end, "Expected int expression in '?(if)' condition");
+                throw ParserError(ctr->begin, ctr->end, "Expected bool expression in '?(if)' condition");
               }
             }
             /* "??" (switch) statement parsing */
@@ -265,7 +265,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo& parent_scope, Funct
                 } else {
                   throw ParserError(
                       ctr->begin, ctr->end,
-                      "Expected int expression in '@(for)' condition, but '" +
+                      "Expected bool expression in '@(for)' condition, but '" +
                           tuple->content[1]->type.toString() + "' found");
                 }
               }
@@ -389,7 +389,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo& parent_scope, Funct
                 } else {
                   throw ParserError(
                       condition->begin, condition->end,
-                      "Expected int expression in '@(for)' condition, but '" +
+                      "Expected bool expression in '@(for)' condition, but '" +
                           condition->type.toString() + "' found");
                 }
 
