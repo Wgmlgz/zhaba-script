@@ -82,19 +82,18 @@ MAKE_ABOBA(in_bool, bool, "%i")
 MAKE_ABOBA(in_f32, float, "%f")
 MAKE_ABOBA(in_f64, double, "%lf")
 
-  for (int i = zhdata.first_struct_id; i < zhdata.last_struct_id; ++i) {
+  for (size_t i = zhdata.last_struct_id - 1; i >= zhdata.first_struct_id; --i) {
     auto id = static_cast<types::TYPE>(i);
     res += structHead2C(id);
     res += ";\n";
-    res += "typedef struct __PROT_ZH_TYPE_" + id2C(zhdata.struct_names[id])
-    +
-           " __ZH_TYPE_" + id2C(zhdata.struct_names[id]);
+    res += "typedef struct __PROT_ZH_TYPE_" + id2C(zhdata.struct_names[id]);
+    res += " __ZH_TYPE_" + id2C(zhdata.struct_names[id]);
     res += ";\n";
   }
 
   res += "\n";
 
-  for (int i = zhdata.first_struct_id; i < zhdata.last_struct_id; ++i) {
+  for (size_t i = zhdata.last_struct_id - 1; i >= zhdata.first_struct_id; --i) {
     auto id = static_cast<types::TYPE>(i);
     res += struct2C(id);
   }

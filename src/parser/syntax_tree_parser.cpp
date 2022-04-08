@@ -701,7 +701,7 @@ STTree* parseAST(ast::ASTBlock* main_block) {
           }
         } else {
           /** Push declared struct */
-          types::pushStruct(name, types::parseStruct(block, res->scope));
+          types::parsePushStruct(name, block, res->scope);
         }
         ++cur;
       } else if (id == "impl") {

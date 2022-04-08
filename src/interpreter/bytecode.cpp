@@ -573,8 +573,6 @@ std::pair<std::string, std::map<size_t, std::string>> ByteCode::dis() {
     all += res;
     mp[old_cur] = res;
   }
-  std::cout << sizeof(float) << std::endl;
-  std::cout << sizeof(double) << std::endl;
   return {all, mp};
 }
 }  // namespace zhin

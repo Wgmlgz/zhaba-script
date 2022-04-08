@@ -31,18 +31,6 @@ std::string genericToStr(const std::vector<Type> &generic) {
   return res;
 }
 
-void pushStruct(const std::string &name, const StructInfo &info) {
-  const auto id = static_cast<TYPE>(zhdata.last_struct_id);
-  zhdata.struct_ids[name] = id;
-  zhdata.struct_names[id] = name;
-  zhdata.structs[id] = info;
-  ++zhdata.last_struct_id;
-
-  size_t size = 0;
-  for (const auto &[_, type] : info.members) size += type.getSize();
-  zhdata.sizes[static_cast<TYPE>(id)] = size;
-}
-
 TYPE getStructId(const std::string &str) {
   if (zhdata.struct_ids.count(str)) {
     return zhdata.struct_ids[str];

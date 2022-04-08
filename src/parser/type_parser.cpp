@@ -2,7 +2,15 @@
 
 namespace types {
 
-types::StructInfo parseStruct(ast::ASTBlock *block, const ScopeInfo &scope) {
+void parsePushStruct(const std::string &name, ast::ASTBlock *block,
+                     const ScopeInfo &scope) {
+  const auto id = static_cast<TYPE>(zhdata.last_struct_id);
+  ++zhdata.last_struct_id;
+  zhdata.struct_ids[name] = id;
+  zhdata.struct_names[id] = name;
+  zhdata.incomplete_types.insert(id);
+  zhdata.sizes[static_cast<TYPE>(id)] = 0;
+
   if (!block) throw std::runtime_error("null block passed to parseStruct :(");
   types::StructInfo struct_info;
 
@@ -41,7 +49,12 @@ types::StructInfo parseStruct(ast::ASTBlock *block, const ScopeInfo &scope) {
       throw ParserError("Unexprected block");
     }
   }
-  return struct_info;
+  zhdata.structs[id] = struct_info;
+
+  size_t size = 0;
+  for (const auto &[_, type] : struct_info.members) size += type.getSize();
+  zhdata.sizes[static_cast<TYPE>(id)] = size;
+  zhdata.incomplete_types.erase(id);
 }
 
 Type parse(std::string &str, const ScopeInfo &scope) {
@@ -71,6 +84,7 @@ Type parse(std::string &str, const ScopeInfo &scope) {
 }
 
 Type parse(tokeniter &token, const ScopeInfo &parent_scope) {
+  auto& begin_token = *token;
   std::string str = token->val;
 
   Type res;
@@ -112,7 +126,7 @@ Type parse(tokeniter &token, const ScopeInfo &parent_scope) {
         scope.setTypedef(zhdata.generics[str].names[i], generic_types[i]);
       }
       /** Try generate generic implementation */
-      pushStruct(name, parseStruct(zhdata.generics[str].block, scope));
+      parsePushStruct(name, zhdata.generics[str].block, scope);
       for (auto &block : zhdata.generics[str].impl_blocks) {
         block->reset();
         auto funcs = parseImpl(block, Type(static_cast<TYPE>(getStructId(name))), scope, zhdata.sttree->scope);
@@ -126,8 +140,15 @@ Type parse(tokeniter &token, const ScopeInfo &parent_scope) {
   } else if (is_generic) {
     throw ParserError(*token, "Generic type parsing failed, expected '<'");
   }
+  if (zhdata.incomplete_types.contains(res.getTypeId()) &&
+      !(res.getPtr() || res.getRef())) {
+    throw ParserError(begin_token, *token,
+                      "Incomplete type is not allowed here (you probably need "
+                      "to make it ref of ptr)");
+  }
   return res;
 }
+
 std::vector<Type> parseTemplate(tokeniter &token, const ScopeInfo &scope) {
   std::vector<Type> templ;
 

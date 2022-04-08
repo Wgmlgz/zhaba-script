@@ -64,3 +64,35 @@ impl VecInt // implementation block for VecInt
     *slf.atP(slf.size) = val
     &slf.size += 1
 ```
+
+# Incomplete types
+
+When declaring type you sometimes need to reference itself in his body (in structures like trees for example). However it is not possible because this would mean that type need to include infinitely many copies of it.
+
+```
+.-type---------------------.
+| .--type------------.     |
+| | .-type-----.     |     |
+| | |  ...type |     |     |
+`--------------------------'
+```
+
+To solve this problem you can use pointer or reference to type itself, because it's size is known and fixed.
+
+```
+.--------type--------.
+| | ptr |            |
+`--------------------'
+```
+
+So, if you try to reference a type in it self, you will get `Incomplete type error`, but referencing pointer or reference is perfectly fine.
+
+```zh
+type Node
+  NodeP lhs // Ok
+  Node rhs /** error :( -> test.zh:5:2
+            *  5 |   Node rhs
+            *    |   ^^^^^
+            *    | Incomplete type is not allowed here (you probably need to make it ref of ptr)
+            */
+```

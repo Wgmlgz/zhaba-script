@@ -13,7 +13,9 @@ namespace types {
 Type parse(std::string &str, const ScopeInfo &scope);
 Type parse(tokeniter &token, const ScopeInfo &scope);
 std::vector<Type> parseTemplate(tokeniter &token, const ScopeInfo &scope);
-types::StructInfo parseStruct(ast::ASTBlock *block, const ScopeInfo &scope);
+
+void parsePushStruct(const std::string &name, ast::ASTBlock *block,
+                     const ScopeInfo &scope);
 
 struct TypeParsingError {};
 };  // namespace types

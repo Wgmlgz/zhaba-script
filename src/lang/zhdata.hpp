@@ -27,6 +27,7 @@ struct ZHDATA {
 
   std::unordered_map<std::string, types::TYPE> struct_ids;
   std::unordered_map<types::TYPE, std::string> struct_names;
+  std::unordered_set<types::TYPE> incomplete_types;
   std::unordered_map<types::TYPE, types::StructInfo> structs;
 
   int first_struct_id = 50;
