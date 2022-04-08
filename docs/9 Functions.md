@@ -56,7 +56,12 @@ fn main
 
 ## Return emergency exit
 
-If your function has return type, but it reached it's end without returning anything zhaba-script will print `reached function end without returning anything` and then exit. This will happen not only in interpretation mode but in C translated program too.
+If your function has return type, but it reached it's end without returning anything zhaba-script will print `reached function end without returning anything <function name>` and then exit. This will happen not only in interpretation mode but in C translated program too.
 
 ```zh
+fn int da
+  res := 1 + 4
+  // <<< res
+fn main
+  da() // reached function end without returning anything
 ```

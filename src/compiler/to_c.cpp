@@ -180,9 +180,7 @@ std::string exp2C(zhexp::Exp* exp, Function* fn) {
   } else if (auto lt = dynamic_cast<zhexp::StrLiteral*>(exp)) {
     res += "\"";
     for (auto i : lt->val) {
-      if (i == '\'')
-        res += R"(\\')";
-      else if (i == '\"')
+      if (i == '\"')
         res += R"(\\")";
       else if (i == '\\')
         res += R"(\\\\)";
@@ -490,9 +488,9 @@ std::string func2C(Function* fn) {
                     block2C(fn->body, fn) + (is_void ? "" : ";");
   if (!is_void) {
     /** Emergency exit */
-    res +=
-        "printf(\"%s\", \"reached function end without returning anything\"); "
-        "exit(EXIT_FAILURE);}";
+    res += "printf(\"%s\", \"reached function end without returning anything ";
+    res += fn->toUniqueStr();
+    res += "\\n\"); exit(EXIT_FAILURE);}";
   }
   res += "\n";
   return res;
