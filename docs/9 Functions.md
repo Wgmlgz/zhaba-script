@@ -53,3 +53,10 @@ fn func1 int mx
 fn main
   fizz_buzz(50) // call example
 ```
+
+## Return emergency exit
+
+If your function has return type, but it reached it's end without returning anything zhaba-script will print `reached function end without returning anything` and then exit. This will happen not only in interpretation mode but in C translated program too.
+
+```zh
+```

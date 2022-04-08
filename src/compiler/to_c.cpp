@@ -485,7 +485,17 @@ std::string funcHead2C(Function* func) {
 }
 
 std::string func2C(Function* fn) {
-  return funcHead2C(fn) + " " + block2C(fn->body, fn) + "\n";
+  bool is_void = fn->type.getTypeId() == types::TYPE::voidT;
+  std::string res = funcHead2C(fn) + (is_void ? "" : " {") +
+                    block2C(fn->body, fn) + (is_void ? "" : ";");
+  if (!is_void) {
+    /** Emergency exit */
+    res +=
+        "printf(\"%s\", \"reached function end without returning anything\"); "
+        "exit(EXIT_FAILURE);}";
+  }
+  res += "\n";
+  return res;
 }
 
 std::string structHead2C(types::TYPE id) {
