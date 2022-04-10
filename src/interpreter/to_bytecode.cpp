@@ -97,6 +97,8 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
       expToB(bytecode, op->rhs, funcdata);
       bytecode.pushVal(zhin::instr::assign);
       bytecode.pushVal((int32_t)(op->lhs->type.getSizeNonRef()));
+      bytecode.pushVal(zhin::instr::deref);
+      bytecode.pushVal((int32_t)(op->lhs->type.getSize()));
     } else if (op->val == ".") {
       expToB(bytecode, op->lhs, funcdata);
 

@@ -55,6 +55,7 @@ void parsePushStruct(const std::string &name, ast::ASTBlock *block,
   for (const auto &[_, type] : struct_info.members) size += type.getSize();
   zhdata.sizes[static_cast<TYPE>(id)] = size;
   zhdata.incomplete_types.erase(id);
+  zhdata.structs_order.push_back(static_cast<int>(id));
 }
 
 Type parse(std::string &str, const ScopeInfo &scope) {

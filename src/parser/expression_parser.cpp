@@ -37,6 +37,26 @@ void copyExp(Exp *&exp, ScopeInfo &scope) {
 };
 
 /**
+ * @brief 
+ * 
+ * @param exp is postprocessed 
+ */
+Exp* makeLval(Exp*& exp, ScopeInfo& scope) {
+  auto var_name = "tmp_rval_" + std::to_string(genId());
+  scope.setVar(var_name, exp->type);
+
+  auto id = scope.getVarId(var_name);
+  auto type = scope.getVarType(id);
+  auto new_exp = new BinOperator(exp->begin, exp->end, "=", 0,
+                        new Variable(exp->begin, exp->end, var_name, type, id), exp);
+  new_exp->lhs->type = type;
+  new_exp->type = type;
+  new_exp->type.setLval(true);
+
+  return exp = new_exp;
+}
+
+/**
  * @brief Converts expression to expression tree
  */
 Exp *buildExp(ScopeInfo& scope, const std::vector<Exp *>::iterator begin,
@@ -390,7 +410,7 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
       }
 
       if (op->lhs->type.getLval() || op->lhs->type.getRef()) {
-        op->type = types::Type(types::TYPE::voidT);
+        op->type = op->lhs->type;
       } else {
         throw ParserError(op->lhs->begin, op->end, "Left operant for '=' must be lval or ref");
       }
@@ -607,8 +627,14 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
       auto& poop = scope.getPoOp(func_head);
       op->func = poop;
       exp->type = poop->type;
+
       for (int i = 0; i < poop->args.size(); ++i) {
-        // if (!poop->args[i].type.getRef()) copyExp(*exps[i], scope);
+        /** Call copy ctors */
+        if (!poop->args[i].type.getRef())
+          copyExp(*exps[i], scope);
+        /** Cast to lval if needed */
+        else if (!(*exps[i])->type.getLval() && !(*exps[i])->type.getRef())
+          makeLval(*(exps[i]), scope);
       }
     } else {
       std::string types_str;
@@ -685,15 +711,26 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
       auto& prop = scope.getPrOp(func_head);
       op->func = prop;
       exp->type = prop->type;
+
       for (int i = 0; i < prop->args.size(); ++i) {
-        // if (!prop->args[i].type.getRef()) copyExp(*exps[i], scope);
+        /** Call copy ctors */
+        if (!prop->args[i].type.getRef()) copyExp(*exps[i], scope);
+        /** Cast to lval if needed */
+        else if (!(*exps[i])->type.getLval() && !(*exps[i])->type.getRef())
+          makeLval(*(exps[i]), scope);
       }
     } else if (scope.containsFn(func_head)) {
       auto &fn = scope.getFn(func_head);
       op->func = fn;
       exp->type = fn->type;
-      for (int i = 0; i < fn->args.size(); ++i) 
+
+      for (int i = 0; i < fn->args.size(); ++i) {
+        /** Call copy ctors */
         if (!fn->args[i].type.getRef()) copyExp(*exps[i], scope);
+        /** Cast to lval if needed */
+        else if (!(*exps[i])->type.getLval() && !(*exps[i])->type.getRef())
+          makeLval(*(exps[i]), scope);
+      }
     } else {
       std::string types_str;
 

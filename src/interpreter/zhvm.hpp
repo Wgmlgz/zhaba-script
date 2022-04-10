@@ -307,6 +307,10 @@ class ZHVM {
         }
           break;
         case instr::assign: {
+          /**
+           * 
+           * 
+           */
           auto size = *bytecode.loadI32(cur);
           cur += 4;
           auto mem = stack.getBytes(-size, size);
@@ -314,7 +318,7 @@ class ZHVM {
           auto target = getPtr(ptr, size);
           const byte *begin = mem, *end = begin + size;
           std::copy(begin, end, target);
-          stack.popBytes(8 + size);
+          stack.popBytes(size);
         }
           break;
         case instr::label: {

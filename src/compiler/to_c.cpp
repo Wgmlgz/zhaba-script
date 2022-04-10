@@ -29,6 +29,8 @@ std::string id2C(const std::string& str) {
     else if (ch == '@')  ans += "_at";
     else if (ch == '?')  ans += "_question";
     else if (ch == '~')  ans += "_tilda";
+    else if (ch == ',')  ans += "_comma";
+    else if (ch == ' ')  ans += "_space";
     else throw std::runtime_error(std::string("cannot use '") + ch + "'");
   }
   return ans;
@@ -57,7 +59,7 @@ typedef double f64;
 
 i64 alloc(i64 size) {
   void* ptr = calloc(size, 1);
-  return ptr;
+  return (i64)ptr;
 }
 )";
 
@@ -82,7 +84,7 @@ MAKE_ABOBA(in_bool, bool, "%i")
 MAKE_ABOBA(in_f32, float, "%f")
 MAKE_ABOBA(in_f64, double, "%lf")
 
-  for (size_t i = zhdata.last_struct_id - 1; i >= zhdata.first_struct_id; --i) {
+  for (auto i : zhdata.structs_order) {
     auto id = static_cast<types::TYPE>(i);
     res += structHead2C(id);
     res += ";\n";
@@ -93,7 +95,7 @@ MAKE_ABOBA(in_f64, double, "%lf")
 
   res += "\n";
 
-  for (size_t i = zhdata.last_struct_id - 1; i >= zhdata.first_struct_id; --i) {
+  for (auto i : zhdata.structs_order) {
     auto id = static_cast<types::TYPE>(i);
     res += struct2C(id);
   }
@@ -154,30 +156,31 @@ std::string exp2C(zhexp::Exp* exp, Function* fn) {
   std::string res;
   res += "(";
   if (auto lt = dynamic_cast<zhexp::I8Literal*>(exp)) {
-    res += "((i8)" + std::to_string(lt->val) + ")";
+    res += "(i8)" + std::to_string(lt->val);
   } else if (auto lt = dynamic_cast<zhexp::I16Literal*>(exp)) {
-    res += "((i16)" + std::to_string(lt->val) + ")";
+    res += "(i16)" + std::to_string(lt->val);
   } else if (auto lt = dynamic_cast<zhexp::I32Literal*>(exp)) {
-    res += "((i32)" + std::to_string(lt->val) + ")";
+    res += "(i32)" + std::to_string(lt->val);
   } else if (auto lt = dynamic_cast<zhexp::I64Literal*>(exp)) {
-    res += "((i64)" + std::to_string(lt->val) + ")";
+    res += "(i64)" + std::to_string(lt->val);
   } else if (auto lt = dynamic_cast<zhexp::U8Literal*>(exp)) {
-    res += "((u8)" + std::to_string(lt->val) + ")";
+    res += "(u8)" + std::to_string(lt->val);
   } else if (auto lt = dynamic_cast<zhexp::U16Literal*>(exp)) {
-    res += "((u16)" + std::to_string(lt->val) + ")";
+    res += "(u16)" + std::to_string(lt->val);
   } else if (auto lt = dynamic_cast<zhexp::U32Literal*>(exp)) {
-    res += "((u32)" + std::to_string(lt->val) + ")";
+    res += "(u32)" + std::to_string(lt->val);
   } else if (auto lt = dynamic_cast<zhexp::U64Literal*>(exp)) {
-    res += "((u64)" + std::to_string(lt->val) + ")";
+    res += "(u64)" + std::to_string(lt->val);
   } else if (auto lt = dynamic_cast<zhexp::F32Literal*>(exp)) {
-    res += "((f32)" + std::to_string(lt->val) + ")";
+    res += "(f32)" + std::to_string(lt->val);
   } else if (auto lt = dynamic_cast<zhexp::F64Literal*>(exp)) {
-    res += "((f64)" + std::to_string(lt->val) + ")";
+    res += "(f64)" + std::to_string(lt->val);
   } else if (auto lt = dynamic_cast<zhexp::BoolLiteral*>(exp)) {
-    res += "((bool)" + std::to_string(lt->val) + ")";
+    res += "(bool)" + std::to_string(lt->val);
   } else if (auto lt = dynamic_cast<zhexp::CharLiteral*>(exp)) {
-    res += "((char)" + std::to_string(lt->val) + ")";
+    res += "(char)" + std::to_string(lt->val);
   } else if (auto lt = dynamic_cast<zhexp::StrLiteral*>(exp)) {
+    res += "(str)";
     res += "\"";
     for (auto i : lt->val) {
       if (i == '\"')
