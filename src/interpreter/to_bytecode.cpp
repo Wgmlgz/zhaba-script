@@ -97,8 +97,6 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
       expToB(bytecode, op->rhs, funcdata);
       bytecode.pushVal(zhin::instr::assign);
       bytecode.pushVal((int32_t)(op->lhs->type.getSizeNonRef()));
-      bytecode.pushVal(zhin::instr::deref);
-      bytecode.pushVal((int32_t)(op->lhs->type.getSize()));
     } else if (op->val == ".") {
       expToB(bytecode, op->lhs, funcdata);
 
@@ -121,10 +119,12 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
     } else {
       /** C operators */
       if (op->func && op->func->is_C) {
-        auto lhs_tuple = castToTuple(op->lhs);
-        auto rhs_tuple = castToTuple(op->rhs);
-        *lhs_tuple += *rhs_tuple;
-        argsToB(bytecode, lhs_tuple, op->func, funcdata);
+        // auto lhs_tuple = castToTuple(op->lhs);
+        // auto rhs_tuple = castToTuple(op->rhs);
+        // *lhs_tuple += *rhs_tuple;
+        // argsToB(bytecode, lhs_tuple, op->func, funcdata);
+        expToB(bytecode, op->lhs, funcdata);
+        expToB(bytecode, op->rhs, funcdata);
         if (false) {
         }
 #define BOP_BYTECODE(name, type_, instr_)                     \
@@ -271,6 +271,8 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
         auto rhs_tuple = castToTuple(op->rhs);
         *lhs_tuple += *rhs_tuple;
         argsToB(bytecode, lhs_tuple, op->func, funcdata);
+        // expToB(bytecode, op->lhs, funcdata);
+        // expToB(bytecode, op->rhs, funcdata);
         bytecode.pushVal(zhin::instr::call);
         bytecode.pushVal(
             (int32_t)(bytecode.func_labels[op->func->toUniqueStr()]));
@@ -284,7 +286,7 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
     /** C operators */
 
     if (op->func && op->func->is_C) {
-      argsToB(bytecode, op->child, op->func, funcdata);
+      expToB(bytecode, op->child, funcdata);
       if (0) {
       }
 #define MAKE_LOP_BYTECODE(name, type_, impl_)                   \
@@ -430,7 +432,11 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
       bytecode.pushVal((int32_t)(op->type.getSizeNonRef()));
     }
   } else if (auto tuple = dynamic_cast<zhexp::Tuple*>(exp)) {
-    for (auto& i : tuple->content) expToB(bytecode, i, funcdata);
+    for (int i = 0; i < tuple->content.size(); ++i) {
+      expToB(bytecode, tuple->content[i], funcdata);
+      if (i + 1 != tuple->content.size())
+        bytecode.push_pop_bytes(tuple->content[i]->type.getSize());
+    }
   } else {
     throw ParserError("unimplemented expToB ");
   }

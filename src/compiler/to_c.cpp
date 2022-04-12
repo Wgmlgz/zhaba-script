@@ -217,29 +217,25 @@ std::string exp2C(zhexp::Exp* exp, Function* fn) {
         throw ParserError(
             op->begin, op->end,
             "C doesn't allow conversion to non-scalar type `" + type_b.toString() + "`");
-      res += "((";
+      res += "(";
       res += type2C(type_b);
       res += ")";
       res += exp2C(op->lhs, fn);
-      res += ")";
     } else if (op->val == "=") {
-      res += "(";
       res += exp2C(op->lhs, fn);
       res += "=";
       res += exp2C(op->rhs, fn);
-      res += ")";
     } else if (op->val == ".") {
       if (op->type.getRef()) {
         res += "*";
       }
-      res += "((";
+      res += "(";
       if (!op->lhs->type.getPtr()) {
         res += "&";
       }
       res += exp2C(op->lhs, fn);
       res += ")->";
       res += static_cast<zhexp::IdLiteral*>(op->rhs)->val;
-      res += ")";
     } else {
       if (op->func && op->func->is_C) {
         res += "(";
@@ -346,14 +342,10 @@ std::string exp2C(zhexp::Exp* exp, Function* fn) {
       }
     } else if (op->val == "&") {
       res += "&";
-      res += "(";
       res += exp2C(op->child, op->func);
-      res += ")";
     } else if (op->val == "*" && op->func == nullptr) {
       res += "*";
-      res += "(";
       res += exp2C(op->child, op->func);
-      res += ")";
     } else {
       if (op->type.getRef()) res += "*";
       res +=  (

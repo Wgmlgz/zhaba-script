@@ -37,23 +37,39 @@ void copyExp(Exp *&exp, ScopeInfo &scope) {
 };
 
 /**
- * @brief 
- * 
- * @param exp is postprocessed 
+ * @brief before: exp
+ * after: *(t = exp, &t)
+ *
+ * @param exp is postprocessed
  */
 Exp* makeLval(Exp*& exp, ScopeInfo& scope) {
+  auto type = exp->type;
+  auto type_ptr = type;
+  type_ptr.setPtr(type_ptr.getPtr() + 1);
+
   auto var_name = "tmp_rval_" + std::to_string(genId());
-  scope.setVar(var_name, exp->type);
-
+  scope.setVar(var_name, type);
   auto id = scope.getVarId(var_name);
-  auto type = scope.getVarType(id);
-  auto new_exp = new BinOperator(exp->begin, exp->end, "=", 0,
-                        new Variable(exp->begin, exp->end, var_name, type, id), exp);
-  new_exp->lhs->type = type;
-  new_exp->type = type;
-  new_exp->type.setLval(true);
 
-  return exp = new_exp;
+  auto var_exp1 = new Variable(exp->begin, exp->end, var_name, type, id);
+  var_exp1->type = type;
+  auto var_exp2 = new Variable(exp->begin, exp->end, var_name, type, id);
+  var_exp2->type = type;
+
+  auto assign = new BinOperator(exp->begin, exp->end, "=", 0, var_exp1, exp);
+  assign->type = types::Type();
+
+  auto address_exp = new PrefixOperator(exp->begin, exp->end, "&", 0, var_exp2);
+  address_exp->type = type_ptr;
+
+  auto tuple = new Tuple(exp->begin, exp->begin, 0, {assign, address_exp});
+  tuple->type = type_ptr;
+
+  auto deref = new PrefixOperator(exp->begin, exp->end, "*", 0, tuple);
+  deref->type = type;
+  deref->type.setLval(true);
+
+  return exp = deref;
 }
 
 /**
@@ -381,6 +397,7 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
       if (auto t = dynamic_cast<Tuple *>(op->lhs)) {
         if (t->priority == op->priority) {
           t->content.insert(t->content.end(), op->rhs);
+          t->type = op->rhs->type;
           exp = t;
           b = false;
         }
@@ -390,7 +407,7 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
         t->priority = op->priority;
         t->content = {op->lhs, op->rhs};
         exp = t;
-        exp->type = types::Type(types::TYPE::voidT);
+        exp->type = op->rhs->type;
       }
     }
       /** Regular assignment */
@@ -410,7 +427,7 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
       }
 
       if (op->lhs->type.getLval() || op->lhs->type.getRef()) {
-        op->type = op->lhs->type;
+        op->type = types::Type();
       } else {
         throw ParserError(op->lhs->begin, op->end, "Left operant for '=' must be lval or ref");
       }
@@ -740,10 +757,16 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
           op->val +
           "' for types: " + types_str);
     }
-  } else if (auto op = dynamic_cast<Tuple *>(exp)) {
-    for (auto &i : op->content) {
-      i = postprocess(i, scope);
+  } else if (auto tpl = dynamic_cast<Tuple *>(exp)) {
+    for (auto &i : tpl->content) i = postprocess(i, scope);
+
+    if (tpl->content.empty()) {
+      tpl->type = types::Type();
+    } else {
+      auto last_type = tpl->content.back()->type;
+      tpl->type = last_type;
     }
+    return tpl;
   }
   return exp;
 }
