@@ -5,7 +5,7 @@ use util
 
 type Vec T
   int size 
-  int capacity
+  int cap
   TP head
 
 type VecIter T: TP ptr
@@ -25,25 +25,25 @@ impl Vec
     @ i 0..slf.size
       ? ! !i: put ' '
       put (*slf.atP(i))
-    put ']' 
+    put ']'
 
   fn println: @ i 0..slf.size: out (*slf.atP(i))
   
-  fn double_capacity
-    new_capacity := slf.capacity
-    ? new_capacity == 0
-      new_capacity = 1
+  fn double_cap
+    ncap := slf.cap
+    ? ncap == 0
+      ncap = 1
       slf.head = malloc(sizeof T) as TP
-      slf.capacity = new_capacity
-    \ new_capacity *= 2
-      new_head := malloc(new_capacity * sizeof T) as TP
+      slf.cap = ncap
+    \ ncap *= 2
+      new_head := malloc(ncap * sizeof T) as TP
       @ i 0..slf.size: *(new_head + i) = slf.at(i)
       free(slf.head as int)
       slf.head = new_head
-    slf.capacity = new_capacity
+    slf.cap = ncap
 
   fn push_back T val
-    ? slf.size == slf.capacity: slf.double_capacity()
+    ? slf.size == slf.cap: slf.double_cap()
     slf.at(slf.size) = val
     ++slf.size
     
@@ -58,7 +58,7 @@ impl Vec
     ? ! !(slf.head as int)
       free(slf.head as int)
       slf.size = 0
-      slf.capacity = 0
+      slf.cap = 0
       slf.head = 0 as TP
 
   /** Constructors */
@@ -66,10 +66,10 @@ impl Vec
     Vec<T> slf
     slf.head = 0 as TP
     slf.size = 0
-    slf.capacity = 0
-    @ slf.capacity < size: slf.double_capacity()
+    slf.cap = 0
+    @ slf.cap < size: slf.double_cap()
     slf.size = size
-    slf.capacity = size
+    slf.cap = size
 
     @ i 0..slf.size: slf.at(i) = T()
     <<< slf
@@ -88,15 +88,21 @@ impl Vec
 
   /**  Overloaded operators */
   op 16 += Vec<T>R slf T val: slf.push_back(val)
-  
   op 16 += Vec<T>R slf Vec<T>R other
     @ i other: slf.push_back(*i)
 
-  lop put Vec<T>R slf: slf.print()
-  lop out Vec<T>R slf: slf.print(); out ''
-
+  op 2 Vec<T> ,, T a T b
+    Vec<T> slf
+    slf += a
+    slf += b
+    <<< slf
+  op 2 Vec<T>R ,, Vec<T>R v T a
+    v += a
+    <<< v
 
   /** Output overload */
+  lop put Vec<T>R slf: slf.print()
+  lop out Vec<T>R slf: slf.print(); out ''
   rop Out < Vec<T>R i: out i
     <<< Out()
   lop Out < Vec<T>R i: put i, put ' '
@@ -146,10 +152,7 @@ impl Vec
       pi = pi + 1
       qsort(pi rhs)
   
-  fn sort
-    begin := slf.begin()
-    end := slf.end()
-    qsort(begin.ptr end.ptr)
+  fn sort: qsort(slf.begin().ptr slf.end().ptr)
   lop sort Vec<T>R slf: slf.sort()
 
 /** Util */

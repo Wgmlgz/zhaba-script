@@ -1,0 +1,74 @@
+use avl
+
+type MapNode K V
+  K key
+  V val
+
+impl MapNode
+  fn ctor KR key VR val
+    MapNode<K V> slf
+    slf.key = key
+    slf.val = val
+    <<< slf
+  fn ctor:
+    key := K()
+    val := V()
+    <<< MapNode<K V>(key val)
+    
+  op 4 bool < MapNode<K V>R a  MapNode<K V>R b
+    <<< a.key < b.key
+  
+  lop put MapNode<K V>R slf
+    put '{'
+    put slf.key
+    put ': '
+    put slf.val
+    put '}'
+  lop out MapNode<K V>R node
+    put node
+    out ''
+  rop Out < MapNode<K V>R i: out i
+    <<< Out()
+  lop Out < MapNode<K V>R i: put i, put ' '
+    <<< Out()
+  op 9 Out < Out o MapNode<K V>R i: put i, put ' '
+    <<< Out() 
+
+type Map K V
+  AVLTree<MapNode<K V> > tree
+
+impl Map
+  fn ctor
+    Map<K V> slf
+    slf.tree = AVLTree<MapNode<K V> >()
+    <<< slf
+  fn VR sub KR key
+    val := V()
+    node := MapNode<K V>(key val)
+    slf.tree.insert(node)
+    <<< slf.tree.sub(node).val
+  fn insert KR key VR val
+    node := MapNode<K V>(key val)
+    slf.tree.insert(node)
+  fn Vec<MapNode<K V> > call
+    v := slf.tree.call() 
+    <<< v
+    
+  /** Output overload */
+  fn print 
+    out '{'
+    v := slf.tree.call()
+    @ i v
+      put '  '
+      put i.ptr.key
+      put ': '
+      out i.ptr.val
+    put '}'
+  lop put Map<K V>R slf: slf.print()
+  lop out Map<K V>R slf: slf.print(); out ''
+  rop Out < Map<K V>R i: out i
+    <<< Out()
+  lop Out < Map<K V>R i: put i, put ' '
+    <<< Out()
+  op 9 Out < Out o Map<K V>R i: put i, put ' '
+    <<< Out()

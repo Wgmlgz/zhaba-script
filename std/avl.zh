@@ -57,21 +57,27 @@ impl AVLNode
     <<< slf
 
   fn AVLNode<T>P insert TR val
-    ? !slf
-      ptr := new AVLNode<T>(val)
-      <<< ptr
+    ? !slf: <<< new AVLNode<T>(val)
     | val < slf.val: slf.lhs = slf.lhs.insert(val) 
-    \ slf.rhs = slf.rhs.insert(val)
+    | slf.val < val: slf.rhs = slf.rhs.insert(val)
     slf = slf.balance()
-    <<< slf 
+    <<< slf
 
-  fn show StrR prefix
+  fn AVLNode<T>P sub TR val
+    ? !slf: <<< 0 as AVLNode<T>P
+    ptr := 0 as AVLNode<T>P
+    ? val < slf.val: ptr = slf.lhs.sub(val) 
+    | slf.val < val: ptr = slf.rhs.sub(val)
+    \ <<< slf 
+    <<< ptr
+
+  fn show StrR prf
     ? !!slf
-      out slf.val, put prefix, put '|--'
-      p1 := prefix p1 += '|  '
+      out slf.val, put prf, put '|--'
+      p1 := prf p1 += '|  '
       slf.lhs.show(p1)
-      put prefix, put '\'--'
-      p2 := prefix p2 += '   '
+      put prf, put '\'--'
+      p2 := prf p2 += '   '
       slf.rhs.show(p2)
     \ < 'null' <
 
@@ -85,18 +91,20 @@ impl AVLTree
 
   /** inserts element */
   fn insert T val: slf.root = slf.root.insert(val)
+  fn TR sub T val: <<< (*slf.root.sub(val)).val
   op 16 += AVLTree<T>R slf T val: slf.root = slf.root.insert(val)
 
   /** inorder traversal (convertation to Vec<T>) */
-  lop toVec Vec<T>R vec AVLNode<T>P ptr
+  lop Vec<T>R toVec Vec<T>R vec AVLNode<T>P ptr
     ? !!ptr
       toVec(vec ptr.lhs)
       vec += ptr.val
       toVec(vec ptr.rhs)
-  fn Vec<T> call
-    vec := Vec<int>()
-    toVec(vec slf.root)
     <<< vec
+  fn Vec<T> call
+    v := Vec<T>()
+    toVec(v slf.root)
+    <<< v
 
   /** pretty-print */
-  fn show: s := Str(); slf.root.show(s)
+  fn show: slf.root.show(Str())

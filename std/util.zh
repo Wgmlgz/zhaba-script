@@ -13,3 +13,6 @@ impl char: fn ctor: <<< 0i8 as char
 fn int max int a int b
   ? a > b: <<< a
   \ <<< b
+fn int min int a int b
+  ? a < b: <<< a
+  \ <<< b

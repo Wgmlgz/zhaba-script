@@ -1,16 +1,6 @@
-/** AVL tree showcase https://en.wikipedia.org/wiki/AVL_tree */
-
 use std
 
-fn main
-  tree := AVLTree<int>()
-  rng := Rng()
 
-  @ i 0..10
-    num := rng()
-    put 'inserting ', put num, out ':'
-    tree += num
-    v := tree()
-    < v <
-    tree.show()
-    < '' <
+fn main
+
+  out frog()

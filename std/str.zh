@@ -1,8 +1,12 @@
 use vec
 use range
 
-impl str: fn char at int pos: <<< *((*slf as int + pos) as charP)
-
+impl str
+  fn char at int pos: <<< *((*slf as int + pos) as charP)
+  fn ctor
+    ptr := malloc(1) as u8P
+    *ptr = 0u8
+    <<< ptr as str
 op 7 char ^ str s int i: <<< s.at(i)
 op 10 bool == char ch str s: <<< ch == s^0
 
@@ -19,8 +23,8 @@ impl Str
     <<< slf
   fn dtor: slf.data.dtor()
   fn str cstr: iter := slf.data.begin(); <<< iter.ptr as str
-  fn charR at int pos
-    <<< slf.data.at(pos)
+  fn charR at int pos: <<< slf.data.at(pos)
+  fn charR sub int pos: <<< slf.data.at(pos)
   fn charP atP int pos: <<< slf.data.atP(pos)
   fn push_back char ch
     slf.data.pop_back()
@@ -72,6 +76,11 @@ op 16 += StrR a str b
   len := len(b)
   @ i 0..len: 
     a += b.at(i)
+op 6 Str + StrR a StrR b
+  s := a
+  s += b
+  <<< s
+op 6 Str + str a str b: <<< Str(a) + Str(b)
 
 rop Out < StrR i: out i
   <<< Out()
@@ -80,7 +89,13 @@ lop Out < StrR i: put i, put ' '
 op 9 Out < Out o StrR i: put i, put ' '
   <<< Out()
   
-op 9 bool < StrR a StrR b: <<< false
+op 9 bool < StrR a StrR b
+  @ i 0..min(a.size b.size)
+    ? a[i] < b[i]: <<< true
+    | a[i] > b[i]: <<< false
+  ? a.size < b.size: <<< true
+  | a.size > b.size: <<< false
+  <<< false
 
 op 5 Str * str s int i
   slf := Str()
@@ -88,3 +103,5 @@ op 5 Str * str s int i
   @ j 0..i: slf += t
   <<< slf
   <<< Str()
+
+lop Str $ str s: <<< Str(s)
