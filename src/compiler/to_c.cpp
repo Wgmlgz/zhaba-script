@@ -61,6 +61,25 @@ i64 alloc(i64 size) {
   void* ptr = calloc(size, 1);
   return (i64)ptr;
 }
+
+char *inputString(){
+    size_t size = 10;
+    char *str;
+    int ch;
+    size_t len = 0;
+    str = realloc(NULL, sizeof(*str)*size);
+    if(!str)return str;
+    while(EOF!=(ch=fgetc(stdin)) && ch != '\n'){
+        str[len++]=ch;
+        if(len==size){
+            str = realloc(str, sizeof(*str)*(size+=16));
+            if(!str)return str;
+        }
+    }
+    str[len++]='\0';
+
+    return realloc(str, sizeof(*str)*len);
+}
 )";
 
 #define MAKE_ABOBA(name, type, mod)  \
@@ -79,7 +98,7 @@ MAKE_ABOBA(in_u16, u16, "%i")
 MAKE_ABOBA(in_u32, u32, "%i")
 MAKE_ABOBA(in_u64, u64, "%i")
 MAKE_ABOBA(in_char, char, "%i")
-MAKE_ABOBA(in_str, char*, "%i")
+MAKE_ABOBA(in_str, char*, "%s")
 MAKE_ABOBA(in_bool, bool, "%i")
 MAKE_ABOBA(in_f32, float, "%f")
 MAKE_ABOBA(in_f64, double, "%lf")
