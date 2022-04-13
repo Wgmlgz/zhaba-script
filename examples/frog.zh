@@ -1,5 +1,4 @@
 use std
 
 fn main
-  frog := frog()
-  < frog <
+  out frog()

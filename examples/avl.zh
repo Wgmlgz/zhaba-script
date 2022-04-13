@@ -10,7 +10,6 @@ fn main
     num := rng()
     put 'inserting ', put num, out ':'
     tree += num
-    v := tree()
-    < v <
+    out tree()
     tree.show()
-    < '' <
+    out ''

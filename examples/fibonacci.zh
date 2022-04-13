@@ -11,4 +11,4 @@ fn int fib int n
 
 fn main
   @ i 0..15
-    < (fib(i)) <
+    out fib(i)

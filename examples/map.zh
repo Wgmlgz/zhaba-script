@@ -1,0 +1,10 @@
+/** Counts the number of element accurences in number sequence */
+use std
+
+fn main
+  v := 1,,5,,6,,1,,4,,6,,87,,1,,1
+  m := Map<int int>()
+
+  @ i v: ++m[*i]
+  
+  < m <

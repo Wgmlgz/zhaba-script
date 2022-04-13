@@ -7,9 +7,9 @@ use std
 
 fn fizz_buzz int mx
   @ i 1..=mx
-    ? i %% 15: out 'FizzBuzz'
-    | i %% 3: out 'Fizz'
-    | i %% 5: out 'Buzz'
-    \ out i
+    ? i %% 15: < 'FizzBuzz' <
+    | i %% 3: < 'Fizz' <
+    | i %% 5: < 'Buzz' <
+    \ < i <
 
 fn main: fizz_buzz(20)

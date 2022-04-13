@@ -1,16 +1,15 @@
-use std
+use vec
 
 fn main
-  v := iota(0 10) ; < v  <   
-  g0 := v[2]      ; < g0 <
-  g1 := v[-1]     ; < g1 < 
-  g2 := v[2..4]   ; < g2 <   
-  g3 := v[..3]    ; < g3 <  
-  g4 := v[3..]    ; < g4 <  
-  g5 := v[]       ; < g5 <
-  g6 := v[-4..-2] ; < g6 <     
-  g7 := v[-4..]   ; < g7 <   
-  g8 := v[..-2]   ; < g8 <   
-                           
-  r := 0..10
-  g9 := r()       ; < g9 <
+  v := iota(0 10)
+
+  out v  
+  out v[2] 
+  out v[-1]  
+  out v[2..4]    
+  out v[..3]     
+  out v[3..]  
+  out v[] 
+  out v[-4..-2]     
+  out v[-4..] 
+  out v[..-2]
