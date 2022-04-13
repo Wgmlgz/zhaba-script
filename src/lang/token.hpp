@@ -31,6 +31,7 @@ struct Token {
         size_t new_line, const std::string& new_filename);
 
   void reset();
+  std::string toString();
 };
 
 typedef std::vector<Token>::iterator tokeniter;

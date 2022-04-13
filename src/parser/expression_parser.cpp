@@ -460,15 +460,16 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
         throw ParserError(op->lhs->begin, op->lhs->end, "Expected id literal");
       }
     }
-      /** Member access */
+    /** Member access */
     else if (op->val == ".") {
       op->lhs = postprocess(op->lhs, scope);
       if (!(op->lhs->type.getLval() || op->lhs->type.getRef()))
-        throw ParserError(
-                op->lhs->begin,
-                op->begin,
-                "Expression must be lval or reference to use `.`"
-            );
+        makeLval(op->lhs, scope);
+        // throw ParserError(
+        //         op->lhs->begin,
+        //         op->begin,
+        //         "Expression must be lval or reference to use `.`"
+        //     );
       if (auto id = dynamic_cast<IdLiteral *>(op->rhs)) {
         if (op->lhs->type.getTypeId() >=
             static_cast<types::TYPE>(zhdata.first_struct_id)) {
@@ -609,7 +610,11 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
           op->func = bop;
           exp->type = bop->type;
           for (int i = 0; i < bop->args.size(); ++i) {
-            // if (!bop->args[i].type.getRef()) copyExp(*exps[i], scope);
+            /** Call copy ctors */
+            if (!bop->args[i].type.getRef()) copyExp(*exps[i], scope);
+            /** Cast to lval if needed */
+            else if (!(*exps[i])->type.getLval() && !(*exps[i])->type.getRef())
+              makeLval(*(exps[i]), scope);
           }
         } else {
           std::string types_str;

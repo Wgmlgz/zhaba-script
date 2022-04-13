@@ -55,8 +55,14 @@ const char *ParserError::what() {
     res += line_str + " | " + source + '\n';
     auto head_line = std::string(line_str.size(), ' ') + " | ";
     res += head_line + std::string(pos, ' ') +
-           std::string(std::max<int>(len, 1), '^') + "\n" + head_line +
-           message + "\n";
+           std::string(std::max<int>(len, 1), '^') + "\n" + head_line;
+    for (auto i : message) {
+      if (i == '\n')
+        res += "\n" + head_line;
+      else
+        res += i;
+    }
+    res += "\n";
   }
   char *buf = new char[res.length() + 1];
   strcpy(buf, res.c_str());
@@ -88,7 +94,14 @@ void ParserError::print() {
               << std::string(pos, ' ') << termcolor::grey
               << std::string(std::max<int>(len, 1), '^') << termcolor::reset
               << "\n"
-              << termcolor::blue << head_line << termcolor::red << message
-              << termcolor::reset << +"\n";
+              << termcolor::blue << head_line;
+    for (auto i : message) {
+      if (i == '\n') {
+        std::cout << termcolor::blue << "\n" << head_line;
+      } else {
+        std::cout << termcolor::red << i;
+      }
+    }
+    std::cout << termcolor::reset << "\n";
   }
 }

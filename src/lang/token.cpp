@@ -10,3 +10,6 @@ Token::Token(const TOKEN &new_token, std::string new_type,
       filename(new_filename) {}
 
 void Token::reset() { token = orig_token; }
+std::string Token::toString() {
+  return filename + ':' + std::to_string(line) + ':' + std::to_string(pos);
+}

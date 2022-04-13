@@ -116,7 +116,7 @@ Type parse(tokeniter &token, const ScopeInfo &parent_scope) {
 
     /** Generate new implementation */
     if (id == static_cast<TYPE>(-1)) {
-      /** Type substitution*/
+      /** Type substitution */
       if (generic_types.size() != zhdata.generics[str].names.size())
         throw ParserError(begin_token,
             *token, "Number of generic types doesn't match: found " +

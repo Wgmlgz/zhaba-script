@@ -35,6 +35,8 @@ void validateFunction(const ScopeInfo& scope, const Function &func, tokeniter be
 Function *parseOpHeader(tokeniter begin, tokeniter end, const ScopeInfo &scope) {
   if (begin >= end) throw ParserError(*begin, "Expected operator declaration");
   auto func = new Function;
+  func->begin = &*begin;
+  func->end = &*begin;
   auto cur = begin;
   bool is_fn = false;
 

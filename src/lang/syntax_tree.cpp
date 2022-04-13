@@ -77,11 +77,18 @@ TreeNode<std::string> *STBlock::toGenericTree() {
 
 std::string Function::headToStr() const {
   std::string str;
+  if (begin && end) {
+    str += begin->toString();
+    str += " ";
+  }
   str += type.toString() + " ";
-  str += name + " =";
+  str += name + " ";
   for (auto &arg : args) {
     str += " ";
-    str += arg.type.toString() + " ";
+    if (arg.type.getTypeId() != types::TYPE::voidT) {
+      str += arg.type.toString();
+      str += " ";
+    }
     str += arg.name;
   }
   return str;

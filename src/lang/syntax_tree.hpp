@@ -43,11 +43,14 @@ struct Function {
     std::string name;
     types::Type type;
   };
+
   std::string name;
   std::vector<Arg> args;
   types::Type type;
+
   enum class OpType { lhs, rhs, bin };
   OpType op_type;
+
   bool is_C = false;
 
   STBlock *body = nullptr;
@@ -55,6 +58,8 @@ struct Function {
 
   bool is_fn = false;
   ScopeInfo args_scope{nullptr};
+
+  Token *begin = nullptr, *end = nullptr;
 
   [[nodiscard]] std::string headToStr() const;
   [[nodiscard]] std::string toUniqueStr() const;
