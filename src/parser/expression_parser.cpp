@@ -611,7 +611,7 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
           exp->type = bop->type;
           for (int i = 0; i < bop->args.size(); ++i) {
             /** Call copy ctors */
-            if (!bop->args[i].type.getRef()) copyExp(*exps[i], scope);
+            if (!bop->args[i].type.getRef()) {} // copyExp(*exps[i], scope);
             /** Cast to lval if needed */
             else if (!(*exps[i])->type.getLval() && !(*exps[i])->type.getRef())
               makeLval(*(exps[i]), scope);
@@ -674,13 +674,12 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
       if (pr == "[") call_name = ".call.sub";
       
       auto var = scope.getVarInfo(scope.getVarId(op->val));
-      
-      auto var_exp =
-          new Variable(op->begin, op->end, var->name, var->type, var->id);
-      
-      var_exp->type = var->type;
-      exp = new BinOperator(op->begin, op->end, call_name, 0, var_exp, op->child);
-      exp = postprocess(exp, scope);
+
+      exp = postprocess(
+          new BinOperator(op->begin, op->end, call_name, 0,
+                          new IdLiteral(op->begin, op->end, var->name),
+                          op->child),
+          scope);
       return exp;
     }
 
