@@ -1,6 +1,6 @@
 use range
 use operators
-use out
+use io
 use util
 
 type Vec T

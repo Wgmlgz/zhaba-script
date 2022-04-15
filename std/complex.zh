@@ -1,5 +1,5 @@
 use operators
-use out
+use io
 
 fn f64 sqrt f64 x
   z := 1.

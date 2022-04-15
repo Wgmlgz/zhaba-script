@@ -1,6 +1,6 @@
 // zhaba-script standart lib!!!
 use operators
-use out
+use io
 use frog
 use vec
 use str
