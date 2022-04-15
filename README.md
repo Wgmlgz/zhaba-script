@@ -174,25 +174,24 @@ fn main: brainfuck(`
 
 ```
 
-Here is my favorite demonstration of zhaba-script standard library. There is `Vec`, slicing, `Range` and also overloaded output `<` and `>` operators. And all of this is make throw zhaba-script code, so that means that you can also replicate this in your own code, ore eve do more crazy stuff!
+Here is my favorite demonstration of zhaba-script standard library. There is `Vec`, slicing, `Range` and also rval to lval conversion. And all of this is make throw zhaba-script code, so that means that you can also replicate this in your own code, ore even do more crazy stuff!
 
 ```zh
-use std
+use vec
 
 fn main
-  v := iota(0 10) ; < v  < // [0 1 2 3 4 5 6 7 8 9]
-  g0 := v[2]      ; < g0 < // 2
-  g1 := v[-1]     ; < g1 < // 9
-  g2 := v[2..4]   ; < g2 < // [2 3]
-  g3 := v[..3]    ; < g3 < // [0 1 2]
-  g4 := v[3..]    ; < g4 < // [3 4 5 6 7 8 9]
-  g5 := v[]       ; < g5 < // [0 1 2 3 4 5 6 7 8 9]
-  g6 := v[-4..-2] ; < g6 < // [6 7]
-  g7 := v[-4..]   ; < g7 < // [6 7 8 9]
-  g8 := v[..-2]   ; < g8 < // [0 1 2 3 4 5 6 7]
+  v := iota(0 10)
 
-  r := 0..10
-  g9 := r()       ; < g9 < // [0 1 2 3 4 5 6 7 8 9]
+  out v  
+  out v[2] 
+  out v[-1]  
+  out v[2..4]    
+  out v[..3]     
+  out v[3..]  
+  out v[] 
+  out v[-4..-2]     
+  out v[-4..] 
+  out v[..-2]
 ```
 
 And of course zhaba-script is shipped with frog by default 🐸!
@@ -201,14 +200,13 @@ And of course zhaba-script is shipped with frog by default 🐸!
 use std
 
 fn main
-  frog := frog()
-  < frog <
+  out frog()
 
 /**
         _____
        /       \__
      /             \
-   /   0    0        |
+   /   ^    ^        |
   |     ..            |
   /|        _/       /
  / .\_____/         /
