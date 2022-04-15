@@ -72,6 +72,21 @@ These expressions are concentered lval:
 
 All the others expressions are considered to be rval.
 
+## Rval to lval conversion
+
+Zhaba-script can convert rval to lvar if you pass parameter which requires reference and is not lval. This conversion is also made if you try to access member of rval object.
+
+```zh
+fn testRef intR a
+  a += 2
+
+fn main
+  a := 3
+  testRef(a)
+  testRef(5)
+  out a
+```
+
 Read more about rval and lval in C++ to understand this concept more [here](https://en.cppreference.com/w/cpp/language/value_category).
 
 ## Type casting
