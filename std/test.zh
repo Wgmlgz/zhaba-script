@@ -2,5 +2,5 @@ use std
 
 
 fn main
-
-  out frog()
+  v := Vec<int>(2**3 5)
+  < v <

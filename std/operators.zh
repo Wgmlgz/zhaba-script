@@ -1,5 +1,6 @@
 lop int + int a: <<< a;
 op 5  bool %% int a int b: <<< !(a % b);
+op 5  bool !% int a int b: <<< !(a %% b);
 
 op 16 += u8R a u8 b: a = a + b
 op 16 -= u8R a u8 b: a = a - b
@@ -72,3 +73,11 @@ lop ++ intR val: val += 1
 lop -- intR val: val -= 1
 lop ++ u8R val: val = val + 1u8
 lop -- u8R val: val = val - 1u8
+
+op 4 int ** int a int n
+  res := 1
+  @ n != 0
+    ? n !% 2: res *= a
+    a *= a
+    n /= 2
+  <<< res
