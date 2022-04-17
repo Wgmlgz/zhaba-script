@@ -297,7 +297,7 @@ Exp *buildExp(ScopeInfo &scope, tokeniter begin, tokeniter end) {
       }
     }
 
-    if ((i + 1)->first == tokeniter(nullptr)) continue;
+    if ((i + 1)->first.base() == nullptr) continue;
 
     if ((i->second == close_p || i->second == undef)) {
       /** Call operator */
