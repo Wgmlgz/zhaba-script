@@ -370,8 +370,6 @@ Exp *buildExp(ScopeInfo &scope, tokeniter begin, tokeniter end) {
 
       auto val = b_op->val;
       if (val == "(" || val == "[" || val == "{") {
-        bool err = false;
-
         if (auto type_l = dynamic_cast<TypeLiteral*>(b_op->lhs)) {
           exp_stack.push_back(new PrefixOperator(
               b_op->begin, b_op->end, type_l->literal_type.toString(), 0, b_op->rhs));
@@ -386,21 +384,23 @@ Exp *buildExp(ScopeInfo &scope, tokeniter begin, tokeniter end) {
             exp_stack.push_back(new PrefixOperator(b_op->begin, b_op->end,
                                                    id_l->val, 0, b_op->rhs));
           }
-        } else if (auto ch_b_op = dynamic_cast<BinOperator *>(b_op->lhs)) {
-          err = true;
+        } else if (dynamic_cast<BinOperator *>(b_op->lhs) &&
+                   dynamic_cast<BinOperator *>(b_op->lhs)->val == ".") {
+          auto ch_b_op = dynamic_cast<BinOperator *>(b_op->lhs);
+
           if (ch_b_op->val == ".")
             if (auto mem = dynamic_cast<IdLiteral *>(ch_b_op->rhs)) {
               exp_stack.push_back(new BinOperator(b_op->begin, b_op->end,
                                                   ".call." + mem->val, 0,
                                                   ch_b_op->lhs, b_op->rhs));
-              err = false;
             }
         } else {
-          err = true;
+          std::string call_name = ".call.call";
+          if (val == "[") call_name = ".call.sub";
+
+          exp_stack.push_back(new BinOperator(b_op->begin, b_op->end, call_name,
+                                              0, b_op->lhs, b_op->rhs));
         }
-        if (err)
-          throw ParserError(b_op->begin, b_op->end,
-                            "Expression isn't callable");
       } else {
         exp_stack.push_back(b_op);
       }
@@ -660,7 +660,7 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
         if (op->val.size() >= 6 and op->val.substr(0, 6) == ".call.") {
           if (op->lhs->type.getPtr() == 0) {
             if (!(op->lhs->type.getLval() || op->lhs->type.getRef())) {
-              throw ParserError(op->begin, op->end, "For now only lval or ref member call");
+              op->lhs = makeLval(op->lhs, scope);
             }
             auto ltype = op->lhs->type;
             op->lhs = new PrefixOperator(op->begin, op->end, "&", 3, op->lhs);
@@ -702,13 +702,22 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
               makeLval(*(exps[i]), scope);
           }
         } else {
-          std::string types_str;
-          for (auto &i : types) {
-            types_str += i.toString() + " ";
+          if (op->val.substr(0, 6) == ".call.") {
+            std::string types_str;
+            for (auto &i : types)
+              if (&i != &types.front()) types_str += i.toString() + " ";
+            throw ParserError(op->begin, op->end,
+                              "There is no instance member function `" +
+                                  op->val.substr(6, op->val.size() - 6) +
+                                  "` for type `" + types.front().toString() +
+                                  "` with args types: " + types_str);
+          } else {
+            std::string types_str;
+            for (auto &i : types) types_str += i.toString() + " ";
+            throw ParserError(op->begin, op->end,
+                              "There is no instance of binary operator '" +
+                                  op->val + "' for types: " + types_str);
           }
-          throw ParserError(op->begin, op->end,
-                            "There is no instance of binary operator '" +
-                                op->val + "' for types: " + types_str);
         }
       }
     }
