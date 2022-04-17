@@ -104,10 +104,10 @@ Exp *buildExp(ScopeInfo &scope, tokeniter begin, tokeniter end) {
       TOKEN::str_literal,
   };
   std::vector<std::pair<tokeniter, TOKEN_TYPE>> raw;
-  raw.emplace_back(nullptr, open_p);
+  raw.emplace_back(begin, open_p);
   for (auto i = begin; i != end; ++i)
     if (used_tokens.contains(i->token)) raw.emplace_back(i, undef);
-  raw.emplace_back(nullptr, close_p);
+  raw.emplace_back(begin, close_p);
 
   /** Define Type literals */
   for (auto i = raw.begin() + 1; i != raw.end() - 1; ++i) {
@@ -147,13 +147,14 @@ Exp *buildExp(ScopeInfo &scope, tokeniter begin, tokeniter end) {
 
   /** Define binary operators */
   for (auto i = raw.begin() + 1; i != raw.end() - 1; ++i)
-    if (i->second == TOKEN_TYPE::any_op)
+    if (i->second == TOKEN_TYPE::any_op) {
       if ((i - 1)->first->val == ".")
         i->second = TOKEN_TYPE::undef;
       else if ((i - 1)->second == bin_op)
         i->second = TOKEN_TYPE::pr_op;
       else
         i->second = TOKEN_TYPE::bin_op;
+    }
   for (auto i = raw.begin() + 1; i != raw.end() - 1; ++i)
     if (i->second == other) i->second = undef;
 
