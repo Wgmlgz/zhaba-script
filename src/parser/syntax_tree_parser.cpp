@@ -19,8 +19,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo& parent_scope, Funct
       }
       if (is_var_decl) {
         /* if line is variable declaration */
-        auto exp_res = zhexp::preprocess(cur, line->end, res->scope_info);
-        auto exp = zhexp::buildExp(res->scope_info, exp_res.begin(), exp_res.end());
+        auto exp = zhexp::buildExp(res->scope_info, cur, line->end);
         auto tuple = castTreeToTuple(exp);
 
         if (zhdata.flags["exp_parser_logs"]) {
@@ -84,10 +83,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo& parent_scope, Funct
           --i;
         } else {
           /* not variable declaration so normal parsing */
-          auto exp_preprocessed =
-              zhexp::preprocess(line->begin, line->end, res->scope_info);
-          auto exp_builded =
-              buildExp(res->scope_info, exp_preprocessed.begin(), exp_preprocessed.end());
+          auto exp_builded = zhexp::buildExp(res->scope_info, line->begin, line->end);
 
           // auto exp = zhexp::parse(line->begin, line->end, cur_scope, &res->scope_info);
           if (auto ctr_ = dynamic_cast<zhexp::FlowOperator*>(exp_builded)) {
@@ -178,11 +174,8 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo& parent_scope, Funct
                                       "Expected block after case expression");
                   ++j;
 
-                  auto exp_preprocessed = zhexp::preprocess(
-                      line->begin, line->end, *scope);
                   auto exp_builded =
-                      buildExp(*scope, exp_preprocessed.begin(),
-                               exp_preprocessed.end());
+                      zhexp::buildExp(*scope, line->begin, line->end);
                   if (auto id = dynamic_cast<zhexp::IdLiteral*>(exp_builded)) {
                     if (id->val == "_") {
                       exp_builded = new zhexp::BoolLiteral(

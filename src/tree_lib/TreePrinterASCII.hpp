@@ -147,3 +147,5 @@ template<typename T>
 void printCompact(TreeNode<T>* node) {
     std::cout << renderCompact(node) << std::endl;
 }
+
+#undef range

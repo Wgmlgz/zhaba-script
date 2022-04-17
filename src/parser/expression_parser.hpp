@@ -12,10 +12,7 @@ namespace zhexp {
 
 STExp *callDtor(std::pair<ScopeInfo::VarInfo *, Function *> info);
 void copyExp(Exp *&exp, ScopeInfo &scope);
-Exp *buildExp(ScopeInfo &scope, std::vector<Exp *>::iterator begin,
-              std::vector<Exp *>::iterator end, int depth = 0);
-std::vector<Exp *> preprocess(tokeniter begin, tokeniter end,
-                              const ScopeInfo &scope);
+Exp *buildExp(ScopeInfo &scope, tokeniter begin, tokeniter end);
 Exp *postprocess(Exp *exp, ScopeInfo &scope_info);
 Exp *parse(std::vector<Token>::iterator begin, std::vector<Token>::iterator end,
            ScopeInfo &scope_info);

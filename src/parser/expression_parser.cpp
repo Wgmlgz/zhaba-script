@@ -75,274 +75,359 @@ Exp* makeLval(Exp*& exp, ScopeInfo& scope) {
 /**
  * @brief Converts expression to expression tree
  */
-Exp *buildExp(ScopeInfo& scope, const std::vector<Exp *>::iterator begin,
-              const std::vector<Exp *>::iterator end, int depth) {
-  if (distance(begin, end) == 0)
-    throw ParserError(0, "Unknown error (empty buildExp range)");
-  if (auto op = dynamic_cast<CCode *>(*begin)) {
-    return op;
-  }
-  if (auto op = dynamic_cast<FlowOperator *>(*begin)) {
-    if (begin + 1 < end) op->operand = buildExp(scope, begin + 1, end);
-    return op;
-  }
-  if (distance(begin, end) == 1) {
-    if (auto op = dynamic_cast<Literal *>(*begin)) return op;
-    else if (auto op = dynamic_cast<Tuple *>(*begin)) return op;
-    else throw ParserError((*begin)->begin, "Expected literal");
-  }
-
-  int64_t max_priority = -zhdata.INF, true_priority = 0;
-  bool is_bin = false;
-  auto pos = end;
-
-  for (auto i = begin; i != end; ++i) {
-    if (Operator *op = dynamic_cast<Operator *>(*i)) {
-      true_priority = op->priority;
-      if (i == begin) {
-        /** Prefix operator priority */
-        true_priority += 3;
-      } else if (i == end - 1) {
-        if (!scope.containsPoOpP(op->val))
-          throw ParserError(op->begin, "Unknown postfix operator");
-        /** Postfix operator priority */
-        true_priority += 2;
-      } else {
-        if (scope.containsBinOpP(op->val)) {
-          true_priority += scope.getBinOpP(op->val);
-        } else {
-          true_priority = -zhdata.INF;
-        }
-      }
-      if (op->val == "=" ?
-          true_priority > max_priority :
-          true_priority >= max_priority
-          ) {
-        max_priority = true_priority;
-        pos = i;
-      }
-    }
-  }
-  if (zhdata.flags["exp_parser_logs"]) {
-    for (auto i = begin; i != end; ++i) {
-      std::cout << (*i)->toString() << ",";
-    }
-    std::cout << "\n";
-  }
-  if (pos == end) {
-    throw ParserError((*begin)->begin, "Expected operator");
-  } else if (!dynamic_cast<Operator *>(*pos)) {
-    throw ParserError((*pos)->begin, "Unknown binary operator");
-  }
-  auto op = static_cast<Operator *>(*pos);
-  if (pos == begin) {
-    return new PrefixOperator(op->begin, op->end, op->val, max_priority,
-                              buildExp(scope, pos + 1, end, depth + 1));
-  } else if (pos == end - 1) {
-    return new PostfixOperator(op->begin, op->end, op->val, max_priority,
-                               buildExp(scope, begin, pos, depth + 1));
-  } else {
-    return new BinOperator(op->begin, op->end, op->val, max_priority,
-                           buildExp(scope, begin, pos, depth + 1),
-                           buildExp(scope, pos + 1, end, depth + 1));
-  }
-}
-
-std::vector<Exp *> preprocess(tokeniter begin, tokeniter end, const ScopeInfo &scope) {
-  auto res = std::vector<Exp *>{};
-  int pcount = 0;
-
-  if (std::distance(begin, end) < 1) {
-    throw ParserError(0, "Empty expression");
-  }
-
-
-  /** C++ code injection */
-  if (begin->token == TOKEN::id and begin->val == "#") {
-    std::string code;
-    for (auto i = begin + 1; i != end; ++i) {
-      code += i->val;
-    }
-    return {new CCode(*begin, *begin, code)};
-  }
-
+Exp *buildExp(ScopeInfo &scope, tokeniter begin, tokeniter end) {
+  /** Flow operator skip */
   if (begin->token == TOKEN::id and tables::flow_ops.count(begin->val)) {
-    res.push_back(new FlowOperator(*begin, *begin, begin->val, nullptr));
-    ++begin;
+    return new FlowOperator(*begin, *begin, begin->val,
+                            buildExp(scope, ++begin, end));
   }
 
-  /** Find which tokens are operators */
-  for (auto i = begin; i != end; ++i) {
-    if (i->token == TOKEN::id) {
-      if (scope.containsOp(i->val)) {
-        i->token = TOKEN::op;
-      } else {
-        auto next = i + 1;
-        if (next == end) continue;
-        if (next->token == TOKEN::open_p) {
-          i->token = TOKEN::op;
-        }
-      }
-    }
-  }
+  enum TOKEN_TYPE {
+    undef,
+    other,
+    open_p,
+    close_p,
+    any_op,
+    pr_op,
+    po_op,
+    bin_op,
+  };
 
-  for (auto i = begin; i != end; ++i) {
-    if (i == begin && i->token == TOKEN::space) continue;
-    if (i + 1 == end && i->token == TOKEN::space) continue;
+  /** Define operators type (prefix, postfix or binary) */
 
+  /** Init preprocessed sequence */
+  const static auto used_tokens = std::set{
+      TOKEN::open_p,
+      TOKEN::close_p,
+      TOKEN::id,
+      TOKEN::int_literal,
+      TOKEN::str_literal,
+  };
+  std::vector<std::pair<tokeniter, TOKEN_TYPE>> raw;
+  raw.emplace_back(nullptr, open_p);
+  for (auto i = begin; i != end; ++i)
+    if (used_tokens.contains(i->token)) raw.emplace_back(i, undef);
+  raw.emplace_back(nullptr, close_p);
+
+  /** Define Type literals */
+  for (auto i = raw.begin() + 1; i != raw.end() - 1; ++i) {
     try {
-      auto pos = i->pos;
-      auto type = types::parse(i, scope);
-      res.push_back(new TypeLiteral(*i, *i, type));
-      --i;
-      continue;
-    } catch (const types::TypeParsingError& err) {}
-
-    bool lhs = false, rhs = false;
-    if (i->token == TOKEN::space) {
-      if (i != begin)
-        if (std::set{TOKEN::close_p, TOKEN::int_literal, TOKEN::str_literal, TOKEN::id}.count((i - 1)->token))
-          lhs = true;
-      if (i + 1 != end)
-        if (std::set{TOKEN::open_p, TOKEN::int_literal, TOKEN::str_literal, TOKEN::id}.count((i + 1)->token))
-          rhs = true;
-      if (lhs and rhs) {
-        res.push_back(new Operator(*i, *i, ",", -zhdata.parentheses_offset * pcount));
-      }
-    } else {
-      if (i != begin)
-        if (std::set{TOKEN::close_p, TOKEN::int_literal, TOKEN::str_literal, TOKEN::id}.count((i - 1)->token))
-          lhs = true;
-      if (lhs and rhs) {
-        res.push_back(new Operator(*i, *i, ",", -zhdata.parentheses_offset * pcount));
-      }
-      if (scope.containsOp(i->val)) rhs = false;
-    }
-
-    if (i->token == TOKEN::open_p) {
-      if (!res.empty())
-        if (auto type_literal = dynamic_cast<TypeLiteral *>(res.back())) {
-          auto type_name = type_literal->literal_type.toString();
-          auto op = new Operator(*i, *i, type_name, -zhdata.parentheses_offset * pcount);
-          res.pop_back();
-          res.push_back(op);
-        }
-      ++pcount;
-    } else if (i->token == TOKEN::close_p) {
-      --pcount;
-      /** () parse and push empty tuple */
-      if (i != begin and (i - 1)->token == TOKEN::open_p) {
-        res.push_back(new Tuple(*i, *i));
-      }
-    }
-    if (pcount < 0) throw ParserError(i->pos, "Too many ')'");
-    int bpriority = -zhdata.parentheses_offset * pcount;
-
-    if (i->token == TOKEN::op) {
-      /** Member call */
-      if (i->val == "." and
-          i != end - 1 and
-          i != end - 2 and
-          ((i + 1)->token == TOKEN::id or (i + 1)->token == TOKEN::op) and
-          (i + 2)->token == TOKEN::open_p
-          ) {
+      auto iter = i->first;
+      auto type = types::parse(iter, scope);
+      while (i != raw.end() - 1 && i->first < iter) {
+        i->second = other;
         ++i;
-        res.push_back(new Operator(*i, *i, ".call." + i->val, bpriority));
-      } else {
-        res.push_back(new Operator(*i, *i, i->val, bpriority));
       }
-    } else if (i->token == TOKEN::int_literal) {
-      int base = 10;
-      auto str = i->val;
-      if (std::regex_match(i->val, std::regex("0x.+"))) {
-        base = 16;
-        str = str.substr(2, str.size() - 2);
-      } else if (std::regex_match(i->val, std::regex("0b.+"))) {
-        base = 2;
-        str = str.substr(2, str.size() - 2);
-      }
+      --i;
+    } catch (const types::TypeParsingError &err) {
+    }
+  }
+
+  /** Define operators, `(` and `)` */
+  for (auto i = raw.begin() + 1; i != raw.end() - 1; ++i)
+    if (i->first->token == TOKEN::open_p)
+      i->second = TOKEN_TYPE::open_p;
+    else if (i->first->token == TOKEN::close_p)
+      i->second = TOKEN_TYPE::close_p;
+    else if (i->second == undef && i->first->token == TOKEN::id &&
+             scope.containsOp(i->first->val))
+      i->second = TOKEN_TYPE::any_op;
+
+  /** Define prefix operators */
+  for (auto i = raw.begin() + 1; i != raw.end() - 1; ++i)
+    if (i->second == TOKEN_TYPE::any_op &&
+        ((i - 1)->second == open_p || (i - 1)->second == pr_op))
+      i->second = TOKEN_TYPE::pr_op;
+
+  /** Define postfix operators */
+  for (auto i = raw.rbegin() + 1; i != raw.rend() - 1; ++i)
+    if (i->second == TOKEN_TYPE::any_op &&
+        ((i - 1)->second == close_p || (i - 1)->second == po_op))
+      i->second = TOKEN_TYPE::po_op;
+
+  /** Define binary operators */
+  for (auto i = raw.begin() + 1; i != raw.end() - 1; ++i)
+    if (i->second == TOKEN_TYPE::any_op)
+      if ((i - 1)->first->val == ".")
+        i->second = TOKEN_TYPE::undef;
+      else if ((i - 1)->second == bin_op)
+        i->second = TOKEN_TYPE::pr_op;
+      else
+        i->second = TOKEN_TYPE::bin_op;
+  for (auto i = raw.begin() + 1; i != raw.end() - 1; ++i)
+    if (i->second == other) i->second = undef;
+
+
+  /** Create implicit `,` and call operators */
+  std::vector<std::pair<Exp *, TOKEN_TYPE>> preprocessed;
+  preprocessed.emplace_back(nullptr, open_p);
+  for (auto i = raw.begin() + 1; i != raw.end() - 1; ++i) {
+    if (i->second == pr_op) {
+      preprocessed.emplace_back(
+          new PrefixOperator(*i->first, *i->first, i->first->val, 0, nullptr),
+          i->second);
+    } else if (i->second == po_op) {
+      preprocessed.emplace_back(
+          new PostfixOperator(*i->first, *i->first, i->first->val, 0, nullptr),
+          i->second);
+    } else if (i->second == bin_op) {
+      preprocessed.emplace_back(
+          new BinOperator(*i->first, *i->first, i->first->val, 0, nullptr,
+                          nullptr),
+          i->second);
+    } else if (i->second == open_p || i->second == close_p) {
+      preprocessed.emplace_back(nullptr, i->second);
+    } else {
+      auto &iter = *i->first;
+      bool skip = false;
 
       try {
-        if (std::regex_match(str, std::regex("true|tru")))
-          res.push_back(new BoolLiteral(*i, *i, true));
-        else if (std::regex_match(str, std::regex("false|fls")))
-          res.push_back(new BoolLiteral(*i, *i, false));
-
-        else if (std::regex_match(str, std::regex(".+i8")))
-          res.push_back(new I8Literal(
-              *i, *i, std::stoll(str, 0, base)));
-        else if (std::regex_match(str, std::regex(".+i16")))
-          res.push_back(new I16Literal(
-              *i, *i, std::stoll(str, 0, base)));
-        else if (std::regex_match(str, std::regex(".+i32")))
-          res.push_back(new I32Literal(
-              *i, *i, std::stoll(str, 0, base)));
-        else if (std::regex_match(str, std::regex(".+i64")))
-          res.push_back(new I64Literal(
-              *i, *i, std::stoll(str, 0, base)));
-
-        else if (std::regex_match(str, std::regex(".+u8")))
-          res.push_back(new U8Literal(
-              *i, *i, std::stoull(str, 0, base)));
-        else if (std::regex_match(str, std::regex(".+u16")))
-          res.push_back(new U16Literal(
-              *i, *i, std::stoull(str, 0, base)));
-        else if (std::regex_match(str, std::regex(".+u32")))
-          res.push_back(new U32Literal(
-              *i, *i, std::stoull(str, 0, base)));
-        else if (std::regex_match(str, std::regex(".+u64")))
-          res.push_back(new U64Literal(
-              *i, *i, std::stoull(str, 0, base)));
-        else if (std::regex_match(str, std::regex(".+f32")))
-          res.push_back(new F32Literal(
-              *i, *i, std::stof(str)));
-        else if (std::regex_match(str, std::regex(".+f64|.*\\..*")))
-          res.push_back(
-              new F64Literal(*i, *i, std::stod(str)));
-        else if (std::regex_match(str, std::regex(".+i")))
-          res.push_back(new I64Literal(*i, *i, std::stoll(str, 0, base)));
-        else if (std::regex_match(str, std::regex(".+u")))
-          res.push_back(new U64Literal(*i, *i, std::stoll(str, 0, base)));
-        else if (std::regex_match(str, std::regex(".+f")))
-          res.push_back(new F64Literal(*i, *i, std::stod(str)));
-        else if (std::regex_match(str, std::regex(".+")))
-          res.push_back(new I64Literal(*i, *i, std::stoll(str, 0, base)));
-        else
-          throw ParserError(*i, "Wrong int literal");
-      } catch (const std::out_of_range& err) {
-        throw ParserError(
-            *i,
-            "The converted value fall out of the range of the result type ");
+        auto tmp_tokeniter = i->first;
+        auto pos = iter.pos;
+        auto type = types::parse(tmp_tokeniter, scope);
+        preprocessed.emplace_back(new TypeLiteral(iter, iter, type), i->second);
+        while (i != raw.end() - 1 && i->first < tmp_tokeniter) ++i;
+        --i;
+        skip = true;
+      } catch (const types::TypeParsingError &err) {
       }
-    } else if (i->token == TOKEN::str_literal) {
-      bool do_escape = true;
-      auto str = i->val;
-      if (str[0] == '`') do_escape = false;
-      str = str.substr(1, i->val.size() - 2);
-      /** Apply escape sequences */
-      if (do_escape) {
-        str = std::regex_replace(str, std::regex(R"(\\')"), "\'");
-        str = std::regex_replace(str, std::regex(R"(\\")"), "\"");
-        str = std::regex_replace(str, std::regex(R"(\\\\)"), "\\");
-        str = std::regex_replace(str, std::regex(R"(\\b)"), "\b");
-        str = std::regex_replace(str, std::regex(R"(\\n)"), "\n");
-        str = std::regex_replace(str, std::regex(R"(\\t)"), "\t");
-        str = std::regex_replace(str, std::regex(R"(\\0)"), "\0");
+
+      if (!skip) {
+        if (i->first->token == TOKEN::int_literal) {
+          int base = 10;
+          auto str = i->first->val;
+          if (std::regex_match(str, std::regex("0x.+"))) {
+            base = 16;
+            str = str.substr(2, str.size() - 2);
+          } else if (std::regex_match(str, std::regex("0b.+"))) {
+            base = 2;
+            str = str.substr(2, str.size() - 2);
+          }
+
+          try {
+            if (std::regex_match(str, std::regex("true|tru")))
+              preprocessed.emplace_back(new BoolLiteral(iter, iter, true),
+                                        i->second);
+            else if (std::regex_match(str, std::regex("false|fls")))
+              preprocessed.emplace_back(new BoolLiteral(iter, iter, false),
+                                        i->second);
+
+            else if (std::regex_match(str, std::regex(".+i8")))
+              preprocessed.emplace_back(
+                  new I8Literal(iter, iter, std::stoll(str, 0, base)),
+                  i->second);
+            else if (std::regex_match(str, std::regex(".+i16")))
+              preprocessed.emplace_back(
+                  new I16Literal(iter, iter, std::stoll(str, 0, base)),
+                  i->second);
+            else if (std::regex_match(str, std::regex(".+i32")))
+              preprocessed.emplace_back(
+                  new I32Literal(iter, iter, std::stoll(str, 0, base)),
+                  i->second);
+            else if (std::regex_match(str, std::regex(".+i64")))
+              preprocessed.emplace_back(
+                  new I64Literal(iter, iter, std::stoll(str, 0, base)),
+                  i->second);
+
+            else if (std::regex_match(str, std::regex(".+u8")))
+              preprocessed.emplace_back(
+                  new U8Literal(iter, iter, std::stoull(str, 0, base)),
+                  i->second);
+            else if (std::regex_match(str, std::regex(".+u16")))
+              preprocessed.emplace_back(
+                  new U16Literal(iter, iter, std::stoull(str, 0, base)),
+                  i->second);
+            else if (std::regex_match(str, std::regex(".+u32")))
+              preprocessed.emplace_back(
+                  new U32Literal(iter, iter, std::stoull(str, 0, base)),
+                  i->second);
+            else if (std::regex_match(str, std::regex(".+u64")))
+              preprocessed.emplace_back(
+                  new U64Literal(iter, iter, std::stoull(str, 0, base)),
+                  i->second);
+            else if (std::regex_match(str, std::regex(".+f32")))
+              preprocessed.emplace_back(
+                  new F32Literal(iter, iter, std::stof(str)), i->second);
+            else if (std::regex_match(str, std::regex(".+f64|.*\\..*")))
+              preprocessed.emplace_back(
+                  new F64Literal(iter, iter, std::stod(str)), i->second);
+            else if (std::regex_match(str, std::regex(".+i")))
+              preprocessed.emplace_back(
+                  new I64Literal(iter, iter, std::stoll(str, 0, base)),
+                  i->second);
+            else if (std::regex_match(str, std::regex(".+u")))
+              preprocessed.emplace_back(
+                  new U64Literal(iter, iter, std::stoll(str, 0, base)),
+                  i->second);
+            else if (std::regex_match(str, std::regex(".+f")))
+              preprocessed.emplace_back(
+                  new F64Literal(iter, iter, std::stod(str)), i->second);
+            else if (std::regex_match(str, std::regex(".+")))
+              preprocessed.emplace_back(
+                  new I64Literal(iter, iter, std::stoll(str, 0, base)),
+                  i->second);
+            else
+              throw ParserError(iter, "Wrong int literal");
+          } catch (const std::out_of_range &err) {
+            throw ParserError(iter,
+                              "The converted value fall out of the range of "
+                              "the result type ");
+          }
+        } else if (i->first->token == TOKEN::str_literal) {
+          bool do_escape = true;
+          auto str = i->first->val;
+
+          if (str[0] == '`') do_escape = false;
+          str = str.substr(1, i->first->val.size() - 2);
+          /** Apply escape sequences */
+          if (do_escape) {
+            str = std::regex_replace(str, std::regex(R"(\\')"), "\'");
+            str = std::regex_replace(str, std::regex(R"(\\")"), "\"");
+            str = std::regex_replace(str, std::regex(R"(\\\\)"), "\\");
+            str = std::regex_replace(str, std::regex(R"(\\b)"), "\b");
+            str = std::regex_replace(str, std::regex(R"(\\n)"), "\n");
+            str = std::regex_replace(str, std::regex(R"(\\t)"), "\t");
+            str = std::regex_replace(str, std::regex(R"(\\0)"), "\0");
+          }
+          preprocessed.emplace_back(new StrLiteral(iter, iter, str), i->second);
+        } else if (i->first->token == TOKEN::id) {
+          preprocessed.emplace_back(new IdLiteral(iter, iter, i->first->val),
+                                    i->second);
+        }
       }
-      res.push_back(new StrLiteral(*i, *i, str));
-    } else if (i->token == TOKEN::id) {
-      res.push_back(new IdLiteral(*i, *i, i->val));
+    }
+
+    if ((i + 1)->first == tokeniter(nullptr)) continue;
+
+    if ((i->second == close_p || i->second == undef)) {
+      /** Call operator */
+      if ((i + 1)->second == open_p)
+        preprocessed.emplace_back(
+            new BinOperator(*(i + 1)->first, *(i + 1)->first,
+                            (i + 1)->first->val, 0, nullptr, nullptr),
+            bin_op);
+
+      /** Implicit `,` */
+      if ((i + 1)->second == undef)
+        preprocessed.emplace_back(
+            new BinOperator(*i->first, *i->first, ",", 0, nullptr, nullptr),
+            bin_op);
+    }
+
+    /** () parse and push empty tuple */
+    if (i->second == open_p && (i + 1)->second == close_p)
+      preprocessed.emplace_back(new Tuple(*i->first, *i->first), undef);
+  }
+  preprocessed.emplace_back(nullptr, close_p);
+
+  std::vector<std::pair<Exp*, TOKEN_TYPE>> stack, res;
+  for (auto &[iter, type] : preprocessed) {
+    if (type == open_p) {
+      stack.emplace_back(iter, type);
+    } else if (type == close_p) {
+      while (true) {
+        if (stack.back().second == open_p) {
+          stack.pop_back();
+          break;
+        }
+        res.emplace_back(stack.back());
+        stack.pop_back();
+      }
+    } else if (type == pr_op) {
+      stack.emplace_back(iter, type);
+    } else if (type == po_op) {
+      res.emplace_back(iter, type);
+    } else if (type == bin_op) {
+      auto slf_priority =
+          scope.getBinOpP(dynamic_cast<BinOperator *>(iter)->val);
+      while (!stack.empty() &&
+             ((stack.back().second == pr_op && 3 <= slf_priority) ||
+              (stack.back().second == bin_op &&
+               scope.getBinOpP(
+                   dynamic_cast<BinOperator *>(stack.back().first)->val) <=
+                   slf_priority))) {
+        res.emplace_back(stack.back());
+        stack.pop_back();
+      }
+      stack.emplace_back(iter, type);
+    } else {
+      res.emplace_back(iter, type);
     }
   }
-  if (pcount) {
-    if (pcount > 0)
-      throw ParserError((end - 1)->pos,
-                        "Not enought ')'");
-    else
-      throw ParserError((end - 1)->pos,
-                        "Too many ')'");
+
+  /** Convert RPN to tree */
+  std::vector<Exp*> exp_stack;
+  for (auto &[exp, type] : res) {
+    if (auto b_op = dynamic_cast<BinOperator*>(exp)) {
+      if (exp_stack.size() < 2)
+        throw ParserError(exp->begin, exp->end,
+                          "Not enough operands for binary operator");
+      b_op->rhs = exp_stack.back();
+      exp_stack.pop_back();
+      b_op->lhs = exp_stack.back();
+      exp_stack.pop_back();
+
+
+      auto val = b_op->val;
+      if (val == "(" || val == "[" || val == "{") {
+        bool err = false;
+
+        if (auto type_l = dynamic_cast<TypeLiteral*>(b_op->lhs)) {
+          exp_stack.push_back(new PrefixOperator(
+              b_op->begin, b_op->end, type_l->literal_type.toString(), 0, b_op->rhs));
+        } else if (auto id_l = dynamic_cast<IdLiteral*>(b_op->lhs)) {
+          if (scope.containsVar(id_l->val)) {
+            std::string call_name = ".call.call";
+            if (val == "[") call_name = ".call.sub";
+
+            exp_stack.push_back(new BinOperator(b_op->begin, b_op->end,
+                                                call_name, 0, id_l, b_op->rhs));
+          } else {
+            exp_stack.push_back(new PrefixOperator(b_op->begin, b_op->end,
+                                                   id_l->val, 0, b_op->rhs));
+          }
+        } else if (auto ch_b_op = dynamic_cast<BinOperator *>(b_op->lhs)) {
+          err = true;
+          if (ch_b_op->val == ".")
+            if (auto mem = dynamic_cast<IdLiteral *>(ch_b_op->rhs)) {
+              exp_stack.push_back(new BinOperator(b_op->begin, b_op->end,
+                                                  ".call." + mem->val, 0,
+                                                  ch_b_op->lhs, b_op->rhs));
+              err = false;
+            }
+        } else {
+          err = true;
+        }
+        if (err)
+          throw ParserError(b_op->begin, b_op->end,
+                            "Expression isn't callable");
+      } else {
+        exp_stack.push_back(b_op);
+      }
+    } else if (auto pr_op = dynamic_cast<PrefixOperator *>(exp)) {
+      if (exp_stack.size() < 1)
+        throw ParserError(exp->begin, exp->end,
+                          "Not enough operands for prefix operator");
+      pr_op->child = exp_stack.back();
+      exp_stack.pop_back();
+      exp_stack.push_back(pr_op);
+    } else if (auto po_op = dynamic_cast<PostfixOperator *>(exp)) {
+      if (exp_stack.size() < 1)
+        throw ParserError(exp->begin, exp->end,
+                          "Not enough operands for postfix operator");
+      po_op->child = exp_stack.back();
+      exp_stack.pop_back();
+      exp_stack.push_back(po_op);
+    } else
+      exp_stack.push_back(exp);
   }
-  return res;
+
+  if (exp_stack.size() != 1)
+    throw ParserError(exp_stack.front()->begin, exp_stack.back()->end,
+                      "Expresssion parsing failed (too many exps)");
+  auto exp = exp_stack.front();
+  if (zhdata.flags["exp_parser_logs"]) zhexp::printExpTree(exp);
+  return exp;
 }
 
 Exp *postprocess(Exp *exp, ScopeInfo &scope) {
@@ -777,8 +862,7 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
 
 Exp *parse(std::vector<Token>::iterator begin,
            std::vector<Token>::iterator end, ScopeInfo &scope_info) {
-  auto exp_res = preprocess(begin, end, scope_info);
-  Exp *exp = buildExp(scope_info, exp_res.begin(), exp_res.end());
+  Exp *exp = buildExp(scope_info, begin, end);
   if (zhdata.flags["exp_parser_logs"]) zhexp::printExpTree(exp);
   exp = postprocess(exp, scope_info);
   if (zhdata.flags["exp_parser_logs"]) zhexp::printExpTree(exp);

@@ -6,19 +6,21 @@
 enum class TOKEN {
   comment_block,
   comment_line,
+  line_end,
+  space,
+  
   str_literal,
   int_literal,
-  space,
   id,
-  line_end,
   open_p,
   close_p,
+
+
   new_block,
   next_block,
   fin_block,
   block_end,
   statement_end,
-  op,
 };
 
 struct Token {
