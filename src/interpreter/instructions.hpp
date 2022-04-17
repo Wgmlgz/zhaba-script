@@ -18,115 +18,56 @@ enum class instr : byte {
   label_data,  // data labels
 
   /** arithmetic */
-  add_i8,
-  sub_i8,
-  mul_i8,
-  div_i8,
-  mod_i8,
-  less_i8,
-  more_i8,
-  lesseq_i8,
-  moreeq_i8,
+#define MAKE_INT_B(type) \
+  type ## _add,          \
+  type ## _sub,          \
+  type ## _mul,          \
+  type ## _div,          \
+  type ## _mod,          \
+  type ## _less,         \
+  type ## _eq,           \
+  type ## _uneq,         \
+  type ## _more,         \
+  type ## _lesseq,       \
+  type ## _moreeq,       \
+  type ## _bit_xor,      \
+  type ## _bit_and,      \
+  type ## _bit_or,       \
+  type ## _bit_not,      \
+  type ## _not,          \
+  type ## _in,           \
+  type ## _put,          \
+  type ## _out,          \
+  type ## _neg,         
 
-  add_i16,
-  sub_i16,
-  mul_i16,
-  div_i16,
-  mod_i16,
-  less_i16,
-  more_i16,
-  lesseq_i16,
-  moreeq_i16,
+  MAKE_INT_B(i8)
+  MAKE_INT_B(i16)
+  MAKE_INT_B(i32)
+  MAKE_INT_B(i64)
+  MAKE_INT_B(u8)
+  MAKE_INT_B(u16)
+  MAKE_INT_B(u32)
+  MAKE_INT_B(u64)
 
-  add_i32,
-  sub_i32,
-  mul_i32,
-  div_i32,
-  mod_i32,
-  less_i32,
-  more_i32,
-  lesseq_i32,
-  moreeq_i32,
+#define MAKE_FLOAT_B(type) \
+  type ## _add,            \
+  type ## _sub,            \
+  type ## _mul,            \
+  type ## _div,            \
+  type ## _less,           \
+  type ## _eq,             \
+  type ## _uneq,           \
+  type ## _more,           \
+  type ## _lesseq,         \
+  type ## _moreeq,         \
+  type ## _not,            \
+  type ## _in,             \
+  type ## _put,            \
+  type ## _out,            \
+  type ## _neg,   
 
-  add_i64,
-  sub_i64,
-  mul_i64,
-  div_i64,
-  mod_i64,
-  less_i64,
-  more_i64,
-  lesseq_i64,
-  moreeq_i64,
-
-  add_u8,
-  sub_u8,
-  mul_u8,
-  div_u8,
-  mod_u8,
-  less_u8,
-  more_u8,
-  lesseq_u8,
-  moreeq_u8,
-
-  add_u16,
-  sub_u16,
-  mul_u16,
-  div_u16,
-  mod_u16,
-  less_u16,
-  more_u16,
-  lesseq_u16,
-  moreeq_u16,
-
-  add_u32,
-  sub_u32,
-  mul_u32,
-  div_u32,
-  mod_u32,
-  less_u32,
-  more_u32,
-  lesseq_u32,
-  moreeq_u32,
-
-  add_u64,
-  sub_u64,
-  mul_u64,
-  div_u64,
-  mod_u64,
-  less_u64,
-  more_u64,
-  lesseq_u64,
-  moreeq_u64,
-
-  add_f32,
-  sub_f32,
-  mul_f32,
-  div_f32,
-  less_f32,
-  more_f32,
-  lesseq_f32,
-  moreeq_f32,
-
-  add_f64,
-  sub_f64,
-  mul_f64,
-  div_f64,
-  less_f64,
-  more_f64,
-  lesseq_f64,
-  moreeq_f64,
-
-  eq_8,
-  uneq_8,
-
-  eq_16,
-  uneq_16,
-
-  eq_32,
-  uneq_32,
-
-  uneq_64,
-  eq_64,
+  MAKE_FLOAT_B(f32)
+  MAKE_FLOAT_B(f64)
 
   /** control flow */
   jmp,          // jumps to label (label:i32)
@@ -150,38 +91,6 @@ enum class instr : byte {
   assign,  // copies n bytes from TOS to ptr
 
   /** IO */
-  put_i8,  // out TOS i8 to stdin         :: i8 -> void
-  out_i8,  // out TOS i8 with \n to stdin :: i8 -> void
-  in_i8,   // reads i8 from stdin         :: void -> i8
-
-  put_i16,  // out TOS i16 to stdin         :: i16 -> void
-  out_i16,  // out TOS i16 with \n to stdin :: i16 -> void
-  in_i16,   // reads i16 from stdin         :: void -> i16
-
-  put_i32,  // out TOS i32 to stdin         :: i32 -> void
-  out_i32,  // out TOS i32 with \n to stdin :: i32 -> void
-  in_i32,   // reads i32 from stdin         :: void -> i32
-
-  put_i64,  // out TOS i64 to stdin         :: i64 -> void
-  out_i64,  // out TOS i64 with \n to stdin :: i64 -> void
-  in_i64,   // reads i64 from stdin         :: void -> i64
-
-  put_u8,  // out TOS u8 to stdin         :: u8 -> void
-  out_u8,  // out TOS u8 with \n to stdin :: u8 -> void
-  in_u8,   // reads u8 from stdin         :: void -> u8
-
-  put_u16,  // out TOS u16 to stdin         :: u16 -> void
-  out_u16,  // out TOS u16 with \n to stdin :: u16 -> void
-  in_u16,   // reads u16 from stdin         :: void -> u16
-
-  put_u32,  // out TOS u32 to stdin         :: u32 -> void
-  out_u32,  // out TOS u32 with \n to stdin :: u32 -> void
-  in_u32,   // reads u32 from stdin         :: void -> u32
-
-  put_u64,  // out TOS u64 to stdin         :: u64 -> void
-  out_u64,  // out TOS u64 with \n to stdin :: u64 -> void
-  in_u64,   // reads u64 from stdin         :: void -> u64
-
   put_str,  // out TOS str to stdin         :: str -> void
   out_str,  // out TOS str with \n to stdin :: str -> void
   in_str,   // reads str from stdin         :: void -> str
@@ -194,19 +103,10 @@ enum class instr : byte {
   out_bool,  // out TOS bool with \n to stdin :: bool -> void
   in_bool,   // reads bool from stdin         :: void -> bool
 
-  put_f32,  // out TOS f32 to stdin         :: f32 -> void
-  out_f32,  // out TOS f32 with \n to stdin :: f32 -> void
-  in_f32,   // reads f32 from stdin         :: void -> f32
-
-  put_f64,  // out TOS f64 to stdin         :: f64 -> void
-  out_f64,  // out TOS f64 with \n to stdin :: f64 -> void
-  in_f64,   // reads f64 from stdin         :: void -> f64
-
   /** logic */
   and_bool,   // a && b :: bool bool -> bool
   or_bool,    // a || b :: bool bool -> bool
   not_bool,   // not a  :: bool -> bool
-  not_bytes,  // not a  :: bytes -> bool
 
   /** memory management */
   malloc,  // allocates n bytes :: i64 -> i64

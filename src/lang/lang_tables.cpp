@@ -39,16 +39,17 @@ const std::unordered_set<std::string> banned_ids{
 const std::unordered_set<std::string> flow_ops{"?", "??", "@", "<<<"};
 
 const std::unordered_map<std::string, int64_t> bin_operators{
-    {"(", 2},  {"[", 2},   {"{", 2},   {".", 2}, {"=", 10}, {":=", 10},
-    {",", 17}, {"as", 4},  {"+", 6},   {"-", 6}, {"/", 5},  {"%", 5},
-    {"*", 5},  {"==", 10}, {"!=", 10}, {"<", 9}, {">", 9},  {"<=", 9},
-    {">=", 9}, {"&&", 14}, {"||", 15}};
+    {"(", 2},   {"[", 2},  {"{", 2},  {".", 2},  {"=", 10}, {":=", 10},
+    {",", 17},  {"as", 4}, {"+", 6},  {"<<", 7}, {">>", 7}, {"-", 6},
+    {"&", 11},  {"^", 12}, {"/", 5},  {"%", 5},  {"*", 5},  {"==", 10},
+    {"!=", 10}, {"<", 9},  {"|||", 13}, {">", 9},  {"<=", 9}, {">=", 9},
+    {"&&", 14}, {"||", 15}};
 
 const std::unordered_set<std::string> operators{
     "!", ".", "=", ":=", ",", "*",
     "&", "as", "+", "/", "%", "-",
     "!=", "==", "out", "put", "sizeof", "malloc",
-    "free", "<", ">", "<=", ">=", "||",
+    "free", "<", ">", "<=", ">=", "||", "<<", ">>", "^", "~", "|||",
     "&&", "in_i8", "in_i16", "in_i32", "in_i64", "in_u8",
     "in_u16", "in_u32", "in_u64", "in_char", "in_str", "in_bool",
 };
@@ -58,11 +59,12 @@ const std::unordered_set<std::string> functions{
 };
 
 const std::unordered_map<std::string, int64_t> prefix_operators{
-    {"*", 3}, {"!", 3}, {"&", 3}, {"out", 3},
-    {"put", 3}, {"sizeof", 3}, {"malloc", 3}, {"free", 3},
+    {"*", 3},       {"!", 3},      {"~", 3},       {"+", 3},
+    {"-", 3},       {"&", 3},      {"out", 3},     {"put", 3},
+    {"sizeof", 3},  {"malloc", 3}, {"free", 3},
 
-    {"in_i8", 3}, {"in_i16", 3}, {"in_i32", 3}, {"in_i64", 3},
-    {"in_u8", 3}, {"in_u16", 3}, {"in_u32", 3}, {"in_u64", 3},
+    {"in_i8", 3},   {"in_i16", 3}, {"in_i32", 3},  {"in_i64", 3},
+    {"in_u8", 3},   {"in_u16", 3}, {"in_u32", 3},  {"in_u64", 3},
     {"in_char", 3}, {"in_str", 3}, {"in_bool", 3},
 };
 
@@ -172,101 +174,31 @@ const std::map<types::funcHead, Function *> B_OD = {
     }                                                                          \
   }
 
-    MAKE_C_BOP(+, i8T, i8T, i8T),
-    MAKE_C_BOP(-, i8T, i8T, i8T),
-    MAKE_C_BOP(*, i8T, i8T, i8T),
-    MAKE_C_BOP(/, i8T, i8T, i8T),
-    MAKE_C_BOP(%, i8T, i8T, i8T),
-    MAKE_C_BOP(==, i8T, i8T, boolT),
-    MAKE_C_BOP(!=, i8T, i8T, boolT),
-    MAKE_C_BOP(<, i8T, i8T, boolT),
-    MAKE_C_BOP(>, i8T, i8T, boolT),
-    MAKE_C_BOP(<=, i8T, i8T, boolT),
-    MAKE_C_BOP(>=, i8T, i8T, boolT),
+#define MAKE_INT_OPS(type)              \
+    MAKE_C_BOP(+, type, type, type),    \
+    MAKE_C_BOP(-, type, type, type),    \
+    MAKE_C_BOP(*, type, type, type),    \
+    MAKE_C_BOP(/, type, type, type),    \
+    MAKE_C_BOP(%, type, type, type),    \
+    MAKE_C_BOP(|||, type, type, type),    \
+    MAKE_C_BOP(^, type, type, type),    \
+    MAKE_C_BOP(&, type, type, type),    \
+    MAKE_C_BOP(==, type, type, boolT),  \
+    MAKE_C_BOP(!=, type, type, boolT),  \
+    MAKE_C_BOP(<, type, type, boolT),   \
+    MAKE_C_BOP(>, type, type, boolT),   \
+    MAKE_C_BOP(<=, type, type, boolT),  \
+    MAKE_C_BOP(>=, type, type, boolT), 
 
-    MAKE_C_BOP(+, i16T, i16T, i16T),
-    MAKE_C_BOP(-, i16T, i16T, i16T),
-    MAKE_C_BOP(*, i16T, i16T, i16T),
-    MAKE_C_BOP(/, i16T, i16T, i16T),
-    MAKE_C_BOP(%, i16T, i16T, i16T),
-    MAKE_C_BOP(==, i16T, i16T, boolT),
-    MAKE_C_BOP(!=, i16T, i16T, boolT),
-    MAKE_C_BOP(<, i16T, i16T, boolT),
-    MAKE_C_BOP(>, i16T, i16T, boolT),
-    MAKE_C_BOP(<=, i16T, i16T, boolT),
-    MAKE_C_BOP(>=, i16T, i16T, boolT),
-
-    MAKE_C_BOP(+, i32T, i32T, i32T),
-    MAKE_C_BOP(-, i32T, i32T, i32T),
-    MAKE_C_BOP(*, i32T, i32T, i32T),
-    MAKE_C_BOP(/, i32T, i32T, i32T),
-    MAKE_C_BOP(%, i32T, i32T, i32T),
-    MAKE_C_BOP(==, i32T, i32T, boolT),
-    MAKE_C_BOP(!=, i32T, i32T, boolT),
-    MAKE_C_BOP(<, i32T, i32T, boolT),
-    MAKE_C_BOP(>, i32T, i32T, boolT),
-    MAKE_C_BOP(<=, i32T, i32T, boolT),
-    MAKE_C_BOP(>=, i32T, i32T, boolT),
-
-    MAKE_C_BOP(+, i64T, i64T, i64T),
-    MAKE_C_BOP(-, i64T, i64T, i64T),
-    MAKE_C_BOP(*, i64T, i64T, i64T),
-    MAKE_C_BOP(/, i64T, i64T, i64T),
-    MAKE_C_BOP(%, i64T, i64T, i64T),
-    MAKE_C_BOP(==, i64T, i64T, boolT),
-    MAKE_C_BOP(!=, i64T, i64T, boolT),
-    MAKE_C_BOP(<, i64T, i64T, boolT),
-    MAKE_C_BOP(>, i64T, i64T, boolT),
-    MAKE_C_BOP(<=, i64T, i64T, boolT),
-    MAKE_C_BOP(>=, i64T, i64T, boolT),
-
-    MAKE_C_BOP(+, u8T, u8T, u8T),
-    MAKE_C_BOP(-, u8T, u8T, u8T),
-    MAKE_C_BOP(*, u8T, u8T, u8T),
-    MAKE_C_BOP(/, u8T, u8T, u8T),
-    MAKE_C_BOP(%, u8T, u8T, u8T),
-    MAKE_C_BOP(==, u8T, u8T, boolT),
-    MAKE_C_BOP(!=, u8T, u8T, boolT),
-    MAKE_C_BOP(<, u8T, u8T, boolT),
-    MAKE_C_BOP(>, u8T, u8T, boolT),
-    MAKE_C_BOP(<=, u8T, u8T, boolT),
-    MAKE_C_BOP(>=, u8T, u8T, boolT),
-
-    MAKE_C_BOP(+, u16T, u16T, u16T),
-    MAKE_C_BOP(-, u16T, u16T, u16T),
-    MAKE_C_BOP(*, u16T, u16T, u16T),
-    MAKE_C_BOP(/, u16T, u16T, u16T),
-    MAKE_C_BOP(%, u16T, u16T, u16T),
-    MAKE_C_BOP(==, u16T, u16T, boolT),
-    MAKE_C_BOP(!=, u16T, u16T, boolT),
-    MAKE_C_BOP(<, u16T, u16T, boolT),
-    MAKE_C_BOP(>, u16T, u16T, boolT),
-    MAKE_C_BOP(<=, u16T, u16T, boolT),
-    MAKE_C_BOP(>=, u16T, u16T, boolT),
-
-    MAKE_C_BOP(+, u32T, u32T, u32T),
-    MAKE_C_BOP(-, u32T, u32T, u32T),
-    MAKE_C_BOP(*, u32T, u32T, u32T),
-    MAKE_C_BOP(/, u32T, u32T, u32T),
-    MAKE_C_BOP(%, u32T, u32T, u32T),
-    MAKE_C_BOP(==, u32T, u32T, boolT),
-    MAKE_C_BOP(!=, u32T, u32T, boolT),
-    MAKE_C_BOP(<, u32T, u32T, boolT),
-    MAKE_C_BOP(>, u32T, u32T, boolT),
-    MAKE_C_BOP(<=, u32T, u32T, boolT),
-    MAKE_C_BOP(>=, u32T, u32T, boolT),
-
-    MAKE_C_BOP(+, u64T, u64T, u64T),
-    MAKE_C_BOP(-, u64T, u64T, u64T),
-    MAKE_C_BOP(*, u64T, u64T, u64T),
-    MAKE_C_BOP(/, u64T, u64T, u64T),
-    MAKE_C_BOP(%, u64T, u64T, u64T),
-    MAKE_C_BOP(==, u64T, u64T, boolT),
-    MAKE_C_BOP(!=, u64T, u64T, boolT),
-    MAKE_C_BOP(<, u64T, u64T, boolT),
-    MAKE_C_BOP(>, u64T, u64T, boolT),
-    MAKE_C_BOP(<=, u64T, u64T, boolT),
-    MAKE_C_BOP(>=, u64T, u64T, boolT),
+    MAKE_INT_OPS(i8T)
+    MAKE_INT_OPS(i16T)
+    MAKE_INT_OPS(i32T)
+    MAKE_INT_OPS(i64T)
+    MAKE_INT_OPS(u8T)
+    MAKE_INT_OPS(u16T)
+    MAKE_INT_OPS(u32T)
+    MAKE_INT_OPS(u64T)
+    MAKE_INT_OPS(charT)
 
     MAKE_C_BOP(+, f32T, f32T, f32T),
     MAKE_C_BOP(-, f32T, f32T, f32T),
@@ -289,13 +221,6 @@ const std::map<types::funcHead, Function *> B_OD = {
     MAKE_C_BOP(>, f64T, f64T, boolT),
     MAKE_C_BOP(<=, f64T, f64T, boolT),
     MAKE_C_BOP(>=, f64T, f64T, boolT),
-
-    MAKE_C_BOP(==, charT, charT, boolT),
-    MAKE_C_BOP(!=, charT, charT, boolT),
-    MAKE_C_BOP(<, charT, charT, boolT),
-    MAKE_C_BOP(>, charT, charT, boolT),
-    MAKE_C_BOP(<=, charT, charT, boolT),
-    MAKE_C_BOP(>=, charT, charT, boolT),
 
     MAKE_C_BOP(&&, boolT, boolT, boolT),
     MAKE_C_BOP(||, boolT, boolT, boolT),
@@ -326,6 +251,39 @@ const std::map<types::funcHead, Function *> PR_OD{
     MAKE_C_FN_1_ARGS(!, u16T, boolT),
     MAKE_C_FN_1_ARGS(!, u32T, boolT),
     MAKE_C_FN_1_ARGS(!, u64T, boolT),
+    
+    MAKE_C_FN_1_ARGS(-, boolT, boolT),
+    MAKE_C_FN_1_ARGS(-, charT, charT),
+    MAKE_C_FN_1_ARGS(-, i8T, i8T),
+    MAKE_C_FN_1_ARGS(-, i16T, i16T),
+    MAKE_C_FN_1_ARGS(-, i32T, i32T),
+    MAKE_C_FN_1_ARGS(-, i64T, i64T),
+    MAKE_C_FN_1_ARGS(-, u8T, u8T),
+    MAKE_C_FN_1_ARGS(-, u16T, u16T),
+    MAKE_C_FN_1_ARGS(-, u32T, u32T),
+    MAKE_C_FN_1_ARGS(-, u64T, u64T),
+
+    MAKE_C_FN_1_ARGS(+, boolT, boolT),
+    MAKE_C_FN_1_ARGS(+, charT, charT),
+    MAKE_C_FN_1_ARGS(+, i8T, i8T),
+    MAKE_C_FN_1_ARGS(+, i16T, i16T),
+    MAKE_C_FN_1_ARGS(+, i32T, i32T),
+    MAKE_C_FN_1_ARGS(+, i64T, i64T),
+    MAKE_C_FN_1_ARGS(+, u8T, u8T),
+    MAKE_C_FN_1_ARGS(+, u16T, u16T),
+    MAKE_C_FN_1_ARGS(+, u32T, u32T),
+    MAKE_C_FN_1_ARGS(+, u64T, u64T),
+
+    MAKE_C_FN_1_ARGS(~, boolT, boolT),
+    MAKE_C_FN_1_ARGS(~, charT, charT),
+    MAKE_C_FN_1_ARGS(~, i8T, i8T),
+    MAKE_C_FN_1_ARGS(~, i16T, i16T),
+    MAKE_C_FN_1_ARGS(~, i32T, i32T),
+    MAKE_C_FN_1_ARGS(~, i64T, i64T),
+    MAKE_C_FN_1_ARGS(~, u8T, u8T),
+    MAKE_C_FN_1_ARGS(~, u16T, u16T),
+    MAKE_C_FN_1_ARGS(~, u32T, u32T),
+    MAKE_C_FN_1_ARGS(~, u64T, u64T),
 
     MAKE_C_FN_1_ARGS(out, i8T, voidT),
     MAKE_C_FN_1_ARGS(out, i16T, voidT),

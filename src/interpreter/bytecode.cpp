@@ -42,112 +42,86 @@ void ByteCode::loadLabels() {
         cur += size;
       }
         break;
-      case instr::add_i8: break;
-      case instr::sub_i8: break;
-      case instr::mul_i8: break;
-      case instr::div_i8: break;
-      case instr::mod_i8: break;
-      case instr::less_i8: break;
-      case instr::more_i8: break;
-      case instr::lesseq_i8: break;
-      case instr::moreeq_i8: break;
 
-      case instr::add_i16: break;
-      case instr::sub_i16: break;
-      case instr::mul_i16: break;
-      case instr::div_i16: break;
-      case instr::mod_i16: break;
-      case instr::less_i16: break;
-      case instr::more_i16: break;
-      case instr::lesseq_i16: break;
-      case instr::moreeq_i16: break;
+#define INT_LABELS(type)      \
+  case instr::type##_add:     \
+    break;                    \
+  case instr::type##_sub:     \
+    break;                    \
+  case instr::type##_mul:     \
+    break;                    \
+  case instr::type##_div:     \
+    break;                    \
+  case instr::type##_mod:     \
+    break;                    \
+  case instr::type##_bit_xor: \
+    break;                    \
+  case instr::type##_bit_or:  \
+    break;                    \
+  case instr::type##_bit_and: \
+    break;                    \
+  case instr::type##_bit_not: \
+    break;                    \
+  case instr::type##_eq:      \
+    break;                    \
+  case instr::type##_uneq:    \
+    break;                    \
+  case instr::type##_less:    \
+    break;                    \
+  case instr::type##_more:    \
+    break;                    \
+  case instr::type##_lesseq:  \
+    break;                    \
+  case instr::type##_moreeq:  \
+    break;                    \
+  case instr::type##_put:     \
+    break;                    \
+  case instr::type##_not:     \
+    break;                    \
+  case instr::type##_neg:     \
+    break;                    \
+  case instr::type##_out:     \
+    break;                    \
+  case instr::type##_in:      \
+    break;
 
-      case instr::add_i32: break;
-      case instr::sub_i32: break;
-      case instr::mul_i32: break;
-      case instr::div_i32: break;
-      case instr::mod_i32: break;
-      case instr::less_i32: break;
-      case instr::more_i32: break;
-      case instr::lesseq_i32: break;
-      case instr::moreeq_i32: break;
+        INT_LABELS(i8)
+        INT_LABELS(i16)
+        INT_LABELS(i32)
+        INT_LABELS(i64)
+        INT_LABELS(u8)
+        INT_LABELS(u16)
+        INT_LABELS(u32)
+        INT_LABELS(u64)
 
-      case instr::add_i64: break;
-      case instr::sub_i64: break;
-      case instr::mul_i64: break;
-      case instr::div_i64: break;
-      case instr::mod_i64: break;
-      case instr::less_i64: break;
-      case instr::more_i64: break;
-      case instr::lesseq_i64: break;
-      case instr::moreeq_i64: break;
+#define FLOAT_LABELS(type)   \
+  case instr::type##_add:    \
+    break;                   \
+  case instr::type##_sub:    \
+    break;                   \
+  case instr::type##_mul:    \
+    break;                   \
+  case instr::type##_div:    \
+    break;                   \
+  case instr::type##_not:    \
+    break;                   \
+  case instr::type##_less:   \
+    break;                   \
+  case instr::type##_more:   \
+    break;                   \
+  case instr::type##_lesseq: \
+    break;                   \
+  case instr::type##_moreeq: \
+    break;                   \
+  case instr::type##_put:    \
+    break;                   \
+  case instr::type##_out:    \
+    break;                   \
+  case instr::type##_in:     \
+    break;
 
-      case instr::add_u8: break;
-      case instr::sub_u8: break;
-      case instr::mul_u8: break;
-      case instr::div_u8: break;
-      case instr::mod_u8: break;
-      case instr::less_u8: break;
-      case instr::more_u8: break;
-      case instr::lesseq_u8: break;
-      case instr::moreeq_u8: break;
-
-      case instr::add_u16: break;
-      case instr::sub_u16: break;
-      case instr::mul_u16: break;
-      case instr::div_u16: break;
-      case instr::mod_u16: break;
-      case instr::less_u16: break;
-      case instr::more_u16: break;
-      case instr::lesseq_u16: break;
-      case instr::moreeq_u16: break;
-
-      case instr::add_u32: break;
-      case instr::sub_u32: break;
-      case instr::mul_u32: break;
-      case instr::div_u32: break;
-      case instr::mod_u32: break;
-      case instr::less_u32: break;
-      case instr::more_u32: break;
-      case instr::lesseq_u32: break;
-      case instr::moreeq_u32: break;
-
-      case instr::add_u64: break;
-      case instr::sub_u64: break;
-      case instr::mul_u64: break;
-      case instr::div_u64: break;
-      case instr::mod_u64: break;
-      case instr::less_u64: break;
-      case instr::more_u64: break;
-      case instr::lesseq_u64: break;
-      case instr::moreeq_u64: break;
-
-      case instr::add_f32: break;
-      case instr::sub_f32: break;
-      case instr::mul_f32: break;
-      case instr::div_f32: break;
-      case instr::less_f32: break;
-      case instr::more_f32: break;
-      case instr::lesseq_f32: break;
-      case instr::moreeq_f32: break;
-
-      case instr::add_f64: break;
-      case instr::sub_f64: break;
-      case instr::mul_f64: break;
-      case instr::div_f64: break;
-      case instr::less_f64: break;
-      case instr::more_f64: break;
-      case instr::lesseq_f64: break;
-      case instr::moreeq_f64: break;
-
-      case instr::eq_8: break;
-      case instr::uneq_8: break;
-      case instr::eq_16: break;
-      case instr::uneq_16: break;
-      case instr::eq_32: break;
-      case instr::uneq_32: break;
-      case instr::eq_64: break;
-      case instr::uneq_64: break;
+        FLOAT_LABELS(f32)
+        FLOAT_LABELS(f64)
 
       case instr::jmp: cur += 4;
         break;
@@ -180,46 +154,6 @@ void ByteCode::loadLabels() {
       case instr::pop_bytes: cur += 4;
         break;
 
-      case instr::out_i8: break;
-      case instr::put_i8: break;
-      case instr::in_i8: break;
-
-      case instr::out_i16: break;
-      case instr::put_i16: break;
-      case instr::in_i16: break;
-
-      case instr::out_i32: break;
-      case instr::put_i32: break;
-      case instr::in_i32: break;
-
-      case instr::put_i64: break;
-      case instr::out_i64: break;
-      case instr::in_i64: break;
-
-      case instr::out_u8: break;
-      case instr::put_u8: break;
-      case instr::in_u8: break;
-
-      case instr::out_u16: break;
-      case instr::put_u16: break;
-      case instr::in_u16: break;
-
-      case instr::out_u32: break;
-      case instr::put_u32: break;
-      case instr::in_u32: break;
-
-      case instr::put_u64: break;
-      case instr::out_u64: break;
-      case instr::in_u64: break;
-
-      case instr::put_f32: break;
-      case instr::out_f32: break;
-      case instr::in_f32: break;
-
-      case instr::put_f64: break;
-      case instr::out_f64: break;
-      case instr::in_f64: break;
-
       case instr::put_str: break;
       case instr::out_str: break;
       case instr::in_str: break;
@@ -234,9 +168,6 @@ void ByteCode::loadLabels() {
       case instr::and_bool: break;
       case instr::or_bool: break;
       case instr::not_bool: break;
-
-      case instr::not_bytes: cur += 4;
-        break;
 
       default:
         throw std::runtime_error("unimplemented loadLabels: " +
@@ -400,145 +331,57 @@ std::pair<std::string, std::map<size_t, std::string>> ByteCode::dis() {
       INSTR_I32_2(ret)
       INSTR_I32(push_literal_ptr)
 
-      INSTR(add_i8)
-      INSTR(sub_i8)
-      INSTR(mul_i8)
-      INSTR(div_i8)
-      INSTR(mod_i8)
-      INSTR(less_i8)
-      INSTR(more_i8)
-      INSTR(lesseq_i8)
-      INSTR(moreeq_i8)
-      INSTR(put_i8)
-      INSTR(out_i8)
-      INSTR(in_i8)
+#define INT_INSTR(type) \
+  INSTR(type##_add)     \
+  INSTR(type##_sub)     \
+  INSTR(type##_mul)     \
+  INSTR(type##_div)     \
+  INSTR(type##_mod)     \
+  INSTR(type##_bit_xor) \
+  INSTR(type##_bit_or)  \
+  INSTR(type##_bit_and) \
+  INSTR(type##_bit_not) \
+  INSTR(type##_uneq)    \
+  INSTR(type##_eq)      \
+  INSTR(type##_less)    \
+  INSTR(type##_more)    \
+  INSTR(type##_lesseq)  \
+  INSTR(type##_moreeq)  \
+  INSTR(type##_put)     \
+  INSTR(type##_out)     \
+  INSTR(type##_neg)     \
+  INSTR(type##_not)     \
+  INSTR(type##_in)
 
-      INSTR(add_i16)
-      INSTR(sub_i16)
-      INSTR(mul_i16)
-      INSTR(div_i16)
-      INSTR(mod_i16)
-      INSTR(less_i16)
-      INSTR(more_i16)
-      INSTR(lesseq_i16)
-      INSTR(moreeq_i16)
-      INSTR(put_i16)
-      INSTR(out_i16)
-      INSTR(in_i16)
+      INT_INSTR(i8)
+      INT_INSTR(i16)
+      INT_INSTR(i32)
+      INT_INSTR(i64)
 
-      INSTR(add_i32)
-      INSTR(sub_i32)
-      INSTR(mul_i32)
-      INSTR(div_i32)
-      INSTR(mod_i32)
-      INSTR(less_i32)
-      INSTR(more_i32)
-      INSTR(lesseq_i32)
-      INSTR(moreeq_i32)
-      INSTR(put_i32)
-      INSTR(out_i32)
-      INSTR(in_i32)
+      INT_INSTR(u8)
+      INT_INSTR(u16)
+      INT_INSTR(u32)
+      INT_INSTR(u64)
 
-      INSTR(add_i64)
-      INSTR(sub_i64)
-      INSTR(mul_i64)
-      INSTR(div_i64)
-      INSTR(mod_i64)
-      INSTR(less_i64)
-      INSTR(more_i64)
-      INSTR(lesseq_i64)
-      INSTR(moreeq_i64)
-      INSTR(put_i64)
-      INSTR(out_i64)
-      INSTR(in_i64)
+#define FLOAT_INSTR(type) \
+  INSTR(type##_add)       \
+  INSTR(type##_sub)       \
+  INSTR(type##_mul)       \
+  INSTR(type##_div)       \
+  INSTR(type##_uneq)      \
+  INSTR(type##_eq)        \
+  INSTR(type##_less)      \
+  INSTR(type##_more)      \
+  INSTR(type##_lesseq)    \
+  INSTR(type##_moreeq)    \
+  INSTR(type##_put)       \
+  INSTR(type##_out)       \
+  INSTR(type##_neg)       \
+  INSTR(type##_not)       \
+  INSTR(type##_in)
 
-      INSTR(add_u8)
-      INSTR(sub_u8)
-      INSTR(mul_u8)
-      INSTR(div_u8)
-      INSTR(mod_u8)
-      INSTR(less_u8)
-      INSTR(more_u8)
-      INSTR(lesseq_u8)
-      INSTR(moreeq_u8)
-      INSTR(put_u8)
-      INSTR(out_u8)
-      INSTR(in_u8)
-
-      INSTR(add_u16)
-      INSTR(sub_u16)
-      INSTR(mul_u16)
-      INSTR(div_u16)
-      INSTR(mod_u16)
-      INSTR(less_u16)
-      INSTR(more_u16)
-      INSTR(lesseq_u16)
-      INSTR(moreeq_u16)
-      INSTR(put_u16)
-      INSTR(out_u16)
-      INSTR(in_u16)
-
-      INSTR(add_u32)
-      INSTR(sub_u32)
-      INSTR(mul_u32)
-      INSTR(div_u32)
-      INSTR(mod_u32)
-      INSTR(less_u32)
-      INSTR(more_u32)
-      INSTR(lesseq_u32)
-      INSTR(moreeq_u32)
-      INSTR(put_u32)
-      INSTR(out_u32)
-      INSTR(in_u32)
-
-      INSTR(add_u64)
-      INSTR(sub_u64)
-      INSTR(mul_u64)
-      INSTR(div_u64)
-      INSTR(mod_u64)
-      INSTR(less_u64)
-      INSTR(more_u64)
-      INSTR(lesseq_u64)
-      INSTR(moreeq_u64)
-      INSTR(put_u64)
-      INSTR(out_u64)
-      INSTR(in_u64)
-
-      INSTR(add_f32)
-      INSTR(sub_f32)
-      INSTR(mul_f32)
-      INSTR(div_f32)
-      INSTR(less_f32)
-      INSTR(more_f32)
-      INSTR(lesseq_f32)
-      INSTR(moreeq_f32)
-      INSTR(put_f32)
-      INSTR(out_f32)
-      INSTR(in_f32)
-
-      INSTR(add_f64)
-      INSTR(sub_f64)
-      INSTR(mul_f64)
-      INSTR(div_f64)
-      INSTR(less_f64)
-      INSTR(more_f64)
-      INSTR(lesseq_f64)
-      INSTR(moreeq_f64)
-      INSTR(put_f64)
-      INSTR(out_f64)
-      INSTR(in_f64)
-
-      INSTR(uneq_8)
-      INSTR(eq_8)
-
-      INSTR(uneq_16)
-      INSTR(eq_16)
-
-      INSTR(uneq_32)
-      INSTR(eq_32)
-
-      INSTR(eq_64)
-      INSTR(uneq_64)
+      FLOAT_INSTR(f32)
+      FLOAT_INSTR(f64)
 
       INSTR_I8(push_8)
       INSTR_I16(push_16)
@@ -562,7 +405,6 @@ std::pair<std::string, std::map<size_t, std::string>> ByteCode::dis() {
       INSTR(and_bool)
       INSTR(or_bool)
       INSTR(not_bool)
-      INSTR_I32(not_bytes)
       INSTR(malloc)
       INSTR(free)
       default:

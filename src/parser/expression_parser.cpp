@@ -102,6 +102,10 @@ Exp *buildExp(ScopeInfo &scope, tokeniter begin, tokeniter end) {
       TOKEN::id,
       TOKEN::int_literal,
       TOKEN::str_literal,
+      TOKEN::block_end,
+      TOKEN::fin_block,
+      TOKEN::new_block,
+      TOKEN::next_block,
   };
   std::vector<std::pair<tokeniter, TOKEN_TYPE>> raw;
   raw.emplace_back(begin, open_p);
@@ -294,7 +298,8 @@ Exp *buildExp(ScopeInfo &scope, tokeniter begin, tokeniter end) {
         } else if (i->first->token == TOKEN::id) {
           preprocessed.emplace_back(new IdLiteral(iter, iter, i->first->val),
                                     i->second);
-        }
+        } else
+          throw ParserError(*i->first, *i->first, "Unexpected token");
       }
     }
 

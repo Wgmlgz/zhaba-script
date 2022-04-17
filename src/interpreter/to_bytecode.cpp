@@ -109,7 +109,7 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
           (int64_t)(bytecode.structs_members_offsets
                         [op->lhs->type.getTypeId()]
                         [static_cast<zhexp::IdLiteral*>(op->rhs)->val]));
-      bytecode.pushVal(zhin::instr::add_i64);
+      bytecode.pushVal(zhin::instr::i64_add);
       bytecode.pushVal(zhin::instr::deref);
       bytecode.pushVal((int32_t)(op->type.getSize()));
       if (op->type.getRef()) {
@@ -133,130 +133,47 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
            op->lhs->type.getTypeId() == types::TYPE::type_) { \
     bytecode.pushVal(zhin::instr::instr_);                    \
   }
-        BOP_BYTECODE(+, i8T, add_i8)
-        BOP_BYTECODE(-, i8T, sub_i8)
-        BOP_BYTECODE(*, i8T, mul_i8)
-        BOP_BYTECODE(==, i8T, eq_8)
-        BOP_BYTECODE(!=, i8T, uneq_8)
-        BOP_BYTECODE(/, i8T, div_i8)
-        BOP_BYTECODE(%, i8T, mod_i8)
-        BOP_BYTECODE(<, i8T, less_i8)
-        BOP_BYTECODE(>, i8T, more_i8)
-        BOP_BYTECODE(<=, i8T, lesseq_i8)
-        BOP_BYTECODE(>=, i8T, moreeq_i8)
 
-        BOP_BYTECODE(+, i16T, add_i16)
-        BOP_BYTECODE(-, i16T, sub_i16)
-        BOP_BYTECODE(*, i16T, mul_i16)
-        BOP_BYTECODE(==, i16T, eq_16)
-        BOP_BYTECODE(!=, i16T, uneq_16)
-        BOP_BYTECODE(/, i16T, div_i16)
-        BOP_BYTECODE(%, i16T, mod_i16)
-        BOP_BYTECODE(<, i16T, less_i16)
-        BOP_BYTECODE(>, i16T, more_i16)
-        BOP_BYTECODE(<=, i16T, lesseq_i16)
-        BOP_BYTECODE(>=, i16T, moreeq_i16)
+#define MAKE_INT_BOP(type, zhtype)         \
+  BOP_BYTECODE(+,  type, zhtype##_add)     \
+  BOP_BYTECODE(-,  type, zhtype##_sub)     \
+  BOP_BYTECODE(*,  type, zhtype##_mul)     \
+  BOP_BYTECODE(/,  type, zhtype##_div)     \
+  BOP_BYTECODE(%,  type, zhtype##_mod)     \
+  BOP_BYTECODE(^,  type, zhtype##_bit_xor) \
+  BOP_BYTECODE(|||,  type, zhtype##_bit_or)  \
+  BOP_BYTECODE(&,  type, zhtype##_bit_and) \
+  BOP_BYTECODE(==, type, zhtype##_eq)      \
+  BOP_BYTECODE(!=, type, zhtype##_uneq)    \
+  BOP_BYTECODE(<,  type, zhtype##_less)    \
+  BOP_BYTECODE(>,  type, zhtype##_more)    \
+  BOP_BYTECODE(<=, type, zhtype##_lesseq)  \
+  BOP_BYTECODE(>=, type, zhtype##_moreeq)
 
-        BOP_BYTECODE(+, i32T, add_i32)
-        BOP_BYTECODE(-, i32T, sub_i32)
-        BOP_BYTECODE(*, i32T, mul_i32)
-        BOP_BYTECODE(==, i32T, eq_32)
-        BOP_BYTECODE(!=, i32T, uneq_32)
-        BOP_BYTECODE(/, i32T, div_i32)
-        BOP_BYTECODE(%, i32T, mod_i32)
-        BOP_BYTECODE(<, i32T, less_i32)
-        BOP_BYTECODE(>, i32T, more_i32)
-        BOP_BYTECODE(<=, i32T, lesseq_i32)
-        BOP_BYTECODE(>=, i32T, moreeq_i32)
+        MAKE_INT_BOP(i8T, i8)
+        MAKE_INT_BOP(i16T, i16)
+        MAKE_INT_BOP(i32T, i32)
+        MAKE_INT_BOP(i64T, i64)
+        MAKE_INT_BOP(u8T, u8)
+        MAKE_INT_BOP(u16T, u16)
+        MAKE_INT_BOP(u32T, u32)
+        MAKE_INT_BOP(u64T, u64)
+        MAKE_INT_BOP(charT, u8)
 
-        BOP_BYTECODE(+, i64T, add_i64)
-        BOP_BYTECODE(-, i64T, sub_i64)
-        BOP_BYTECODE(*, i64T, mul_i64)
-        BOP_BYTECODE(==, i64T, eq_64)
-        BOP_BYTECODE(!=, i64T, uneq_64)
-        BOP_BYTECODE(/, i64T, div_i64)
-        BOP_BYTECODE(%, i64T, mod_i64)
-        BOP_BYTECODE(<, i64T, less_i64)
-        BOP_BYTECODE(>, i64T, more_i64)
-        BOP_BYTECODE(<=, i64T, lesseq_i64)
-        BOP_BYTECODE(>=, i64T, moreeq_i64)
+#define MAKE_FLOAT_BOP(type, zhtype)      \
+  BOP_BYTECODE(+,  type, zhtype##_add)    \
+  BOP_BYTECODE(-,  type, zhtype##_sub)    \
+  BOP_BYTECODE(*,  type, zhtype##_mul)    \
+  BOP_BYTECODE(==, type, zhtype##_eq)     \
+  BOP_BYTECODE(!=, type, zhtype##_uneq)   \
+  BOP_BYTECODE(/,  type, zhtype##_div)    \
+  BOP_BYTECODE(<,  type, zhtype##_less)   \
+  BOP_BYTECODE(>,  type, zhtype##_more)   \
+  BOP_BYTECODE(<=, type, zhtype##_lesseq) \
+  BOP_BYTECODE(>=, type, zhtype##_moreeq)
 
-        BOP_BYTECODE(+, u8T, add_u8)
-        BOP_BYTECODE(-, u8T, sub_u8)
-        BOP_BYTECODE(*, u8T, mul_u8)
-        BOP_BYTECODE(==, u8T, eq_8)
-        BOP_BYTECODE(!=, u8T, uneq_8)
-        BOP_BYTECODE(/, u8T, div_u8)
-        BOP_BYTECODE(%, u8T, mod_u8)
-        BOP_BYTECODE(<, u8T, less_u8)
-        BOP_BYTECODE(>, u8T, more_u8)
-        BOP_BYTECODE(<=, u8T, lesseq_u8)
-        BOP_BYTECODE(>=, u8T, moreeq_u8)
-
-        BOP_BYTECODE(==, charT, eq_8)
-        BOP_BYTECODE(!=, charT, uneq_8)
-        BOP_BYTECODE(<, charT, less_u8)
-        BOP_BYTECODE(>, charT, more_u8)
-        BOP_BYTECODE(<=, charT, lesseq_u8)
-        BOP_BYTECODE(>=, charT, moreeq_u8)
-
-        BOP_BYTECODE(+, u16T, add_u16)
-        BOP_BYTECODE(-, u16T, sub_u16)
-        BOP_BYTECODE(*, u16T, mul_u16)
-        BOP_BYTECODE(==, u16T, eq_16)
-        BOP_BYTECODE(!=, u16T, uneq_16)
-        BOP_BYTECODE(/, u16T, div_u16)
-        BOP_BYTECODE(%, u16T, mod_u16)
-        BOP_BYTECODE(<, u16T, less_u16)
-        BOP_BYTECODE(>, u16T, more_u16)
-        BOP_BYTECODE(<=, u16T, lesseq_u16)
-        BOP_BYTECODE(>=, u16T, moreeq_u16)
-
-        BOP_BYTECODE(+, u32T, add_u32)
-        BOP_BYTECODE(-, u32T, sub_u32)
-        BOP_BYTECODE(*, u32T, mul_u32)
-        BOP_BYTECODE(==, u32T, eq_32)
-        BOP_BYTECODE(!=, u32T, uneq_32)
-        BOP_BYTECODE(/, u32T, div_u32)
-        BOP_BYTECODE(%, u32T, mod_u32)
-        BOP_BYTECODE(<, u32T, less_u32)
-        BOP_BYTECODE(>, u32T, more_u32)
-        BOP_BYTECODE(<=, u32T, lesseq_u32)
-        BOP_BYTECODE(>=, u32T, moreeq_u32)
-
-        BOP_BYTECODE(+, u64T, add_u64)
-        BOP_BYTECODE(-, u64T, sub_u64)
-        BOP_BYTECODE(*, u64T, mul_u64)
-        BOP_BYTECODE(==, u64T, eq_64)
-        BOP_BYTECODE(!=, u64T, uneq_64)
-        BOP_BYTECODE(/, u64T, div_u64)
-        BOP_BYTECODE(%, u64T, mod_u64)
-        BOP_BYTECODE(<, u64T, less_u64)
-        BOP_BYTECODE(>, u64T, more_u64)
-        BOP_BYTECODE(<=, u64T, lesseq_u64)
-        BOP_BYTECODE(>=, u64T, moreeq_u64)
-
-        BOP_BYTECODE(+, f32T, add_f32)
-        BOP_BYTECODE(-, f32T, sub_f32)
-        BOP_BYTECODE(*, f32T, mul_f32)
-        BOP_BYTECODE(==, f32T, eq_32)
-        BOP_BYTECODE(!=, f32T, uneq_32)
-        BOP_BYTECODE(/, f32T, div_f32)
-        BOP_BYTECODE(<, f32T, less_f32)
-        BOP_BYTECODE(>, f32T, more_f32)
-        BOP_BYTECODE(<=, f32T, lesseq_f32)
-        BOP_BYTECODE(>=, f32T, moreeq_f32)
-
-        BOP_BYTECODE(+, f64T, add_f64)
-        BOP_BYTECODE(-, f64T, sub_f64)
-        BOP_BYTECODE(*, f64T, mul_f64)
-        BOP_BYTECODE(==, f64T, eq_64)
-        BOP_BYTECODE(!=, f64T, uneq_64)
-        BOP_BYTECODE(/, f64T, div_f64)
-        BOP_BYTECODE(<, f64T, less_f64)
-        BOP_BYTECODE(>, f64T, more_f64)
-        BOP_BYTECODE(<=, f64T, lesseq_f64)
-        BOP_BYTECODE(>=, f64T, moreeq_f64)
+        MAKE_FLOAT_BOP(f32T, f32)
+        MAKE_FLOAT_BOP(f64T, f64)
 
         BOP_BYTECODE(&&, boolT, and_bool)
         BOP_BYTECODE(||, boolT, or_bool)
@@ -299,18 +216,18 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
            dynamic_cast<zhexp::Tuple*>(op->child)->content.empty()) {    \
     impl_;                                                               \
   }
-      MAKE_VOID_LOP_BYTECODE(in_i8, bytecode.pushVal(zhin::instr::in_i8))
-      MAKE_VOID_LOP_BYTECODE(in_i16, bytecode.pushVal(zhin::instr::in_i16))
-      MAKE_VOID_LOP_BYTECODE(in_i32, bytecode.pushVal(zhin::instr::in_i32))
-      MAKE_VOID_LOP_BYTECODE(in_i64, bytecode.pushVal(zhin::instr::in_i64))
+      MAKE_VOID_LOP_BYTECODE(in_i8, bytecode.pushVal(zhin::instr::i8_in))
+      MAKE_VOID_LOP_BYTECODE(in_i16, bytecode.pushVal(zhin::instr::i16_in))
+      MAKE_VOID_LOP_BYTECODE(in_i32, bytecode.pushVal(zhin::instr::i32_in))
+      MAKE_VOID_LOP_BYTECODE(in_i64, bytecode.pushVal(zhin::instr::i64_in))
 
-      MAKE_VOID_LOP_BYTECODE(in_u8, bytecode.pushVal(zhin::instr::in_u8))
-      MAKE_VOID_LOP_BYTECODE(in_u16, bytecode.pushVal(zhin::instr::in_u16))
-      MAKE_VOID_LOP_BYTECODE(in_u32, bytecode.pushVal(zhin::instr::in_u32))
-      MAKE_VOID_LOP_BYTECODE(in_u64, bytecode.pushVal(zhin::instr::in_u64))
+      MAKE_VOID_LOP_BYTECODE(in_u8, bytecode.pushVal(zhin::instr::u8_in))
+      MAKE_VOID_LOP_BYTECODE(in_u16, bytecode.pushVal(zhin::instr::u16_in))
+      MAKE_VOID_LOP_BYTECODE(in_u32, bytecode.pushVal(zhin::instr::u32_in))
+      MAKE_VOID_LOP_BYTECODE(in_u64, bytecode.pushVal(zhin::instr::u64_in))
 
-      MAKE_VOID_LOP_BYTECODE(in_f32, bytecode.pushVal(zhin::instr::in_f32))
-      MAKE_VOID_LOP_BYTECODE(in_f64, bytecode.pushVal(zhin::instr::in_f64))
+      MAKE_VOID_LOP_BYTECODE(in_f32, bytecode.pushVal(zhin::instr::f32_in))
+      MAKE_VOID_LOP_BYTECODE(in_f64, bytecode.pushVal(zhin::instr::f64_in))
 
       MAKE_VOID_LOP_BYTECODE(in_char, bytecode.pushVal(zhin::instr::in_char))
       MAKE_VOID_LOP_BYTECODE(in_str, bytecode.pushVal(zhin::instr::in_str))
@@ -318,63 +235,36 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
       MAKE_VOID_LOP_BYTECODE(in_bool, bytecode.pushVal(zhin::instr::in_bool))
 
       MAKE_LOP_BYTECODE(!, boolT, bytecode.pushVal(zhin::instr::not_bool))
-      MAKE_LOP_BYTECODE(!, charT,
-                        (bytecode.pushVal(zhin::instr::not_bytes),
-                         bytecode.pushVal(static_cast<int32_t>(1))))
-      MAKE_LOP_BYTECODE(!, i8T,
-                        (bytecode.pushVal(zhin::instr::not_bytes),
-                         bytecode.pushVal(static_cast<int32_t>(1))))
-      MAKE_LOP_BYTECODE(!, i16T,
-                        (bytecode.pushVal(zhin::instr::not_bytes),
-                         bytecode.pushVal(static_cast<int32_t>(2))))
-      MAKE_LOP_BYTECODE(!, i32T,
-                        (bytecode.pushVal(zhin::instr::not_bytes),
-                         bytecode.pushVal(static_cast<int32_t>(4))))
-      MAKE_LOP_BYTECODE(!, i64T,
-                        (bytecode.pushVal(zhin::instr::not_bytes),
-                         bytecode.pushVal(static_cast<int32_t>(8))))
-      MAKE_LOP_BYTECODE(!, u8T,
-                        (bytecode.pushVal(zhin::instr::not_bytes),
-                         bytecode.pushVal(static_cast<int32_t>(1))))
-      MAKE_LOP_BYTECODE(!, u16T,
-                        (bytecode.pushVal(zhin::instr::not_bytes),
-                         bytecode.pushVal(static_cast<int32_t>(2))))
-      MAKE_LOP_BYTECODE(!, u32T,
-                        (bytecode.pushVal(zhin::instr::not_bytes),
-                         bytecode.pushVal(static_cast<int32_t>(4))))
-      MAKE_LOP_BYTECODE(!, u64T,
-                        (bytecode.pushVal(zhin::instr::not_bytes),
-                         bytecode.pushVal(static_cast<int32_t>(8))))
 
-      MAKE_LOP_BYTECODE(put, i8T, bytecode.pushVal(zhin::instr::put_i8))
-      MAKE_LOP_BYTECODE(out, i8T, bytecode.pushVal(zhin::instr::out_i8))
+      MAKE_LOP_BYTECODE(put, i8T, bytecode.pushVal(zhin::instr::i8_put))
+      MAKE_LOP_BYTECODE(out, i8T, bytecode.pushVal(zhin::instr::i8_out))
 
-      MAKE_LOP_BYTECODE(put, i16T, bytecode.pushVal(zhin::instr::put_i16))
-      MAKE_LOP_BYTECODE(out, i16T, bytecode.pushVal(zhin::instr::out_i16))
+      MAKE_LOP_BYTECODE(put, i16T, bytecode.pushVal(zhin::instr::i16_put))
+      MAKE_LOP_BYTECODE(out, i16T, bytecode.pushVal(zhin::instr::i16_out))
 
-      MAKE_LOP_BYTECODE(put, i32T, bytecode.pushVal(zhin::instr::put_i32))
-      MAKE_LOP_BYTECODE(out, i32T, bytecode.pushVal(zhin::instr::out_i32))
+      MAKE_LOP_BYTECODE(put, i32T, bytecode.pushVal(zhin::instr::i32_put))
+      MAKE_LOP_BYTECODE(out, i32T, bytecode.pushVal(zhin::instr::i32_out))
 
-      MAKE_LOP_BYTECODE(put, i64T, bytecode.pushVal(zhin::instr::put_i64))
-      MAKE_LOP_BYTECODE(out, i64T, bytecode.pushVal(zhin::instr::out_i64))
+      MAKE_LOP_BYTECODE(put, i64T, bytecode.pushVal(zhin::instr::i64_put))
+      MAKE_LOP_BYTECODE(out, i64T, bytecode.pushVal(zhin::instr::i64_out))
 
-      MAKE_LOP_BYTECODE(put, u8T, bytecode.pushVal(zhin::instr::put_u8))
-      MAKE_LOP_BYTECODE(out, u8T, bytecode.pushVal(zhin::instr::out_u8))
+      MAKE_LOP_BYTECODE(put, u8T, bytecode.pushVal(zhin::instr::u8_put))
+      MAKE_LOP_BYTECODE(out, u8T, bytecode.pushVal(zhin::instr::u8_out))
 
-      MAKE_LOP_BYTECODE(put, u16T, bytecode.pushVal(zhin::instr::put_u16))
-      MAKE_LOP_BYTECODE(out, u16T, bytecode.pushVal(zhin::instr::out_u16))
+      MAKE_LOP_BYTECODE(put, u16T, bytecode.pushVal(zhin::instr::u16_put))
+      MAKE_LOP_BYTECODE(out, u16T, bytecode.pushVal(zhin::instr::u16_out))
 
-      MAKE_LOP_BYTECODE(put, u32T, bytecode.pushVal(zhin::instr::put_u32))
-      MAKE_LOP_BYTECODE(out, u32T, bytecode.pushVal(zhin::instr::out_u32))
+      MAKE_LOP_BYTECODE(put, u32T, bytecode.pushVal(zhin::instr::u32_put))
+      MAKE_LOP_BYTECODE(out, u32T, bytecode.pushVal(zhin::instr::u32_out))
 
-      MAKE_LOP_BYTECODE(put, u64T, bytecode.pushVal(zhin::instr::put_u64))
-      MAKE_LOP_BYTECODE(out, u64T, bytecode.pushVal(zhin::instr::out_u64))
+      MAKE_LOP_BYTECODE(put, u64T, bytecode.pushVal(zhin::instr::u64_put))
+      MAKE_LOP_BYTECODE(out, u64T, bytecode.pushVal(zhin::instr::u64_out))
 
-      MAKE_LOP_BYTECODE(put, f32T, bytecode.pushVal(zhin::instr::put_f32))
-      MAKE_LOP_BYTECODE(out, f32T, bytecode.pushVal(zhin::instr::out_f32))
+      MAKE_LOP_BYTECODE(put, f32T, bytecode.pushVal(zhin::instr::f32_put))
+      MAKE_LOP_BYTECODE(out, f32T, bytecode.pushVal(zhin::instr::f32_out))
 
-      MAKE_LOP_BYTECODE(put, f64T, bytecode.pushVal(zhin::instr::put_f64))
-      MAKE_LOP_BYTECODE(out, f64T, bytecode.pushVal(zhin::instr::out_f64))
+      MAKE_LOP_BYTECODE(put, f64T, bytecode.pushVal(zhin::instr::f64_put))
+      MAKE_LOP_BYTECODE(out, f64T, bytecode.pushVal(zhin::instr::f64_out))
 
       MAKE_LOP_BYTECODE(put, strT, bytecode.pushVal(zhin::instr::put_str))
       MAKE_LOP_BYTECODE(out, strT, bytecode.pushVal(zhin::instr::out_str))
@@ -382,8 +272,23 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
       MAKE_LOP_BYTECODE(put, charT, bytecode.pushVal(zhin::instr::put_char))
       MAKE_LOP_BYTECODE(out, charT, bytecode.pushVal(zhin::instr::out_char))
 
-      MAKE_LOP_BYTECODE(put, boolT, bytecode.pushVal(zhin::instr::put_u8))
-      MAKE_LOP_BYTECODE(out, boolT, bytecode.pushVal(zhin::instr::out_u8))
+      MAKE_LOP_BYTECODE(put, boolT, bytecode.pushVal(zhin::instr::u8_put))
+      MAKE_LOP_BYTECODE(out, boolT, bytecode.pushVal(zhin::instr::u8_out))
+
+      MAKE_LOP_BYTECODE(!, i8T, bytecode.pushVal(zhin::instr::i8_not))
+      MAKE_LOP_BYTECODE(!, i16T, bytecode.pushVal(zhin::instr::i16_not))
+      MAKE_LOP_BYTECODE(!, i32T, bytecode.pushVal(zhin::instr::i32_not))
+      MAKE_LOP_BYTECODE(!, i64T, bytecode.pushVal(zhin::instr::i64_not))
+
+      MAKE_LOP_BYTECODE(~, i8T, bytecode.pushVal(zhin::instr::i8_bit_not))
+      MAKE_LOP_BYTECODE(~, i16T, bytecode.pushVal(zhin::instr::i16_bit_not))
+      MAKE_LOP_BYTECODE(~, i32T, bytecode.pushVal(zhin::instr::i32_bit_not))
+      MAKE_LOP_BYTECODE(~, i64T, bytecode.pushVal(zhin::instr::i64_bit_not))
+
+      MAKE_LOP_BYTECODE(-, i8T, bytecode.pushVal(zhin::instr::i8_neg))
+      MAKE_LOP_BYTECODE(-, i16T, bytecode.pushVal(zhin::instr::i16_neg))
+      MAKE_LOP_BYTECODE(-, i32T, bytecode.pushVal(zhin::instr::i32_neg))
+      MAKE_LOP_BYTECODE(-, i64T, bytecode.pushVal(zhin::instr::i64_neg))
 
       MAKE_LOP_BYTECODE(malloc, i64T, bytecode.pushVal(zhin::instr::malloc))
       MAKE_LOP_BYTECODE(free, i64T, bytecode.pushVal(zhin::instr::free))

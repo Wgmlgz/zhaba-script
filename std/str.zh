@@ -7,8 +7,8 @@ impl str
     ptr := malloc(1) as u8P
     *ptr = 0u8
     <<< ptr as str
-op 7 char ^ str s int i: <<< s.at(i)
-op 10 bool == char ch str s: <<< ch == s^0
+op 12 char ^ str s int i: <<< s.at(i)
+op 10 bool == char ch str s: <<< ch == (s^0)
 
 type Str
   Vec<char> data

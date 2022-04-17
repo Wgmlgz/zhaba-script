@@ -260,7 +260,7 @@ std::string exp2C(zhexp::Exp* exp, Function* fn) {
         res += "(";
         res += args2C(op->lhs, op->func);
         res += ")";
-        res += op->func->name;
+        res += op->func->name != "|||" ? op->func->name : "|";
         res += "(";
         res += args2C(op->rhs, op->func);
         res += ")";
@@ -302,6 +302,39 @@ std::string exp2C(zhexp::Exp* exp, Function* fn) {
       MAKE_LOP_C(in_bool, voidT, "in_bool(")
       MAKE_LOP_C(in_f32, voidT, "in_f32(")
       MAKE_LOP_C(in_f64, voidT, "in_f64(")
+
+      MAKE_LOP_C(~, boolT, "~(")
+      MAKE_LOP_C(~, charT, "~(")
+      MAKE_LOP_C(~, i8T, "~(")
+      MAKE_LOP_C(~, i16T, "~(")
+      MAKE_LOP_C(~, i32T, "~(")
+      MAKE_LOP_C(~, i64T, "~(")
+      MAKE_LOP_C(~, u8T, "~(")
+      MAKE_LOP_C(~, u16T, "~(")
+      MAKE_LOP_C(~, u32T, "~(")
+      MAKE_LOP_C(~, u64T, "~(")
+
+      MAKE_LOP_C(+, boolT, "+(")
+      MAKE_LOP_C(+, charT, "+(")
+      MAKE_LOP_C(+, i8T, "+(")
+      MAKE_LOP_C(+, i16T, "+(")
+      MAKE_LOP_C(+, i32T, "+(")
+      MAKE_LOP_C(+, i64T, "+(")
+      MAKE_LOP_C(+, u8T, "+(")
+      MAKE_LOP_C(+, u16T, "+(")
+      MAKE_LOP_C(+, u32T, "+(")
+      MAKE_LOP_C(+, u64T, "+(")
+
+      MAKE_LOP_C(-, boolT, "-(")
+      MAKE_LOP_C(-, charT, "-(")
+      MAKE_LOP_C(-, i8T, "-(")
+      MAKE_LOP_C(-, i16T, "-(")
+      MAKE_LOP_C(-, i32T, "-(")
+      MAKE_LOP_C(-, i64T, "-(")
+      MAKE_LOP_C(-, u8T, "-(")
+      MAKE_LOP_C(-, u16T, "-(")
+      MAKE_LOP_C(-, u32T, "-(")
+      MAKE_LOP_C(-, u64T, "-(")
 
       MAKE_LOP_C(!, boolT, "!(")
       MAKE_LOP_C(!, charT, "!(")

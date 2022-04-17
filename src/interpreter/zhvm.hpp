@@ -78,7 +78,7 @@ class ZHVM {
   case instr::name: {                                                   \
     type b = *reinterpret_cast<type*>(stack.getBytes(-size, size));     \
     type a = *reinterpret_cast<type*>(stack.getBytes(-size * 2, size)); \
-    ret_type res = a op b;                                              \
+    ret_type res = (a op b);                                            \
     stack.popBytes(size * 2);                                           \
     stack.push(res);                                                    \
   } break;
@@ -91,116 +91,49 @@ class ZHVM {
     stack.push(res);                                                 \
   } break;
 
-        ARITHMETIC_BIN(add_i8, int8_t, int8_t, +, 1)
-        ARITHMETIC_BIN(sub_i8, int8_t, int8_t, -, 1)
-        ARITHMETIC_BIN(mul_i8, int8_t, int8_t, *, 1)
-        ARITHMETIC_BIN(div_i8, int8_t, int8_t, /, 1)
-        ARITHMETIC_BIN(mod_i8, int8_t, int8_t, %, 1)
-        ARITHMETIC_BIN(less_i8, int8_t, bool, <, 1)
-        ARITHMETIC_BIN(more_i8, int8_t, bool, >, 1)
-        ARITHMETIC_BIN(lesseq_i8, int8_t, bool, <=, 1)
-        ARITHMETIC_BIN(moreeq_i8, int8_t, bool, >=, 1)
+#define MAKE_INT_BIN(type, zhtype, size)                \
+  ARITHMETIC_BIN(zhtype##_add, type, type, +, size)     \
+  ARITHMETIC_BIN(zhtype##_sub, type, type, -, size)     \
+  ARITHMETIC_BIN(zhtype##_mul, type, type, *, size)     \
+  ARITHMETIC_BIN(zhtype##_div, type, type, /, size)     \
+  ARITHMETIC_BIN(zhtype##_mod, type, type, %, size)     \
+  ARITHMETIC_BIN(zhtype##_bit_xor, type, type, ^, size) \
+  ARITHMETIC_BIN(zhtype##_bit_or, type, type, |, size)  \
+  ARITHMETIC_BIN(zhtype##_bit_and, type, type, &, size) \
+  ARITHMETIC_BIN(zhtype##_eq, type, bool, ==, size)     \
+  ARITHMETIC_BIN(zhtype##_uneq, type, bool, !=, size)   \
+  ARITHMETIC_BIN(zhtype##_less, type, bool, <, size)    \
+  ARITHMETIC_BIN(zhtype##_more, type, bool, >, size)    \
+  ARITHMETIC_BIN(zhtype##_lesseq, type, bool, <=, size) \
+  ARITHMETIC_BIN(zhtype##_moreeq, type, bool, >=, size)
 
-        ARITHMETIC_BIN(add_i16, int16_t, int16_t, +, 2)
-        ARITHMETIC_BIN(sub_i16, int16_t, int16_t, -, 2)
-        ARITHMETIC_BIN(mul_i16, int16_t, int16_t, *, 2)
-        ARITHMETIC_BIN(div_i16, int16_t, int16_t, /, 2)
-        ARITHMETIC_BIN(mod_i16, int16_t, int16_t, %, 2)
-        ARITHMETIC_BIN(less_i16, int16_t, bool, <, 2)
-        ARITHMETIC_BIN(more_i16, int16_t, bool, >, 2)
-        ARITHMETIC_BIN(lesseq_i16, int16_t, bool, <=, 2)
-        ARITHMETIC_BIN(moreeq_i16, int16_t, bool, >=, 2)
+          MAKE_INT_BIN(int8_t, i8, 1)
+          MAKE_INT_BIN(int16_t, i16, 2)
+          MAKE_INT_BIN(int32_t, i32, 4)
+          MAKE_INT_BIN(int64_t, i64, 8)
+          MAKE_INT_BIN(uint8_t, u8, 1)
+          MAKE_INT_BIN(uint16_t, u16, 2)
+          MAKE_INT_BIN(uint32_t, u32, 4)
+          MAKE_INT_BIN(uint64_t, u64, 8)
 
-        ARITHMETIC_BIN(add_i32, int32_t, int32_t, +, 4)
-        ARITHMETIC_BIN(sub_i32, int32_t, int32_t, -, 4)
-        ARITHMETIC_BIN(mul_i32, int32_t, int32_t, *, 4)
-        ARITHMETIC_BIN(div_i32, int32_t, int32_t, /, 4)
-        ARITHMETIC_BIN(mod_i32, int32_t, int32_t, %, 4)
-        ARITHMETIC_BIN(less_i32, int32_t, bool, <, 4)
-        ARITHMETIC_BIN(more_i32, int32_t, bool, >, 4)
-        ARITHMETIC_BIN(lesseq_i32, int32_t, bool, <=, 4)
-        ARITHMETIC_BIN(moreeq_i32, int32_t, bool, >=, 4)
+#define MAKE_FLOAT_BIN(type, zhtype, size)                \
+  ARITHMETIC_BIN(zhtype##_add, type, type, +, size)     \
+  ARITHMETIC_BIN(zhtype##_sub, type, type, -, size)     \
+  ARITHMETIC_BIN(zhtype##_mul, type, type, *, size)     \
+  ARITHMETIC_BIN(zhtype##_div, type, type, /, size)     \
+  ARITHMETIC_BIN(zhtype##_eq, type, bool, ==, size)     \
+  ARITHMETIC_BIN(zhtype##_uneq, type, bool, !=, size)   \
+  ARITHMETIC_BIN(zhtype##_less, type, bool, <, size)    \
+  ARITHMETIC_BIN(zhtype##_more, type, bool, >, size)    \
+  ARITHMETIC_BIN(zhtype##_lesseq, type, bool, <=, size) \
+  ARITHMETIC_BIN(zhtype##_moreeq, type, bool, >=, size)
 
-        ARITHMETIC_BIN(add_i64, int64_t, int64_t, +, 8)
-        ARITHMETIC_BIN(sub_i64, int64_t, int64_t, -, 8)
-        ARITHMETIC_BIN(mul_i64, int64_t, int64_t, *, 8)
-        ARITHMETIC_BIN(div_i64, int64_t, int64_t, /, 8)
-        ARITHMETIC_BIN(mod_i64, int64_t, int64_t, %, 8)
-        ARITHMETIC_BIN(less_i64, int64_t, bool, <, 8)
-        ARITHMETIC_BIN(more_i64, int64_t, bool, >, 8)
-        ARITHMETIC_BIN(lesseq_i64, int64_t, bool, <=, 8)
-        ARITHMETIC_BIN(moreeq_i64, int64_t, bool, >=, 8)
+          MAKE_FLOAT_BIN(float, f32, 4)
+          MAKE_FLOAT_BIN(double, f64, 8)
 
-        ARITHMETIC_BIN(eq_8, int8_t, bool, ==, 1)
-        ARITHMETIC_BIN(uneq_8, int8_t, bool, !=, 1)
-        ARITHMETIC_BIN(eq_16, int16_t, bool, ==, 2)
-        ARITHMETIC_BIN(uneq_16, int16_t, bool, !=, 2)
-        ARITHMETIC_BIN(eq_32, int32_t, bool, ==, 4)
-        ARITHMETIC_BIN(uneq_32, int32_t, bool, !=, 4)
-        ARITHMETIC_BIN(eq_64, int64_t, bool, ==, 8)
-        ARITHMETIC_BIN(uneq_64, int64_t, bool, !=, 8)
-
-        ARITHMETIC_BIN(add_u8, uint8_t, uint8_t, +, 1)
-        ARITHMETIC_BIN(sub_u8, uint8_t, uint8_t, -, 1)
-        ARITHMETIC_BIN(mul_u8, uint8_t, uint8_t, *, 1)
-        ARITHMETIC_BIN(div_u8, uint8_t, uint8_t, /, 1)
-        ARITHMETIC_BIN(mod_u8, uint8_t, uint8_t, %, 1)
-        ARITHMETIC_BIN(less_u8, uint8_t, bool, <, 1)
-        ARITHMETIC_BIN(more_u8, uint8_t, bool, >, 1)
-        ARITHMETIC_BIN(lesseq_u8, uint8_t, bool, <=, 1)
-        ARITHMETIC_BIN(moreeq_u8, uint8_t, bool, >=, 1)
-
-        ARITHMETIC_BIN(add_u16, uint16_t, uint16_t, +, 2)
-        ARITHMETIC_BIN(sub_u16, uint16_t, uint16_t, -, 2)
-        ARITHMETIC_BIN(mul_u16, uint16_t, uint16_t, *, 2)
-        ARITHMETIC_BIN(div_u16, uint16_t, uint16_t, /, 2)
-        ARITHMETIC_BIN(mod_u16, uint16_t, uint16_t, %, 2)
-        ARITHMETIC_BIN(less_u16, uint16_t, bool, <, 2)
-        ARITHMETIC_BIN(more_u16, uint16_t, bool, >, 2)
-        ARITHMETIC_BIN(lesseq_u16, uint16_t, bool, <=, 2)
-        ARITHMETIC_BIN(moreeq_u16, uint16_t, bool, >=, 2)
-
-        ARITHMETIC_BIN(add_u32, uint32_t, uint32_t, +, 4)
-        ARITHMETIC_BIN(sub_u32, uint32_t, uint32_t, -, 4)
-        ARITHMETIC_BIN(mul_u32, uint32_t, uint32_t, *, 4)
-        ARITHMETIC_BIN(div_u32, uint32_t, uint32_t, /, 4)
-        ARITHMETIC_BIN(mod_u32, uint32_t, uint32_t, %, 4)
-        ARITHMETIC_BIN(less_u32, uint32_t, bool, <, 4)
-        ARITHMETIC_BIN(more_u32, uint32_t, bool, >, 4)
-        ARITHMETIC_BIN(lesseq_u32, uint32_t, bool, <=, 4)
-        ARITHMETIC_BIN(moreeq_u32, uint32_t, bool, >=, 4)
-
-        ARITHMETIC_BIN(add_u64, uint64_t, uint64_t, +, 8)
-        ARITHMETIC_BIN(sub_u64, uint64_t, uint64_t, -, 8)
-        ARITHMETIC_BIN(mul_u64, uint64_t, uint64_t, *, 8)
-        ARITHMETIC_BIN(div_u64, uint64_t, uint64_t, /, 8)
-        ARITHMETIC_BIN(mod_u64, uint64_t, uint64_t, %, 8)
-        ARITHMETIC_BIN(less_u64, uint64_t, bool, <, 8)
-        ARITHMETIC_BIN(more_u64, uint64_t, bool, >, 8)
-        ARITHMETIC_BIN(lesseq_u64, uint64_t, bool, <=, 8)
-        ARITHMETIC_BIN(moreeq_u64, uint64_t, bool, >=, 8)
-
-        ARITHMETIC_BIN(add_f32, float, float, +, 4)
-        ARITHMETIC_BIN(sub_f32, float, float, -, 4)
-        ARITHMETIC_BIN(mul_f32, float, float, *, 4)
-        ARITHMETIC_BIN(div_f32, float, float, /, 4)
-        ARITHMETIC_BIN(less_f32, float, bool, <, 4)
-        ARITHMETIC_BIN(more_f32, float, bool, >, 4)
-        ARITHMETIC_BIN(lesseq_f32, float, bool, <=, 4)
-        ARITHMETIC_BIN(moreeq_f32, float, bool, >=, 4)
-
-        ARITHMETIC_BIN(add_f64, double, double, +, 8)
-        ARITHMETIC_BIN(sub_f64, double, double, -, 8)
-        ARITHMETIC_BIN(mul_f64, double, double, *, 8)
-        ARITHMETIC_BIN(div_f64, double, double, /, 8)
-        ARITHMETIC_BIN(less_f64, double, bool, <, 8)
-        ARITHMETIC_BIN(more_f64, double, bool, >, 8)
-        ARITHMETIC_BIN(lesseq_f64, double, bool, <=, 8)
-        ARITHMETIC_BIN(moreeq_f64, double, bool, >=, 8)
-
-        ARITHMETIC_BIN(and_bool, bool, bool, &&, 1)
-        ARITHMETIC_BIN(or_bool, bool, bool, ||, 1)
-        ARITHMETIC_PR(not_bool, bool, bool, !, 1)
+          ARITHMETIC_BIN(and_bool, bool, bool, &&, 1)
+          ARITHMETIC_BIN(or_bool, bool, bool, ||, 1)
+          ARITHMETIC_PR(not_bool, bool, bool, !, 1)
 
 #define TOSi8 *reinterpret_cast<int8_t *>(stack.getBytes(-1, 1))
 #define TOSi16 *reinterpret_cast<int16_t *>(stack.getBytes(-2, 2))
@@ -322,29 +255,19 @@ class ZHVM {
           cur += 4;
         }
           break;
-        case instr::not_bytes : {
-          auto size = *bytecode.loadI32(cur);
-          cur += 4;
-          bool val = false;
-          for (auto i = stack.getTopPtr() - size; i < stack.getTopPtr(); ++i)
-            val |= *i;
-          stack.popBytes(size);
-          stack.push(!val);
-        }
-          break;
 
 #define MAKE_IO(type_, c_type_, print_type_, size_)      \
-  case instr::put_##type_: {                             \
+  case instr::type_##_put: {                             \
     auto t = TOS##type_;                                 \
     stack.popBytes(size_);                               \
     *zhdata.out << static_cast<c_type_>(t);              \
   } break;                                               \
-  case instr::out_##type_: {                             \
+  case instr::type_##_out: {                             \
     auto t = TOS##type_;                                 \
     stack.popBytes(size_);                               \
     *zhdata.out << static_cast<c_type_>(t) << std::endl; \
   } break;                                               \
-  case instr::in_##type_: {                              \
+  case instr::type_##_in: {                              \
     c_type_ tmp;                                         \
     *zhdata.in >> tmp;                                   \
     stack.push(static_cast<print_type_>(tmp));           \
