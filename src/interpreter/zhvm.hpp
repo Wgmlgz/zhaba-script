@@ -108,7 +108,7 @@ class ZHVM {
   ARITHMETIC_BIN(zhtype##_moreeq, type, bool, >=, size) \
   ARITHMETIC_PR(zhtype##_not, type, bool, !, size)      \
   ARITHMETIC_PR(zhtype##_neg, type, type, -, size)      \
-  ARITHMETIC_PR(zhtype##_bit_not, type, bool, ~, size)
+  ARITHMETIC_PR(zhtype##_bit_not, type, type, ~, size)
 
           MAKE_INT_BIN(int8_t, i8, 1)
           MAKE_INT_BIN(int16_t, i16, 2)

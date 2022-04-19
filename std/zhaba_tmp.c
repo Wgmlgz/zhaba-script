@@ -209,169 +209,169 @@ void __ZH_BOP__caret_equal_i8Ri8(i8* v111, i8 v112);
 void __ZH_BOP__ampersand_equal_i8Ri8(i8* v113, i8 v114);
 void __ZH_BOP__pipe_equal_i8Ri8(i8* v115, i8 v116);
 bool __ZH_BOP__percent_percent_i8i8(i8 v117, i8 v118);
-bool __ZH_BOP__exclamation_percent_i8i8(i8 v119, i8 v120);
-void __ZH_BOP__plus_equal_i16Ri16(i16* v122, i16 v123);
-void __ZH_BOP__minus_equal_i16Ri16(i16* v124, i16 v125);
-void __ZH_BOP__slash_equal_i16Ri16(i16* v126, i16 v127);
-void __ZH_BOP__percent_equal_i16Ri16(i16* v128, i16 v129);
-void __ZH_BOP__asterisk_equal_i16Ri16(i16* v130, i16 v131);
-void __ZH_BOP__caret_equal_i16Ri16(i16* v132, i16 v133);
-void __ZH_BOP__ampersand_equal_i16Ri16(i16* v134, i16 v135);
-void __ZH_BOP__pipe_equal_i16Ri16(i16* v136, i16 v137);
-bool __ZH_BOP__percent_percent_i16i16(i16 v138, i16 v139);
-bool __ZH_BOP__exclamation_percent_i16i16(i16 v140, i16 v141);
-void __ZH_BOP__plus_equal_i32Ri32(i32* v143, i32 v144);
-void __ZH_BOP__minus_equal_i32Ri32(i32* v145, i32 v146);
-void __ZH_BOP__slash_equal_i32Ri32(i32* v147, i32 v148);
-void __ZH_BOP__percent_equal_i32Ri32(i32* v149, i32 v150);
-void __ZH_BOP__asterisk_equal_i32Ri32(i32* v151, i32 v152);
-void __ZH_BOP__caret_equal_i32Ri32(i32* v153, i32 v154);
-void __ZH_BOP__ampersand_equal_i32Ri32(i32* v155, i32 v156);
-void __ZH_BOP__pipe_equal_i32Ri32(i32* v157, i32 v158);
-bool __ZH_BOP__percent_percent_i32i32(i32 v159, i32 v160);
-bool __ZH_BOP__exclamation_percent_i32i32(i32 v161, i32 v162);
-void __ZH_BOP__plus_equal_i64Ri64(i64* v164, i64 v165);
-void __ZH_BOP__minus_equal_i64Ri64(i64* v166, i64 v167);
-void __ZH_BOP__slash_equal_i64Ri64(i64* v168, i64 v169);
-void __ZH_BOP__percent_equal_i64Ri64(i64* v170, i64 v171);
-void __ZH_BOP__asterisk_equal_i64Ri64(i64* v172, i64 v173);
-void __ZH_BOP__caret_equal_i64Ri64(i64* v174, i64 v175);
-void __ZH_BOP__ampersand_equal_i64Ri64(i64* v176, i64 v177);
-void __ZH_BOP__pipe_equal_i64Ri64(i64* v178, i64 v179);
-bool __ZH_BOP__percent_percent_i64i64(i64 v180, i64 v181);
-bool __ZH_BOP__exclamation_percent_i64i64(i64 v182, i64 v183);
-void __ZH_BOP__plus_equal_u8Ru8(u8* v185, u8 v186);
-void __ZH_BOP__minus_equal_u8Ru8(u8* v187, u8 v188);
-void __ZH_BOP__slash_equal_u8Ru8(u8* v189, u8 v190);
-void __ZH_BOP__percent_equal_u8Ru8(u8* v191, u8 v192);
-void __ZH_BOP__asterisk_equal_u8Ru8(u8* v193, u8 v194);
-void __ZH_BOP__caret_equal_u8Ru8(u8* v195, u8 v196);
-void __ZH_BOP__ampersand_equal_u8Ru8(u8* v197, u8 v198);
-void __ZH_BOP__pipe_equal_u8Ru8(u8* v199, u8 v200);
-bool __ZH_BOP__percent_percent_u8u8(u8 v201, u8 v202);
-bool __ZH_BOP__exclamation_percent_u8u8(u8 v203, u8 v204);
-void __ZH_BOP__plus_equal_u16Ru16(u16* v206, u16 v207);
-void __ZH_BOP__minus_equal_u16Ru16(u16* v208, u16 v209);
-void __ZH_BOP__slash_equal_u16Ru16(u16* v210, u16 v211);
-void __ZH_BOP__percent_equal_u16Ru16(u16* v212, u16 v213);
-void __ZH_BOP__asterisk_equal_u16Ru16(u16* v214, u16 v215);
-void __ZH_BOP__caret_equal_u16Ru16(u16* v216, u16 v217);
-void __ZH_BOP__ampersand_equal_u16Ru16(u16* v218, u16 v219);
-void __ZH_BOP__pipe_equal_u16Ru16(u16* v220, u16 v221);
-bool __ZH_BOP__percent_percent_u16u16(u16 v222, u16 v223);
-bool __ZH_BOP__exclamation_percent_u16u16(u16 v224, u16 v225);
-void __ZH_BOP__plus_equal_u32Ru32(u32* v227, u32 v228);
-void __ZH_BOP__minus_equal_u32Ru32(u32* v229, u32 v230);
-void __ZH_BOP__slash_equal_u32Ru32(u32* v231, u32 v232);
-void __ZH_BOP__percent_equal_u32Ru32(u32* v233, u32 v234);
-void __ZH_BOP__asterisk_equal_u32Ru32(u32* v235, u32 v236);
-void __ZH_BOP__caret_equal_u32Ru32(u32* v237, u32 v238);
-void __ZH_BOP__ampersand_equal_u32Ru32(u32* v239, u32 v240);
-void __ZH_BOP__pipe_equal_u32Ru32(u32* v241, u32 v242);
-bool __ZH_BOP__percent_percent_u32u32(u32 v243, u32 v244);
-bool __ZH_BOP__exclamation_percent_u32u32(u32 v245, u32 v246);
-void __ZH_BOP__plus_equal_u64Ru64(u64* v248, u64 v249);
-void __ZH_BOP__minus_equal_u64Ru64(u64* v250, u64 v251);
-void __ZH_BOP__slash_equal_u64Ru64(u64* v252, u64 v253);
-void __ZH_BOP__percent_equal_u64Ru64(u64* v254, u64 v255);
-void __ZH_BOP__asterisk_equal_u64Ru64(u64* v256, u64 v257);
-void __ZH_BOP__caret_equal_u64Ru64(u64* v258, u64 v259);
-void __ZH_BOP__ampersand_equal_u64Ru64(u64* v260, u64 v261);
-void __ZH_BOP__pipe_equal_u64Ru64(u64* v262, u64 v263);
-bool __ZH_BOP__percent_percent_u64u64(u64 v264, u64 v265);
-bool __ZH_BOP__exclamation_percent_u64u64(u64 v266, u64 v267);
-i64* __ZH_LOP__plus_plus_i64R(i64* v269);
-i64* __ZH_LOP__minus_minus_i64R(i64* v270);
-i64 __ZH_ROP__plus_plus_i64R(i64* v271);
-i64 __ZH_ROP__minus_minus_i64R(i64* v273);
-void __ZH_BOP__plus_equal_f32Rf32(f32* v275, f32 v276);
-void __ZH_BOP__minus_equal_f32Rf32(f32* v277, f32 v278);
-void __ZH_BOP__slash_equal_f32Rf32(f32* v279, f32 v280);
-void __ZH_BOP__asterisk_equal_f32Rf32(f32* v281, f32 v282);
-void __ZH_BOP__plus_equal_f64Rf64(f64* v283, f64 v284);
-void __ZH_BOP__minus_equal_f64Rf64(f64* v285, f64 v286);
-void __ZH_BOP__slash_equal_f64Rf64(f64* v287, f64 v288);
-void __ZH_BOP__asterisk_equal_f64Rf64(f64* v289, f64 v290);
-i64 __ZH_BOP__asterisk_asterisk_i64i64(i64 v291, i64 v292);
+bool __ZH_BOP__exclamation_percent_i8i8(i8 v121, i8 v122);
+void __ZH_BOP__plus_equal_i16Ri16(i16* v126, i16 v127);
+void __ZH_BOP__minus_equal_i16Ri16(i16* v128, i16 v129);
+void __ZH_BOP__slash_equal_i16Ri16(i16* v130, i16 v131);
+void __ZH_BOP__percent_equal_i16Ri16(i16* v132, i16 v133);
+void __ZH_BOP__asterisk_equal_i16Ri16(i16* v134, i16 v135);
+void __ZH_BOP__caret_equal_i16Ri16(i16* v136, i16 v137);
+void __ZH_BOP__ampersand_equal_i16Ri16(i16* v138, i16 v139);
+void __ZH_BOP__pipe_equal_i16Ri16(i16* v140, i16 v141);
+bool __ZH_BOP__percent_percent_i16i16(i16 v142, i16 v143);
+bool __ZH_BOP__exclamation_percent_i16i16(i16 v146, i16 v147);
+void __ZH_BOP__plus_equal_i32Ri32(i32* v151, i32 v152);
+void __ZH_BOP__minus_equal_i32Ri32(i32* v153, i32 v154);
+void __ZH_BOP__slash_equal_i32Ri32(i32* v155, i32 v156);
+void __ZH_BOP__percent_equal_i32Ri32(i32* v157, i32 v158);
+void __ZH_BOP__asterisk_equal_i32Ri32(i32* v159, i32 v160);
+void __ZH_BOP__caret_equal_i32Ri32(i32* v161, i32 v162);
+void __ZH_BOP__ampersand_equal_i32Ri32(i32* v163, i32 v164);
+void __ZH_BOP__pipe_equal_i32Ri32(i32* v165, i32 v166);
+bool __ZH_BOP__percent_percent_i32i32(i32 v167, i32 v168);
+bool __ZH_BOP__exclamation_percent_i32i32(i32 v171, i32 v172);
+void __ZH_BOP__plus_equal_i64Ri64(i64* v176, i64 v177);
+void __ZH_BOP__minus_equal_i64Ri64(i64* v178, i64 v179);
+void __ZH_BOP__slash_equal_i64Ri64(i64* v180, i64 v181);
+void __ZH_BOP__percent_equal_i64Ri64(i64* v182, i64 v183);
+void __ZH_BOP__asterisk_equal_i64Ri64(i64* v184, i64 v185);
+void __ZH_BOP__caret_equal_i64Ri64(i64* v186, i64 v187);
+void __ZH_BOP__ampersand_equal_i64Ri64(i64* v188, i64 v189);
+void __ZH_BOP__pipe_equal_i64Ri64(i64* v190, i64 v191);
+bool __ZH_BOP__percent_percent_i64i64(i64 v192, i64 v193);
+bool __ZH_BOP__exclamation_percent_i64i64(i64 v196, i64 v197);
+void __ZH_BOP__plus_equal_u8Ru8(u8* v201, u8 v202);
+void __ZH_BOP__minus_equal_u8Ru8(u8* v203, u8 v204);
+void __ZH_BOP__slash_equal_u8Ru8(u8* v205, u8 v206);
+void __ZH_BOP__percent_equal_u8Ru8(u8* v207, u8 v208);
+void __ZH_BOP__asterisk_equal_u8Ru8(u8* v209, u8 v210);
+void __ZH_BOP__caret_equal_u8Ru8(u8* v211, u8 v212);
+void __ZH_BOP__ampersand_equal_u8Ru8(u8* v213, u8 v214);
+void __ZH_BOP__pipe_equal_u8Ru8(u8* v215, u8 v216);
+bool __ZH_BOP__percent_percent_u8u8(u8 v217, u8 v218);
+bool __ZH_BOP__exclamation_percent_u8u8(u8 v221, u8 v222);
+void __ZH_BOP__plus_equal_u16Ru16(u16* v226, u16 v227);
+void __ZH_BOP__minus_equal_u16Ru16(u16* v228, u16 v229);
+void __ZH_BOP__slash_equal_u16Ru16(u16* v230, u16 v231);
+void __ZH_BOP__percent_equal_u16Ru16(u16* v232, u16 v233);
+void __ZH_BOP__asterisk_equal_u16Ru16(u16* v234, u16 v235);
+void __ZH_BOP__caret_equal_u16Ru16(u16* v236, u16 v237);
+void __ZH_BOP__ampersand_equal_u16Ru16(u16* v238, u16 v239);
+void __ZH_BOP__pipe_equal_u16Ru16(u16* v240, u16 v241);
+bool __ZH_BOP__percent_percent_u16u16(u16 v242, u16 v243);
+bool __ZH_BOP__exclamation_percent_u16u16(u16 v246, u16 v247);
+void __ZH_BOP__plus_equal_u32Ru32(u32* v251, u32 v252);
+void __ZH_BOP__minus_equal_u32Ru32(u32* v253, u32 v254);
+void __ZH_BOP__slash_equal_u32Ru32(u32* v255, u32 v256);
+void __ZH_BOP__percent_equal_u32Ru32(u32* v257, u32 v258);
+void __ZH_BOP__asterisk_equal_u32Ru32(u32* v259, u32 v260);
+void __ZH_BOP__caret_equal_u32Ru32(u32* v261, u32 v262);
+void __ZH_BOP__ampersand_equal_u32Ru32(u32* v263, u32 v264);
+void __ZH_BOP__pipe_equal_u32Ru32(u32* v265, u32 v266);
+bool __ZH_BOP__percent_percent_u32u32(u32 v267, u32 v268);
+bool __ZH_BOP__exclamation_percent_u32u32(u32 v271, u32 v272);
+void __ZH_BOP__plus_equal_u64Ru64(u64* v276, u64 v277);
+void __ZH_BOP__minus_equal_u64Ru64(u64* v278, u64 v279);
+void __ZH_BOP__slash_equal_u64Ru64(u64* v280, u64 v281);
+void __ZH_BOP__percent_equal_u64Ru64(u64* v282, u64 v283);
+void __ZH_BOP__asterisk_equal_u64Ru64(u64* v284, u64 v285);
+void __ZH_BOP__caret_equal_u64Ru64(u64* v286, u64 v287);
+void __ZH_BOP__ampersand_equal_u64Ru64(u64* v288, u64 v289);
+void __ZH_BOP__pipe_equal_u64Ru64(u64* v290, u64 v291);
+bool __ZH_BOP__percent_percent_u64u64(u64 v292, u64 v293);
+bool __ZH_BOP__exclamation_percent_u64u64(u64 v296, u64 v297);
+i64* __ZH_LOP__plus_plus_i64R(i64* v301);
+i64* __ZH_LOP__minus_minus_i64R(i64* v304);
+i64 __ZH_ROP__plus_plus_i64R(i64* v307);
+i64 __ZH_ROP__minus_minus_i64R(i64* v311);
+void __ZH_BOP__plus_equal_f32Rf32(f32* v315, f32 v316);
+void __ZH_BOP__minus_equal_f32Rf32(f32* v317, f32 v318);
+void __ZH_BOP__slash_equal_f32Rf32(f32* v319, f32 v320);
+void __ZH_BOP__asterisk_equal_f32Rf32(f32* v321, f32 v322);
+void __ZH_BOP__plus_equal_f64Rf64(f64* v323, f64 v324);
+void __ZH_BOP__minus_equal_f64Rf64(f64* v325, f64 v326);
+void __ZH_BOP__slash_equal_f64Rf64(f64* v327, f64 v328);
+void __ZH_BOP__asterisk_equal_f64Rf64(f64* v329, f64 v330);
+i64 __ZH_BOP__asterisk_asterisk_i64i64(i64 v331, i64 v332);
 __ZH_TYPE_Out __ZH_LOP_Out_();
-__ZH_TYPE_Out __ZH_BOP__less_OutOut(__ZH_TYPE_Out v295, __ZH_TYPE_Out v296);
-__ZH_TYPE_Out __ZH_LOP__less_Out(__ZH_TYPE_Out v297);
-__ZH_TYPE_Out __ZH_ROP__less_str(str v298);
-__ZH_TYPE_Out __ZH_LOP__less_str(str v299);
-__ZH_TYPE_Out __ZH_BOP__less_Outstr(__ZH_TYPE_Out v300, str v301);
-__ZH_TYPE_Out __ZH_LOP__greater_strR(str* v302);
-__ZH_TYPE_Out __ZH_BOP__greater_OutstrR(__ZH_TYPE_Out v303, str* v304);
-__ZH_TYPE_Out __ZH_ROP__less_char(char v305);
-__ZH_TYPE_Out __ZH_LOP__less_char(char v306);
-__ZH_TYPE_Out __ZH_BOP__less_Outchar(__ZH_TYPE_Out v307, char v308);
-__ZH_TYPE_Out __ZH_LOP__greater_charR(char* v309);
-__ZH_TYPE_Out __ZH_BOP__greater_OutcharR(__ZH_TYPE_Out v310, char* v311);
-__ZH_TYPE_Out __ZH_ROP__less_i8(i8 v312);
-__ZH_TYPE_Out __ZH_LOP__less_i8(i8 v313);
-__ZH_TYPE_Out __ZH_BOP__less_Outi8(__ZH_TYPE_Out v314, i8 v315);
-__ZH_TYPE_Out __ZH_LOP__greater_i8R(i8* v316);
-__ZH_TYPE_Out __ZH_BOP__greater_Outi8R(__ZH_TYPE_Out v317, i8* v318);
-__ZH_TYPE_Out __ZH_ROP__less_i16(i16 v319);
-__ZH_TYPE_Out __ZH_LOP__less_i16(i16 v320);
-__ZH_TYPE_Out __ZH_BOP__less_Outi16(__ZH_TYPE_Out v321, i16 v322);
-__ZH_TYPE_Out __ZH_LOP__greater_i16R(i16* v323);
-__ZH_TYPE_Out __ZH_BOP__greater_Outi16R(__ZH_TYPE_Out v324, i16* v325);
-__ZH_TYPE_Out __ZH_ROP__less_i32(i32 v326);
-__ZH_TYPE_Out __ZH_LOP__less_i32(i32 v327);
-__ZH_TYPE_Out __ZH_BOP__less_Outi32(__ZH_TYPE_Out v328, i32 v329);
-__ZH_TYPE_Out __ZH_LOP__greater_i32R(i32* v330);
-__ZH_TYPE_Out __ZH_BOP__greater_Outi32R(__ZH_TYPE_Out v331, i32* v332);
-__ZH_TYPE_Out __ZH_ROP__less_i64(i64 v333);
-__ZH_TYPE_Out __ZH_LOP__less_i64(i64 v334);
-__ZH_TYPE_Out __ZH_BOP__less_Outi64(__ZH_TYPE_Out v335, i64 v336);
-__ZH_TYPE_Out __ZH_LOP__greater_i64R(i64* v337);
-__ZH_TYPE_Out __ZH_BOP__greater_Outi64R(__ZH_TYPE_Out v338, i64* v339);
-__ZH_TYPE_Out __ZH_ROP__less_u8(u8 v340);
-__ZH_TYPE_Out __ZH_LOP__less_u8(u8 v341);
-__ZH_TYPE_Out __ZH_BOP__less_Outu8(__ZH_TYPE_Out v342, u8 v343);
-__ZH_TYPE_Out __ZH_LOP__greater_u8R(u8* v344);
-__ZH_TYPE_Out __ZH_BOP__greater_Outu8R(__ZH_TYPE_Out v345, u8* v346);
-__ZH_TYPE_Out __ZH_ROP__less_u16(u16 v347);
-__ZH_TYPE_Out __ZH_LOP__less_u16(u16 v348);
-__ZH_TYPE_Out __ZH_BOP__less_Outu16(__ZH_TYPE_Out v349, u16 v350);
-__ZH_TYPE_Out __ZH_LOP__greater_u16R(u16* v351);
-__ZH_TYPE_Out __ZH_BOP__greater_Outu16R(__ZH_TYPE_Out v352, u16* v353);
-__ZH_TYPE_Out __ZH_ROP__less_u32(u32 v354);
-__ZH_TYPE_Out __ZH_LOP__less_u32(u32 v355);
-__ZH_TYPE_Out __ZH_BOP__less_Outu32(__ZH_TYPE_Out v356, u32 v357);
-__ZH_TYPE_Out __ZH_LOP__greater_u32R(u32* v358);
-__ZH_TYPE_Out __ZH_BOP__greater_Outu32R(__ZH_TYPE_Out v359, u32* v360);
-__ZH_TYPE_Out __ZH_ROP__less_u64(u64 v361);
-__ZH_TYPE_Out __ZH_LOP__less_u64(u64 v362);
-__ZH_TYPE_Out __ZH_BOP__less_Outu64(__ZH_TYPE_Out v363, u64 v364);
-__ZH_TYPE_Out __ZH_LOP__greater_u64R(u64* v365);
-__ZH_TYPE_Out __ZH_BOP__greater_Outu64R(__ZH_TYPE_Out v366, u64* v367);
-__ZH_TYPE_Out __ZH_ROP__less_f32(f32 v368);
-__ZH_TYPE_Out __ZH_LOP__less_f32(f32 v369);
-__ZH_TYPE_Out __ZH_BOP__less_Outf32(__ZH_TYPE_Out v370, f32 v371);
-__ZH_TYPE_Out __ZH_LOP__greater_f32R(f32* v372);
-__ZH_TYPE_Out __ZH_BOP__greater_Outf32R(__ZH_TYPE_Out v373, f32* v374);
-__ZH_TYPE_Out __ZH_ROP__less_f64(f64 v375);
-__ZH_TYPE_Out __ZH_LOP__less_f64(f64 v376);
-__ZH_TYPE_Out __ZH_BOP__less_Outf64(__ZH_TYPE_Out v377, f64 v378);
-__ZH_TYPE_Out __ZH_LOP__greater_f64R(f64* v379);
-__ZH_TYPE_Out __ZH_BOP__greater_Outf64R(__ZH_TYPE_Out v380, f64* v381);
-void __ZH_BOP__dotcall_dotnext_i64P(i64* v382);
-bool __ZH_BOP__dotcall_dotuneq_i64Pi64(i64* v383, i64 v384);
-i64 __ZH_BOP__dotcall_dotbegin_RangeP(__ZH_TYPE_Range* v385);
-i64 __ZH_BOP__dotcall_dotend_RangeP(__ZH_TYPE_Range* v386);
-__ZH_TYPE_Range __ZH_BOP__dot_dot_i64i64(i64 v387, i64 v388);
-__ZH_TYPE_Range __ZH_BOP__dot_dot_minus_i64i64(i64 v390, i64 v391);
+__ZH_TYPE_Out __ZH_BOP__less_OutOut(__ZH_TYPE_Out v339, __ZH_TYPE_Out v340);
+__ZH_TYPE_Out __ZH_LOP__less_Out(__ZH_TYPE_Out v343);
+__ZH_TYPE_Out __ZH_ROP__less_str(str v346);
+__ZH_TYPE_Out __ZH_LOP__less_str(str v349);
+__ZH_TYPE_Out __ZH_BOP__less_Outstr(__ZH_TYPE_Out v352, str v353);
+__ZH_TYPE_Out __ZH_LOP__greater_strR(str* v356);
+__ZH_TYPE_Out __ZH_BOP__greater_OutstrR(__ZH_TYPE_Out v359, str* v360);
+__ZH_TYPE_Out __ZH_ROP__less_char(char v363);
+__ZH_TYPE_Out __ZH_LOP__less_char(char v366);
+__ZH_TYPE_Out __ZH_BOP__less_Outchar(__ZH_TYPE_Out v369, char v370);
+__ZH_TYPE_Out __ZH_LOP__greater_charR(char* v373);
+__ZH_TYPE_Out __ZH_BOP__greater_OutcharR(__ZH_TYPE_Out v376, char* v377);
+__ZH_TYPE_Out __ZH_ROP__less_i8(i8 v380);
+__ZH_TYPE_Out __ZH_LOP__less_i8(i8 v383);
+__ZH_TYPE_Out __ZH_BOP__less_Outi8(__ZH_TYPE_Out v386, i8 v387);
+__ZH_TYPE_Out __ZH_LOP__greater_i8R(i8* v390);
+__ZH_TYPE_Out __ZH_BOP__greater_Outi8R(__ZH_TYPE_Out v393, i8* v394);
+__ZH_TYPE_Out __ZH_ROP__less_i16(i16 v397);
+__ZH_TYPE_Out __ZH_LOP__less_i16(i16 v400);
+__ZH_TYPE_Out __ZH_BOP__less_Outi16(__ZH_TYPE_Out v403, i16 v404);
+__ZH_TYPE_Out __ZH_LOP__greater_i16R(i16* v407);
+__ZH_TYPE_Out __ZH_BOP__greater_Outi16R(__ZH_TYPE_Out v410, i16* v411);
+__ZH_TYPE_Out __ZH_ROP__less_i32(i32 v414);
+__ZH_TYPE_Out __ZH_LOP__less_i32(i32 v417);
+__ZH_TYPE_Out __ZH_BOP__less_Outi32(__ZH_TYPE_Out v420, i32 v421);
+__ZH_TYPE_Out __ZH_LOP__greater_i32R(i32* v424);
+__ZH_TYPE_Out __ZH_BOP__greater_Outi32R(__ZH_TYPE_Out v427, i32* v428);
+__ZH_TYPE_Out __ZH_ROP__less_i64(i64 v431);
+__ZH_TYPE_Out __ZH_LOP__less_i64(i64 v434);
+__ZH_TYPE_Out __ZH_BOP__less_Outi64(__ZH_TYPE_Out v437, i64 v438);
+__ZH_TYPE_Out __ZH_LOP__greater_i64R(i64* v441);
+__ZH_TYPE_Out __ZH_BOP__greater_Outi64R(__ZH_TYPE_Out v444, i64* v445);
+__ZH_TYPE_Out __ZH_ROP__less_u8(u8 v448);
+__ZH_TYPE_Out __ZH_LOP__less_u8(u8 v451);
+__ZH_TYPE_Out __ZH_BOP__less_Outu8(__ZH_TYPE_Out v454, u8 v455);
+__ZH_TYPE_Out __ZH_LOP__greater_u8R(u8* v458);
+__ZH_TYPE_Out __ZH_BOP__greater_Outu8R(__ZH_TYPE_Out v461, u8* v462);
+__ZH_TYPE_Out __ZH_ROP__less_u16(u16 v465);
+__ZH_TYPE_Out __ZH_LOP__less_u16(u16 v468);
+__ZH_TYPE_Out __ZH_BOP__less_Outu16(__ZH_TYPE_Out v471, u16 v472);
+__ZH_TYPE_Out __ZH_LOP__greater_u16R(u16* v475);
+__ZH_TYPE_Out __ZH_BOP__greater_Outu16R(__ZH_TYPE_Out v478, u16* v479);
+__ZH_TYPE_Out __ZH_ROP__less_u32(u32 v482);
+__ZH_TYPE_Out __ZH_LOP__less_u32(u32 v485);
+__ZH_TYPE_Out __ZH_BOP__less_Outu32(__ZH_TYPE_Out v488, u32 v489);
+__ZH_TYPE_Out __ZH_LOP__greater_u32R(u32* v492);
+__ZH_TYPE_Out __ZH_BOP__greater_Outu32R(__ZH_TYPE_Out v495, u32* v496);
+__ZH_TYPE_Out __ZH_ROP__less_u64(u64 v499);
+__ZH_TYPE_Out __ZH_LOP__less_u64(u64 v502);
+__ZH_TYPE_Out __ZH_BOP__less_Outu64(__ZH_TYPE_Out v505, u64 v506);
+__ZH_TYPE_Out __ZH_LOP__greater_u64R(u64* v509);
+__ZH_TYPE_Out __ZH_BOP__greater_Outu64R(__ZH_TYPE_Out v512, u64* v513);
+__ZH_TYPE_Out __ZH_ROP__less_f32(f32 v516);
+__ZH_TYPE_Out __ZH_LOP__less_f32(f32 v519);
+__ZH_TYPE_Out __ZH_BOP__less_Outf32(__ZH_TYPE_Out v522, f32 v523);
+__ZH_TYPE_Out __ZH_LOP__greater_f32R(f32* v526);
+__ZH_TYPE_Out __ZH_BOP__greater_Outf32R(__ZH_TYPE_Out v529, f32* v530);
+__ZH_TYPE_Out __ZH_ROP__less_f64(f64 v533);
+__ZH_TYPE_Out __ZH_LOP__less_f64(f64 v536);
+__ZH_TYPE_Out __ZH_BOP__less_Outf64(__ZH_TYPE_Out v539, f64 v540);
+__ZH_TYPE_Out __ZH_LOP__greater_f64R(f64* v543);
+__ZH_TYPE_Out __ZH_BOP__greater_Outf64R(__ZH_TYPE_Out v546, f64* v547);
+void __ZH_BOP__dotcall_dotnext_i64P(i64* v550);
+bool __ZH_BOP__dotcall_dotuneq_i64Pi64(i64* v551, i64 v552);
+i64 __ZH_BOP__dotcall_dotbegin_RangeP(__ZH_TYPE_Range* v555);
+i64 __ZH_BOP__dotcall_dotend_RangeP(__ZH_TYPE_Range* v558);
+__ZH_TYPE_Range __ZH_BOP__dot_dot_i64i64(i64 v561, i64 v562);
+__ZH_TYPE_Range __ZH_BOP__dot_dot_minus_i64i64(i64 v566, i64 v567);
 i64 __ZH_LOP_rangeMin_();
 i64 __ZH_LOP_rangeMax_();
-__ZH_TYPE_Range __ZH_ROP__dot_dot_i64(i64 v392);
-__ZH_TYPE_Range __ZH_LOP__dot_dot_i64(i64 v393);
-__ZH_TYPE_Range __ZH_LOP__dot_dot_minus_i64(i64 v394);
-__ZH_TYPE_Range __ZH_LOP__minus_Range(__ZH_TYPE_Range v395);
-__ZH_TYPE_Range __ZH_BOP__dot_dot_equal_i64i64(i64 v396, i64 v397);
-__ZH_TYPE_Range __ZH_LOP__dot_dot_equal_i64(i64 v398);
-__ZH_TYPE_Range __ZH_LOP__dot_dot_equal_minus_i64(i64 v399);
-bool __ZH_BOP__equal_equal_i64Range(i64 v400, __ZH_TYPE_Range v401);
+__ZH_TYPE_Range __ZH_ROP__dot_dot_i64(i64 v574);
+__ZH_TYPE_Range __ZH_LOP__dot_dot_i64(i64 v577);
+__ZH_TYPE_Range __ZH_LOP__dot_dot_minus_i64(i64 v580);
+__ZH_TYPE_Range __ZH_LOP__minus_Range(__ZH_TYPE_Range v583);
+__ZH_TYPE_Range __ZH_BOP__dot_dot_equal_i64i64(i64 v586, i64 v587);
+__ZH_TYPE_Range __ZH_LOP__dot_dot_equal_i64(i64 v590);
+__ZH_TYPE_Range __ZH_LOP__dot_dot_equal_minus_i64(i64 v593);
+bool __ZH_BOP__equal_equal_i64Range(i64 v596, __ZH_TYPE_Range v597);
 i8 __ZH_LOP_i8_();
 i16 __ZH_LOP_i16_();
 i32 __ZH_LOP_i32_();
@@ -381,147 +381,148 @@ u16 __ZH_LOP_u16_();
 u32 __ZH_LOP_u32_();
 u64 __ZH_LOP_u64_();
 char __ZH_LOP_char_();
-i64 __ZH_LOP_max_i64i64(i64 v402, i64 v403);
-i64 __ZH_LOP_min_i64i64(i64 v404, i64 v405);
-__ZH_TYPE_VecIter_lessi64_greater __ZH_LOP_VecIter_lessi64_greater_i64P(i64* v430);
-void __ZH_BOP__dotcall_dotnext_VecIter_lessi64_greaterP(__ZH_TYPE_VecIter_lessi64_greater* v432);
-bool __ZH_BOP__dotcall_dotuneq_VecIter_lessi64_greaterPVecIter_lessi64_greater(__ZH_TYPE_VecIter_lessi64_greater* v433, __ZH_TYPE_VecIter_lessi64_greater v434);
-i64* __ZH_LOP__asterisk_VecIter_lessi64_greater(__ZH_TYPE_VecIter_lessi64_greater v435);
-i64* __ZH_BOP__dotcall_dotatP_Vec_lessi64_greaterPi64(__ZH_TYPE_Vec_lessi64_greater* v406, i64 v407);
-i64* __ZH_BOP__dotcall_dotat_Vec_lessi64_greaterPi64(__ZH_TYPE_Vec_lessi64_greater* v408, i64 v409);
-void __ZH_BOP__dotcall_dotprint_Vec_lessi64_greaterP(__ZH_TYPE_Vec_lessi64_greater* v410);
-void __ZH_BOP__dotcall_dotprintln_Vec_lessi64_greaterP(__ZH_TYPE_Vec_lessi64_greater* v415);
-void __ZH_BOP__dotcall_dotdouble_cap_Vec_lessi64_greaterP(__ZH_TYPE_Vec_lessi64_greater* v420);
-void __ZH_BOP__dotcall_dotpush_back_Vec_lessi64_greaterPi64(__ZH_TYPE_Vec_lessi64_greater* v427, i64 v428);
-void __ZH_BOP__dotcall_dotpop_back_Vec_lessi64_greaterP(__ZH_TYPE_Vec_lessi64_greater* v429);
-__ZH_TYPE_VecIter_lessi64_greater __ZH_BOP__dotcall_dotbegin_Vec_lessi64_greaterP(__ZH_TYPE_Vec_lessi64_greater* v436);
-__ZH_TYPE_VecIter_lessi64_greater __ZH_BOP__dotcall_dotend_Vec_lessi64_greaterP(__ZH_TYPE_Vec_lessi64_greater* v437);
-i64* __ZH_BOP__dotcall_dotfront_Vec_lessi64_greaterP(__ZH_TYPE_Vec_lessi64_greater* v438);
-i64* __ZH_BOP__dotcall_dotback_Vec_lessi64_greaterP(__ZH_TYPE_Vec_lessi64_greater* v439);
-void __ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP(__ZH_TYPE_Vec_lessi64_greater* v440);
-__ZH_TYPE_Vec_lessi64_greater __ZH_LOP_Vec_lessi64_greater_i64(i64 v441);
-__ZH_TYPE_Vec_lessi64_greater __ZH_LOP_Vec_lessi64_greater_i64i64(i64 v447, i64 v448);
+i64 __ZH_LOP_max_i64i64(i64 v620, i64 v621);
+i64 __ZH_LOP_min_i64i64(i64 v626, i64 v627);
+__ZH_TYPE_VecIter_lessi64_greater __ZH_LOP_VecIter_lessi64_greater_i64P(i64* v660);
+void __ZH_BOP__dotcall_dotnext_VecIter_lessi64_greaterP(__ZH_TYPE_VecIter_lessi64_greater* v664);
+bool __ZH_BOP__dotcall_dotuneq_VecIter_lessi64_greaterPVecIter_lessi64_greater(__ZH_TYPE_VecIter_lessi64_greater* v665, __ZH_TYPE_VecIter_lessi64_greater v666);
+i64* __ZH_LOP__asterisk_VecIter_lessi64_greater(__ZH_TYPE_VecIter_lessi64_greater v669);
+i64* __ZH_BOP__dotcall_dotatP_Vec_lessi64_greaterPi64(__ZH_TYPE_Vec_lessi64_greater* v632, i64 v633);
+i64* __ZH_BOP__dotcall_dotat_Vec_lessi64_greaterPi64(__ZH_TYPE_Vec_lessi64_greater* v636, i64 v637);
+void __ZH_BOP__dotcall_dotprint_Vec_lessi64_greaterP(__ZH_TYPE_Vec_lessi64_greater* v640);
+void __ZH_BOP__dotcall_dotprintln_Vec_lessi64_greaterP(__ZH_TYPE_Vec_lessi64_greater* v645);
+void __ZH_BOP__dotcall_dotdouble_cap_Vec_lessi64_greaterP(__ZH_TYPE_Vec_lessi64_greater* v650);
+void __ZH_BOP__dotcall_dotpush_back_Vec_lessi64_greaterPi64(__ZH_TYPE_Vec_lessi64_greater* v657, i64 v658);
+void __ZH_BOP__dotcall_dotpop_back_Vec_lessi64_greaterP(__ZH_TYPE_Vec_lessi64_greater* v659);
+__ZH_TYPE_VecIter_lessi64_greater __ZH_BOP__dotcall_dotbegin_Vec_lessi64_greaterP(__ZH_TYPE_Vec_lessi64_greater* v672);
+__ZH_TYPE_VecIter_lessi64_greater __ZH_BOP__dotcall_dotend_Vec_lessi64_greaterP(__ZH_TYPE_Vec_lessi64_greater* v675);
+i64* __ZH_BOP__dotcall_dotfront_Vec_lessi64_greaterP(__ZH_TYPE_Vec_lessi64_greater* v678);
+i64* __ZH_BOP__dotcall_dotback_Vec_lessi64_greaterP(__ZH_TYPE_Vec_lessi64_greater* v681);
+void __ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP(__ZH_TYPE_Vec_lessi64_greater* v684);
+__ZH_TYPE_Vec_lessi64_greater __ZH_LOP_Vec_lessi64_greater_i64(i64 v685);
+__ZH_TYPE_Vec_lessi64_greater __ZH_LOP_Vec_lessi64_greater_i64i64(i64 v693, i64 v694);
 __ZH_TYPE_Vec_lessi64_greater __ZH_LOP_Vec_lessi64_greater_();
-__ZH_TYPE_Vec_lessi64_greater __ZH_LOP_Vec_lessi64_greater_Vec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v454);
-void __ZH_BOP__plus_equal_Vec_lessi64_greaterRi64(__ZH_TYPE_Vec_lessi64_greater* v460, i64 v461);
-void __ZH_BOP__plus_equal_Vec_lessi64_greaterRVec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v462, __ZH_TYPE_Vec_lessi64_greater* v463);
-__ZH_TYPE_Vec_lessi64_greater __ZH_BOP__comma_comma_i64i64(i64 v468, i64 v469);
-__ZH_TYPE_Vec_lessi64_greater* __ZH_BOP__comma_comma_Vec_lessi64_greaterRi64(__ZH_TYPE_Vec_lessi64_greater* v471, i64 v472);
-void __ZH_LOP_put_Vec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v473);
-void __ZH_LOP_out_Vec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v474);
-__ZH_TYPE_Out __ZH_ROP__less_Vec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v475);
-__ZH_TYPE_Out __ZH_LOP__less_Vec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v476);
-__ZH_TYPE_Out __ZH_BOP__less_OutVec_lessi64_greaterR(__ZH_TYPE_Out v477, __ZH_TYPE_Vec_lessi64_greater* v478);
-i64* __ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterPi64(__ZH_TYPE_Vec_lessi64_greater* v479, i64 v480);
-__ZH_TYPE_Vec_lessi64_greater __ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterPi64i64(__ZH_TYPE_Vec_lessi64_greater* v481, i64 v482, i64 v483);
-__ZH_TYPE_Vec_lessi64_greater __ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterPRange(__ZH_TYPE_Vec_lessi64_greater* v489, __ZH_TYPE_Range v490);
-__ZH_TYPE_Vec_lessi64_greater __ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterP(__ZH_TYPE_Vec_lessi64_greater* v493);
-bool __ZH_BOP__less_Vec_lessi64_greaterRVec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v494, __ZH_TYPE_Vec_lessi64_greater* v495);
-void __ZH_LOP_swap_i64Pi64P(i64* v496, i64* v497);
-i64* __ZH_LOP_partition_i64Pi64P(i64* v499, i64* v500);
-void __ZH_LOP_qsort_i64Pi64P(i64* v504, i64* v505);
-void __ZH_BOP__dotcall_dotsort_Vec_lessi64_greaterP(__ZH_TYPE_Vec_lessi64_greater* v509);
-void __ZH_LOP_sort_Vec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v514);
-__ZH_TYPE_Vec_lessi64_greater __ZH_BOP__dotcall_dotmap_Vec_lessi64_greaterPF_lessi64_spacei64R_greater(__ZH_TYPE_Vec_lessi64_greater* v515, i64(*v516)(i64*));
-__ZH_TYPE_Vec_lessi64_greater __ZH_BOP__dotcall_dotfilter_Vec_lessi64_greaterPF_lessbool_spacei64R_greater(__ZH_TYPE_Vec_lessi64_greater* v522, bool(*v523)(i64*));
-__ZH_TYPE_Vec_lessi64_greater __ZH_LOP_iota_i64i64(i64 v529, i64 v530);
-__ZH_TYPE_Vec_lessi64_greater __ZH_BOP__dotcall_dotcall_RangeP(__ZH_TYPE_Range* v536);
-char __ZH_BOP__dotcall_dotsub_strPi64(str* v542, i64 v543);
+__ZH_TYPE_Vec_lessi64_greater __ZH_LOP_Vec_lessi64_greater_Vec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v704);
+void __ZH_BOP__plus_equal_Vec_lessi64_greaterRi64(__ZH_TYPE_Vec_lessi64_greater* v712, i64 v713);
+void __ZH_BOP__plus_equal_Vec_lessi64_greaterRVec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v714, __ZH_TYPE_Vec_lessi64_greater* v715);
+__ZH_TYPE_Vec_lessi64_greater __ZH_BOP__comma_comma_i64i64(i64 v720, i64 v721);
+__ZH_TYPE_Vec_lessi64_greater* __ZH_BOP__comma_comma_Vec_lessi64_greaterRi64(__ZH_TYPE_Vec_lessi64_greater* v725, i64 v726);
+void __ZH_LOP_put_Vec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v729);
+void __ZH_LOP_out_Vec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v730);
+__ZH_TYPE_Out __ZH_ROP__less_Vec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v731);
+__ZH_TYPE_Out __ZH_LOP__less_Vec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v734);
+__ZH_TYPE_Out __ZH_BOP__less_OutVec_lessi64_greaterR(__ZH_TYPE_Out v737, __ZH_TYPE_Vec_lessi64_greater* v738);
+i64* __ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterPi64(__ZH_TYPE_Vec_lessi64_greater* v741, i64 v742);
+__ZH_TYPE_Vec_lessi64_greater __ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterPi64i64(__ZH_TYPE_Vec_lessi64_greater* v745, i64 v746, i64 v747);
+__ZH_TYPE_Vec_lessi64_greater __ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterPRange(__ZH_TYPE_Vec_lessi64_greater* v755, __ZH_TYPE_Range v756);
+__ZH_TYPE_Vec_lessi64_greater __ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterP(__ZH_TYPE_Vec_lessi64_greater* v761);
+bool __ZH_BOP__less_Vec_lessi64_greaterRVec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v764, __ZH_TYPE_Vec_lessi64_greater* v765);
+void __ZH_LOP_swap_i64Pi64P(i64* v768, i64* v769);
+i64* __ZH_LOP_partition_i64Pi64P(i64* v771, i64* v772);
+void __ZH_LOP_qsort_i64Pi64P(i64* v778, i64* v779);
+void __ZH_BOP__dotcall_dotsort_Vec_lessi64_greaterP(__ZH_TYPE_Vec_lessi64_greater* v783);
+void __ZH_LOP_sort_Vec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v788);
+__ZH_TYPE_Vec_lessi64_greater __ZH_BOP__dotcall_dotmap_Vec_lessi64_greaterPF_lessi64_spacei64R_greater(__ZH_TYPE_Vec_lessi64_greater* v789, i64(*v790)(i64*));
+__ZH_TYPE_Vec_lessi64_greater __ZH_BOP__dotcall_dotfilter_Vec_lessi64_greaterPF_lessbool_spacei64R_greater(__ZH_TYPE_Vec_lessi64_greater* v798, bool(*v799)(i64*));
+__ZH_TYPE_Vec_lessi64_greater __ZH_LOP_iota_i64i64(i64 v807, i64 v808);
+__ZH_TYPE_Vec_lessi64_greater __ZH_BOP__dotcall_dotcall_RangeP(__ZH_TYPE_Range* v816);
+char __ZH_BOP__dotcall_dotsub_strPi64(str* v824, i64 v825);
 str __ZH_LOP_str_();
-bool __ZH_BOP__equal_equal_charstr(char v545, str v546);
-__ZH_TYPE_VecIter_lesschar_greater __ZH_LOP_VecIter_lesschar_greater_charP(char* v571);
-void __ZH_BOP__dotcall_dotnext_VecIter_lesschar_greaterP(__ZH_TYPE_VecIter_lesschar_greater* v573);
-bool __ZH_BOP__dotcall_dotuneq_VecIter_lesschar_greaterPVecIter_lesschar_greater(__ZH_TYPE_VecIter_lesschar_greater* v574, __ZH_TYPE_VecIter_lesschar_greater v575);
-char* __ZH_LOP__asterisk_VecIter_lesschar_greater(__ZH_TYPE_VecIter_lesschar_greater v576);
-char* __ZH_BOP__dotcall_dotatP_Vec_lesschar_greaterPi64(__ZH_TYPE_Vec_lesschar_greater* v547, i64 v548);
-char* __ZH_BOP__dotcall_dotat_Vec_lesschar_greaterPi64(__ZH_TYPE_Vec_lesschar_greater* v549, i64 v550);
-void __ZH_BOP__dotcall_dotprint_Vec_lesschar_greaterP(__ZH_TYPE_Vec_lesschar_greater* v551);
-void __ZH_BOP__dotcall_dotprintln_Vec_lesschar_greaterP(__ZH_TYPE_Vec_lesschar_greater* v556);
-void __ZH_BOP__dotcall_dotdouble_cap_Vec_lesschar_greaterP(__ZH_TYPE_Vec_lesschar_greater* v561);
-void __ZH_BOP__dotcall_dotpush_back_Vec_lesschar_greaterPchar(__ZH_TYPE_Vec_lesschar_greater* v568, char v569);
-void __ZH_BOP__dotcall_dotpop_back_Vec_lesschar_greaterP(__ZH_TYPE_Vec_lesschar_greater* v570);
-__ZH_TYPE_VecIter_lesschar_greater __ZH_BOP__dotcall_dotbegin_Vec_lesschar_greaterP(__ZH_TYPE_Vec_lesschar_greater* v577);
-__ZH_TYPE_VecIter_lesschar_greater __ZH_BOP__dotcall_dotend_Vec_lesschar_greaterP(__ZH_TYPE_Vec_lesschar_greater* v578);
-char* __ZH_BOP__dotcall_dotfront_Vec_lesschar_greaterP(__ZH_TYPE_Vec_lesschar_greater* v579);
-char* __ZH_BOP__dotcall_dotback_Vec_lesschar_greaterP(__ZH_TYPE_Vec_lesschar_greater* v580);
-void __ZH_BOP__dotcall_dotdtor_Vec_lesschar_greaterP(__ZH_TYPE_Vec_lesschar_greater* v581);
-__ZH_TYPE_Vec_lesschar_greater __ZH_LOP_Vec_lesschar_greater_i64(i64 v582);
-__ZH_TYPE_Vec_lesschar_greater __ZH_LOP_Vec_lesschar_greater_i64char(i64 v588, char v589);
+bool __ZH_BOP__equal_equal_charstr(char v831, str v832);
+__ZH_TYPE_VecIter_lesschar_greater __ZH_LOP_VecIter_lesschar_greater_charP(char* v863);
+void __ZH_BOP__dotcall_dotnext_VecIter_lesschar_greaterP(__ZH_TYPE_VecIter_lesschar_greater* v867);
+bool __ZH_BOP__dotcall_dotuneq_VecIter_lesschar_greaterPVecIter_lesschar_greater(__ZH_TYPE_VecIter_lesschar_greater* v868, __ZH_TYPE_VecIter_lesschar_greater v869);
+char* __ZH_LOP__asterisk_VecIter_lesschar_greater(__ZH_TYPE_VecIter_lesschar_greater v872);
+char* __ZH_BOP__dotcall_dotatP_Vec_lesschar_greaterPi64(__ZH_TYPE_Vec_lesschar_greater* v835, i64 v836);
+char* __ZH_BOP__dotcall_dotat_Vec_lesschar_greaterPi64(__ZH_TYPE_Vec_lesschar_greater* v839, i64 v840);
+void __ZH_BOP__dotcall_dotprint_Vec_lesschar_greaterP(__ZH_TYPE_Vec_lesschar_greater* v843);
+void __ZH_BOP__dotcall_dotprintln_Vec_lesschar_greaterP(__ZH_TYPE_Vec_lesschar_greater* v848);
+void __ZH_BOP__dotcall_dotdouble_cap_Vec_lesschar_greaterP(__ZH_TYPE_Vec_lesschar_greater* v853);
+void __ZH_BOP__dotcall_dotpush_back_Vec_lesschar_greaterPchar(__ZH_TYPE_Vec_lesschar_greater* v860, char v861);
+void __ZH_BOP__dotcall_dotpop_back_Vec_lesschar_greaterP(__ZH_TYPE_Vec_lesschar_greater* v862);
+__ZH_TYPE_VecIter_lesschar_greater __ZH_BOP__dotcall_dotbegin_Vec_lesschar_greaterP(__ZH_TYPE_Vec_lesschar_greater* v875);
+__ZH_TYPE_VecIter_lesschar_greater __ZH_BOP__dotcall_dotend_Vec_lesschar_greaterP(__ZH_TYPE_Vec_lesschar_greater* v878);
+char* __ZH_BOP__dotcall_dotfront_Vec_lesschar_greaterP(__ZH_TYPE_Vec_lesschar_greater* v881);
+char* __ZH_BOP__dotcall_dotback_Vec_lesschar_greaterP(__ZH_TYPE_Vec_lesschar_greater* v884);
+void __ZH_BOP__dotcall_dotdtor_Vec_lesschar_greaterP(__ZH_TYPE_Vec_lesschar_greater* v887);
+__ZH_TYPE_Vec_lesschar_greater __ZH_LOP_Vec_lesschar_greater_i64(i64 v888);
+__ZH_TYPE_Vec_lesschar_greater __ZH_LOP_Vec_lesschar_greater_i64char(i64 v896, char v897);
 __ZH_TYPE_Vec_lesschar_greater __ZH_LOP_Vec_lesschar_greater_();
-__ZH_TYPE_Vec_lesschar_greater __ZH_LOP_Vec_lesschar_greater_Vec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v595);
-void __ZH_BOP__plus_equal_Vec_lesschar_greaterRchar(__ZH_TYPE_Vec_lesschar_greater* v601, char v602);
-void __ZH_BOP__plus_equal_Vec_lesschar_greaterRVec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v603, __ZH_TYPE_Vec_lesschar_greater* v604);
-__ZH_TYPE_Vec_lesschar_greater __ZH_BOP__comma_comma_charchar(char v609, char v610);
-__ZH_TYPE_Vec_lesschar_greater* __ZH_BOP__comma_comma_Vec_lesschar_greaterRchar(__ZH_TYPE_Vec_lesschar_greater* v612, char v613);
-void __ZH_LOP_put_Vec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v614);
-void __ZH_LOP_out_Vec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v615);
-__ZH_TYPE_Out __ZH_ROP__less_Vec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v616);
-__ZH_TYPE_Out __ZH_LOP__less_Vec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v617);
-__ZH_TYPE_Out __ZH_BOP__less_OutVec_lesschar_greaterR(__ZH_TYPE_Out v618, __ZH_TYPE_Vec_lesschar_greater* v619);
-char* __ZH_BOP__dotcall_dotsub_Vec_lesschar_greaterPi64(__ZH_TYPE_Vec_lesschar_greater* v620, i64 v621);
-__ZH_TYPE_Vec_lesschar_greater __ZH_BOP__dotcall_dotsub_Vec_lesschar_greaterPi64i64(__ZH_TYPE_Vec_lesschar_greater* v622, i64 v623, i64 v624);
-__ZH_TYPE_Vec_lesschar_greater __ZH_BOP__dotcall_dotsub_Vec_lesschar_greaterPRange(__ZH_TYPE_Vec_lesschar_greater* v630, __ZH_TYPE_Range v631);
-__ZH_TYPE_Vec_lesschar_greater __ZH_BOP__dotcall_dotsub_Vec_lesschar_greaterP(__ZH_TYPE_Vec_lesschar_greater* v634);
-bool __ZH_BOP__less_Vec_lesschar_greaterRVec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v635, __ZH_TYPE_Vec_lesschar_greater* v636);
-void __ZH_LOP_swap_charPcharP(char* v637, char* v638);
-char* __ZH_LOP_partition_charPcharP(char* v640, char* v641);
-void __ZH_LOP_qsort_charPcharP(char* v645, char* v646);
-void __ZH_BOP__dotcall_dotsort_Vec_lesschar_greaterP(__ZH_TYPE_Vec_lesschar_greater* v650);
-void __ZH_LOP_sort_Vec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v655);
-__ZH_TYPE_Vec_lesschar_greater __ZH_BOP__dotcall_dotmap_Vec_lesschar_greaterPF_lesschar_spacecharR_greater(__ZH_TYPE_Vec_lesschar_greater* v656, char(*v657)(char*));
-__ZH_TYPE_Vec_lesschar_greater __ZH_BOP__dotcall_dotfilter_Vec_lesschar_greaterPF_lessbool_spacecharR_greater(__ZH_TYPE_Vec_lesschar_greater* v663, bool(*v664)(char*));
+__ZH_TYPE_Vec_lesschar_greater __ZH_LOP_Vec_lesschar_greater_Vec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v907);
+void __ZH_BOP__plus_equal_Vec_lesschar_greaterRchar(__ZH_TYPE_Vec_lesschar_greater* v915, char v916);
+void __ZH_BOP__plus_equal_Vec_lesschar_greaterRVec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v917, __ZH_TYPE_Vec_lesschar_greater* v918);
+__ZH_TYPE_Vec_lesschar_greater __ZH_BOP__comma_comma_charchar(char v923, char v924);
+__ZH_TYPE_Vec_lesschar_greater* __ZH_BOP__comma_comma_Vec_lesschar_greaterRchar(__ZH_TYPE_Vec_lesschar_greater* v928, char v929);
+void __ZH_LOP_put_Vec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v932);
+void __ZH_LOP_out_Vec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v933);
+__ZH_TYPE_Out __ZH_ROP__less_Vec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v934);
+__ZH_TYPE_Out __ZH_LOP__less_Vec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v937);
+__ZH_TYPE_Out __ZH_BOP__less_OutVec_lesschar_greaterR(__ZH_TYPE_Out v940, __ZH_TYPE_Vec_lesschar_greater* v941);
+char* __ZH_BOP__dotcall_dotsub_Vec_lesschar_greaterPi64(__ZH_TYPE_Vec_lesschar_greater* v944, i64 v945);
+__ZH_TYPE_Vec_lesschar_greater __ZH_BOP__dotcall_dotsub_Vec_lesschar_greaterPi64i64(__ZH_TYPE_Vec_lesschar_greater* v948, i64 v949, i64 v950);
+__ZH_TYPE_Vec_lesschar_greater __ZH_BOP__dotcall_dotsub_Vec_lesschar_greaterPRange(__ZH_TYPE_Vec_lesschar_greater* v958, __ZH_TYPE_Range v959);
+__ZH_TYPE_Vec_lesschar_greater __ZH_BOP__dotcall_dotsub_Vec_lesschar_greaterP(__ZH_TYPE_Vec_lesschar_greater* v964);
+bool __ZH_BOP__less_Vec_lesschar_greaterRVec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v967, __ZH_TYPE_Vec_lesschar_greater* v968);
+void __ZH_LOP_swap_charPcharP(char* v971, char* v972);
+char* __ZH_LOP_partition_charPcharP(char* v974, char* v975);
+void __ZH_LOP_qsort_charPcharP(char* v981, char* v982);
+void __ZH_BOP__dotcall_dotsort_Vec_lesschar_greaterP(__ZH_TYPE_Vec_lesschar_greater* v986);
+void __ZH_LOP_sort_Vec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v991);
+__ZH_TYPE_Vec_lesschar_greater __ZH_BOP__dotcall_dotmap_Vec_lesschar_greaterPF_lesschar_spacecharR_greater(__ZH_TYPE_Vec_lesschar_greater* v992, char(*v993)(char*));
+__ZH_TYPE_Vec_lesschar_greater __ZH_BOP__dotcall_dotfilter_Vec_lesschar_greaterPF_lessbool_spacecharR_greater(__ZH_TYPE_Vec_lesschar_greater* v1001, bool(*v1002)(char*));
 __ZH_TYPE_Str __ZH_LOP_Str_();
-void __ZH_BOP__dotcall_dotdtor_StrP(__ZH_TYPE_Str* v671);
-str __ZH_BOP__dotcall_dotcstr_StrP(__ZH_TYPE_Str* v672);
-char* __ZH_BOP__dotcall_dotat_StrPi64(__ZH_TYPE_Str* v674, i64 v675);
-char* __ZH_BOP__dotcall_dotsub_StrPi64(__ZH_TYPE_Str* v676, i64 v677);
-char* __ZH_BOP__dotcall_dotatP_StrPi64(__ZH_TYPE_Str* v678, i64 v679);
-void __ZH_BOP__dotcall_dotpush_back_StrPchar(__ZH_TYPE_Str* v680, char v681);
-void __ZH_BOP__dotcall_dotpop_back_StrP(__ZH_TYPE_Str* v682);
-__ZH_TYPE_Str __ZH_LOP_Str_str(str v683);
-__ZH_TYPE_Str __ZH_LOP_Str_StrR(__ZH_TYPE_Str* v685);
-i64 __ZH_LOP_len_str(str v687);
-void __ZH_LOP_out_StrR(__ZH_TYPE_Str* v689);
-void __ZH_LOP_put_StrR(__ZH_TYPE_Str* v690);
-void __ZH_BOP__plus_equal_StrRchar(__ZH_TYPE_Str* v691, char v692);
-void __ZH_BOP__plus_equal_StrRStrR(__ZH_TYPE_Str* v693, __ZH_TYPE_Str* v694);
-void __ZH_BOP__plus_equal_StrRstr(__ZH_TYPE_Str* v700, str v701);
-__ZH_TYPE_Str __ZH_BOP__plus_StrRStrR(__ZH_TYPE_Str* v707, __ZH_TYPE_Str* v708);
-__ZH_TYPE_Str __ZH_BOP__plus_strstr(str v710, str v711);
-__ZH_TYPE_Out __ZH_ROP__less_StrR(__ZH_TYPE_Str* v716);
-__ZH_TYPE_Out __ZH_LOP__less_StrR(__ZH_TYPE_Str* v717);
-__ZH_TYPE_Out __ZH_BOP__less_OutStrR(__ZH_TYPE_Out v718, __ZH_TYPE_Str* v719);
-bool __ZH_BOP__less_StrRStrR(__ZH_TYPE_Str* v720, __ZH_TYPE_Str* v721);
-__ZH_TYPE_Str __ZH_BOP__asterisk_stri64(str v726, i64 v727);
-__ZH_TYPE_Str __ZH_LOP__dollar_str(str v734);
+void __ZH_BOP__dotcall_dotdtor_StrP(__ZH_TYPE_Str* v1013);
+str __ZH_BOP__dotcall_dotcstr_StrP(__ZH_TYPE_Str* v1014);
+char* __ZH_BOP__dotcall_dotat_StrPi64(__ZH_TYPE_Str* v1018, i64 v1019);
+char* __ZH_BOP__dotcall_dotsub_StrPi64(__ZH_TYPE_Str* v1022, i64 v1023);
+char* __ZH_BOP__dotcall_dotatP_StrPi64(__ZH_TYPE_Str* v1026, i64 v1027);
+void __ZH_BOP__dotcall_dotpush_back_StrPchar(__ZH_TYPE_Str* v1030, char v1031);
+void __ZH_BOP__dotcall_dotpop_back_StrP(__ZH_TYPE_Str* v1032);
+__ZH_TYPE_Str __ZH_LOP_Str_str(str v1033);
+__ZH_TYPE_Str __ZH_LOP_Str_StrR(__ZH_TYPE_Str* v1037);
+i64 __ZH_LOP_len_str(str v1041);
+void __ZH_LOP_out_StrR(__ZH_TYPE_Str* v1045);
+void __ZH_LOP_put_StrR(__ZH_TYPE_Str* v1046);
+void __ZH_BOP__plus_equal_StrRchar(__ZH_TYPE_Str* v1047, char v1048);
+void __ZH_BOP__plus_equal_StrRStrR(__ZH_TYPE_Str* v1049, __ZH_TYPE_Str* v1050);
+void __ZH_BOP__plus_equal_StrRstr(__ZH_TYPE_Str* v1056, str v1057);
+__ZH_TYPE_Str __ZH_BOP__plus_StrRStrR(__ZH_TYPE_Str* v1063, __ZH_TYPE_Str* v1064);
+__ZH_TYPE_Str __ZH_BOP__plus_strstr(str v1068, str v1069);
+__ZH_TYPE_Out __ZH_ROP__less_StrR(__ZH_TYPE_Str* v1076);
+__ZH_TYPE_Out __ZH_LOP__less_StrR(__ZH_TYPE_Str* v1079);
+__ZH_TYPE_Out __ZH_BOP__less_OutStrR(__ZH_TYPE_Out v1082, __ZH_TYPE_Str* v1083);
+bool __ZH_BOP__less_StrRStrR(__ZH_TYPE_Str* v1086, __ZH_TYPE_Str* v1087);
+__ZH_TYPE_Str __ZH_BOP__asterisk_stri64(str v1102, i64 v1103);
+__ZH_TYPE_Str __ZH_LOP__dollar_str(str v1114);
 str __ZH_LOP_frog_();
-f64 __ZH_LOP_sqrt_f64(f64 v735);
-__ZH_TYPE_V2 __ZH_LOP_V2_f64f64(f64 v741, f64 v742);
-__ZH_TYPE_V2 __ZH_BOP__plus_V2V2(__ZH_TYPE_V2 v744, __ZH_TYPE_V2 v745);
-__ZH_TYPE_V2 __ZH_BOP__asterisk_V2V2(__ZH_TYPE_V2 v746, __ZH_TYPE_V2 v747);
-f64 __ZH_LOP_abs_V2(__ZH_TYPE_V2 v749);
-void __ZH_LOP_put_V2(__ZH_TYPE_V2 v750);
-void __ZH_LOP_out_V2(__ZH_TYPE_V2 v751);
-__ZH_TYPE_Out __ZH_ROP__less_V2(__ZH_TYPE_V2 v752);
-__ZH_TYPE_Out __ZH_LOP__less_V2(__ZH_TYPE_V2 v753);
-__ZH_TYPE_Out __ZH_BOP__less_OutV2(__ZH_TYPE_Out v754, __ZH_TYPE_V2 v755);
-__ZH_TYPE_Rng __ZH_LOP_Rng_i64(i64 v756);
+f64 __ZH_LOP_sqrt_f64(f64 v1119);
+__ZH_TYPE_V2 __ZH_LOP_V2_f64f64(f64 v1127, f64 v1128);
+__ZH_TYPE_V2 __ZH_BOP__plus_V2V2(__ZH_TYPE_V2 v1132, __ZH_TYPE_V2 v1133);
+__ZH_TYPE_V2 __ZH_BOP__asterisk_V2V2(__ZH_TYPE_V2 v1136, __ZH_TYPE_V2 v1137);
+f64 __ZH_LOP_abs_V2(__ZH_TYPE_V2 v1141);
+void __ZH_LOP_put_V2(__ZH_TYPE_V2 v1144);
+void __ZH_LOP_out_V2(__ZH_TYPE_V2 v1145);
+__ZH_TYPE_Out __ZH_ROP__less_V2(__ZH_TYPE_V2 v1146);
+__ZH_TYPE_Out __ZH_LOP__less_V2(__ZH_TYPE_V2 v1149);
+__ZH_TYPE_Out __ZH_BOP__less_OutV2(__ZH_TYPE_Out v1152, __ZH_TYPE_V2 v1153);
+__ZH_TYPE_Rng __ZH_LOP_Rng_i64(i64 v1156);
 __ZH_TYPE_Rng __ZH_LOP_Rng_();
-i64 __ZH_BOP__dotcall_dotcall_RngP(__ZH_TYPE_Rng* v758);
-bool __ZH_LOP_isPrime_i64R(i64* v759);
+i64 __ZH_BOP__dotcall_dotcall_RngP(__ZH_TYPE_Rng* v1162);
+bool __ZH_LOP_isPrime_i64R(i64* v1165);
+__ZH_TYPE_Vec_lessi64_greater __ZH_LOP_filterMap_Vec_lessi64_greaterRF_lessbool_spacei64R_greaterF_lessi64_spacei64R_greater(__ZH_TYPE_Vec_lessi64_greater* v1171, bool(*v1172)(i64*), i64(*v1173)(i64*));
 int main(int argc, char *argv[]) ;
-bool __ZH_LOP_f1_i64R(i64* v765);
-i64 __ZH_LOP_f2_i64R(i64* v766);
+bool __ZH_LOP_f1_i64R(i64* v1182);
+i64 __ZH_LOP_f2_i64R(i64* v1185);
 
 void __ZH_LOP_intOpMaker_(){
-  __ZH_TYPE_IntOpMaker_lessu64_greater v268;
-  __ZH_TYPE_IntOpMaker_lessu32_greater v247;
-  __ZH_TYPE_IntOpMaker_lessu16_greater v226;
-  __ZH_TYPE_IntOpMaker_lessu8_greater v205;
-  __ZH_TYPE_IntOpMaker_lessi32_greater v163;
-  __ZH_TYPE_IntOpMaker_lessi16_greater v142;
-  __ZH_TYPE_IntOpMaker_lessi64_greater v184;
-  __ZH_TYPE_IntOpMaker_lessi8_greater v121;
+  __ZH_TYPE_IntOpMaker_lessu64_greater v300;
+  __ZH_TYPE_IntOpMaker_lessu32_greater v275;
+  __ZH_TYPE_IntOpMaker_lessu16_greater v250;
+  __ZH_TYPE_IntOpMaker_lessu8_greater v225;
+  __ZH_TYPE_IntOpMaker_lessi32_greater v175;
+  __ZH_TYPE_IntOpMaker_lessi16_greater v150;
+  __ZH_TYPE_IntOpMaker_lessi64_greater v200;
+  __ZH_TYPE_IntOpMaker_lessi8_greater v125;
 }
 void __ZH_BOP__plus_equal_i8Ri8(i8* v101, i8 v102){
   ((*v101)=(((*v101))+((v102))));
@@ -548,1720 +549,2200 @@ void __ZH_BOP__pipe_equal_i8Ri8(i8* v115, i8 v116){
   ((*v115)=(((*v115))|((v116))));
 }
 bool __ZH_BOP__percent_percent_i8i8(i8 v117, i8 v118) {{
-  return (!((((v117))%((v118)))));
+  bool v120;
+  ((v120)=(!((((v117))%((v118))))));
+  return (v120);
 };printf("%s", "reached function end without returning anything op bool %% i8 a i8 b\n"); exit(EXIT_FAILURE);}
-bool __ZH_BOP__exclamation_percent_i8i8(i8 v119, i8 v120) {{
-  return (!((__ZH_BOP__percent_percent_i8i8((v119), (v120)))));
+bool __ZH_BOP__exclamation_percent_i8i8(i8 v121, i8 v122) {{
+  bool v124;
+  ((v124)=(!((__ZH_BOP__percent_percent_i8i8((v121), (v122))))));
+  return (v124);
 };printf("%s", "reached function end without returning anything op bool !% i8 a i8 b\n"); exit(EXIT_FAILURE);}
-void __ZH_BOP__plus_equal_i16Ri16(i16* v122, i16 v123){
-  ((*v122)=(((*v122))+((v123))));
+void __ZH_BOP__plus_equal_i16Ri16(i16* v126, i16 v127){
+  ((*v126)=(((*v126))+((v127))));
 }
-void __ZH_BOP__minus_equal_i16Ri16(i16* v124, i16 v125){
-  ((*v124)=(((*v124))-((v125))));
+void __ZH_BOP__minus_equal_i16Ri16(i16* v128, i16 v129){
+  ((*v128)=(((*v128))-((v129))));
 }
-void __ZH_BOP__slash_equal_i16Ri16(i16* v126, i16 v127){
-  ((*v126)=(((*v126))/((v127))));
+void __ZH_BOP__slash_equal_i16Ri16(i16* v130, i16 v131){
+  ((*v130)=(((*v130))/((v131))));
 }
-void __ZH_BOP__percent_equal_i16Ri16(i16* v128, i16 v129){
-  ((*v128)=(((*v128))%((v129))));
+void __ZH_BOP__percent_equal_i16Ri16(i16* v132, i16 v133){
+  ((*v132)=(((*v132))%((v133))));
 }
-void __ZH_BOP__asterisk_equal_i16Ri16(i16* v130, i16 v131){
-  ((*v130)=(((*v130))*((v131))));
+void __ZH_BOP__asterisk_equal_i16Ri16(i16* v134, i16 v135){
+  ((*v134)=(((*v134))*((v135))));
 }
-void __ZH_BOP__caret_equal_i16Ri16(i16* v132, i16 v133){
-  ((*v132)=(((*v132))^((v133))));
+void __ZH_BOP__caret_equal_i16Ri16(i16* v136, i16 v137){
+  ((*v136)=(((*v136))^((v137))));
 }
-void __ZH_BOP__ampersand_equal_i16Ri16(i16* v134, i16 v135){
-  ((*v134)=(((*v134))&((v135))));
+void __ZH_BOP__ampersand_equal_i16Ri16(i16* v138, i16 v139){
+  ((*v138)=(((*v138))&((v139))));
 }
-void __ZH_BOP__pipe_equal_i16Ri16(i16* v136, i16 v137){
-  ((*v136)=(((*v136))|((v137))));
+void __ZH_BOP__pipe_equal_i16Ri16(i16* v140, i16 v141){
+  ((*v140)=(((*v140))|((v141))));
 }
-bool __ZH_BOP__percent_percent_i16i16(i16 v138, i16 v139) {{
-  return (!((((v138))%((v139)))));
+bool __ZH_BOP__percent_percent_i16i16(i16 v142, i16 v143) {{
+  bool v145;
+  ((v145)=(!((((v142))%((v143))))));
+  return (v145);
 };printf("%s", "reached function end without returning anything op bool %% i16 a i16 b\n"); exit(EXIT_FAILURE);}
-bool __ZH_BOP__exclamation_percent_i16i16(i16 v140, i16 v141) {{
-  return (!((__ZH_BOP__percent_percent_i16i16((v140), (v141)))));
+bool __ZH_BOP__exclamation_percent_i16i16(i16 v146, i16 v147) {{
+  bool v149;
+  ((v149)=(!((__ZH_BOP__percent_percent_i16i16((v146), (v147))))));
+  return (v149);
 };printf("%s", "reached function end without returning anything op bool !% i16 a i16 b\n"); exit(EXIT_FAILURE);}
-void __ZH_BOP__plus_equal_i32Ri32(i32* v143, i32 v144){
-  ((*v143)=(((*v143))+((v144))));
+void __ZH_BOP__plus_equal_i32Ri32(i32* v151, i32 v152){
+  ((*v151)=(((*v151))+((v152))));
 }
-void __ZH_BOP__minus_equal_i32Ri32(i32* v145, i32 v146){
-  ((*v145)=(((*v145))-((v146))));
+void __ZH_BOP__minus_equal_i32Ri32(i32* v153, i32 v154){
+  ((*v153)=(((*v153))-((v154))));
 }
-void __ZH_BOP__slash_equal_i32Ri32(i32* v147, i32 v148){
-  ((*v147)=(((*v147))/((v148))));
+void __ZH_BOP__slash_equal_i32Ri32(i32* v155, i32 v156){
+  ((*v155)=(((*v155))/((v156))));
 }
-void __ZH_BOP__percent_equal_i32Ri32(i32* v149, i32 v150){
-  ((*v149)=(((*v149))%((v150))));
+void __ZH_BOP__percent_equal_i32Ri32(i32* v157, i32 v158){
+  ((*v157)=(((*v157))%((v158))));
 }
-void __ZH_BOP__asterisk_equal_i32Ri32(i32* v151, i32 v152){
-  ((*v151)=(((*v151))*((v152))));
+void __ZH_BOP__asterisk_equal_i32Ri32(i32* v159, i32 v160){
+  ((*v159)=(((*v159))*((v160))));
 }
-void __ZH_BOP__caret_equal_i32Ri32(i32* v153, i32 v154){
-  ((*v153)=(((*v153))^((v154))));
+void __ZH_BOP__caret_equal_i32Ri32(i32* v161, i32 v162){
+  ((*v161)=(((*v161))^((v162))));
 }
-void __ZH_BOP__ampersand_equal_i32Ri32(i32* v155, i32 v156){
-  ((*v155)=(((*v155))&((v156))));
+void __ZH_BOP__ampersand_equal_i32Ri32(i32* v163, i32 v164){
+  ((*v163)=(((*v163))&((v164))));
 }
-void __ZH_BOP__pipe_equal_i32Ri32(i32* v157, i32 v158){
-  ((*v157)=(((*v157))|((v158))));
+void __ZH_BOP__pipe_equal_i32Ri32(i32* v165, i32 v166){
+  ((*v165)=(((*v165))|((v166))));
 }
-bool __ZH_BOP__percent_percent_i32i32(i32 v159, i32 v160) {{
-  return (!((((v159))%((v160)))));
+bool __ZH_BOP__percent_percent_i32i32(i32 v167, i32 v168) {{
+  bool v170;
+  ((v170)=(!((((v167))%((v168))))));
+  return (v170);
 };printf("%s", "reached function end without returning anything op bool %% i32 a i32 b\n"); exit(EXIT_FAILURE);}
-bool __ZH_BOP__exclamation_percent_i32i32(i32 v161, i32 v162) {{
-  return (!((__ZH_BOP__percent_percent_i32i32((v161), (v162)))));
+bool __ZH_BOP__exclamation_percent_i32i32(i32 v171, i32 v172) {{
+  bool v174;
+  ((v174)=(!((__ZH_BOP__percent_percent_i32i32((v171), (v172))))));
+  return (v174);
 };printf("%s", "reached function end without returning anything op bool !% i32 a i32 b\n"); exit(EXIT_FAILURE);}
-void __ZH_BOP__plus_equal_i64Ri64(i64* v164, i64 v165){
-  ((*v164)=(((*v164))+((v165))));
+void __ZH_BOP__plus_equal_i64Ri64(i64* v176, i64 v177){
+  ((*v176)=(((*v176))+((v177))));
 }
-void __ZH_BOP__minus_equal_i64Ri64(i64* v166, i64 v167){
-  ((*v166)=(((*v166))-((v167))));
+void __ZH_BOP__minus_equal_i64Ri64(i64* v178, i64 v179){
+  ((*v178)=(((*v178))-((v179))));
 }
-void __ZH_BOP__slash_equal_i64Ri64(i64* v168, i64 v169){
-  ((*v168)=(((*v168))/((v169))));
+void __ZH_BOP__slash_equal_i64Ri64(i64* v180, i64 v181){
+  ((*v180)=(((*v180))/((v181))));
 }
-void __ZH_BOP__percent_equal_i64Ri64(i64* v170, i64 v171){
-  ((*v170)=(((*v170))%((v171))));
+void __ZH_BOP__percent_equal_i64Ri64(i64* v182, i64 v183){
+  ((*v182)=(((*v182))%((v183))));
 }
-void __ZH_BOP__asterisk_equal_i64Ri64(i64* v172, i64 v173){
-  ((*v172)=(((*v172))*((v173))));
+void __ZH_BOP__asterisk_equal_i64Ri64(i64* v184, i64 v185){
+  ((*v184)=(((*v184))*((v185))));
 }
-void __ZH_BOP__caret_equal_i64Ri64(i64* v174, i64 v175){
-  ((*v174)=(((*v174))^((v175))));
+void __ZH_BOP__caret_equal_i64Ri64(i64* v186, i64 v187){
+  ((*v186)=(((*v186))^((v187))));
 }
-void __ZH_BOP__ampersand_equal_i64Ri64(i64* v176, i64 v177){
-  ((*v176)=(((*v176))&((v177))));
+void __ZH_BOP__ampersand_equal_i64Ri64(i64* v188, i64 v189){
+  ((*v188)=(((*v188))&((v189))));
 }
-void __ZH_BOP__pipe_equal_i64Ri64(i64* v178, i64 v179){
-  ((*v178)=(((*v178))|((v179))));
+void __ZH_BOP__pipe_equal_i64Ri64(i64* v190, i64 v191){
+  ((*v190)=(((*v190))|((v191))));
 }
-bool __ZH_BOP__percent_percent_i64i64(i64 v180, i64 v181) {{
-  return (!((((v180))%((v181)))));
+bool __ZH_BOP__percent_percent_i64i64(i64 v192, i64 v193) {{
+  bool v195;
+  ((v195)=(!((((v192))%((v193))))));
+  return (v195);
 };printf("%s", "reached function end without returning anything op bool %% i64 a i64 b\n"); exit(EXIT_FAILURE);}
-bool __ZH_BOP__exclamation_percent_i64i64(i64 v182, i64 v183) {{
-  return (!((__ZH_BOP__percent_percent_i64i64((v182), (v183)))));
+bool __ZH_BOP__exclamation_percent_i64i64(i64 v196, i64 v197) {{
+  bool v199;
+  ((v199)=(!((__ZH_BOP__percent_percent_i64i64((v196), (v197))))));
+  return (v199);
 };printf("%s", "reached function end without returning anything op bool !% i64 a i64 b\n"); exit(EXIT_FAILURE);}
-void __ZH_BOP__plus_equal_u8Ru8(u8* v185, u8 v186){
-  ((*v185)=(((*v185))+((v186))));
+void __ZH_BOP__plus_equal_u8Ru8(u8* v201, u8 v202){
+  ((*v201)=(((*v201))+((v202))));
 }
-void __ZH_BOP__minus_equal_u8Ru8(u8* v187, u8 v188){
-  ((*v187)=(((*v187))-((v188))));
+void __ZH_BOP__minus_equal_u8Ru8(u8* v203, u8 v204){
+  ((*v203)=(((*v203))-((v204))));
 }
-void __ZH_BOP__slash_equal_u8Ru8(u8* v189, u8 v190){
-  ((*v189)=(((*v189))/((v190))));
+void __ZH_BOP__slash_equal_u8Ru8(u8* v205, u8 v206){
+  ((*v205)=(((*v205))/((v206))));
 }
-void __ZH_BOP__percent_equal_u8Ru8(u8* v191, u8 v192){
-  ((*v191)=(((*v191))%((v192))));
+void __ZH_BOP__percent_equal_u8Ru8(u8* v207, u8 v208){
+  ((*v207)=(((*v207))%((v208))));
 }
-void __ZH_BOP__asterisk_equal_u8Ru8(u8* v193, u8 v194){
-  ((*v193)=(((*v193))*((v194))));
+void __ZH_BOP__asterisk_equal_u8Ru8(u8* v209, u8 v210){
+  ((*v209)=(((*v209))*((v210))));
 }
-void __ZH_BOP__caret_equal_u8Ru8(u8* v195, u8 v196){
-  ((*v195)=(((*v195))^((v196))));
+void __ZH_BOP__caret_equal_u8Ru8(u8* v211, u8 v212){
+  ((*v211)=(((*v211))^((v212))));
 }
-void __ZH_BOP__ampersand_equal_u8Ru8(u8* v197, u8 v198){
-  ((*v197)=(((*v197))&((v198))));
+void __ZH_BOP__ampersand_equal_u8Ru8(u8* v213, u8 v214){
+  ((*v213)=(((*v213))&((v214))));
 }
-void __ZH_BOP__pipe_equal_u8Ru8(u8* v199, u8 v200){
-  ((*v199)=(((*v199))|((v200))));
+void __ZH_BOP__pipe_equal_u8Ru8(u8* v215, u8 v216){
+  ((*v215)=(((*v215))|((v216))));
 }
-bool __ZH_BOP__percent_percent_u8u8(u8 v201, u8 v202) {{
-  return (!((((v201))%((v202)))));
+bool __ZH_BOP__percent_percent_u8u8(u8 v217, u8 v218) {{
+  bool v220;
+  ((v220)=(!((((v217))%((v218))))));
+  return (v220);
 };printf("%s", "reached function end without returning anything op bool %% u8 a u8 b\n"); exit(EXIT_FAILURE);}
-bool __ZH_BOP__exclamation_percent_u8u8(u8 v203, u8 v204) {{
-  return (!((__ZH_BOP__percent_percent_u8u8((v203), (v204)))));
+bool __ZH_BOP__exclamation_percent_u8u8(u8 v221, u8 v222) {{
+  bool v224;
+  ((v224)=(!((__ZH_BOP__percent_percent_u8u8((v221), (v222))))));
+  return (v224);
 };printf("%s", "reached function end without returning anything op bool !% u8 a u8 b\n"); exit(EXIT_FAILURE);}
-void __ZH_BOP__plus_equal_u16Ru16(u16* v206, u16 v207){
-  ((*v206)=(((*v206))+((v207))));
+void __ZH_BOP__plus_equal_u16Ru16(u16* v226, u16 v227){
+  ((*v226)=(((*v226))+((v227))));
 }
-void __ZH_BOP__minus_equal_u16Ru16(u16* v208, u16 v209){
-  ((*v208)=(((*v208))-((v209))));
+void __ZH_BOP__minus_equal_u16Ru16(u16* v228, u16 v229){
+  ((*v228)=(((*v228))-((v229))));
 }
-void __ZH_BOP__slash_equal_u16Ru16(u16* v210, u16 v211){
-  ((*v210)=(((*v210))/((v211))));
+void __ZH_BOP__slash_equal_u16Ru16(u16* v230, u16 v231){
+  ((*v230)=(((*v230))/((v231))));
 }
-void __ZH_BOP__percent_equal_u16Ru16(u16* v212, u16 v213){
-  ((*v212)=(((*v212))%((v213))));
+void __ZH_BOP__percent_equal_u16Ru16(u16* v232, u16 v233){
+  ((*v232)=(((*v232))%((v233))));
 }
-void __ZH_BOP__asterisk_equal_u16Ru16(u16* v214, u16 v215){
-  ((*v214)=(((*v214))*((v215))));
+void __ZH_BOP__asterisk_equal_u16Ru16(u16* v234, u16 v235){
+  ((*v234)=(((*v234))*((v235))));
 }
-void __ZH_BOP__caret_equal_u16Ru16(u16* v216, u16 v217){
-  ((*v216)=(((*v216))^((v217))));
+void __ZH_BOP__caret_equal_u16Ru16(u16* v236, u16 v237){
+  ((*v236)=(((*v236))^((v237))));
 }
-void __ZH_BOP__ampersand_equal_u16Ru16(u16* v218, u16 v219){
-  ((*v218)=(((*v218))&((v219))));
+void __ZH_BOP__ampersand_equal_u16Ru16(u16* v238, u16 v239){
+  ((*v238)=(((*v238))&((v239))));
 }
-void __ZH_BOP__pipe_equal_u16Ru16(u16* v220, u16 v221){
-  ((*v220)=(((*v220))|((v221))));
+void __ZH_BOP__pipe_equal_u16Ru16(u16* v240, u16 v241){
+  ((*v240)=(((*v240))|((v241))));
 }
-bool __ZH_BOP__percent_percent_u16u16(u16 v222, u16 v223) {{
-  return (!((((v222))%((v223)))));
+bool __ZH_BOP__percent_percent_u16u16(u16 v242, u16 v243) {{
+  bool v245;
+  ((v245)=(!((((v242))%((v243))))));
+  return (v245);
 };printf("%s", "reached function end without returning anything op bool %% u16 a u16 b\n"); exit(EXIT_FAILURE);}
-bool __ZH_BOP__exclamation_percent_u16u16(u16 v224, u16 v225) {{
-  return (!((__ZH_BOP__percent_percent_u16u16((v224), (v225)))));
+bool __ZH_BOP__exclamation_percent_u16u16(u16 v246, u16 v247) {{
+  bool v249;
+  ((v249)=(!((__ZH_BOP__percent_percent_u16u16((v246), (v247))))));
+  return (v249);
 };printf("%s", "reached function end without returning anything op bool !% u16 a u16 b\n"); exit(EXIT_FAILURE);}
-void __ZH_BOP__plus_equal_u32Ru32(u32* v227, u32 v228){
-  ((*v227)=(((*v227))+((v228))));
+void __ZH_BOP__plus_equal_u32Ru32(u32* v251, u32 v252){
+  ((*v251)=(((*v251))+((v252))));
 }
-void __ZH_BOP__minus_equal_u32Ru32(u32* v229, u32 v230){
-  ((*v229)=(((*v229))-((v230))));
+void __ZH_BOP__minus_equal_u32Ru32(u32* v253, u32 v254){
+  ((*v253)=(((*v253))-((v254))));
 }
-void __ZH_BOP__slash_equal_u32Ru32(u32* v231, u32 v232){
-  ((*v231)=(((*v231))/((v232))));
+void __ZH_BOP__slash_equal_u32Ru32(u32* v255, u32 v256){
+  ((*v255)=(((*v255))/((v256))));
 }
-void __ZH_BOP__percent_equal_u32Ru32(u32* v233, u32 v234){
-  ((*v233)=(((*v233))%((v234))));
+void __ZH_BOP__percent_equal_u32Ru32(u32* v257, u32 v258){
+  ((*v257)=(((*v257))%((v258))));
 }
-void __ZH_BOP__asterisk_equal_u32Ru32(u32* v235, u32 v236){
-  ((*v235)=(((*v235))*((v236))));
+void __ZH_BOP__asterisk_equal_u32Ru32(u32* v259, u32 v260){
+  ((*v259)=(((*v259))*((v260))));
 }
-void __ZH_BOP__caret_equal_u32Ru32(u32* v237, u32 v238){
-  ((*v237)=(((*v237))^((v238))));
+void __ZH_BOP__caret_equal_u32Ru32(u32* v261, u32 v262){
+  ((*v261)=(((*v261))^((v262))));
 }
-void __ZH_BOP__ampersand_equal_u32Ru32(u32* v239, u32 v240){
-  ((*v239)=(((*v239))&((v240))));
+void __ZH_BOP__ampersand_equal_u32Ru32(u32* v263, u32 v264){
+  ((*v263)=(((*v263))&((v264))));
 }
-void __ZH_BOP__pipe_equal_u32Ru32(u32* v241, u32 v242){
-  ((*v241)=(((*v241))|((v242))));
+void __ZH_BOP__pipe_equal_u32Ru32(u32* v265, u32 v266){
+  ((*v265)=(((*v265))|((v266))));
 }
-bool __ZH_BOP__percent_percent_u32u32(u32 v243, u32 v244) {{
-  return (!((((v243))%((v244)))));
+bool __ZH_BOP__percent_percent_u32u32(u32 v267, u32 v268) {{
+  bool v270;
+  ((v270)=(!((((v267))%((v268))))));
+  return (v270);
 };printf("%s", "reached function end without returning anything op bool %% u32 a u32 b\n"); exit(EXIT_FAILURE);}
-bool __ZH_BOP__exclamation_percent_u32u32(u32 v245, u32 v246) {{
-  return (!((__ZH_BOP__percent_percent_u32u32((v245), (v246)))));
-};printf("%s", "reached function end without returning anything op bool !% u32 a u32 b\n"); exit(EXIT_FAILURE);}
-void __ZH_BOP__plus_equal_u64Ru64(u64* v248, u64 v249){
-  ((*v248)=(((*v248))+((v249))));
-}
-void __ZH_BOP__minus_equal_u64Ru64(u64* v250, u64 v251){
-  ((*v250)=(((*v250))-((v251))));
-}
-void __ZH_BOP__slash_equal_u64Ru64(u64* v252, u64 v253){
-  ((*v252)=(((*v252))/((v253))));
-}
-void __ZH_BOP__percent_equal_u64Ru64(u64* v254, u64 v255){
-  ((*v254)=(((*v254))%((v255))));
-}
-void __ZH_BOP__asterisk_equal_u64Ru64(u64* v256, u64 v257){
-  ((*v256)=(((*v256))*((v257))));
-}
-void __ZH_BOP__caret_equal_u64Ru64(u64* v258, u64 v259){
-  ((*v258)=(((*v258))^((v259))));
-}
-void __ZH_BOP__ampersand_equal_u64Ru64(u64* v260, u64 v261){
-  ((*v260)=(((*v260))&((v261))));
-}
-void __ZH_BOP__pipe_equal_u64Ru64(u64* v262, u64 v263){
-  ((*v262)=(((*v262))|((v263))));
-}
-bool __ZH_BOP__percent_percent_u64u64(u64 v264, u64 v265) {{
-  return (!((((v264))%((v265)))));
-};printf("%s", "reached function end without returning anything op bool %% u64 a u64 b\n"); exit(EXIT_FAILURE);}
-bool __ZH_BOP__exclamation_percent_u64u64(u64 v266, u64 v267) {{
-  return (!((__ZH_BOP__percent_percent_u64u64((v266), (v267)))));
-};printf("%s", "reached function end without returning anything op bool !% u64 a u64 b\n"); exit(EXIT_FAILURE);}
-i64* __ZH_LOP__plus_plus_i64R(i64* v269) {{
-  (__ZH_BOP__plus_equal_i64Ri64(&(*v269), ((i64)1)));
-  return &(*v269);
-};printf("%s", "reached function end without returning anything lop i64R ++ i64R x\n"); exit(EXIT_FAILURE);}
-i64* __ZH_LOP__minus_minus_i64R(i64* v270) {{
-  (__ZH_BOP__minus_equal_i64Ri64(&(*v270), ((i64)1)));
-  return &(*v270);
-};printf("%s", "reached function end without returning anything lop i64R -- i64R x\n"); exit(EXIT_FAILURE);}
-i64 __ZH_ROP__plus_plus_i64R(i64* v271) {{
-  i64 v272;
-  ((v272)=(*v271));
-  (__ZH_BOP__plus_equal_i64Ri64(&(*v271), ((i64)1)));
-  return (v272);
-};printf("%s", "reached function end without returning anything rop i64 ++ i64R x\n"); exit(EXIT_FAILURE);}
-i64 __ZH_ROP__minus_minus_i64R(i64* v273) {{
-  i64 v274;
-  ((v274)=(*v273));
-  (__ZH_BOP__minus_equal_i64Ri64(&(*v273), ((i64)1)));
+bool __ZH_BOP__exclamation_percent_u32u32(u32 v271, u32 v272) {{
+  bool v274;
+  ((v274)=(!((__ZH_BOP__percent_percent_u32u32((v271), (v272))))));
   return (v274);
+};printf("%s", "reached function end without returning anything op bool !% u32 a u32 b\n"); exit(EXIT_FAILURE);}
+void __ZH_BOP__plus_equal_u64Ru64(u64* v276, u64 v277){
+  ((*v276)=(((*v276))+((v277))));
+}
+void __ZH_BOP__minus_equal_u64Ru64(u64* v278, u64 v279){
+  ((*v278)=(((*v278))-((v279))));
+}
+void __ZH_BOP__slash_equal_u64Ru64(u64* v280, u64 v281){
+  ((*v280)=(((*v280))/((v281))));
+}
+void __ZH_BOP__percent_equal_u64Ru64(u64* v282, u64 v283){
+  ((*v282)=(((*v282))%((v283))));
+}
+void __ZH_BOP__asterisk_equal_u64Ru64(u64* v284, u64 v285){
+  ((*v284)=(((*v284))*((v285))));
+}
+void __ZH_BOP__caret_equal_u64Ru64(u64* v286, u64 v287){
+  ((*v286)=(((*v286))^((v287))));
+}
+void __ZH_BOP__ampersand_equal_u64Ru64(u64* v288, u64 v289){
+  ((*v288)=(((*v288))&((v289))));
+}
+void __ZH_BOP__pipe_equal_u64Ru64(u64* v290, u64 v291){
+  ((*v290)=(((*v290))|((v291))));
+}
+bool __ZH_BOP__percent_percent_u64u64(u64 v292, u64 v293) {{
+  bool v295;
+  ((v295)=(!((((v292))%((v293))))));
+  return (v295);
+};printf("%s", "reached function end without returning anything op bool %% u64 a u64 b\n"); exit(EXIT_FAILURE);}
+bool __ZH_BOP__exclamation_percent_u64u64(u64 v296, u64 v297) {{
+  bool v299;
+  ((v299)=(!((__ZH_BOP__percent_percent_u64u64((v296), (v297))))));
+  return (v299);
+};printf("%s", "reached function end without returning anything op bool !% u64 a u64 b\n"); exit(EXIT_FAILURE);}
+i64* __ZH_LOP__plus_plus_i64R(i64* v301) {{
+  i64 v303;
+  (__ZH_BOP__plus_equal_i64Ri64(&(*v301), ((i64)1)));
+  ((v303)=(*v301));
+  return &(v303);
+};printf("%s", "reached function end without returning anything lop i64R ++ i64R x\n"); exit(EXIT_FAILURE);}
+i64* __ZH_LOP__minus_minus_i64R(i64* v304) {{
+  i64 v306;
+  (__ZH_BOP__minus_equal_i64Ri64(&(*v304), ((i64)1)));
+  ((v306)=(*v304));
+  return &(v306);
+};printf("%s", "reached function end without returning anything lop i64R -- i64R x\n"); exit(EXIT_FAILURE);}
+i64 __ZH_ROP__plus_plus_i64R(i64* v307) {{
+  i64 v310;
+  i64 v308;
+  ((v308)=(*v307));
+  (__ZH_BOP__plus_equal_i64Ri64(&(*v307), ((i64)1)));
+  ((v310)=(v308));
+  return (v310);
+};printf("%s", "reached function end without returning anything rop i64 ++ i64R x\n"); exit(EXIT_FAILURE);}
+i64 __ZH_ROP__minus_minus_i64R(i64* v311) {{
+  i64 v314;
+  i64 v312;
+  ((v312)=(*v311));
+  (__ZH_BOP__minus_equal_i64Ri64(&(*v311), ((i64)1)));
+  ((v314)=(v312));
+  return (v314);
 };printf("%s", "reached function end without returning anything rop i64 -- i64R x\n"); exit(EXIT_FAILURE);}
-void __ZH_BOP__plus_equal_f32Rf32(f32* v275, f32 v276){
-  ((*v275)=(((*v275))+((v276))));
+void __ZH_BOP__plus_equal_f32Rf32(f32* v315, f32 v316){
+  ((*v315)=(((*v315))+((v316))));
 }
-void __ZH_BOP__minus_equal_f32Rf32(f32* v277, f32 v278){
-  ((*v277)=(((*v277))-((v278))));
+void __ZH_BOP__minus_equal_f32Rf32(f32* v317, f32 v318){
+  ((*v317)=(((*v317))-((v318))));
 }
-void __ZH_BOP__slash_equal_f32Rf32(f32* v279, f32 v280){
-  ((*v279)=(((*v279))/((v280))));
+void __ZH_BOP__slash_equal_f32Rf32(f32* v319, f32 v320){
+  ((*v319)=(((*v319))/((v320))));
 }
-void __ZH_BOP__asterisk_equal_f32Rf32(f32* v281, f32 v282){
-  ((*v281)=(((*v281))*((v282))));
+void __ZH_BOP__asterisk_equal_f32Rf32(f32* v321, f32 v322){
+  ((*v321)=(((*v321))*((v322))));
 }
-void __ZH_BOP__plus_equal_f64Rf64(f64* v283, f64 v284){
-  ((*v283)=(((*v283))+((v284))));
+void __ZH_BOP__plus_equal_f64Rf64(f64* v323, f64 v324){
+  ((*v323)=(((*v323))+((v324))));
 }
-void __ZH_BOP__minus_equal_f64Rf64(f64* v285, f64 v286){
-  ((*v285)=(((*v285))-((v286))));
+void __ZH_BOP__minus_equal_f64Rf64(f64* v325, f64 v326){
+  ((*v325)=(((*v325))-((v326))));
 }
-void __ZH_BOP__slash_equal_f64Rf64(f64* v287, f64 v288){
-  ((*v287)=(((*v287))/((v288))));
+void __ZH_BOP__slash_equal_f64Rf64(f64* v327, f64 v328){
+  ((*v327)=(((*v327))/((v328))));
 }
-void __ZH_BOP__asterisk_equal_f64Rf64(f64* v289, f64 v290){
-  ((*v289)=(((*v289))*((v290))));
+void __ZH_BOP__asterisk_equal_f64Rf64(f64* v329, f64 v330){
+  ((*v329)=(((*v329))*((v330))));
 }
-i64 __ZH_BOP__asterisk_asterisk_i64i64(i64 v291, i64 v292) {{
-  i64 v293;
-  ((v293)=((i64)1));
-  while ((((v292))!=(((i64)0)))) {
-    if ((__ZH_BOP__exclamation_percent_i64i64((v292), ((i64)2)))) {
-      (__ZH_BOP__asterisk_equal_i64Ri64(&(v293), (v291)));
+i64 __ZH_BOP__asterisk_asterisk_i64i64(i64 v331, i64 v332) {{
+  i64 v335;
+  i64 v333;
+  ((v333)=((i64)1));
+  while ((((v332))!=(((i64)0)))) {
+    if ((__ZH_BOP__exclamation_percent_i64i64((v332), ((i64)2)))) {
+      (__ZH_BOP__asterisk_equal_i64Ri64(&(v333), (v331)));
     }
-    (__ZH_BOP__asterisk_equal_i64Ri64(&(v291), (v291)));
-    (__ZH_BOP__slash_equal_i64Ri64(&(v292), ((i64)2)));
+    (__ZH_BOP__asterisk_equal_i64Ri64(&(v331), (v331)));
+    (__ZH_BOP__slash_equal_i64Ri64(&(v332), ((i64)2)));
   }
-  return (v293);
+  ((v335)=(v333));
+  return (v335);
 };printf("%s", "reached function end without returning anything op i64 ** i64 a i64 n\n"); exit(EXIT_FAILURE);}
 __ZH_TYPE_Out __ZH_LOP_Out_() {{
-  __ZH_TYPE_Out v294;
-  return (v294);
+  __ZH_TYPE_Out v338;
+  __ZH_TYPE_Out v336;
+  ((v338)=(v336));
+  return (v338);
 };printf("%s", "reached function end without returning anything lop Out Out\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_BOP__less_OutOut(__ZH_TYPE_Out v295, __ZH_TYPE_Out v296) {{
-  return (__ZH_LOP_Out_());
+__ZH_TYPE_Out __ZH_BOP__less_OutOut(__ZH_TYPE_Out v339, __ZH_TYPE_Out v340) {{
+  __ZH_TYPE_Out v342;
+  ((v342)=(__ZH_LOP_Out_()));
+  return (v342);
 };printf("%s", "reached function end without returning anything op Out < Out a Out b\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_LOP__less_Out(__ZH_TYPE_Out v297) {{
-  return (__ZH_LOP_Out_());
+__ZH_TYPE_Out __ZH_LOP__less_Out(__ZH_TYPE_Out v343) {{
+  __ZH_TYPE_Out v345;
+  ((v345)=(__ZH_LOP_Out_()));
+  return (v345);
 };printf("%s", "reached function end without returning anything lop Out < Out o\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_ROP__less_str(str v298) {{
-  (printf("%s\n", (v298)));
-  return (__ZH_LOP_Out_());
+__ZH_TYPE_Out __ZH_ROP__less_str(str v346) {{
+  __ZH_TYPE_Out v348;
+  (printf("%s\n", (v346)));
+  ((v348)=(__ZH_LOP_Out_()));
+  return (v348);
 };printf("%s", "reached function end without returning anything rop Out < str i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_LOP__less_str(str v299) {{
-  ((printf("%s", (v299))), (printf("%s", ((str)" "))));
-  return (__ZH_LOP_Out_());
+__ZH_TYPE_Out __ZH_LOP__less_str(str v349) {{
+  __ZH_TYPE_Out v351;
+  ((printf("%s", (v349))), (printf("%s", ((str)" "))));
+  ((v351)=(__ZH_LOP_Out_()));
+  return (v351);
 };printf("%s", "reached function end without returning anything lop Out < str i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_BOP__less_Outstr(__ZH_TYPE_Out v300, str v301) {{
-  ((printf("%s", (v301))), (printf("%s", ((str)" "))));
-  return (__ZH_LOP_Out_());
+__ZH_TYPE_Out __ZH_BOP__less_Outstr(__ZH_TYPE_Out v352, str v353) {{
+  __ZH_TYPE_Out v355;
+  ((printf("%s", (v353))), (printf("%s", ((str)" "))));
+  ((v355)=(__ZH_LOP_Out_()));
+  return (v355);
 };printf("%s", "reached function end without returning anything op Out < Out o str i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_LOP__greater_strR(str* v302) {{
-  ((*v302)=(in_str()));
-  return (__ZH_LOP_Out_());
+__ZH_TYPE_Out __ZH_LOP__greater_strR(str* v356) {{
+  __ZH_TYPE_Out v358;
+  ((*v356)=(in_str()));
+  ((v358)=(__ZH_LOP_Out_()));
+  return (v358);
 };printf("%s", "reached function end without returning anything lop Out > strR i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_BOP__greater_OutstrR(__ZH_TYPE_Out v303, str* v304) {{
-  ((*v304)=(in_str()));
-  return (__ZH_LOP_Out_());
+__ZH_TYPE_Out __ZH_BOP__greater_OutstrR(__ZH_TYPE_Out v359, str* v360) {{
+  __ZH_TYPE_Out v362;
+  ((*v360)=(in_str()));
+  ((v362)=(__ZH_LOP_Out_()));
+  return (v362);
 };printf("%s", "reached function end without returning anything op Out > Out o strR i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_ROP__less_char(char v305) {{
-  (printf("%c\n", (v305)));
-  return (__ZH_LOP_Out_());
+__ZH_TYPE_Out __ZH_ROP__less_char(char v363) {{
+  __ZH_TYPE_Out v365;
+  (printf("%c\n", (v363)));
+  ((v365)=(__ZH_LOP_Out_()));
+  return (v365);
 };printf("%s", "reached function end without returning anything rop Out < char i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_LOP__less_char(char v306) {{
-  ((printf("%c", (v306))), (printf("%s", ((str)" "))));
-  return (__ZH_LOP_Out_());
+__ZH_TYPE_Out __ZH_LOP__less_char(char v366) {{
+  __ZH_TYPE_Out v368;
+  ((printf("%c", (v366))), (printf("%s", ((str)" "))));
+  ((v368)=(__ZH_LOP_Out_()));
+  return (v368);
 };printf("%s", "reached function end without returning anything lop Out < char i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_BOP__less_Outchar(__ZH_TYPE_Out v307, char v308) {{
-  ((printf("%c", (v308))), (printf("%s", ((str)" "))));
-  return (__ZH_LOP_Out_());
+__ZH_TYPE_Out __ZH_BOP__less_Outchar(__ZH_TYPE_Out v369, char v370) {{
+  __ZH_TYPE_Out v372;
+  ((printf("%c", (v370))), (printf("%s", ((str)" "))));
+  ((v372)=(__ZH_LOP_Out_()));
+  return (v372);
 };printf("%s", "reached function end without returning anything op Out < Out o char i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_LOP__greater_charR(char* v309) {{
-  ((*v309)=(in_char()));
-  return (__ZH_LOP_Out_());
+__ZH_TYPE_Out __ZH_LOP__greater_charR(char* v373) {{
+  __ZH_TYPE_Out v375;
+  ((*v373)=(in_char()));
+  ((v375)=(__ZH_LOP_Out_()));
+  return (v375);
 };printf("%s", "reached function end without returning anything lop Out > charR i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_BOP__greater_OutcharR(__ZH_TYPE_Out v310, char* v311) {{
-  ((*v311)=(in_char()));
-  return (__ZH_LOP_Out_());
+__ZH_TYPE_Out __ZH_BOP__greater_OutcharR(__ZH_TYPE_Out v376, char* v377) {{
+  __ZH_TYPE_Out v379;
+  ((*v377)=(in_char()));
+  ((v379)=(__ZH_LOP_Out_()));
+  return (v379);
 };printf("%s", "reached function end without returning anything op Out > Out o charR i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_ROP__less_i8(i8 v312) {{
-  (printf("%d\n", (v312)));
-  return (__ZH_LOP_Out_());
+__ZH_TYPE_Out __ZH_ROP__less_i8(i8 v380) {{
+  __ZH_TYPE_Out v382;
+  (printf("%d\n", (v380)));
+  ((v382)=(__ZH_LOP_Out_()));
+  return (v382);
 };printf("%s", "reached function end without returning anything rop Out < i8 i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_LOP__less_i8(i8 v313) {{
-  ((printf("%d", (v313))), (printf("%s", ((str)" "))));
-  return (__ZH_LOP_Out_());
+__ZH_TYPE_Out __ZH_LOP__less_i8(i8 v383) {{
+  __ZH_TYPE_Out v385;
+  ((printf("%d", (v383))), (printf("%s", ((str)" "))));
+  ((v385)=(__ZH_LOP_Out_()));
+  return (v385);
 };printf("%s", "reached function end without returning anything lop Out < i8 i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_BOP__less_Outi8(__ZH_TYPE_Out v314, i8 v315) {{
-  ((printf("%d", (v315))), (printf("%s", ((str)" "))));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything op Out < Out o i8 i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_LOP__greater_i8R(i8* v316) {{
-  ((*v316)=(in_i8()));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything lop Out > i8R i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_BOP__greater_Outi8R(__ZH_TYPE_Out v317, i8* v318) {{
-  ((*v318)=(in_i8()));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything op Out > Out o i8R i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_ROP__less_i16(i16 v319) {{
-  (printf("%hd\n", (v319)));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything rop Out < i16 i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_LOP__less_i16(i16 v320) {{
-  ((printf("%hd", (v320))), (printf("%s", ((str)" "))));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything lop Out < i16 i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_BOP__less_Outi16(__ZH_TYPE_Out v321, i16 v322) {{
-  ((printf("%hd", (v322))), (printf("%s", ((str)" "))));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything op Out < Out o i16 i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_LOP__greater_i16R(i16* v323) {{
-  ((*v323)=(in_i16()));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything lop Out > i16R i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_BOP__greater_Outi16R(__ZH_TYPE_Out v324, i16* v325) {{
-  ((*v325)=(in_i16()));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything op Out > Out o i16R i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_ROP__less_i32(i32 v326) {{
-  (printf("%d\n", (v326)));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything rop Out < i32 i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_LOP__less_i32(i32 v327) {{
-  ((printf("%d", (v327))), (printf("%s", ((str)" "))));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything lop Out < i32 i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_BOP__less_Outi32(__ZH_TYPE_Out v328, i32 v329) {{
-  ((printf("%d", (v329))), (printf("%s", ((str)" "))));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything op Out < Out o i32 i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_LOP__greater_i32R(i32* v330) {{
-  ((*v330)=(in_i32()));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything lop Out > i32R i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_BOP__greater_Outi32R(__ZH_TYPE_Out v331, i32* v332) {{
-  ((*v332)=(in_i32()));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything op Out > Out o i32R i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_ROP__less_i64(i64 v333) {{
-  (printf("%lld\n", (v333)));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything rop Out < i64 i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_LOP__less_i64(i64 v334) {{
-  ((printf("%lld", (v334))), (printf("%s", ((str)" "))));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything lop Out < i64 i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_BOP__less_Outi64(__ZH_TYPE_Out v335, i64 v336) {{
-  ((printf("%lld", (v336))), (printf("%s", ((str)" "))));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything op Out < Out o i64 i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_LOP__greater_i64R(i64* v337) {{
-  ((*v337)=(in_i64()));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything lop Out > i64R i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_BOP__greater_Outi64R(__ZH_TYPE_Out v338, i64* v339) {{
-  ((*v339)=(in_i64()));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything op Out > Out o i64R i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_ROP__less_u8(u8 v340) {{
-  (printf("%d\n", (v340)));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything rop Out < u8 i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_LOP__less_u8(u8 v341) {{
-  ((printf("%d", (v341))), (printf("%s", ((str)" "))));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything lop Out < u8 i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_BOP__less_Outu8(__ZH_TYPE_Out v342, u8 v343) {{
-  ((printf("%d", (v343))), (printf("%s", ((str)" "))));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything op Out < Out o u8 i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_LOP__greater_u8R(u8* v344) {{
-  ((*v344)=(in_u8()));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything lop Out > u8R i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_BOP__greater_Outu8R(__ZH_TYPE_Out v345, u8* v346) {{
-  ((*v346)=(in_u8()));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything op Out > Out o u8R i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_ROP__less_u16(u16 v347) {{
-  (printf("%hd\n", (v347)));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything rop Out < u16 i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_LOP__less_u16(u16 v348) {{
-  ((printf("%hd", (v348))), (printf("%s", ((str)" "))));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything lop Out < u16 i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_BOP__less_Outu16(__ZH_TYPE_Out v349, u16 v350) {{
-  ((printf("%hd", (v350))), (printf("%s", ((str)" "))));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything op Out < Out o u16 i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_LOP__greater_u16R(u16* v351) {{
-  ((*v351)=(in_u16()));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything lop Out > u16R i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_BOP__greater_Outu16R(__ZH_TYPE_Out v352, u16* v353) {{
-  ((*v353)=(in_u16()));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything op Out > Out o u16R i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_ROP__less_u32(u32 v354) {{
-  (printf("%u\n", (v354)));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything rop Out < u32 i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_LOP__less_u32(u32 v355) {{
-  ((printf("%u", (v355))), (printf("%s", ((str)" "))));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything lop Out < u32 i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_BOP__less_Outu32(__ZH_TYPE_Out v356, u32 v357) {{
-  ((printf("%u", (v357))), (printf("%s", ((str)" "))));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything op Out < Out o u32 i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_LOP__greater_u32R(u32* v358) {{
-  ((*v358)=(in_u32()));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything lop Out > u32R i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_BOP__greater_Outu32R(__ZH_TYPE_Out v359, u32* v360) {{
-  ((*v360)=(in_u32()));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything op Out > Out o u32R i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_ROP__less_u64(u64 v361) {{
-  (printf("%llu\n", (v361)));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything rop Out < u64 i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_LOP__less_u64(u64 v362) {{
-  ((printf("%llu", (v362))), (printf("%s", ((str)" "))));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything lop Out < u64 i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_BOP__less_Outu64(__ZH_TYPE_Out v363, u64 v364) {{
-  ((printf("%llu", (v364))), (printf("%s", ((str)" "))));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything op Out < Out o u64 i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_LOP__greater_u64R(u64* v365) {{
-  ((*v365)=(in_u64()));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything lop Out > u64R i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_BOP__greater_Outu64R(__ZH_TYPE_Out v366, u64* v367) {{
-  ((*v367)=(in_u64()));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything op Out > Out o u64R i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_ROP__less_f32(f32 v368) {{
-  (printf("%f\n", (v368)));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything rop Out < f32 i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_LOP__less_f32(f32 v369) {{
-  ((printf("%f", (v369))), (printf("%s", ((str)" "))));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything lop Out < f32 i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_BOP__less_Outf32(__ZH_TYPE_Out v370, f32 v371) {{
-  ((printf("%f", (v371))), (printf("%s", ((str)" "))));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything op Out < Out o f32 i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_LOP__greater_f32R(f32* v372) {{
-  ((*v372)=(in_f32()));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything lop Out > f32R i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_BOP__greater_Outf32R(__ZH_TYPE_Out v373, f32* v374) {{
-  ((*v374)=(in_f32()));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything op Out > Out o f32R i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_ROP__less_f64(f64 v375) {{
-  (printf("%f\n", (v375)));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything rop Out < f64 i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_LOP__less_f64(f64 v376) {{
-  ((printf("%f", (v376))), (printf("%s", ((str)" "))));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything lop Out < f64 i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_BOP__less_Outf64(__ZH_TYPE_Out v377, f64 v378) {{
-  ((printf("%f", (v378))), (printf("%s", ((str)" "))));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything op Out < Out o f64 i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_LOP__greater_f64R(f64* v379) {{
-  ((*v379)=(in_f64()));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything lop Out > f64R i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_BOP__greater_Outf64R(__ZH_TYPE_Out v380, f64* v381) {{
-  ((*v381)=(in_f64()));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything op Out > Out o f64R i\n"); exit(EXIT_FAILURE);}
-void __ZH_BOP__dotcall_dotnext_i64P(i64* v382){
-  ((*(v382))=(((*(v382)))+(((i64)1))));
-}
-bool __ZH_BOP__dotcall_dotuneq_i64Pi64(i64* v383, i64 v384) {{
-  return (((*(v383)))!=((v384)));
-};printf("%s", "reached function end without returning anything op bool .call.uneq i64P slf i64 other\n"); exit(EXIT_FAILURE);}
-i64 __ZH_BOP__dotcall_dotbegin_RangeP(__ZH_TYPE_Range* v385) {{
-  return (((v385))->begin);
-};printf("%s", "reached function end without returning anything op i64 .call.begin RangeP slf\n"); exit(EXIT_FAILURE);}
-i64 __ZH_BOP__dotcall_dotend_RangeP(__ZH_TYPE_Range* v386) {{
-  return (((v386))->end);
-};printf("%s", "reached function end without returning anything op i64 .call.end RangeP slf\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Range __ZH_BOP__dot_dot_i64i64(i64 v387, i64 v388) {{
-  __ZH_TYPE_Range v389;
-  (((&(v389))->begin)=(v387));
-  (((&(v389))->end)=(v388));
+__ZH_TYPE_Out __ZH_BOP__less_Outi8(__ZH_TYPE_Out v386, i8 v387) {{
+  __ZH_TYPE_Out v389;
+  ((printf("%d", (v387))), (printf("%s", ((str)" "))));
+  ((v389)=(__ZH_LOP_Out_()));
   return (v389);
+};printf("%s", "reached function end without returning anything op Out < Out o i8 i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_LOP__greater_i8R(i8* v390) {{
+  __ZH_TYPE_Out v392;
+  ((*v390)=(in_i8()));
+  ((v392)=(__ZH_LOP_Out_()));
+  return (v392);
+};printf("%s", "reached function end without returning anything lop Out > i8R i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_BOP__greater_Outi8R(__ZH_TYPE_Out v393, i8* v394) {{
+  __ZH_TYPE_Out v396;
+  ((*v394)=(in_i8()));
+  ((v396)=(__ZH_LOP_Out_()));
+  return (v396);
+};printf("%s", "reached function end without returning anything op Out > Out o i8R i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_ROP__less_i16(i16 v397) {{
+  __ZH_TYPE_Out v399;
+  (printf("%hd\n", (v397)));
+  ((v399)=(__ZH_LOP_Out_()));
+  return (v399);
+};printf("%s", "reached function end without returning anything rop Out < i16 i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_LOP__less_i16(i16 v400) {{
+  __ZH_TYPE_Out v402;
+  ((printf("%hd", (v400))), (printf("%s", ((str)" "))));
+  ((v402)=(__ZH_LOP_Out_()));
+  return (v402);
+};printf("%s", "reached function end without returning anything lop Out < i16 i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_BOP__less_Outi16(__ZH_TYPE_Out v403, i16 v404) {{
+  __ZH_TYPE_Out v406;
+  ((printf("%hd", (v404))), (printf("%s", ((str)" "))));
+  ((v406)=(__ZH_LOP_Out_()));
+  return (v406);
+};printf("%s", "reached function end without returning anything op Out < Out o i16 i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_LOP__greater_i16R(i16* v407) {{
+  __ZH_TYPE_Out v409;
+  ((*v407)=(in_i16()));
+  ((v409)=(__ZH_LOP_Out_()));
+  return (v409);
+};printf("%s", "reached function end without returning anything lop Out > i16R i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_BOP__greater_Outi16R(__ZH_TYPE_Out v410, i16* v411) {{
+  __ZH_TYPE_Out v413;
+  ((*v411)=(in_i16()));
+  ((v413)=(__ZH_LOP_Out_()));
+  return (v413);
+};printf("%s", "reached function end without returning anything op Out > Out o i16R i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_ROP__less_i32(i32 v414) {{
+  __ZH_TYPE_Out v416;
+  (printf("%d\n", (v414)));
+  ((v416)=(__ZH_LOP_Out_()));
+  return (v416);
+};printf("%s", "reached function end without returning anything rop Out < i32 i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_LOP__less_i32(i32 v417) {{
+  __ZH_TYPE_Out v419;
+  ((printf("%d", (v417))), (printf("%s", ((str)" "))));
+  ((v419)=(__ZH_LOP_Out_()));
+  return (v419);
+};printf("%s", "reached function end without returning anything lop Out < i32 i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_BOP__less_Outi32(__ZH_TYPE_Out v420, i32 v421) {{
+  __ZH_TYPE_Out v423;
+  ((printf("%d", (v421))), (printf("%s", ((str)" "))));
+  ((v423)=(__ZH_LOP_Out_()));
+  return (v423);
+};printf("%s", "reached function end without returning anything op Out < Out o i32 i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_LOP__greater_i32R(i32* v424) {{
+  __ZH_TYPE_Out v426;
+  ((*v424)=(in_i32()));
+  ((v426)=(__ZH_LOP_Out_()));
+  return (v426);
+};printf("%s", "reached function end without returning anything lop Out > i32R i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_BOP__greater_Outi32R(__ZH_TYPE_Out v427, i32* v428) {{
+  __ZH_TYPE_Out v430;
+  ((*v428)=(in_i32()));
+  ((v430)=(__ZH_LOP_Out_()));
+  return (v430);
+};printf("%s", "reached function end without returning anything op Out > Out o i32R i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_ROP__less_i64(i64 v431) {{
+  __ZH_TYPE_Out v433;
+  (printf("%lld\n", (v431)));
+  ((v433)=(__ZH_LOP_Out_()));
+  return (v433);
+};printf("%s", "reached function end without returning anything rop Out < i64 i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_LOP__less_i64(i64 v434) {{
+  __ZH_TYPE_Out v436;
+  ((printf("%lld", (v434))), (printf("%s", ((str)" "))));
+  ((v436)=(__ZH_LOP_Out_()));
+  return (v436);
+};printf("%s", "reached function end without returning anything lop Out < i64 i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_BOP__less_Outi64(__ZH_TYPE_Out v437, i64 v438) {{
+  __ZH_TYPE_Out v440;
+  ((printf("%lld", (v438))), (printf("%s", ((str)" "))));
+  ((v440)=(__ZH_LOP_Out_()));
+  return (v440);
+};printf("%s", "reached function end without returning anything op Out < Out o i64 i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_LOP__greater_i64R(i64* v441) {{
+  __ZH_TYPE_Out v443;
+  ((*v441)=(in_i64()));
+  ((v443)=(__ZH_LOP_Out_()));
+  return (v443);
+};printf("%s", "reached function end without returning anything lop Out > i64R i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_BOP__greater_Outi64R(__ZH_TYPE_Out v444, i64* v445) {{
+  __ZH_TYPE_Out v447;
+  ((*v445)=(in_i64()));
+  ((v447)=(__ZH_LOP_Out_()));
+  return (v447);
+};printf("%s", "reached function end without returning anything op Out > Out o i64R i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_ROP__less_u8(u8 v448) {{
+  __ZH_TYPE_Out v450;
+  (printf("%d\n", (v448)));
+  ((v450)=(__ZH_LOP_Out_()));
+  return (v450);
+};printf("%s", "reached function end without returning anything rop Out < u8 i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_LOP__less_u8(u8 v451) {{
+  __ZH_TYPE_Out v453;
+  ((printf("%d", (v451))), (printf("%s", ((str)" "))));
+  ((v453)=(__ZH_LOP_Out_()));
+  return (v453);
+};printf("%s", "reached function end without returning anything lop Out < u8 i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_BOP__less_Outu8(__ZH_TYPE_Out v454, u8 v455) {{
+  __ZH_TYPE_Out v457;
+  ((printf("%d", (v455))), (printf("%s", ((str)" "))));
+  ((v457)=(__ZH_LOP_Out_()));
+  return (v457);
+};printf("%s", "reached function end without returning anything op Out < Out o u8 i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_LOP__greater_u8R(u8* v458) {{
+  __ZH_TYPE_Out v460;
+  ((*v458)=(in_u8()));
+  ((v460)=(__ZH_LOP_Out_()));
+  return (v460);
+};printf("%s", "reached function end without returning anything lop Out > u8R i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_BOP__greater_Outu8R(__ZH_TYPE_Out v461, u8* v462) {{
+  __ZH_TYPE_Out v464;
+  ((*v462)=(in_u8()));
+  ((v464)=(__ZH_LOP_Out_()));
+  return (v464);
+};printf("%s", "reached function end without returning anything op Out > Out o u8R i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_ROP__less_u16(u16 v465) {{
+  __ZH_TYPE_Out v467;
+  (printf("%hd\n", (v465)));
+  ((v467)=(__ZH_LOP_Out_()));
+  return (v467);
+};printf("%s", "reached function end without returning anything rop Out < u16 i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_LOP__less_u16(u16 v468) {{
+  __ZH_TYPE_Out v470;
+  ((printf("%hd", (v468))), (printf("%s", ((str)" "))));
+  ((v470)=(__ZH_LOP_Out_()));
+  return (v470);
+};printf("%s", "reached function end without returning anything lop Out < u16 i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_BOP__less_Outu16(__ZH_TYPE_Out v471, u16 v472) {{
+  __ZH_TYPE_Out v474;
+  ((printf("%hd", (v472))), (printf("%s", ((str)" "))));
+  ((v474)=(__ZH_LOP_Out_()));
+  return (v474);
+};printf("%s", "reached function end without returning anything op Out < Out o u16 i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_LOP__greater_u16R(u16* v475) {{
+  __ZH_TYPE_Out v477;
+  ((*v475)=(in_u16()));
+  ((v477)=(__ZH_LOP_Out_()));
+  return (v477);
+};printf("%s", "reached function end without returning anything lop Out > u16R i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_BOP__greater_Outu16R(__ZH_TYPE_Out v478, u16* v479) {{
+  __ZH_TYPE_Out v481;
+  ((*v479)=(in_u16()));
+  ((v481)=(__ZH_LOP_Out_()));
+  return (v481);
+};printf("%s", "reached function end without returning anything op Out > Out o u16R i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_ROP__less_u32(u32 v482) {{
+  __ZH_TYPE_Out v484;
+  (printf("%u\n", (v482)));
+  ((v484)=(__ZH_LOP_Out_()));
+  return (v484);
+};printf("%s", "reached function end without returning anything rop Out < u32 i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_LOP__less_u32(u32 v485) {{
+  __ZH_TYPE_Out v487;
+  ((printf("%u", (v485))), (printf("%s", ((str)" "))));
+  ((v487)=(__ZH_LOP_Out_()));
+  return (v487);
+};printf("%s", "reached function end without returning anything lop Out < u32 i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_BOP__less_Outu32(__ZH_TYPE_Out v488, u32 v489) {{
+  __ZH_TYPE_Out v491;
+  ((printf("%u", (v489))), (printf("%s", ((str)" "))));
+  ((v491)=(__ZH_LOP_Out_()));
+  return (v491);
+};printf("%s", "reached function end without returning anything op Out < Out o u32 i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_LOP__greater_u32R(u32* v492) {{
+  __ZH_TYPE_Out v494;
+  ((*v492)=(in_u32()));
+  ((v494)=(__ZH_LOP_Out_()));
+  return (v494);
+};printf("%s", "reached function end without returning anything lop Out > u32R i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_BOP__greater_Outu32R(__ZH_TYPE_Out v495, u32* v496) {{
+  __ZH_TYPE_Out v498;
+  ((*v496)=(in_u32()));
+  ((v498)=(__ZH_LOP_Out_()));
+  return (v498);
+};printf("%s", "reached function end without returning anything op Out > Out o u32R i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_ROP__less_u64(u64 v499) {{
+  __ZH_TYPE_Out v501;
+  (printf("%llu\n", (v499)));
+  ((v501)=(__ZH_LOP_Out_()));
+  return (v501);
+};printf("%s", "reached function end without returning anything rop Out < u64 i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_LOP__less_u64(u64 v502) {{
+  __ZH_TYPE_Out v504;
+  ((printf("%llu", (v502))), (printf("%s", ((str)" "))));
+  ((v504)=(__ZH_LOP_Out_()));
+  return (v504);
+};printf("%s", "reached function end without returning anything lop Out < u64 i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_BOP__less_Outu64(__ZH_TYPE_Out v505, u64 v506) {{
+  __ZH_TYPE_Out v508;
+  ((printf("%llu", (v506))), (printf("%s", ((str)" "))));
+  ((v508)=(__ZH_LOP_Out_()));
+  return (v508);
+};printf("%s", "reached function end without returning anything op Out < Out o u64 i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_LOP__greater_u64R(u64* v509) {{
+  __ZH_TYPE_Out v511;
+  ((*v509)=(in_u64()));
+  ((v511)=(__ZH_LOP_Out_()));
+  return (v511);
+};printf("%s", "reached function end without returning anything lop Out > u64R i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_BOP__greater_Outu64R(__ZH_TYPE_Out v512, u64* v513) {{
+  __ZH_TYPE_Out v515;
+  ((*v513)=(in_u64()));
+  ((v515)=(__ZH_LOP_Out_()));
+  return (v515);
+};printf("%s", "reached function end without returning anything op Out > Out o u64R i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_ROP__less_f32(f32 v516) {{
+  __ZH_TYPE_Out v518;
+  (printf("%f\n", (v516)));
+  ((v518)=(__ZH_LOP_Out_()));
+  return (v518);
+};printf("%s", "reached function end without returning anything rop Out < f32 i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_LOP__less_f32(f32 v519) {{
+  __ZH_TYPE_Out v521;
+  ((printf("%f", (v519))), (printf("%s", ((str)" "))));
+  ((v521)=(__ZH_LOP_Out_()));
+  return (v521);
+};printf("%s", "reached function end without returning anything lop Out < f32 i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_BOP__less_Outf32(__ZH_TYPE_Out v522, f32 v523) {{
+  __ZH_TYPE_Out v525;
+  ((printf("%f", (v523))), (printf("%s", ((str)" "))));
+  ((v525)=(__ZH_LOP_Out_()));
+  return (v525);
+};printf("%s", "reached function end without returning anything op Out < Out o f32 i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_LOP__greater_f32R(f32* v526) {{
+  __ZH_TYPE_Out v528;
+  ((*v526)=(in_f32()));
+  ((v528)=(__ZH_LOP_Out_()));
+  return (v528);
+};printf("%s", "reached function end without returning anything lop Out > f32R i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_BOP__greater_Outf32R(__ZH_TYPE_Out v529, f32* v530) {{
+  __ZH_TYPE_Out v532;
+  ((*v530)=(in_f32()));
+  ((v532)=(__ZH_LOP_Out_()));
+  return (v532);
+};printf("%s", "reached function end without returning anything op Out > Out o f32R i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_ROP__less_f64(f64 v533) {{
+  __ZH_TYPE_Out v535;
+  (printf("%f\n", (v533)));
+  ((v535)=(__ZH_LOP_Out_()));
+  return (v535);
+};printf("%s", "reached function end without returning anything rop Out < f64 i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_LOP__less_f64(f64 v536) {{
+  __ZH_TYPE_Out v538;
+  ((printf("%f", (v536))), (printf("%s", ((str)" "))));
+  ((v538)=(__ZH_LOP_Out_()));
+  return (v538);
+};printf("%s", "reached function end without returning anything lop Out < f64 i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_BOP__less_Outf64(__ZH_TYPE_Out v539, f64 v540) {{
+  __ZH_TYPE_Out v542;
+  ((printf("%f", (v540))), (printf("%s", ((str)" "))));
+  ((v542)=(__ZH_LOP_Out_()));
+  return (v542);
+};printf("%s", "reached function end without returning anything op Out < Out o f64 i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_LOP__greater_f64R(f64* v543) {{
+  __ZH_TYPE_Out v545;
+  ((*v543)=(in_f64()));
+  ((v545)=(__ZH_LOP_Out_()));
+  return (v545);
+};printf("%s", "reached function end without returning anything lop Out > f64R i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_BOP__greater_Outf64R(__ZH_TYPE_Out v546, f64* v547) {{
+  __ZH_TYPE_Out v549;
+  ((*v547)=(in_f64()));
+  ((v549)=(__ZH_LOP_Out_()));
+  return (v549);
+};printf("%s", "reached function end without returning anything op Out > Out o f64R i\n"); exit(EXIT_FAILURE);}
+void __ZH_BOP__dotcall_dotnext_i64P(i64* v550){
+  ((*(v550))=(((*(v550)))+(((i64)1))));
+}
+bool __ZH_BOP__dotcall_dotuneq_i64Pi64(i64* v551, i64 v552) {{
+  bool v554;
+  ((v554)=(((*(v551)))!=((v552))));
+  return (v554);
+};printf("%s", "reached function end without returning anything op bool .call.uneq i64P slf i64 other\n"); exit(EXIT_FAILURE);}
+i64 __ZH_BOP__dotcall_dotbegin_RangeP(__ZH_TYPE_Range* v555) {{
+  i64 v557;
+  ((v557)=(((v555))->begin));
+  return (v557);
+};printf("%s", "reached function end without returning anything op i64 .call.begin RangeP slf\n"); exit(EXIT_FAILURE);}
+i64 __ZH_BOP__dotcall_dotend_RangeP(__ZH_TYPE_Range* v558) {{
+  i64 v560;
+  ((v560)=(((v558))->end));
+  return (v560);
+};printf("%s", "reached function end without returning anything op i64 .call.end RangeP slf\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Range __ZH_BOP__dot_dot_i64i64(i64 v561, i64 v562) {{
+  __ZH_TYPE_Range v565;
+  __ZH_TYPE_Range v563;
+  (((&(v563))->begin)=(v561));
+  (((&(v563))->end)=(v562));
+  ((v565)=(v563));
+  return (v565);
 };printf("%s", "reached function end without returning anything op Range .. i64 begin i64 end\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Range __ZH_BOP__dot_dot_minus_i64i64(i64 v390, i64 v391) {{
-  return (__ZH_BOP__dot_dot_i64i64((v390), (-((v391)))));
+__ZH_TYPE_Range __ZH_BOP__dot_dot_minus_i64i64(i64 v566, i64 v567) {{
+  __ZH_TYPE_Range v569;
+  ((v569)=(__ZH_BOP__dot_dot_i64i64((v566), (-((v567))))));
+  return (v569);
 };printf("%s", "reached function end without returning anything op Range ..- i64 begin i64 end\n"); exit(EXIT_FAILURE);}
 i64 __ZH_LOP_rangeMin_() {{
-  return (-(((i64)9223372036854775807)));
+  i64 v571;
+  ((v571)=(-(((i64)9223372036854775807))));
+  return (v571);
 };printf("%s", "reached function end without returning anything lop i64 rangeMin\n"); exit(EXIT_FAILURE);}
 i64 __ZH_LOP_rangeMax_() {{
-  return ((i64)9223372036854775807);
+  i64 v573;
+  ((v573)=((i64)9223372036854775807));
+  return (v573);
 };printf("%s", "reached function end without returning anything lop i64 rangeMax\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Range __ZH_ROP__dot_dot_i64(i64 v392) {{
-  return (__ZH_BOP__dot_dot_i64i64((v392), (__ZH_LOP_rangeMax_())));
+__ZH_TYPE_Range __ZH_ROP__dot_dot_i64(i64 v574) {{
+  __ZH_TYPE_Range v576;
+  ((v576)=(__ZH_BOP__dot_dot_i64i64((v574), (__ZH_LOP_rangeMax_()))));
+  return (v576);
 };printf("%s", "reached function end without returning anything rop Range .. i64 begin\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Range __ZH_LOP__dot_dot_i64(i64 v393) {{
-  return (__ZH_BOP__dot_dot_i64i64((__ZH_LOP_rangeMin_()), (v393)));
+__ZH_TYPE_Range __ZH_LOP__dot_dot_i64(i64 v577) {{
+  __ZH_TYPE_Range v579;
+  ((v579)=(__ZH_BOP__dot_dot_i64i64((__ZH_LOP_rangeMin_()), (v577))));
+  return (v579);
 };printf("%s", "reached function end without returning anything lop Range .. i64 end\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Range __ZH_LOP__dot_dot_minus_i64(i64 v394) {{
-  return (__ZH_BOP__dot_dot_i64i64((__ZH_LOP_rangeMin_()), (-((v394)))));
+__ZH_TYPE_Range __ZH_LOP__dot_dot_minus_i64(i64 v580) {{
+  __ZH_TYPE_Range v582;
+  ((v582)=(__ZH_BOP__dot_dot_i64i64((__ZH_LOP_rangeMin_()), (-((v580))))));
+  return (v582);
 };printf("%s", "reached function end without returning anything lop Range ..- i64 end\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Range __ZH_LOP__minus_Range(__ZH_TYPE_Range v395) {{
-  return (__ZH_BOP__dot_dot_i64i64((-(((&(v395))->begin))), ((&(v395))->end)));
+__ZH_TYPE_Range __ZH_LOP__minus_Range(__ZH_TYPE_Range v583) {{
+  __ZH_TYPE_Range v585;
+  ((v585)=(__ZH_BOP__dot_dot_i64i64((-(((&(v583))->begin))), ((&(v583))->end))));
+  return (v585);
 };printf("%s", "reached function end without returning anything lop Range - Range r\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Range __ZH_BOP__dot_dot_equal_i64i64(i64 v396, i64 v397) {{
-  return (__ZH_BOP__dot_dot_i64i64((v396), (((v397))+(((i64)1)))));
+__ZH_TYPE_Range __ZH_BOP__dot_dot_equal_i64i64(i64 v586, i64 v587) {{
+  __ZH_TYPE_Range v589;
+  ((v589)=(__ZH_BOP__dot_dot_i64i64((v586), (((v587))+(((i64)1))))));
+  return (v589);
 };printf("%s", "reached function end without returning anything op Range ..= i64 begin i64 end\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Range __ZH_LOP__dot_dot_equal_i64(i64 v398) {{
-  return (__ZH_BOP__dot_dot_i64i64((__ZH_LOP_rangeMin_()), (((v398))+(((i64)1)))));
+__ZH_TYPE_Range __ZH_LOP__dot_dot_equal_i64(i64 v590) {{
+  __ZH_TYPE_Range v592;
+  ((v592)=(__ZH_BOP__dot_dot_i64i64((__ZH_LOP_rangeMin_()), (((v590))+(((i64)1))))));
+  return (v592);
 };printf("%s", "reached function end without returning anything lop Range ..= i64 end\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Range __ZH_LOP__dot_dot_equal_minus_i64(i64 v399) {{
-  return (__ZH_BOP__dot_dot_i64i64((__ZH_LOP_rangeMin_()), (((-((v399))))+(((i64)1)))));
+__ZH_TYPE_Range __ZH_LOP__dot_dot_equal_minus_i64(i64 v593) {{
+  __ZH_TYPE_Range v595;
+  ((v595)=(__ZH_BOP__dot_dot_i64i64((__ZH_LOP_rangeMin_()), (((-((v593))))+(((i64)1))))));
+  return (v595);
 };printf("%s", "reached function end without returning anything lop Range ..=- i64 end\n"); exit(EXIT_FAILURE);}
-bool __ZH_BOP__equal_equal_i64Range(i64 v400, __ZH_TYPE_Range v401) {{
-  if (((((&(v401))->begin))<(((&(v401))->end)))) {
-    return ((((((&(v401))->begin))<=((v400))))&&((((v400))<(((&(v401))->end)))));
+bool __ZH_BOP__equal_equal_i64Range(i64 v596, __ZH_TYPE_Range v597) {{
+  if (((((&(v597))->begin))<(((&(v597))->end)))) {
+    bool v599;
+    ((v599)=((((((&(v597))->begin))<=((v596))))&&((((v596))<(((&(v597))->end))))));
+    return (v599);
   } else {
-    return ((((((&(v401))->end))<=((v400))))&&((((v400))<(((&(v401))->begin)))));
+    bool v601;
+    ((v601)=((((((&(v597))->end))<=((v596))))&&((((v596))<(((&(v597))->begin))))));
+    return (v601);
   }
 };printf("%s", "reached function end without returning anything op bool == i64 i Range r\n"); exit(EXIT_FAILURE);}
 i8 __ZH_LOP_i8_() {{
-  return ((i8)0);
+  i8 v603;
+  ((v603)=((i8)0));
+  return (v603);
 };printf("%s", "reached function end without returning anything lop i8 i8\n"); exit(EXIT_FAILURE);}
 i16 __ZH_LOP_i16_() {{
-  return ((i16)0);
+  i16 v605;
+  ((v605)=((i16)0));
+  return (v605);
 };printf("%s", "reached function end without returning anything lop i16 i16\n"); exit(EXIT_FAILURE);}
 i32 __ZH_LOP_i32_() {{
-  return ((i32)0);
+  i32 v607;
+  ((v607)=((i32)0));
+  return (v607);
 };printf("%s", "reached function end without returning anything lop i32 i32\n"); exit(EXIT_FAILURE);}
 i64 __ZH_LOP_i64_() {{
-  return ((i64)0);
+  i64 v609;
+  ((v609)=((i64)0));
+  return (v609);
 };printf("%s", "reached function end without returning anything lop i64 i64\n"); exit(EXIT_FAILURE);}
 u8 __ZH_LOP_u8_() {{
-  return ((u8)0);
+  u8 v611;
+  ((v611)=((u8)0));
+  return (v611);
 };printf("%s", "reached function end without returning anything lop u8 u8\n"); exit(EXIT_FAILURE);}
 u16 __ZH_LOP_u16_() {{
-  return ((u16)0);
+  u16 v613;
+  ((v613)=((u16)0));
+  return (v613);
 };printf("%s", "reached function end without returning anything lop u16 u16\n"); exit(EXIT_FAILURE);}
 u32 __ZH_LOP_u32_() {{
-  return ((u32)0);
+  u32 v615;
+  ((v615)=((u32)0));
+  return (v615);
 };printf("%s", "reached function end without returning anything lop u32 u32\n"); exit(EXIT_FAILURE);}
 u64 __ZH_LOP_u64_() {{
-  return ((u64)0);
+  u64 v617;
+  ((v617)=((u64)0));
+  return (v617);
 };printf("%s", "reached function end without returning anything lop u64 u64\n"); exit(EXIT_FAILURE);}
 char __ZH_LOP_char_() {{
-  return ((char)((i8)0));
+  char v619;
+  ((v619)=((char)((i8)0)));
+  return (v619);
 };printf("%s", "reached function end without returning anything lop char char\n"); exit(EXIT_FAILURE);}
-i64 __ZH_LOP_max_i64i64(i64 v402, i64 v403) {{
-  if ((((v402))>((v403)))) {
-    return (v402);
+i64 __ZH_LOP_max_i64i64(i64 v620, i64 v621) {{
+  if ((((v620))>((v621)))) {
+    i64 v623;
+    ((v623)=(v620));
+    return (v623);
   } else {
-    return (v403);
+    i64 v625;
+    ((v625)=(v621));
+    return (v625);
   }
 };printf("%s", "reached function end without returning anything lop i64 max i64 a i64 b\n"); exit(EXIT_FAILURE);}
-i64 __ZH_LOP_min_i64i64(i64 v404, i64 v405) {{
-  if ((((v404))<((v405)))) {
-    return (v404);
+i64 __ZH_LOP_min_i64i64(i64 v626, i64 v627) {{
+  if ((((v626))<((v627)))) {
+    i64 v629;
+    ((v629)=(v626));
+    return (v629);
   } else {
-    return (v405);
+    i64 v631;
+    ((v631)=(v627));
+    return (v631);
   }
 };printf("%s", "reached function end without returning anything lop i64 min i64 a i64 b\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_VecIter_lessi64_greater __ZH_LOP_VecIter_lessi64_greater_i64P(i64* v430) {{
-  __ZH_TYPE_VecIter_lessi64_greater v431;
-  (((&(v431))->ptr)=(v430));
-  return (v431);
+__ZH_TYPE_VecIter_lessi64_greater __ZH_LOP_VecIter_lessi64_greater_i64P(i64* v660) {{
+  __ZH_TYPE_VecIter_lessi64_greater v663;
+  __ZH_TYPE_VecIter_lessi64_greater v661;
+  (((&(v661))->ptr)=(v660));
+  ((v663)=(v661));
+  return (v663);
 };printf("%s", "reached function end without returning anything lop VecIter<i64> VecIter<i64> i64P ptr\n"); exit(EXIT_FAILURE);}
-void __ZH_BOP__dotcall_dotnext_VecIter_lessi64_greaterP(__ZH_TYPE_VecIter_lessi64_greater* v432){
-  ((((v432))->ptr)=((i64*)((((i64)(((v432))->ptr)))+(((((i64)1))*(((i64)8)))))));
+void __ZH_BOP__dotcall_dotnext_VecIter_lessi64_greaterP(__ZH_TYPE_VecIter_lessi64_greater* v664){
+  ((((v664))->ptr)=((i64*)((((i64)(((v664))->ptr)))+(((((i64)1))*(((i64)8)))))));
 }
-bool __ZH_BOP__dotcall_dotuneq_VecIter_lessi64_greaterPVecIter_lessi64_greater(__ZH_TYPE_VecIter_lessi64_greater* v433, __ZH_TYPE_VecIter_lessi64_greater v434) {{
-  return ((((i64)(((v433))->ptr)))!=(((i64)((&(v434))->ptr))));
+bool __ZH_BOP__dotcall_dotuneq_VecIter_lessi64_greaterPVecIter_lessi64_greater(__ZH_TYPE_VecIter_lessi64_greater* v665, __ZH_TYPE_VecIter_lessi64_greater v666) {{
+  bool v668;
+  ((v668)=((((i64)(((v665))->ptr)))!=(((i64)((&(v666))->ptr)))));
+  return (v668);
 };printf("%s", "reached function end without returning anything op bool .call.uneq VecIter<i64>P slf VecIter<i64> other\n"); exit(EXIT_FAILURE);}
-i64* __ZH_LOP__asterisk_VecIter_lessi64_greater(__ZH_TYPE_VecIter_lessi64_greater v435) {{
-  return &(*((&(v435))->ptr));
+i64* __ZH_LOP__asterisk_VecIter_lessi64_greater(__ZH_TYPE_VecIter_lessi64_greater v669) {{
+  i64 v671;
+  ((v671)=(*((&(v669))->ptr)));
+  return &(v671);
 };printf("%s", "reached function end without returning anything lop i64R * VecIter<i64> slf\n"); exit(EXIT_FAILURE);}
-i64* __ZH_BOP__dotcall_dotatP_Vec_lessi64_greaterPi64(__ZH_TYPE_Vec_lessi64_greater* v406, i64 v407) {{
-  return ((i64*)((i64*)((((i64)(((v406))->head)))+((((v407))*(((i64)8)))))));
+i64* __ZH_BOP__dotcall_dotatP_Vec_lessi64_greaterPi64(__ZH_TYPE_Vec_lessi64_greater* v632, i64 v633) {{
+  i64* v635;
+  ((v635)=((i64*)((i64*)((((i64)(((v632))->head)))+((((v633))*(((i64)8))))))));
+  return (v635);
 };printf("%s", "reached function end without returning anything op i64P .call.atP Vec<i64>P slf i64 pos\n"); exit(EXIT_FAILURE);}
-i64* __ZH_BOP__dotcall_dotat_Vec_lessi64_greaterPi64(__ZH_TYPE_Vec_lessi64_greater* v408, i64 v409) {{
-  return &(*(__ZH_BOP__dotcall_dotatP_Vec_lessi64_greaterPi64((v408), (v409))));
+i64* __ZH_BOP__dotcall_dotat_Vec_lessi64_greaterPi64(__ZH_TYPE_Vec_lessi64_greater* v636, i64 v637) {{
+  i64 v639;
+  ((v639)=(*(__ZH_BOP__dotcall_dotatP_Vec_lessi64_greaterPi64((v636), (v637)))));
+  return &(v639);
 };printf("%s", "reached function end without returning anything op i64R .call.at Vec<i64>P slf i64 pos\n"); exit(EXIT_FAILURE);}
-void __ZH_BOP__dotcall_dotprint_Vec_lessi64_greaterP(__ZH_TYPE_Vec_lessi64_greater* v410){
+void __ZH_BOP__dotcall_dotprint_Vec_lessi64_greaterP(__ZH_TYPE_Vec_lessi64_greater* v640){
   (printf("%s", ((str)"[")));
   {
-      i64 v414;
-      i64 v413;
-      i64 v412;
-      __ZH_TYPE_Range v411;
-      ((v411)=(__ZH_BOP__dot_dot_i64i64(((i64)0), (((v410))->size))));
-      ((v412)=(__ZH_BOP__dotcall_dotbegin_RangeP((&(v411)))));
-      ((v413)=(__ZH_BOP__dotcall_dotend_RangeP((&(v411)))));
-      ((v414)=(v412));
-      while ((__ZH_BOP__dotcall_dotuneq_i64Pi64((&(v414)), (v413)))) {
-        if ((!((!((v414)))))) {
+      i64 v644;
+      i64 v643;
+      i64 v642;
+      __ZH_TYPE_Range v641;
+      ((v641)=(__ZH_BOP__dot_dot_i64i64(((i64)0), (((v640))->size))));
+      ((v642)=(__ZH_BOP__dotcall_dotbegin_RangeP((&(v641)))));
+      ((v643)=(__ZH_BOP__dotcall_dotend_RangeP((&(v641)))));
+      ((v644)=(v642));
+      while ((__ZH_BOP__dotcall_dotuneq_i64Pi64((&(v644)), (v643)))) {
+        if ((!((!((v644)))))) {
           (printf("%s", ((str)" ")));
         }
-        (printf("%lld", (*(__ZH_BOP__dotcall_dotatP_Vec_lessi64_greaterPi64((v410), (v414))))));
-        (__ZH_BOP__dotcall_dotnext_i64P((&(v414))));
+        (printf("%lld", (*(__ZH_BOP__dotcall_dotatP_Vec_lessi64_greaterPi64((v640), (v644))))));
+        (__ZH_BOP__dotcall_dotnext_i64P((&(v644))));
       }
     }
   (printf("%s", ((str)"]")));
 }
-void __ZH_BOP__dotcall_dotprintln_Vec_lessi64_greaterP(__ZH_TYPE_Vec_lessi64_greater* v415){
+void __ZH_BOP__dotcall_dotprintln_Vec_lessi64_greaterP(__ZH_TYPE_Vec_lessi64_greater* v645){
   {
-      i64 v419;
-      i64 v418;
-      i64 v417;
-      __ZH_TYPE_Range v416;
-      ((v416)=(__ZH_BOP__dot_dot_i64i64(((i64)0), (((v415))->size))));
-      ((v417)=(__ZH_BOP__dotcall_dotbegin_RangeP((&(v416)))));
-      ((v418)=(__ZH_BOP__dotcall_dotend_RangeP((&(v416)))));
-      ((v419)=(v417));
-      while ((__ZH_BOP__dotcall_dotuneq_i64Pi64((&(v419)), (v418)))) {
-        (printf("%lld\n", (*(__ZH_BOP__dotcall_dotatP_Vec_lessi64_greaterPi64((v415), (v419))))));
-        (__ZH_BOP__dotcall_dotnext_i64P((&(v419))));
+      i64 v649;
+      i64 v648;
+      i64 v647;
+      __ZH_TYPE_Range v646;
+      ((v646)=(__ZH_BOP__dot_dot_i64i64(((i64)0), (((v645))->size))));
+      ((v647)=(__ZH_BOP__dotcall_dotbegin_RangeP((&(v646)))));
+      ((v648)=(__ZH_BOP__dotcall_dotend_RangeP((&(v646)))));
+      ((v649)=(v647));
+      while ((__ZH_BOP__dotcall_dotuneq_i64Pi64((&(v649)), (v648)))) {
+        (printf("%lld\n", (*(__ZH_BOP__dotcall_dotatP_Vec_lessi64_greaterPi64((v645), (v649))))));
+        (__ZH_BOP__dotcall_dotnext_i64P((&(v649))));
       }
     }
 }
-void __ZH_BOP__dotcall_dotdouble_cap_Vec_lessi64_greaterP(__ZH_TYPE_Vec_lessi64_greater* v420){
-  i64 v421;
-  ((v421)=(((v420))->cap));
-  if ((((v421))==(((i64)0)))) {
-    ((v421)=((i64)1));
-    ((((v420))->head)=((i64*)(alloc(((i64)8)))));
-    ((((v420))->cap)=(v421));
+void __ZH_BOP__dotcall_dotdouble_cap_Vec_lessi64_greaterP(__ZH_TYPE_Vec_lessi64_greater* v650){
+  i64 v651;
+  ((v651)=(((v650))->cap));
+  if ((((v651))==(((i64)0)))) {
+    ((v651)=((i64)1));
+    ((((v650))->head)=((i64*)(alloc(((i64)8)))));
+    ((((v650))->cap)=(v651));
   } else {
-    i64* v422;
-    (__ZH_BOP__asterisk_equal_i64Ri64(&(v421), ((i64)2)));
-    ((v422)=((i64*)(alloc((((v421))*(((i64)8)))))));
+    i64* v652;
+    (__ZH_BOP__asterisk_equal_i64Ri64(&(v651), ((i64)2)));
+    ((v652)=((i64*)(alloc((((v651))*(((i64)8)))))));
     {
-        i64 v426;
-        i64 v425;
-        i64 v424;
-        __ZH_TYPE_Range v423;
-        ((v423)=(__ZH_BOP__dot_dot_i64i64(((i64)0), (((v420))->size))));
-        ((v424)=(__ZH_BOP__dotcall_dotbegin_RangeP((&(v423)))));
-        ((v425)=(__ZH_BOP__dotcall_dotend_RangeP((&(v423)))));
-        ((v426)=(v424));
-        while ((__ZH_BOP__dotcall_dotuneq_i64Pi64((&(v426)), (v425)))) {
-          ((*((i64*)((((i64)(v422)))+((((v426))*(((i64)8)))))))=(*__ZH_BOP__dotcall_dotat_Vec_lessi64_greaterPi64((v420), (v426))));
-          (__ZH_BOP__dotcall_dotnext_i64P((&(v426))));
+        i64 v656;
+        i64 v655;
+        i64 v654;
+        __ZH_TYPE_Range v653;
+        ((v653)=(__ZH_BOP__dot_dot_i64i64(((i64)0), (((v650))->size))));
+        ((v654)=(__ZH_BOP__dotcall_dotbegin_RangeP((&(v653)))));
+        ((v655)=(__ZH_BOP__dotcall_dotend_RangeP((&(v653)))));
+        ((v656)=(v654));
+        while ((__ZH_BOP__dotcall_dotuneq_i64Pi64((&(v656)), (v655)))) {
+          ((*((i64*)((((i64)(v652)))+((((v656))*(((i64)8)))))))=(*__ZH_BOP__dotcall_dotat_Vec_lessi64_greaterPi64((v650), (v656))));
+          (__ZH_BOP__dotcall_dotnext_i64P((&(v656))));
         }
       }
-    (free((void*) ((i64)(((v420))->head))));
-    ((((v420))->head)=(v422));
+    (free((void*) ((i64)(((v650))->head))));
+    ((((v650))->head)=(v652));
   }
-  ((((v420))->cap)=(v421));
+  ((((v650))->cap)=(v651));
 }
-void __ZH_BOP__dotcall_dotpush_back_Vec_lessi64_greaterPi64(__ZH_TYPE_Vec_lessi64_greater* v427, i64 v428){
-  if ((((((v427))->size))==((((v427))->cap)))) {
-    (__ZH_BOP__dotcall_dotdouble_cap_Vec_lessi64_greaterP((v427)));
+void __ZH_BOP__dotcall_dotpush_back_Vec_lessi64_greaterPi64(__ZH_TYPE_Vec_lessi64_greater* v657, i64 v658){
+  if ((((((v657))->size))==((((v657))->cap)))) {
+    (__ZH_BOP__dotcall_dotdouble_cap_Vec_lessi64_greaterP((v657)));
   }
-  ((*__ZH_BOP__dotcall_dotat_Vec_lessi64_greaterPi64((v427), (((v427))->size)))=(v428));
-  (*__ZH_LOP__plus_plus_i64R(&(((v427))->size)));
+  ((*__ZH_BOP__dotcall_dotat_Vec_lessi64_greaterPi64((v657), (((v657))->size)))=(v658));
+  (*__ZH_LOP__plus_plus_i64R(&(((v657))->size)));
 }
-void __ZH_BOP__dotcall_dotpop_back_Vec_lessi64_greaterP(__ZH_TYPE_Vec_lessi64_greater* v429){
-  (*__ZH_LOP__minus_minus_i64R(&(((v429))->size)));
+void __ZH_BOP__dotcall_dotpop_back_Vec_lessi64_greaterP(__ZH_TYPE_Vec_lessi64_greater* v659){
+  (*__ZH_LOP__minus_minus_i64R(&(((v659))->size)));
 }
-__ZH_TYPE_VecIter_lessi64_greater __ZH_BOP__dotcall_dotbegin_Vec_lessi64_greaterP(__ZH_TYPE_Vec_lessi64_greater* v436) {{
-  return (__ZH_LOP_VecIter_lessi64_greater_i64P((((v436))->head)));
+__ZH_TYPE_VecIter_lessi64_greater __ZH_BOP__dotcall_dotbegin_Vec_lessi64_greaterP(__ZH_TYPE_Vec_lessi64_greater* v672) {{
+  __ZH_TYPE_VecIter_lessi64_greater v674;
+  ((v674)=(__ZH_LOP_VecIter_lessi64_greater_i64P((((v672))->head))));
+  return (v674);
 };printf("%s", "reached function end without returning anything op VecIter<i64> .call.begin Vec<i64>P slf\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_VecIter_lessi64_greater __ZH_BOP__dotcall_dotend_Vec_lessi64_greaterP(__ZH_TYPE_Vec_lessi64_greater* v437) {{
-  return (__ZH_LOP_VecIter_lessi64_greater_i64P((__ZH_BOP__dotcall_dotatP_Vec_lessi64_greaterPi64((v437), (((v437))->size)))));
+__ZH_TYPE_VecIter_lessi64_greater __ZH_BOP__dotcall_dotend_Vec_lessi64_greaterP(__ZH_TYPE_Vec_lessi64_greater* v675) {{
+  __ZH_TYPE_VecIter_lessi64_greater v677;
+  ((v677)=(__ZH_LOP_VecIter_lessi64_greater_i64P((__ZH_BOP__dotcall_dotatP_Vec_lessi64_greaterPi64((v675), (((v675))->size))))));
+  return (v677);
 };printf("%s", "reached function end without returning anything op VecIter<i64> .call.end Vec<i64>P slf\n"); exit(EXIT_FAILURE);}
-i64* __ZH_BOP__dotcall_dotfront_Vec_lessi64_greaterP(__ZH_TYPE_Vec_lessi64_greater* v438) {{
-  return &(*(((v438))->head));
+i64* __ZH_BOP__dotcall_dotfront_Vec_lessi64_greaterP(__ZH_TYPE_Vec_lessi64_greater* v678) {{
+  i64 v680;
+  ((v680)=(*(((v678))->head)));
+  return &(v680);
 };printf("%s", "reached function end without returning anything op i64R .call.front Vec<i64>P slf\n"); exit(EXIT_FAILURE);}
-i64* __ZH_BOP__dotcall_dotback_Vec_lessi64_greaterP(__ZH_TYPE_Vec_lessi64_greater* v439) {{
-  return &(*(__ZH_BOP__dotcall_dotatP_Vec_lessi64_greaterPi64((v439), (((((v439))->size))-(((i64)1))))));
+i64* __ZH_BOP__dotcall_dotback_Vec_lessi64_greaterP(__ZH_TYPE_Vec_lessi64_greater* v681) {{
+  i64 v683;
+  ((v683)=(*(__ZH_BOP__dotcall_dotatP_Vec_lessi64_greaterPi64((v681), (((((v681))->size))-(((i64)1)))))));
+  return &(v683);
 };printf("%s", "reached function end without returning anything op i64R .call.back Vec<i64>P slf\n"); exit(EXIT_FAILURE);}
-void __ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP(__ZH_TYPE_Vec_lessi64_greater* v440){
-  if ((!((!(((i64)(((v440))->head))))))) {
-    (free((void*) ((i64)(((v440))->head))));
-    ((((v440))->size)=((i64)0));
-    ((((v440))->cap)=((i64)0));
-    ((((v440))->head)=((i64*)((i64)0)));
+void __ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP(__ZH_TYPE_Vec_lessi64_greater* v684){
+  if ((!((!(((i64)(((v684))->head))))))) {
+    (free((void*) ((i64)(((v684))->head))));
+    ((((v684))->size)=((i64)0));
+    ((((v684))->cap)=((i64)0));
+    ((((v684))->head)=((i64*)((i64)0)));
   }
 }
-__ZH_TYPE_Vec_lessi64_greater __ZH_LOP_Vec_lessi64_greater_i64(i64 v441) {{
-  __ZH_TYPE_Vec_lessi64_greater v442;
-  (((&(v442))->head)=((i64*)((i64)0)));
-  (((&(v442))->size)=((i64)0));
-  (((&(v442))->cap)=((i64)0));
-  while (((((&(v442))->cap))<((v441)))) {
-    (__ZH_BOP__dotcall_dotdouble_cap_Vec_lessi64_greaterP((&(v442))));
+__ZH_TYPE_Vec_lessi64_greater __ZH_LOP_Vec_lessi64_greater_i64(i64 v685) {{
+  __ZH_TYPE_Vec_lessi64_greater v692;
+  __ZH_TYPE_Vec_lessi64_greater v686;
+  (((&(v686))->head)=((i64*)((i64)0)));
+  (((&(v686))->size)=((i64)0));
+  (((&(v686))->cap)=((i64)0));
+  while (((((&(v686))->cap))<((v685)))) {
+    (__ZH_BOP__dotcall_dotdouble_cap_Vec_lessi64_greaterP((&(v686))));
   }
-  (((&(v442))->size)=(v441));
-  (((&(v442))->cap)=(v441));
+  (((&(v686))->size)=(v685));
+  (((&(v686))->cap)=(v685));
   {
-      i64 v446;
-      i64 v445;
-      i64 v444;
-      __ZH_TYPE_Range v443;
-      ((v443)=(__ZH_BOP__dot_dot_i64i64(((i64)0), ((&(v442))->size))));
-      ((v444)=(__ZH_BOP__dotcall_dotbegin_RangeP((&(v443)))));
-      ((v445)=(__ZH_BOP__dotcall_dotend_RangeP((&(v443)))));
-      ((v446)=(v444));
-      while ((__ZH_BOP__dotcall_dotuneq_i64Pi64((&(v446)), (v445)))) {
-        ((*__ZH_BOP__dotcall_dotat_Vec_lessi64_greaterPi64((&(v442)), (v446)))=(__ZH_LOP_i64_()));
-        (__ZH_BOP__dotcall_dotnext_i64P((&(v446))));
+      i64 v690;
+      i64 v689;
+      i64 v688;
+      __ZH_TYPE_Range v687;
+      ((v687)=(__ZH_BOP__dot_dot_i64i64(((i64)0), ((&(v686))->size))));
+      ((v688)=(__ZH_BOP__dotcall_dotbegin_RangeP((&(v687)))));
+      ((v689)=(__ZH_BOP__dotcall_dotend_RangeP((&(v687)))));
+      ((v690)=(v688));
+      while ((__ZH_BOP__dotcall_dotuneq_i64Pi64((&(v690)), (v689)))) {
+        ((*__ZH_BOP__dotcall_dotat_Vec_lessi64_greaterPi64((&(v686)), (v690)))=(__ZH_LOP_i64_()));
+        (__ZH_BOP__dotcall_dotnext_i64P((&(v690))));
       }
     }
-  return (v442);
-  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v442))));
+  ((v692)=(v686));
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v686))));
+  return (v692);
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v686))));
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v692))));
 };printf("%s", "reached function end without returning anything lop Vec<i64> Vec<i64> i64 size\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Vec_lessi64_greater __ZH_LOP_Vec_lessi64_greater_i64i64(i64 v447, i64 v448) {{
-  __ZH_TYPE_Vec_lessi64_greater v449;
-  ((v449)=(__ZH_LOP_Vec_lessi64_greater_i64((v447))));
+__ZH_TYPE_Vec_lessi64_greater __ZH_LOP_Vec_lessi64_greater_i64i64(i64 v693, i64 v694) {{
+  __ZH_TYPE_Vec_lessi64_greater v701;
+  __ZH_TYPE_Vec_lessi64_greater v695;
+  ((v695)=(__ZH_LOP_Vec_lessi64_greater_i64((v693))));
   {
-      i64 v453;
-      i64 v452;
-      i64 v451;
-      __ZH_TYPE_Range v450;
-      ((v450)=(__ZH_BOP__dot_dot_i64i64(((i64)0), ((&(v449))->size))));
-      ((v451)=(__ZH_BOP__dotcall_dotbegin_RangeP((&(v450)))));
-      ((v452)=(__ZH_BOP__dotcall_dotend_RangeP((&(v450)))));
-      ((v453)=(v451));
-      while ((__ZH_BOP__dotcall_dotuneq_i64Pi64((&(v453)), (v452)))) {
-        ((*__ZH_BOP__dotcall_dotat_Vec_lessi64_greaterPi64((&(v449)), (v453)))=(v448));
-        (__ZH_BOP__dotcall_dotnext_i64P((&(v453))));
-      }
-    }
-  return (v449);
-  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v449))));
-};printf("%s", "reached function end without returning anything lop Vec<i64> Vec<i64> i64 size i64 default\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Vec_lessi64_greater __ZH_LOP_Vec_lessi64_greater_() {{
-  return (__ZH_LOP_Vec_lessi64_greater_i64(((i64)0)));
-};printf("%s", "reached function end without returning anything lop Vec<i64> Vec<i64>\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Vec_lessi64_greater __ZH_LOP_Vec_lessi64_greater_Vec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v454) {{
-  __ZH_TYPE_Vec_lessi64_greater v455;
-  ((v455)=(__ZH_LOP_Vec_lessi64_greater_i64(((&(*v454))->size))));
-  {
-      i64 v459;
-      i64 v458;
-      i64 v457;
-      __ZH_TYPE_Range v456;
-      ((v456)=(__ZH_BOP__dot_dot_i64i64(((i64)0), ((&(*v454))->size))));
-      ((v457)=(__ZH_BOP__dotcall_dotbegin_RangeP((&(v456)))));
-      ((v458)=(__ZH_BOP__dotcall_dotend_RangeP((&(v456)))));
-      ((v459)=(v457));
-      while ((__ZH_BOP__dotcall_dotuneq_i64Pi64((&(v459)), (v458)))) {
-        ((*__ZH_BOP__dotcall_dotat_Vec_lessi64_greaterPi64((&(v455)), (v459)))=(*__ZH_BOP__dotcall_dotat_Vec_lessi64_greaterPi64((&(*v454)), (v459))));
-        (__ZH_BOP__dotcall_dotnext_i64P((&(v459))));
-      }
-    }
-  return (v455);
-  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v455))));
-};printf("%s", "reached function end without returning anything lop Vec<i64> Vec<i64> Vec<i64>R other\n"); exit(EXIT_FAILURE);}
-void __ZH_BOP__plus_equal_Vec_lessi64_greaterRi64(__ZH_TYPE_Vec_lessi64_greater* v460, i64 v461){
-  (__ZH_BOP__dotcall_dotpush_back_Vec_lessi64_greaterPi64((&(*v460)), (v461)));
-}
-void __ZH_BOP__plus_equal_Vec_lessi64_greaterRVec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v462, __ZH_TYPE_Vec_lessi64_greater* v463){
-  {
-      __ZH_TYPE_VecIter_lessi64_greater v467;
-      __ZH_TYPE_VecIter_lessi64_greater v466;
-      __ZH_TYPE_VecIter_lessi64_greater v465;
-      __ZH_TYPE_Vec_lessi64_greater v464;
-      ((v464)=(__ZH_LOP_Vec_lessi64_greater_Vec_lessi64_greaterR(&(*v463))));
-      ((v465)=(__ZH_BOP__dotcall_dotbegin_Vec_lessi64_greaterP((&(v464)))));
-      ((v466)=(__ZH_BOP__dotcall_dotend_Vec_lessi64_greaterP((&(v464)))));
-      ((v467)=(v465));
-      while ((__ZH_BOP__dotcall_dotuneq_VecIter_lessi64_greaterPVecIter_lessi64_greater((&(v467)), (v466)))) {
-        (__ZH_BOP__dotcall_dotpush_back_Vec_lessi64_greaterPi64((&(*v462)), (*__ZH_LOP__asterisk_VecIter_lessi64_greater((v467)))));
-        (__ZH_BOP__dotcall_dotnext_VecIter_lessi64_greaterP((&(v467))));
-      }
-    }
-}
-__ZH_TYPE_Vec_lessi64_greater __ZH_BOP__comma_comma_i64i64(i64 v468, i64 v469) {{
-  __ZH_TYPE_Vec_lessi64_greater v470;
-  (__ZH_BOP__plus_equal_Vec_lessi64_greaterRi64(&(v470), (v468)));
-  (__ZH_BOP__plus_equal_Vec_lessi64_greaterRi64(&(v470), (v469)));
-  return (v470);
-  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v470))));
-};printf("%s", "reached function end without returning anything op Vec<i64> ,, i64 a i64 b\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Vec_lessi64_greater* __ZH_BOP__comma_comma_Vec_lessi64_greaterRi64(__ZH_TYPE_Vec_lessi64_greater* v471, i64 v472) {{
-  (__ZH_BOP__plus_equal_Vec_lessi64_greaterRi64(&(*v471), (v472)));
-  return &(*v471);
-};printf("%s", "reached function end without returning anything op Vec<i64>R ,, Vec<i64>R v i64 a\n"); exit(EXIT_FAILURE);}
-void __ZH_LOP_put_Vec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v473){
-  (__ZH_BOP__dotcall_dotprint_Vec_lessi64_greaterP((&(*v473))));
-}
-void __ZH_LOP_out_Vec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v474){
-  (__ZH_BOP__dotcall_dotprint_Vec_lessi64_greaterP((&(*v474))));
-  (printf("%s\n", ((str)"")));
-}
-__ZH_TYPE_Out __ZH_ROP__less_Vec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v475) {{
-  (__ZH_LOP_out_Vec_lessi64_greaterR(&(*v475)));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything rop Out < Vec<i64>R i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_LOP__less_Vec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v476) {{
-  ((__ZH_LOP_put_Vec_lessi64_greaterR(&(*v476))), (printf("%s", ((str)" "))));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything lop Out < Vec<i64>R i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_BOP__less_OutVec_lessi64_greaterR(__ZH_TYPE_Out v477, __ZH_TYPE_Vec_lessi64_greater* v478) {{
-  ((__ZH_LOP_put_Vec_lessi64_greaterR(&(*v478))), (printf("%s", ((str)" "))));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything op Out < Out o Vec<i64>R i\n"); exit(EXIT_FAILURE);}
-i64* __ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterPi64(__ZH_TYPE_Vec_lessi64_greater* v479, i64 v480) {{
-  if ((((v480))<(((i64)0)))) {
-    (__ZH_BOP__plus_equal_i64Ri64(&(v480), (((v479))->size)));
-  }
-  return &(*__ZH_BOP__dotcall_dotat_Vec_lessi64_greaterPi64((v479), (v480)));
-};printf("%s", "reached function end without returning anything op i64R .call.sub Vec<i64>P slf i64 id\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Vec_lessi64_greater __ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterPi64i64(__ZH_TYPE_Vec_lessi64_greater* v481, i64 v482, i64 v483) {{
-  __ZH_TYPE_Vec_lessi64_greater v484;
-  ((v484)=(__ZH_LOP_Vec_lessi64_greater_i64(((i64)0))));
-  {
-      i64 v488;
-      i64 v487;
-      i64 v486;
-      __ZH_TYPE_Range v485;
-      ((v485)=(__ZH_BOP__dot_dot_i64i64((v482), (v483))));
-      ((v486)=(__ZH_BOP__dotcall_dotbegin_RangeP((&(v485)))));
-      ((v487)=(__ZH_BOP__dotcall_dotend_RangeP((&(v485)))));
-      ((v488)=(v486));
-      while ((__ZH_BOP__dotcall_dotuneq_i64Pi64((&(v488)), (v487)))) {
-        (__ZH_BOP__dotcall_dotpush_back_Vec_lessi64_greaterPi64((&(v484)), (*__ZH_BOP__dotcall_dotat_Vec_lessi64_greaterPi64((v481), (v488)))));
-        (__ZH_BOP__dotcall_dotnext_i64P((&(v488))));
-      }
-    }
-  return (v484);
-  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v484))));
-};printf("%s", "reached function end without returning anything op Vec<i64> .call.sub Vec<i64>P slf i64 begin i64 end\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Vec_lessi64_greater __ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterPRange(__ZH_TYPE_Vec_lessi64_greater* v489, __ZH_TYPE_Range v490) {{
-  i64 v492;
-  i64 v491;
-  (((v491)=((&(v490))->begin)), ((v492)=((&(v490))->end)));
-  if ((((v491))<(((i64)0)))) {
-    (__ZH_BOP__plus_equal_i64Ri64(&(v491), (((v489))->size)));
-  }
-  if ((((v491))<(((i64)0)))) {
-    ((v491)=((i64)0));
-  }
-  if ((((v492))<(((i64)0)))) {
-    (__ZH_BOP__plus_equal_i64Ri64(&(v492), (((v489))->size)));
-  }
-  if ((((v492))>((((v489))->size)))) {
-    ((v492)=(((v489))->size));
-  }
-  return (__ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterPi64i64((v489), (v491), (v492)));
-};printf("%s", "reached function end without returning anything op Vec<i64> .call.sub Vec<i64>P slf Range r\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Vec_lessi64_greater __ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterP(__ZH_TYPE_Vec_lessi64_greater* v493) {{
-  return (__ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterPi64i64((v493), ((i64)0), (((v493))->size)));
-};printf("%s", "reached function end without returning anything op Vec<i64> .call.sub Vec<i64>P slf\n"); exit(EXIT_FAILURE);}
-bool __ZH_BOP__less_Vec_lessi64_greaterRVec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v494, __ZH_TYPE_Vec_lessi64_greater* v495) {{
-  return ((bool)0);
-};printf("%s", "reached function end without returning anything op bool < Vec<i64>R a Vec<i64>R b\n"); exit(EXIT_FAILURE);}
-void __ZH_LOP_swap_i64Pi64P(i64* v496, i64* v497){
-  i64 v498;
-  ((v498)=(*(v496)));
-  ((*(v496))=(*(v497)));
-  ((*(v497))=(v498));
-}
-i64* __ZH_LOP_partition_i64Pi64P(i64* v499, i64* v500) {{
-  i64* v503;
-  i64* v502;
-  i64* v501;
-  (((v501)=((i64*)((((i64)(v500)))-(((((i64)1))*(((i64)8))))))), ((v502)=(v499)), ((v503)=(v499)));
-  ((v503)=(v499));
-  while (((((i64)(v503)))!=(((i64)(v501))))) {
-    if ((((*(v503)))<((*(v501))))) {
-      (__ZH_LOP_swap_i64Pi64P((v502), (v503)));
-      ((v502)=((i64*)((((i64)(v502)))+(((((i64)1))*(((i64)8)))))));
-    }
-    ((v503)=((i64*)((((i64)(v503)))+(((((i64)1))*(((i64)8)))))));
-  }
-  (__ZH_LOP_swap_i64Pi64P((v502), (v501)));
-  return (v502);
-};printf("%s", "reached function end without returning anything lop i64P partition i64P low i64P high\n"); exit(EXIT_FAILURE);}
-void __ZH_LOP_qsort_i64Pi64P(i64* v504, i64* v505){
-  i64 v507;
-  i64 v506;
-  ((v506)=((((i64)(v505)))-(((i64)(v504)))));
-  ((v507)=((i64)8));
-  if ((((v506))>((v507)))) {
-    i64* v508;
-    ((v508)=(__ZH_LOP_partition_i64Pi64P((v504), (v505))));
-    (__ZH_LOP_qsort_i64Pi64P((v504), (v508)));
-    ((v508)=((i64*)((((i64)(v508)))+(((((i64)1))*(((i64)8)))))));
-    (__ZH_LOP_qsort_i64Pi64P((v508), (v505)));
-  }
-}
-void __ZH_BOP__dotcall_dotsort_Vec_lessi64_greaterP(__ZH_TYPE_Vec_lessi64_greater* v509){
-  __ZH_TYPE_VecIter_lessi64_greater v513;
-  __ZH_TYPE_VecIter_lessi64_greater v511;
-  (__ZH_LOP_qsort_i64Pi64P(((&(*(((v511)=(__ZH_BOP__dotcall_dotbegin_Vec_lessi64_greaterP((v509)))), (&(v511)))))->ptr), ((&(*(((v513)=(__ZH_BOP__dotcall_dotend_Vec_lessi64_greaterP((v509)))), (&(v513)))))->ptr)));
-}
-void __ZH_LOP_sort_Vec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v514){
-  (__ZH_BOP__dotcall_dotsort_Vec_lessi64_greaterP((&(*v514))));
-}
-__ZH_TYPE_Vec_lessi64_greater __ZH_BOP__dotcall_dotmap_Vec_lessi64_greaterPF_lessi64_spacei64R_greater(__ZH_TYPE_Vec_lessi64_greater* v515, i64(*v516)(i64*)) {{
-  __ZH_TYPE_Vec_lessi64_greater v517;
-  ((v517)=(__ZH_LOP_Vec_lessi64_greater_i64((((v515))->size))));
-  {
-      i64 v521;
-      i64 v520;
-      i64 v519;
-      __ZH_TYPE_Range v518;
-      ((v518)=(__ZH_BOP__dot_dot_i64i64(((i64)0), (((v515))->size))));
-      ((v519)=(__ZH_BOP__dotcall_dotbegin_RangeP((&(v518)))));
-      ((v520)=(__ZH_BOP__dotcall_dotend_RangeP((&(v518)))));
-      ((v521)=(v519));
-      while ((__ZH_BOP__dotcall_dotuneq_i64Pi64((&(v521)), (v520)))) {
-        ((*__ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterPi64((&(v517)), (v521)))=((*(v516))(&(*__ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterPi64((v515), (v521))))));
-        (__ZH_BOP__dotcall_dotnext_i64P((&(v521))));
-      }
-    }
-  return (v517);
-  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v517))));
-};printf("%s", "reached function end without returning anything op Vec<i64> .call.map Vec<i64>P slf F<i64 i64R> f\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Vec_lessi64_greater __ZH_BOP__dotcall_dotfilter_Vec_lessi64_greaterPF_lessbool_spacei64R_greater(__ZH_TYPE_Vec_lessi64_greater* v522, bool(*v523)(i64*)) {{
-  __ZH_TYPE_Vec_lessi64_greater v524;
-  ((v524)=(__ZH_LOP_Vec_lessi64_greater_()));
-  {
-      i64 v528;
-      i64 v527;
-      i64 v526;
-      __ZH_TYPE_Range v525;
-      ((v525)=(__ZH_BOP__dot_dot_i64i64(((i64)0), (((v522))->size))));
-      ((v526)=(__ZH_BOP__dotcall_dotbegin_RangeP((&(v525)))));
-      ((v527)=(__ZH_BOP__dotcall_dotend_RangeP((&(v525)))));
-      ((v528)=(v526));
-      while ((__ZH_BOP__dotcall_dotuneq_i64Pi64((&(v528)), (v527)))) {
-        if (((*(v523))(&(*__ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterPi64((v522), (v528)))))) {
-          (__ZH_BOP__plus_equal_Vec_lessi64_greaterRi64(&(v524), (*__ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterPi64((v522), (v528)))));
-        }
-        (__ZH_BOP__dotcall_dotnext_i64P((&(v528))));
-      }
-    }
-  return (v524);
-  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v524))));
-};printf("%s", "reached function end without returning anything op Vec<i64> .call.filter Vec<i64>P slf F<bool i64R> f\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Vec_lessi64_greater __ZH_LOP_iota_i64i64(i64 v529, i64 v530) {{
-  __ZH_TYPE_Vec_lessi64_greater v531;
-  ((v531)=(__ZH_LOP_Vec_lessi64_greater_i64((((v530))-((v529))))));
-  {
-      i64 v535;
-      i64 v534;
-      i64 v533;
-      __ZH_TYPE_Range v532;
-      ((v532)=(__ZH_BOP__dot_dot_i64i64((v529), (v530))));
-      ((v533)=(__ZH_BOP__dotcall_dotbegin_RangeP((&(v532)))));
-      ((v534)=(__ZH_BOP__dotcall_dotend_RangeP((&(v532)))));
-      ((v535)=(v533));
-      while ((__ZH_BOP__dotcall_dotuneq_i64Pi64((&(v535)), (v534)))) {
-        ((*__ZH_BOP__dotcall_dotat_Vec_lessi64_greaterPi64((&(v531)), (((v535))-((v529)))))=(v535));
-        (__ZH_BOP__dotcall_dotnext_i64P((&(v535))));
-      }
-    }
-  return (v531);
-  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v531))));
-};printf("%s", "reached function end without returning anything lop Vec<i64> iota i64 begin i64 end\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Vec_lessi64_greater __ZH_BOP__dotcall_dotcall_RangeP(__ZH_TYPE_Range* v536) {{
-  __ZH_TYPE_Vec_lessi64_greater v537;
-  ((v537)=(__ZH_LOP_Vec_lessi64_greater_()));
-  {
-      i64 v541;
-      i64 v540;
-      i64 v539;
-      __ZH_TYPE_Range v538;
-      ((v538)=(*(v536)));
-      ((v539)=(__ZH_BOP__dotcall_dotbegin_RangeP((&(v538)))));
-      ((v540)=(__ZH_BOP__dotcall_dotend_RangeP((&(v538)))));
-      ((v541)=(v539));
-      while ((__ZH_BOP__dotcall_dotuneq_i64Pi64((&(v541)), (v540)))) {
-        (__ZH_BOP__plus_equal_Vec_lessi64_greaterRi64(&(v537), (v541)));
-        (__ZH_BOP__dotcall_dotnext_i64P((&(v541))));
-      }
-    }
-  return (v537);
-  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v537))));
-};printf("%s", "reached function end without returning anything op Vec<i64> .call.call RangeP slf\n"); exit(EXIT_FAILURE);}
-char __ZH_BOP__dotcall_dotsub_strPi64(str* v542, i64 v543) {{
-  return (*((char*)((((i64)(*(v542))))+((v543)))));
-};printf("%s", "reached function end without returning anything op char .call.sub strP slf i64 pos\n"); exit(EXIT_FAILURE);}
-str __ZH_LOP_str_() {{
-  u8* v544;
-  ((v544)=((u8*)(alloc(((i64)1)))));
-  ((*(v544))=((u8)0));
-  return ((str)(v544));
-};printf("%s", "reached function end without returning anything lop str str\n"); exit(EXIT_FAILURE);}
-bool __ZH_BOP__equal_equal_charstr(char v545, str v546) {{
-  return (((v545))==((__ZH_BOP__dotcall_dotsub_strPi64((&(v546)), ((i64)0)))));
-};printf("%s", "reached function end without returning anything op bool == char ch str s\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_VecIter_lesschar_greater __ZH_LOP_VecIter_lesschar_greater_charP(char* v571) {{
-  __ZH_TYPE_VecIter_lesschar_greater v572;
-  (((&(v572))->ptr)=(v571));
-  return (v572);
-};printf("%s", "reached function end without returning anything lop VecIter<char> VecIter<char> charP ptr\n"); exit(EXIT_FAILURE);}
-void __ZH_BOP__dotcall_dotnext_VecIter_lesschar_greaterP(__ZH_TYPE_VecIter_lesschar_greater* v573){
-  ((((v573))->ptr)=((char*)((((i64)(((v573))->ptr)))+(((((i64)1))*(((i64)1)))))));
-}
-bool __ZH_BOP__dotcall_dotuneq_VecIter_lesschar_greaterPVecIter_lesschar_greater(__ZH_TYPE_VecIter_lesschar_greater* v574, __ZH_TYPE_VecIter_lesschar_greater v575) {{
-  return ((((i64)(((v574))->ptr)))!=(((i64)((&(v575))->ptr))));
-};printf("%s", "reached function end without returning anything op bool .call.uneq VecIter<char>P slf VecIter<char> other\n"); exit(EXIT_FAILURE);}
-char* __ZH_LOP__asterisk_VecIter_lesschar_greater(__ZH_TYPE_VecIter_lesschar_greater v576) {{
-  return &(*((&(v576))->ptr));
-};printf("%s", "reached function end without returning anything lop charR * VecIter<char> slf\n"); exit(EXIT_FAILURE);}
-char* __ZH_BOP__dotcall_dotatP_Vec_lesschar_greaterPi64(__ZH_TYPE_Vec_lesschar_greater* v547, i64 v548) {{
-  return ((char*)((char*)((((i64)(((v547))->head)))+((((v548))*(((i64)1)))))));
-};printf("%s", "reached function end without returning anything op charP .call.atP Vec<char>P slf i64 pos\n"); exit(EXIT_FAILURE);}
-char* __ZH_BOP__dotcall_dotat_Vec_lesschar_greaterPi64(__ZH_TYPE_Vec_lesschar_greater* v549, i64 v550) {{
-  return &(*(__ZH_BOP__dotcall_dotatP_Vec_lesschar_greaterPi64((v549), (v550))));
-};printf("%s", "reached function end without returning anything op charR .call.at Vec<char>P slf i64 pos\n"); exit(EXIT_FAILURE);}
-void __ZH_BOP__dotcall_dotprint_Vec_lesschar_greaterP(__ZH_TYPE_Vec_lesschar_greater* v551){
-  (printf("%s", ((str)"[")));
-  {
-      i64 v555;
-      i64 v554;
-      i64 v553;
-      __ZH_TYPE_Range v552;
-      ((v552)=(__ZH_BOP__dot_dot_i64i64(((i64)0), (((v551))->size))));
-      ((v553)=(__ZH_BOP__dotcall_dotbegin_RangeP((&(v552)))));
-      ((v554)=(__ZH_BOP__dotcall_dotend_RangeP((&(v552)))));
-      ((v555)=(v553));
-      while ((__ZH_BOP__dotcall_dotuneq_i64Pi64((&(v555)), (v554)))) {
-        if ((!((!((v555)))))) {
-          (printf("%s", ((str)" ")));
-        }
-        (printf("%c", (*(__ZH_BOP__dotcall_dotatP_Vec_lesschar_greaterPi64((v551), (v555))))));
-        (__ZH_BOP__dotcall_dotnext_i64P((&(v555))));
-      }
-    }
-  (printf("%s", ((str)"]")));
-}
-void __ZH_BOP__dotcall_dotprintln_Vec_lesschar_greaterP(__ZH_TYPE_Vec_lesschar_greater* v556){
-  {
-      i64 v560;
-      i64 v559;
-      i64 v558;
-      __ZH_TYPE_Range v557;
-      ((v557)=(__ZH_BOP__dot_dot_i64i64(((i64)0), (((v556))->size))));
-      ((v558)=(__ZH_BOP__dotcall_dotbegin_RangeP((&(v557)))));
-      ((v559)=(__ZH_BOP__dotcall_dotend_RangeP((&(v557)))));
-      ((v560)=(v558));
-      while ((__ZH_BOP__dotcall_dotuneq_i64Pi64((&(v560)), (v559)))) {
-        (printf("%c\n", (*(__ZH_BOP__dotcall_dotatP_Vec_lesschar_greaterPi64((v556), (v560))))));
-        (__ZH_BOP__dotcall_dotnext_i64P((&(v560))));
-      }
-    }
-}
-void __ZH_BOP__dotcall_dotdouble_cap_Vec_lesschar_greaterP(__ZH_TYPE_Vec_lesschar_greater* v561){
-  i64 v562;
-  ((v562)=(((v561))->cap));
-  if ((((v562))==(((i64)0)))) {
-    ((v562)=((i64)1));
-    ((((v561))->head)=((char*)(alloc(((i64)1)))));
-    ((((v561))->cap)=(v562));
-  } else {
-    char* v563;
-    (__ZH_BOP__asterisk_equal_i64Ri64(&(v562), ((i64)2)));
-    ((v563)=((char*)(alloc((((v562))*(((i64)1)))))));
-    {
-        i64 v567;
-        i64 v566;
-        i64 v565;
-        __ZH_TYPE_Range v564;
-        ((v564)=(__ZH_BOP__dot_dot_i64i64(((i64)0), (((v561))->size))));
-        ((v565)=(__ZH_BOP__dotcall_dotbegin_RangeP((&(v564)))));
-        ((v566)=(__ZH_BOP__dotcall_dotend_RangeP((&(v564)))));
-        ((v567)=(v565));
-        while ((__ZH_BOP__dotcall_dotuneq_i64Pi64((&(v567)), (v566)))) {
-          ((*((char*)((((i64)(v563)))+((((v567))*(((i64)1)))))))=(*__ZH_BOP__dotcall_dotat_Vec_lesschar_greaterPi64((v561), (v567))));
-          (__ZH_BOP__dotcall_dotnext_i64P((&(v567))));
-        }
-      }
-    (free((void*) ((i64)(((v561))->head))));
-    ((((v561))->head)=(v563));
-  }
-  ((((v561))->cap)=(v562));
-}
-void __ZH_BOP__dotcall_dotpush_back_Vec_lesschar_greaterPchar(__ZH_TYPE_Vec_lesschar_greater* v568, char v569){
-  if ((((((v568))->size))==((((v568))->cap)))) {
-    (__ZH_BOP__dotcall_dotdouble_cap_Vec_lesschar_greaterP((v568)));
-  }
-  ((*__ZH_BOP__dotcall_dotat_Vec_lesschar_greaterPi64((v568), (((v568))->size)))=(v569));
-  (*__ZH_LOP__plus_plus_i64R(&(((v568))->size)));
-}
-void __ZH_BOP__dotcall_dotpop_back_Vec_lesschar_greaterP(__ZH_TYPE_Vec_lesschar_greater* v570){
-  (*__ZH_LOP__minus_minus_i64R(&(((v570))->size)));
-}
-__ZH_TYPE_VecIter_lesschar_greater __ZH_BOP__dotcall_dotbegin_Vec_lesschar_greaterP(__ZH_TYPE_Vec_lesschar_greater* v577) {{
-  return (__ZH_LOP_VecIter_lesschar_greater_charP((((v577))->head)));
-};printf("%s", "reached function end without returning anything op VecIter<char> .call.begin Vec<char>P slf\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_VecIter_lesschar_greater __ZH_BOP__dotcall_dotend_Vec_lesschar_greaterP(__ZH_TYPE_Vec_lesschar_greater* v578) {{
-  return (__ZH_LOP_VecIter_lesschar_greater_charP((__ZH_BOP__dotcall_dotatP_Vec_lesschar_greaterPi64((v578), (((v578))->size)))));
-};printf("%s", "reached function end without returning anything op VecIter<char> .call.end Vec<char>P slf\n"); exit(EXIT_FAILURE);}
-char* __ZH_BOP__dotcall_dotfront_Vec_lesschar_greaterP(__ZH_TYPE_Vec_lesschar_greater* v579) {{
-  return &(*(((v579))->head));
-};printf("%s", "reached function end without returning anything op charR .call.front Vec<char>P slf\n"); exit(EXIT_FAILURE);}
-char* __ZH_BOP__dotcall_dotback_Vec_lesschar_greaterP(__ZH_TYPE_Vec_lesschar_greater* v580) {{
-  return &(*(__ZH_BOP__dotcall_dotatP_Vec_lesschar_greaterPi64((v580), (((((v580))->size))-(((i64)1))))));
-};printf("%s", "reached function end without returning anything op charR .call.back Vec<char>P slf\n"); exit(EXIT_FAILURE);}
-void __ZH_BOP__dotcall_dotdtor_Vec_lesschar_greaterP(__ZH_TYPE_Vec_lesschar_greater* v581){
-  if ((!((!(((i64)(((v581))->head))))))) {
-    (free((void*) ((i64)(((v581))->head))));
-    ((((v581))->size)=((i64)0));
-    ((((v581))->cap)=((i64)0));
-    ((((v581))->head)=((char*)((i64)0)));
-  }
-}
-__ZH_TYPE_Vec_lesschar_greater __ZH_LOP_Vec_lesschar_greater_i64(i64 v582) {{
-  __ZH_TYPE_Vec_lesschar_greater v583;
-  (((&(v583))->head)=((char*)((i64)0)));
-  (((&(v583))->size)=((i64)0));
-  (((&(v583))->cap)=((i64)0));
-  while (((((&(v583))->cap))<((v582)))) {
-    (__ZH_BOP__dotcall_dotdouble_cap_Vec_lesschar_greaterP((&(v583))));
-  }
-  (((&(v583))->size)=(v582));
-  (((&(v583))->cap)=(v582));
-  {
-      i64 v587;
-      i64 v586;
-      i64 v585;
-      __ZH_TYPE_Range v584;
-      ((v584)=(__ZH_BOP__dot_dot_i64i64(((i64)0), ((&(v583))->size))));
-      ((v585)=(__ZH_BOP__dotcall_dotbegin_RangeP((&(v584)))));
-      ((v586)=(__ZH_BOP__dotcall_dotend_RangeP((&(v584)))));
-      ((v587)=(v585));
-      while ((__ZH_BOP__dotcall_dotuneq_i64Pi64((&(v587)), (v586)))) {
-        ((*__ZH_BOP__dotcall_dotat_Vec_lesschar_greaterPi64((&(v583)), (v587)))=(__ZH_LOP_char_()));
-        (__ZH_BOP__dotcall_dotnext_i64P((&(v587))));
-      }
-    }
-  return (v583);
-  (__ZH_BOP__dotcall_dotdtor_Vec_lesschar_greaterP((&(v583))));
-};printf("%s", "reached function end without returning anything lop Vec<char> Vec<char> i64 size\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Vec_lesschar_greater __ZH_LOP_Vec_lesschar_greater_i64char(i64 v588, char v589) {{
-  __ZH_TYPE_Vec_lesschar_greater v590;
-  ((v590)=(__ZH_LOP_Vec_lesschar_greater_i64((v588))));
-  {
-      i64 v594;
-      i64 v593;
-      i64 v592;
-      __ZH_TYPE_Range v591;
-      ((v591)=(__ZH_BOP__dot_dot_i64i64(((i64)0), ((&(v590))->size))));
-      ((v592)=(__ZH_BOP__dotcall_dotbegin_RangeP((&(v591)))));
-      ((v593)=(__ZH_BOP__dotcall_dotend_RangeP((&(v591)))));
-      ((v594)=(v592));
-      while ((__ZH_BOP__dotcall_dotuneq_i64Pi64((&(v594)), (v593)))) {
-        ((*__ZH_BOP__dotcall_dotat_Vec_lesschar_greaterPi64((&(v590)), (v594)))=(v589));
-        (__ZH_BOP__dotcall_dotnext_i64P((&(v594))));
-      }
-    }
-  return (v590);
-  (__ZH_BOP__dotcall_dotdtor_Vec_lesschar_greaterP((&(v590))));
-};printf("%s", "reached function end without returning anything lop Vec<char> Vec<char> i64 size char default\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Vec_lesschar_greater __ZH_LOP_Vec_lesschar_greater_() {{
-  return (__ZH_LOP_Vec_lesschar_greater_i64(((i64)0)));
-};printf("%s", "reached function end without returning anything lop Vec<char> Vec<char>\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Vec_lesschar_greater __ZH_LOP_Vec_lesschar_greater_Vec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v595) {{
-  __ZH_TYPE_Vec_lesschar_greater v596;
-  ((v596)=(__ZH_LOP_Vec_lesschar_greater_i64(((&(*v595))->size))));
-  {
-      i64 v600;
-      i64 v599;
-      i64 v598;
-      __ZH_TYPE_Range v597;
-      ((v597)=(__ZH_BOP__dot_dot_i64i64(((i64)0), ((&(*v595))->size))));
-      ((v598)=(__ZH_BOP__dotcall_dotbegin_RangeP((&(v597)))));
-      ((v599)=(__ZH_BOP__dotcall_dotend_RangeP((&(v597)))));
-      ((v600)=(v598));
-      while ((__ZH_BOP__dotcall_dotuneq_i64Pi64((&(v600)), (v599)))) {
-        ((*__ZH_BOP__dotcall_dotat_Vec_lesschar_greaterPi64((&(v596)), (v600)))=(*__ZH_BOP__dotcall_dotat_Vec_lesschar_greaterPi64((&(*v595)), (v600))));
-        (__ZH_BOP__dotcall_dotnext_i64P((&(v600))));
-      }
-    }
-  return (v596);
-  (__ZH_BOP__dotcall_dotdtor_Vec_lesschar_greaterP((&(v596))));
-};printf("%s", "reached function end without returning anything lop Vec<char> Vec<char> Vec<char>R other\n"); exit(EXIT_FAILURE);}
-void __ZH_BOP__plus_equal_Vec_lesschar_greaterRchar(__ZH_TYPE_Vec_lesschar_greater* v601, char v602){
-  (__ZH_BOP__dotcall_dotpush_back_Vec_lesschar_greaterPchar((&(*v601)), (v602)));
-}
-void __ZH_BOP__plus_equal_Vec_lesschar_greaterRVec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v603, __ZH_TYPE_Vec_lesschar_greater* v604){
-  {
-      __ZH_TYPE_VecIter_lesschar_greater v608;
-      __ZH_TYPE_VecIter_lesschar_greater v607;
-      __ZH_TYPE_VecIter_lesschar_greater v606;
-      __ZH_TYPE_Vec_lesschar_greater v605;
-      ((v605)=(__ZH_LOP_Vec_lesschar_greater_Vec_lesschar_greaterR(&(*v604))));
-      ((v606)=(__ZH_BOP__dotcall_dotbegin_Vec_lesschar_greaterP((&(v605)))));
-      ((v607)=(__ZH_BOP__dotcall_dotend_Vec_lesschar_greaterP((&(v605)))));
-      ((v608)=(v606));
-      while ((__ZH_BOP__dotcall_dotuneq_VecIter_lesschar_greaterPVecIter_lesschar_greater((&(v608)), (v607)))) {
-        (__ZH_BOP__dotcall_dotpush_back_Vec_lesschar_greaterPchar((&(*v603)), (*__ZH_LOP__asterisk_VecIter_lesschar_greater((v608)))));
-        (__ZH_BOP__dotcall_dotnext_VecIter_lesschar_greaterP((&(v608))));
-      }
-    }
-}
-__ZH_TYPE_Vec_lesschar_greater __ZH_BOP__comma_comma_charchar(char v609, char v610) {{
-  __ZH_TYPE_Vec_lesschar_greater v611;
-  (__ZH_BOP__plus_equal_Vec_lesschar_greaterRchar(&(v611), (v609)));
-  (__ZH_BOP__plus_equal_Vec_lesschar_greaterRchar(&(v611), (v610)));
-  return (v611);
-  (__ZH_BOP__dotcall_dotdtor_Vec_lesschar_greaterP((&(v611))));
-};printf("%s", "reached function end without returning anything op Vec<char> ,, char a char b\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Vec_lesschar_greater* __ZH_BOP__comma_comma_Vec_lesschar_greaterRchar(__ZH_TYPE_Vec_lesschar_greater* v612, char v613) {{
-  (__ZH_BOP__plus_equal_Vec_lesschar_greaterRchar(&(*v612), (v613)));
-  return &(*v612);
-};printf("%s", "reached function end without returning anything op Vec<char>R ,, Vec<char>R v char a\n"); exit(EXIT_FAILURE);}
-void __ZH_LOP_put_Vec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v614){
-  (__ZH_BOP__dotcall_dotprint_Vec_lesschar_greaterP((&(*v614))));
-}
-void __ZH_LOP_out_Vec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v615){
-  (__ZH_BOP__dotcall_dotprint_Vec_lesschar_greaterP((&(*v615))));
-  (printf("%s\n", ((str)"")));
-}
-__ZH_TYPE_Out __ZH_ROP__less_Vec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v616) {{
-  (__ZH_LOP_out_Vec_lesschar_greaterR(&(*v616)));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything rop Out < Vec<char>R i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_LOP__less_Vec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v617) {{
-  ((__ZH_LOP_put_Vec_lesschar_greaterR(&(*v617))), (printf("%s", ((str)" "))));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything lop Out < Vec<char>R i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_BOP__less_OutVec_lesschar_greaterR(__ZH_TYPE_Out v618, __ZH_TYPE_Vec_lesschar_greater* v619) {{
-  ((__ZH_LOP_put_Vec_lesschar_greaterR(&(*v619))), (printf("%s", ((str)" "))));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything op Out < Out o Vec<char>R i\n"); exit(EXIT_FAILURE);}
-char* __ZH_BOP__dotcall_dotsub_Vec_lesschar_greaterPi64(__ZH_TYPE_Vec_lesschar_greater* v620, i64 v621) {{
-  if ((((v621))<(((i64)0)))) {
-    (__ZH_BOP__plus_equal_i64Ri64(&(v621), (((v620))->size)));
-  }
-  return &(*__ZH_BOP__dotcall_dotat_Vec_lesschar_greaterPi64((v620), (v621)));
-};printf("%s", "reached function end without returning anything op charR .call.sub Vec<char>P slf i64 id\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Vec_lesschar_greater __ZH_BOP__dotcall_dotsub_Vec_lesschar_greaterPi64i64(__ZH_TYPE_Vec_lesschar_greater* v622, i64 v623, i64 v624) {{
-  __ZH_TYPE_Vec_lesschar_greater v625;
-  ((v625)=(__ZH_LOP_Vec_lesschar_greater_i64(((i64)0))));
-  {
-      i64 v629;
-      i64 v628;
-      i64 v627;
-      __ZH_TYPE_Range v626;
-      ((v626)=(__ZH_BOP__dot_dot_i64i64((v623), (v624))));
-      ((v627)=(__ZH_BOP__dotcall_dotbegin_RangeP((&(v626)))));
-      ((v628)=(__ZH_BOP__dotcall_dotend_RangeP((&(v626)))));
-      ((v629)=(v627));
-      while ((__ZH_BOP__dotcall_dotuneq_i64Pi64((&(v629)), (v628)))) {
-        (__ZH_BOP__dotcall_dotpush_back_Vec_lesschar_greaterPchar((&(v625)), (*__ZH_BOP__dotcall_dotat_Vec_lesschar_greaterPi64((v622), (v629)))));
-        (__ZH_BOP__dotcall_dotnext_i64P((&(v629))));
-      }
-    }
-  return (v625);
-  (__ZH_BOP__dotcall_dotdtor_Vec_lesschar_greaterP((&(v625))));
-};printf("%s", "reached function end without returning anything op Vec<char> .call.sub Vec<char>P slf i64 begin i64 end\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Vec_lesschar_greater __ZH_BOP__dotcall_dotsub_Vec_lesschar_greaterPRange(__ZH_TYPE_Vec_lesschar_greater* v630, __ZH_TYPE_Range v631) {{
-  i64 v633;
-  i64 v632;
-  (((v632)=((&(v631))->begin)), ((v633)=((&(v631))->end)));
-  if ((((v632))<(((i64)0)))) {
-    (__ZH_BOP__plus_equal_i64Ri64(&(v632), (((v630))->size)));
-  }
-  if ((((v632))<(((i64)0)))) {
-    ((v632)=((i64)0));
-  }
-  if ((((v633))<(((i64)0)))) {
-    (__ZH_BOP__plus_equal_i64Ri64(&(v633), (((v630))->size)));
-  }
-  if ((((v633))>((((v630))->size)))) {
-    ((v633)=(((v630))->size));
-  }
-  return (__ZH_BOP__dotcall_dotsub_Vec_lesschar_greaterPi64i64((v630), (v632), (v633)));
-};printf("%s", "reached function end without returning anything op Vec<char> .call.sub Vec<char>P slf Range r\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Vec_lesschar_greater __ZH_BOP__dotcall_dotsub_Vec_lesschar_greaterP(__ZH_TYPE_Vec_lesschar_greater* v634) {{
-  return (__ZH_BOP__dotcall_dotsub_Vec_lesschar_greaterPi64i64((v634), ((i64)0), (((v634))->size)));
-};printf("%s", "reached function end without returning anything op Vec<char> .call.sub Vec<char>P slf\n"); exit(EXIT_FAILURE);}
-bool __ZH_BOP__less_Vec_lesschar_greaterRVec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v635, __ZH_TYPE_Vec_lesschar_greater* v636) {{
-  return ((bool)0);
-};printf("%s", "reached function end without returning anything op bool < Vec<char>R a Vec<char>R b\n"); exit(EXIT_FAILURE);}
-void __ZH_LOP_swap_charPcharP(char* v637, char* v638){
-  char v639;
-  ((v639)=(*(v637)));
-  ((*(v637))=(*(v638)));
-  ((*(v638))=(v639));
-}
-char* __ZH_LOP_partition_charPcharP(char* v640, char* v641) {{
-  char* v644;
-  char* v643;
-  char* v642;
-  (((v642)=((char*)((((i64)(v641)))-(((((i64)1))*(((i64)1))))))), ((v643)=(v640)), ((v644)=(v640)));
-  ((v644)=(v640));
-  while (((((i64)(v644)))!=(((i64)(v642))))) {
-    if ((((*(v644)))<((*(v642))))) {
-      (__ZH_LOP_swap_charPcharP((v643), (v644)));
-      ((v643)=((char*)((((i64)(v643)))+(((((i64)1))*(((i64)1)))))));
-    }
-    ((v644)=((char*)((((i64)(v644)))+(((((i64)1))*(((i64)1)))))));
-  }
-  (__ZH_LOP_swap_charPcharP((v643), (v642)));
-  return (v643);
-};printf("%s", "reached function end without returning anything lop charP partition charP low charP high\n"); exit(EXIT_FAILURE);}
-void __ZH_LOP_qsort_charPcharP(char* v645, char* v646){
-  i64 v648;
-  i64 v647;
-  ((v647)=((((i64)(v646)))-(((i64)(v645)))));
-  ((v648)=((i64)1));
-  if ((((v647))>((v648)))) {
-    char* v649;
-    ((v649)=(__ZH_LOP_partition_charPcharP((v645), (v646))));
-    (__ZH_LOP_qsort_charPcharP((v645), (v649)));
-    ((v649)=((char*)((((i64)(v649)))+(((((i64)1))*(((i64)1)))))));
-    (__ZH_LOP_qsort_charPcharP((v649), (v646)));
-  }
-}
-void __ZH_BOP__dotcall_dotsort_Vec_lesschar_greaterP(__ZH_TYPE_Vec_lesschar_greater* v650){
-  __ZH_TYPE_VecIter_lesschar_greater v654;
-  __ZH_TYPE_VecIter_lesschar_greater v652;
-  (__ZH_LOP_qsort_charPcharP(((&(*(((v652)=(__ZH_BOP__dotcall_dotbegin_Vec_lesschar_greaterP((v650)))), (&(v652)))))->ptr), ((&(*(((v654)=(__ZH_BOP__dotcall_dotend_Vec_lesschar_greaterP((v650)))), (&(v654)))))->ptr)));
-}
-void __ZH_LOP_sort_Vec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v655){
-  (__ZH_BOP__dotcall_dotsort_Vec_lesschar_greaterP((&(*v655))));
-}
-__ZH_TYPE_Vec_lesschar_greater __ZH_BOP__dotcall_dotmap_Vec_lesschar_greaterPF_lesschar_spacecharR_greater(__ZH_TYPE_Vec_lesschar_greater* v656, char(*v657)(char*)) {{
-  __ZH_TYPE_Vec_lesschar_greater v658;
-  ((v658)=(__ZH_LOP_Vec_lesschar_greater_i64((((v656))->size))));
-  {
-      i64 v662;
-      i64 v661;
-      i64 v660;
-      __ZH_TYPE_Range v659;
-      ((v659)=(__ZH_BOP__dot_dot_i64i64(((i64)0), (((v656))->size))));
-      ((v660)=(__ZH_BOP__dotcall_dotbegin_RangeP((&(v659)))));
-      ((v661)=(__ZH_BOP__dotcall_dotend_RangeP((&(v659)))));
-      ((v662)=(v660));
-      while ((__ZH_BOP__dotcall_dotuneq_i64Pi64((&(v662)), (v661)))) {
-        ((*__ZH_BOP__dotcall_dotsub_Vec_lesschar_greaterPi64((&(v658)), (v662)))=((*(v657))(&(*__ZH_BOP__dotcall_dotsub_Vec_lesschar_greaterPi64((v656), (v662))))));
-        (__ZH_BOP__dotcall_dotnext_i64P((&(v662))));
-      }
-    }
-  return (v658);
-  (__ZH_BOP__dotcall_dotdtor_Vec_lesschar_greaterP((&(v658))));
-};printf("%s", "reached function end without returning anything op Vec<char> .call.map Vec<char>P slf F<char charR> f\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Vec_lesschar_greater __ZH_BOP__dotcall_dotfilter_Vec_lesschar_greaterPF_lessbool_spacecharR_greater(__ZH_TYPE_Vec_lesschar_greater* v663, bool(*v664)(char*)) {{
-  __ZH_TYPE_Vec_lesschar_greater v665;
-  ((v665)=(__ZH_LOP_Vec_lesschar_greater_()));
-  {
-      i64 v669;
-      i64 v668;
-      i64 v667;
-      __ZH_TYPE_Range v666;
-      ((v666)=(__ZH_BOP__dot_dot_i64i64(((i64)0), (((v663))->size))));
-      ((v667)=(__ZH_BOP__dotcall_dotbegin_RangeP((&(v666)))));
-      ((v668)=(__ZH_BOP__dotcall_dotend_RangeP((&(v666)))));
-      ((v669)=(v667));
-      while ((__ZH_BOP__dotcall_dotuneq_i64Pi64((&(v669)), (v668)))) {
-        if (((*(v664))(&(*__ZH_BOP__dotcall_dotsub_Vec_lesschar_greaterPi64((v663), (v669)))))) {
-          (__ZH_BOP__plus_equal_Vec_lesschar_greaterRchar(&(v665), (*__ZH_BOP__dotcall_dotsub_Vec_lesschar_greaterPi64((v663), (v669)))));
-        }
-        (__ZH_BOP__dotcall_dotnext_i64P((&(v669))));
-      }
-    }
-  return (v665);
-  (__ZH_BOP__dotcall_dotdtor_Vec_lesschar_greaterP((&(v665))));
-};printf("%s", "reached function end without returning anything op Vec<char> .call.filter Vec<char>P slf F<bool charR> f\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Str __ZH_LOP_Str_() {{
-  __ZH_TYPE_Str v670;
-  (((&(v670))->data)=(__ZH_LOP_Vec_lesschar_greater_()));
-  (__ZH_BOP__dotcall_dotpush_back_Vec_lesschar_greaterPchar((&((&(v670))->data)), ((char)((u8)0))));
-  (((&(v670))->size)=((i64)0));
-  return (v670);
-};printf("%s", "reached function end without returning anything lop Str Str\n"); exit(EXIT_FAILURE);}
-void __ZH_BOP__dotcall_dotdtor_StrP(__ZH_TYPE_Str* v671){
-  (__ZH_BOP__dotcall_dotdtor_Vec_lesschar_greaterP((&(((v671))->data))));
-}
-str __ZH_BOP__dotcall_dotcstr_StrP(__ZH_TYPE_Str* v672) {{
-  __ZH_TYPE_VecIter_lesschar_greater v673;
-  ((v673)=(__ZH_BOP__dotcall_dotbegin_Vec_lesschar_greaterP((&(((v672))->data)))));
-  return ((str)((&(v673))->ptr));
-};printf("%s", "reached function end without returning anything op str .call.cstr StrP slf\n"); exit(EXIT_FAILURE);}
-char* __ZH_BOP__dotcall_dotat_StrPi64(__ZH_TYPE_Str* v674, i64 v675) {{
-  return &(*__ZH_BOP__dotcall_dotat_Vec_lesschar_greaterPi64((&(((v674))->data)), (v675)));
-};printf("%s", "reached function end without returning anything op charR .call.at StrP slf i64 pos\n"); exit(EXIT_FAILURE);}
-char* __ZH_BOP__dotcall_dotsub_StrPi64(__ZH_TYPE_Str* v676, i64 v677) {{
-  return &(*__ZH_BOP__dotcall_dotat_Vec_lesschar_greaterPi64((&(((v676))->data)), (v677)));
-};printf("%s", "reached function end without returning anything op charR .call.sub StrP slf i64 pos\n"); exit(EXIT_FAILURE);}
-char* __ZH_BOP__dotcall_dotatP_StrPi64(__ZH_TYPE_Str* v678, i64 v679) {{
-  return (__ZH_BOP__dotcall_dotatP_Vec_lesschar_greaterPi64((&(((v678))->data)), (v679)));
-};printf("%s", "reached function end without returning anything op charP .call.atP StrP slf i64 pos\n"); exit(EXIT_FAILURE);}
-void __ZH_BOP__dotcall_dotpush_back_StrPchar(__ZH_TYPE_Str* v680, char v681){
-  (__ZH_BOP__dotcall_dotpop_back_Vec_lesschar_greaterP((&(((v680))->data))));
-  (__ZH_BOP__dotcall_dotpush_back_Vec_lesschar_greaterPchar((&(((v680))->data)), (v681)));
-  (__ZH_BOP__dotcall_dotpush_back_Vec_lesschar_greaterPchar((&(((v680))->data)), ((char)((u8)0))));
-  (*__ZH_LOP__plus_plus_i64R(&(((v680))->size)));
-}
-void __ZH_BOP__dotcall_dotpop_back_StrP(__ZH_TYPE_Str* v682){
-  (__ZH_BOP__dotcall_dotpop_back_Vec_lesschar_greaterP((&(((v682))->data))));
-  (__ZH_BOP__dotcall_dotpop_back_Vec_lesschar_greaterP((&(((v682))->data))));
-  (__ZH_BOP__dotcall_dotpush_back_Vec_lesschar_greaterPchar((&(((v682))->data)), ((char)((u8)0))));
-  (*__ZH_LOP__minus_minus_i64R(&(((v682))->size)));
-}
-__ZH_TYPE_Str __ZH_LOP_Str_str(str v683) {{
-  __ZH_TYPE_Str v684;
-  ((v684)=(__ZH_LOP_Str_()));
-  (__ZH_BOP__dotcall_dotpop_back_Vec_lesschar_greaterP((&((&(v684))->data))));
-  while ((((*((char*)(v683))))!=(((char)((u8)0))))) {
-    (__ZH_BOP__dotcall_dotpush_back_Vec_lesschar_greaterPchar((&((&(v684))->data)), (*((char*)(v683)))));
-    ((v683)=((str)((((i64)(v683)))+(((i64)1)))));
-  }
-  (__ZH_BOP__dotcall_dotpush_back_Vec_lesschar_greaterPchar((&((&(v684))->data)), ((char)((u8)0))));
-  (((&(v684))->size)=((((&((&(v684))->data))->size))-(((i64)1))));
-  return (v684);
-  (__ZH_BOP__dotcall_dotdtor_StrP((&(v684))));
-};printf("%s", "reached function end without returning anything lop Str Str str s\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Str __ZH_LOP_Str_StrR(__ZH_TYPE_Str* v685) {{
-  __ZH_TYPE_Str v686;
-  ((v686)=(__ZH_LOP_Str_()));
-  (((&(v686))->data)=(__ZH_LOP_Vec_lesschar_greater_Vec_lesschar_greaterR(&((&(*v685))->data))));
-  (((&(v686))->size)=((&(*v685))->size));
-  return (v686);
-  (__ZH_BOP__dotcall_dotdtor_StrP((&(v686))));
-};printf("%s", "reached function end without returning anything lop Str Str StrR s\n"); exit(EXIT_FAILURE);}
-i64 __ZH_LOP_len_str(str v687) {{
-  i64 v688;
-  ((v688)=((i64)0));
-  while ((((*((char*)(v687))))!=(((char)((u8)0))))) {
-    (*__ZH_LOP__plus_plus_i64R(&(v688)));
-    ((v687)=((str)((((i64)(v687)))+(((i64)1)))));
-  }
-  return (v688);
-};printf("%s", "reached function end without returning anything lop i64 len str s\n"); exit(EXIT_FAILURE);}
-void __ZH_LOP_out_StrR(__ZH_TYPE_Str* v689){
-  (printf("%s\n", (__ZH_BOP__dotcall_dotcstr_StrP((&(*v689))))));
-}
-void __ZH_LOP_put_StrR(__ZH_TYPE_Str* v690){
-  (printf("%s", (__ZH_BOP__dotcall_dotcstr_StrP((&(*v690))))));
-}
-void __ZH_BOP__plus_equal_StrRchar(__ZH_TYPE_Str* v691, char v692){
-  (__ZH_BOP__dotcall_dotpush_back_StrPchar((&(*v691)), (v692)));
-}
-void __ZH_BOP__plus_equal_StrRStrR(__ZH_TYPE_Str* v693, __ZH_TYPE_Str* v694){
-  {
+      i64 v699;
       i64 v698;
       i64 v697;
-      i64 v696;
-      __ZH_TYPE_Range v695;
-      ((v695)=(__ZH_BOP__dot_dot_i64i64(((i64)0), ((&(*v694))->size))));
-      ((v696)=(__ZH_BOP__dotcall_dotbegin_RangeP((&(v695)))));
-      ((v697)=(__ZH_BOP__dotcall_dotend_RangeP((&(v695)))));
-      ((v698)=(v696));
-      while ((__ZH_BOP__dotcall_dotuneq_i64Pi64((&(v698)), (v697)))) {
-        char v699;
-        ((v699)=((char)((i8)115)));
-        ((v699)=(*__ZH_BOP__dotcall_dotat_StrPi64((&(*v694)), (v698))));
-        (__ZH_BOP__plus_equal_StrRchar(&(*v693), (v699)));
-        (__ZH_BOP__dotcall_dotnext_i64P((&(v698))));
+      __ZH_TYPE_Range v696;
+      ((v696)=(__ZH_BOP__dot_dot_i64i64(((i64)0), ((&(v695))->size))));
+      ((v697)=(__ZH_BOP__dotcall_dotbegin_RangeP((&(v696)))));
+      ((v698)=(__ZH_BOP__dotcall_dotend_RangeP((&(v696)))));
+      ((v699)=(v697));
+      while ((__ZH_BOP__dotcall_dotuneq_i64Pi64((&(v699)), (v698)))) {
+        ((*__ZH_BOP__dotcall_dotat_Vec_lessi64_greaterPi64((&(v695)), (v699)))=(v694));
+        (__ZH_BOP__dotcall_dotnext_i64P((&(v699))));
+      }
+    }
+  ((v701)=(v695));
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v695))));
+  return (v701);
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v695))));
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v701))));
+};printf("%s", "reached function end without returning anything lop Vec<i64> Vec<i64> i64 size i64 default\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Vec_lessi64_greater __ZH_LOP_Vec_lessi64_greater_() {{
+  __ZH_TYPE_Vec_lessi64_greater v703;
+  ((v703)=(__ZH_LOP_Vec_lessi64_greater_i64(((i64)0))));
+  return (v703);
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v703))));
+};printf("%s", "reached function end without returning anything lop Vec<i64> Vec<i64>\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Vec_lessi64_greater __ZH_LOP_Vec_lessi64_greater_Vec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v704) {{
+  __ZH_TYPE_Vec_lessi64_greater v711;
+  __ZH_TYPE_Vec_lessi64_greater v705;
+  ((v705)=(__ZH_LOP_Vec_lessi64_greater_i64(((&(*v704))->size))));
+  {
+      i64 v709;
+      i64 v708;
+      i64 v707;
+      __ZH_TYPE_Range v706;
+      ((v706)=(__ZH_BOP__dot_dot_i64i64(((i64)0), ((&(*v704))->size))));
+      ((v707)=(__ZH_BOP__dotcall_dotbegin_RangeP((&(v706)))));
+      ((v708)=(__ZH_BOP__dotcall_dotend_RangeP((&(v706)))));
+      ((v709)=(v707));
+      while ((__ZH_BOP__dotcall_dotuneq_i64Pi64((&(v709)), (v708)))) {
+        ((*__ZH_BOP__dotcall_dotat_Vec_lessi64_greaterPi64((&(v705)), (v709)))=(*__ZH_BOP__dotcall_dotat_Vec_lessi64_greaterPi64((&(*v704)), (v709))));
+        (__ZH_BOP__dotcall_dotnext_i64P((&(v709))));
+      }
+    }
+  ((v711)=(__ZH_LOP_Vec_lessi64_greater_Vec_lessi64_greaterR(&(v705))));
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v705))));
+  return (v711);
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v705))));
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v711))));
+};printf("%s", "reached function end without returning anything lop Vec<i64> Vec<i64> Vec<i64>R other\n"); exit(EXIT_FAILURE);}
+void __ZH_BOP__plus_equal_Vec_lessi64_greaterRi64(__ZH_TYPE_Vec_lessi64_greater* v712, i64 v713){
+  (__ZH_BOP__dotcall_dotpush_back_Vec_lessi64_greaterPi64((&(*v712)), (v713)));
+}
+void __ZH_BOP__plus_equal_Vec_lessi64_greaterRVec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v714, __ZH_TYPE_Vec_lessi64_greater* v715){
+  {
+      __ZH_TYPE_VecIter_lessi64_greater v719;
+      __ZH_TYPE_VecIter_lessi64_greater v718;
+      __ZH_TYPE_VecIter_lessi64_greater v717;
+      __ZH_TYPE_Vec_lessi64_greater v716;
+      ((v716)=(__ZH_LOP_Vec_lessi64_greater_Vec_lessi64_greaterR(&(*v715))));
+      ((v717)=(__ZH_BOP__dotcall_dotbegin_Vec_lessi64_greaterP((&(v716)))));
+      ((v718)=(__ZH_BOP__dotcall_dotend_Vec_lessi64_greaterP((&(v716)))));
+      ((v719)=(v717));
+      while ((__ZH_BOP__dotcall_dotuneq_VecIter_lessi64_greaterPVecIter_lessi64_greater((&(v719)), (v718)))) {
+        (__ZH_BOP__dotcall_dotpush_back_Vec_lessi64_greaterPi64((&(*v714)), (*__ZH_LOP__asterisk_VecIter_lessi64_greater((v719)))));
+        (__ZH_BOP__dotcall_dotnext_VecIter_lessi64_greaterP((&(v719))));
       }
     }
 }
-void __ZH_BOP__plus_equal_StrRstr(__ZH_TYPE_Str* v700, str v701){
-  i64 v702;
-  ((v702)=(__ZH_LOP_len_str((v701))));
-  {
-      i64 v706;
-      i64 v705;
-      i64 v704;
-      __ZH_TYPE_Range v703;
-      ((v703)=(__ZH_BOP__dot_dot_i64i64(((i64)0), (v702))));
-      ((v704)=(__ZH_BOP__dotcall_dotbegin_RangeP((&(v703)))));
-      ((v705)=(__ZH_BOP__dotcall_dotend_RangeP((&(v703)))));
-      ((v706)=(v704));
-      while ((__ZH_BOP__dotcall_dotuneq_i64Pi64((&(v706)), (v705)))) {
-        (__ZH_BOP__plus_equal_StrRchar(&(*v700), (__ZH_BOP__dotcall_dotsub_strPi64((&(v701)), (v706)))));
-        (__ZH_BOP__dotcall_dotnext_i64P((&(v706))));
-      }
-    }
+__ZH_TYPE_Vec_lessi64_greater __ZH_BOP__comma_comma_i64i64(i64 v720, i64 v721) {{
+  __ZH_TYPE_Vec_lessi64_greater v724;
+  __ZH_TYPE_Vec_lessi64_greater v722;
+  (__ZH_BOP__plus_equal_Vec_lessi64_greaterRi64(&(v722), (v720)));
+  (__ZH_BOP__plus_equal_Vec_lessi64_greaterRi64(&(v722), (v721)));
+  ((v724)=(__ZH_LOP_Vec_lessi64_greater_Vec_lessi64_greaterR(&(v722))));
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v722))));
+  return (v724);
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v722))));
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v724))));
+};printf("%s", "reached function end without returning anything op Vec<i64> ,, i64 a i64 b\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Vec_lessi64_greater* __ZH_BOP__comma_comma_Vec_lessi64_greaterRi64(__ZH_TYPE_Vec_lessi64_greater* v725, i64 v726) {{
+  __ZH_TYPE_Vec_lessi64_greater v728;
+  (__ZH_BOP__plus_equal_Vec_lessi64_greaterRi64(&(*v725), (v726)));
+  ((v728)=(__ZH_LOP_Vec_lessi64_greater_Vec_lessi64_greaterR(&(*v725))));
+  return &(v728);
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v728))));
+};printf("%s", "reached function end without returning anything op Vec<i64>R ,, Vec<i64>R v i64 a\n"); exit(EXIT_FAILURE);}
+void __ZH_LOP_put_Vec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v729){
+  (__ZH_BOP__dotcall_dotprint_Vec_lessi64_greaterP((&(*v729))));
 }
-__ZH_TYPE_Str __ZH_BOP__plus_StrRStrR(__ZH_TYPE_Str* v707, __ZH_TYPE_Str* v708) {{
-  __ZH_TYPE_Str v709;
-  ((v709)=(__ZH_LOP_Str_StrR(&(*v707))));
-  (__ZH_BOP__plus_equal_StrRStrR(&(v709), &(*v708)));
-  return (v709);
-  (__ZH_BOP__dotcall_dotdtor_StrP((&(v709))));
-};printf("%s", "reached function end without returning anything op Str + StrR a StrR b\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Str __ZH_BOP__plus_strstr(str v710, str v711) {{
-  __ZH_TYPE_Str v715;
-  __ZH_TYPE_Str v713;
-  (__ZH_BOP__dotcall_dotdtor_StrP((&(v713))));
-  (__ZH_BOP__dotcall_dotdtor_StrP((&(v715))));
-  return (__ZH_BOP__plus_StrRStrR(&(*(((v713)=(__ZH_LOP_Str_str((v710)))), (&(v713)))), &(*(((v715)=(__ZH_LOP_Str_str((v711)))), (&(v715))))));
-  (__ZH_BOP__dotcall_dotdtor_StrP((&(v713))));
-  (__ZH_BOP__dotcall_dotdtor_StrP((&(v715))));
-};printf("%s", "reached function end without returning anything op Str + str a str b\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_ROP__less_StrR(__ZH_TYPE_Str* v716) {{
-  (__ZH_LOP_out_StrR(&(*v716)));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything rop Out < StrR i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_LOP__less_StrR(__ZH_TYPE_Str* v717) {{
-  ((__ZH_LOP_put_StrR(&(*v717))), (printf("%s", ((str)" "))));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything lop Out < StrR i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_BOP__less_OutStrR(__ZH_TYPE_Out v718, __ZH_TYPE_Str* v719) {{
-  ((__ZH_LOP_put_StrR(&(*v719))), (printf("%s", ((str)" "))));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything op Out < Out o StrR i\n"); exit(EXIT_FAILURE);}
-bool __ZH_BOP__less_StrRStrR(__ZH_TYPE_Str* v720, __ZH_TYPE_Str* v721) {{
-  {
-      i64 v725;
-      i64 v724;
-      i64 v723;
-      __ZH_TYPE_Range v722;
-      ((v722)=(__ZH_BOP__dot_dot_i64i64(((i64)0), (__ZH_LOP_min_i64i64(((&(*v720))->size), ((&(*v721))->size))))));
-      ((v723)=(__ZH_BOP__dotcall_dotbegin_RangeP((&(v722)))));
-      ((v724)=(__ZH_BOP__dotcall_dotend_RangeP((&(v722)))));
-      ((v725)=(v723));
-      while ((__ZH_BOP__dotcall_dotuneq_i64Pi64((&(v725)), (v724)))) {
-        if ((((*__ZH_BOP__dotcall_dotsub_StrPi64((&(*v720)), (v725))))<((*__ZH_BOP__dotcall_dotsub_StrPi64((&(*v721)), (v725)))))) {
-          return ((bool)1);
-        }
- else if ((((*__ZH_BOP__dotcall_dotsub_StrPi64((&(*v720)), (v725))))>((*__ZH_BOP__dotcall_dotsub_StrPi64((&(*v721)), (v725)))))) {
-          return ((bool)0);
-        }
-        (__ZH_BOP__dotcall_dotnext_i64P((&(v725))));
-      }
-    }
-  if (((((&(*v720))->size))<(((&(*v721))->size)))) {
-    return ((bool)1);
-  }
- else if (((((&(*v720))->size))>(((&(*v721))->size)))) {
-    return ((bool)0);
-  }
-  return ((bool)0);
-};printf("%s", "reached function end without returning anything op bool < StrR a StrR b\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Str __ZH_BOP__asterisk_stri64(str v726, i64 v727) {{
-  __ZH_TYPE_Str v729;
-  __ZH_TYPE_Str v728;
-  ((v728)=(__ZH_LOP_Str_()));
-  ((v729)=(__ZH_LOP_Str_str((v726))));
-  {
-      i64 v733;
-      i64 v732;
-      i64 v731;
-      __ZH_TYPE_Range v730;
-      ((v730)=(__ZH_BOP__dot_dot_i64i64(((i64)0), (v727))));
-      ((v731)=(__ZH_BOP__dotcall_dotbegin_RangeP((&(v730)))));
-      ((v732)=(__ZH_BOP__dotcall_dotend_RangeP((&(v730)))));
-      ((v733)=(v731));
-      while ((__ZH_BOP__dotcall_dotuneq_i64Pi64((&(v733)), (v732)))) {
-        (__ZH_BOP__plus_equal_StrRStrR(&(v728), &(v729)));
-        (__ZH_BOP__dotcall_dotnext_i64P((&(v733))));
-      }
-    }
-  (__ZH_BOP__dotcall_dotdtor_StrP((&(v729))));
-  return (v728);
-  (__ZH_BOP__dotcall_dotdtor_StrP((&(v728))));
-  (__ZH_BOP__dotcall_dotdtor_StrP((&(v729))));
-  return (__ZH_LOP_Str_());
-  (__ZH_BOP__dotcall_dotdtor_StrP((&(v728))));
-  (__ZH_BOP__dotcall_dotdtor_StrP((&(v729))));
-};printf("%s", "reached function end without returning anything op Str * str s i64 i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Str __ZH_LOP__dollar_str(str v734) {{
-  return (__ZH_LOP_Str_str((v734)));
-};printf("%s", "reached function end without returning anything lop Str $ str s\n"); exit(EXIT_FAILURE);}
-str __ZH_LOP_frog_() {{
-  return ((str)"         _____\n       /       \\__\n     /             \\\n   /   ^    ^        |\n  |     ..            |\n  /|        _/       / \n / .\\_____/         /\n/U\\|    \\___|   |__/\n            /  /\n            |/U\\ ");
-};printf("%s", "reached function end without returning anything lop str frog\n"); exit(EXIT_FAILURE);}
-f64 __ZH_LOP_sqrt_f64(f64 v735) {{
-  f64 v736;
-  ((v736)=((f64)1.000000));
-  {
-      i64 v740;
-      i64 v739;
-      i64 v738;
-      __ZH_TYPE_Range v737;
-      ((v737)=(__ZH_BOP__dot_dot_i64i64(((i64)0), ((i64)10))));
-      ((v738)=(__ZH_BOP__dotcall_dotbegin_RangeP((&(v737)))));
-      ((v739)=(__ZH_BOP__dotcall_dotend_RangeP((&(v737)))));
-      ((v740)=(v738));
-      while ((__ZH_BOP__dotcall_dotuneq_i64Pi64((&(v740)), (v739)))) {
-        (__ZH_BOP__minus_equal_f64Rf64(&(v736), (((((((v736))*((v736))))-((v735))))/(((((f64)2.000000))*((v736)))))));
-        (__ZH_BOP__dotcall_dotnext_i64P((&(v740))));
-      }
-    }
-  return (v736);
-};printf("%s", "reached function end without returning anything lop f64 sqrt f64 x\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_V2 __ZH_LOP_V2_f64f64(f64 v741, f64 v742) {{
-  __ZH_TYPE_V2 v743;
-  (((&(v743))->x)=(v741));
-  (((&(v743))->y)=(v742));
-  return (v743);
-};printf("%s", "reached function end without returning anything lop V2 V2 f64 x f64 y\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_V2 __ZH_BOP__plus_V2V2(__ZH_TYPE_V2 v744, __ZH_TYPE_V2 v745) {{
-  (__ZH_BOP__plus_equal_f64Rf64(&((&(v744))->x), ((&(v745))->x)));
-  (__ZH_BOP__plus_equal_f64Rf64(&((&(v744))->y), ((&(v745))->y)));
-  return (v744);
-};printf("%s", "reached function end without returning anything op V2 + V2 a V2 b\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_V2 __ZH_BOP__asterisk_V2V2(__ZH_TYPE_V2 v746, __ZH_TYPE_V2 v747) {{
-  __ZH_TYPE_V2 v748;
-  (((&(v748))->x)=((((((&(v746))->x))*(((&(v747))->x))))-(((((&(v746))->y))*(((&(v747))->y))))));
-  (((&(v748))->y)=((((((&(v746))->x))*(((&(v747))->y))))+(((((&(v746))->y))*(((&(v747))->x))))));
-  return (v748);
-};printf("%s", "reached function end without returning anything op V2 * V2 a V2 b\n"); exit(EXIT_FAILURE);}
-f64 __ZH_LOP_abs_V2(__ZH_TYPE_V2 v749) {{
-  return (__ZH_LOP_sqrt_f64(((((((&(v749))->x))*(((&(v749))->x))))+(((((&(v749))->y))*(((&(v749))->y)))))));
-};printf("%s", "reached function end without returning anything lop f64 abs V2 a\n"); exit(EXIT_FAILURE);}
-void __ZH_LOP_put_V2(__ZH_TYPE_V2 v750){
-  (printf("%f", ((&(v750))->x)));
-  (printf("%s", ((str)" ")));
-  (printf("%f", ((&(v750))->y)));
-}
-void __ZH_LOP_out_V2(__ZH_TYPE_V2 v751){
-  (printf("%f", ((&(v751))->x)));
-  (printf("%s", ((str)" ")));
-  (printf("%f", ((&(v751))->y)));
+void __ZH_LOP_out_Vec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v730){
+  (__ZH_BOP__dotcall_dotprint_Vec_lessi64_greaterP((&(*v730))));
   (printf("%s\n", ((str)"")));
 }
-__ZH_TYPE_Out __ZH_ROP__less_V2(__ZH_TYPE_V2 v752) {{
-  (__ZH_LOP_out_V2((v752)));
-  return (__ZH_LOP_Out_());
+__ZH_TYPE_Out __ZH_ROP__less_Vec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v731) {{
+  __ZH_TYPE_Out v733;
+  (__ZH_LOP_out_Vec_lessi64_greaterR(&(*v731)));
+  ((v733)=(__ZH_LOP_Out_()));
+  return (v733);
+};printf("%s", "reached function end without returning anything rop Out < Vec<i64>R i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_LOP__less_Vec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v734) {{
+  __ZH_TYPE_Out v736;
+  ((__ZH_LOP_put_Vec_lessi64_greaterR(&(*v734))), (printf("%s", ((str)" "))));
+  ((v736)=(__ZH_LOP_Out_()));
+  return (v736);
+};printf("%s", "reached function end without returning anything lop Out < Vec<i64>R i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_BOP__less_OutVec_lessi64_greaterR(__ZH_TYPE_Out v737, __ZH_TYPE_Vec_lessi64_greater* v738) {{
+  __ZH_TYPE_Out v740;
+  ((__ZH_LOP_put_Vec_lessi64_greaterR(&(*v738))), (printf("%s", ((str)" "))));
+  ((v740)=(__ZH_LOP_Out_()));
+  return (v740);
+};printf("%s", "reached function end without returning anything op Out < Out o Vec<i64>R i\n"); exit(EXIT_FAILURE);}
+i64* __ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterPi64(__ZH_TYPE_Vec_lessi64_greater* v741, i64 v742) {{
+  i64 v744;
+  if ((((v742))<(((i64)0)))) {
+    (__ZH_BOP__plus_equal_i64Ri64(&(v742), (((v741))->size)));
+  }
+  ((v744)=(*__ZH_BOP__dotcall_dotat_Vec_lessi64_greaterPi64((v741), (v742))));
+  return &(v744);
+};printf("%s", "reached function end without returning anything op i64R .call.sub Vec<i64>P slf i64 id\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Vec_lessi64_greater __ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterPi64i64(__ZH_TYPE_Vec_lessi64_greater* v745, i64 v746, i64 v747) {{
+  __ZH_TYPE_Vec_lessi64_greater v754;
+  __ZH_TYPE_Vec_lessi64_greater v748;
+  ((v748)=(__ZH_LOP_Vec_lessi64_greater_i64(((i64)0))));
+  {
+      i64 v752;
+      i64 v751;
+      i64 v750;
+      __ZH_TYPE_Range v749;
+      ((v749)=(__ZH_BOP__dot_dot_i64i64((v746), (v747))));
+      ((v750)=(__ZH_BOP__dotcall_dotbegin_RangeP((&(v749)))));
+      ((v751)=(__ZH_BOP__dotcall_dotend_RangeP((&(v749)))));
+      ((v752)=(v750));
+      while ((__ZH_BOP__dotcall_dotuneq_i64Pi64((&(v752)), (v751)))) {
+        (__ZH_BOP__dotcall_dotpush_back_Vec_lessi64_greaterPi64((&(v748)), (*__ZH_BOP__dotcall_dotat_Vec_lessi64_greaterPi64((v745), (v752)))));
+        (__ZH_BOP__dotcall_dotnext_i64P((&(v752))));
+      }
+    }
+  ((v754)=(__ZH_LOP_Vec_lessi64_greater_Vec_lessi64_greaterR(&(v748))));
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v748))));
+  return (v754);
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v748))));
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v754))));
+};printf("%s", "reached function end without returning anything op Vec<i64> .call.sub Vec<i64>P slf i64 begin i64 end\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Vec_lessi64_greater __ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterPRange(__ZH_TYPE_Vec_lessi64_greater* v755, __ZH_TYPE_Range v756) {{
+  __ZH_TYPE_Vec_lessi64_greater v760;
+  i64 v758;
+  i64 v757;
+  (((v757)=((&(v756))->begin)), ((v758)=((&(v756))->end)));
+  if ((((v757))<(((i64)0)))) {
+    (__ZH_BOP__plus_equal_i64Ri64(&(v757), (((v755))->size)));
+  }
+  if ((((v757))<(((i64)0)))) {
+    ((v757)=((i64)0));
+  }
+  if ((((v758))<(((i64)0)))) {
+    (__ZH_BOP__plus_equal_i64Ri64(&(v758), (((v755))->size)));
+  }
+  if ((((v758))>((((v755))->size)))) {
+    ((v758)=(((v755))->size));
+  }
+  ((v760)=(__ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterPi64i64((v755), (v757), (v758))));
+  return (v760);
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v760))));
+};printf("%s", "reached function end without returning anything op Vec<i64> .call.sub Vec<i64>P slf Range r\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Vec_lessi64_greater __ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterP(__ZH_TYPE_Vec_lessi64_greater* v761) {{
+  __ZH_TYPE_Vec_lessi64_greater v763;
+  ((v763)=(__ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterPi64i64((v761), ((i64)0), (((v761))->size))));
+  return (v763);
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v763))));
+};printf("%s", "reached function end without returning anything op Vec<i64> .call.sub Vec<i64>P slf\n"); exit(EXIT_FAILURE);}
+bool __ZH_BOP__less_Vec_lessi64_greaterRVec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v764, __ZH_TYPE_Vec_lessi64_greater* v765) {{
+  bool v767;
+  ((v767)=((bool)0));
+  return (v767);
+};printf("%s", "reached function end without returning anything op bool < Vec<i64>R a Vec<i64>R b\n"); exit(EXIT_FAILURE);}
+void __ZH_LOP_swap_i64Pi64P(i64* v768, i64* v769){
+  i64 v770;
+  ((v770)=(*(v768)));
+  ((*(v768))=(*(v769)));
+  ((*(v769))=(v770));
+}
+i64* __ZH_LOP_partition_i64Pi64P(i64* v771, i64* v772) {{
+  i64* v777;
+  i64* v775;
+  i64* v774;
+  i64* v773;
+  (((v773)=((i64*)((((i64)(v772)))-(((((i64)1))*(((i64)8))))))), ((v774)=(v771)), ((v775)=(v771)));
+  ((v775)=(v771));
+  while (((((i64)(v775)))!=(((i64)(v773))))) {
+    if ((((*(v775)))<((*(v773))))) {
+      (__ZH_LOP_swap_i64Pi64P((v774), (v775)));
+      ((v774)=((i64*)((((i64)(v774)))+(((((i64)1))*(((i64)8)))))));
+    }
+    ((v775)=((i64*)((((i64)(v775)))+(((((i64)1))*(((i64)8)))))));
+  }
+  (__ZH_LOP_swap_i64Pi64P((v774), (v773)));
+  ((v777)=(v774));
+  return (v777);
+};printf("%s", "reached function end without returning anything lop i64P partition i64P low i64P high\n"); exit(EXIT_FAILURE);}
+void __ZH_LOP_qsort_i64Pi64P(i64* v778, i64* v779){
+  i64 v781;
+  i64 v780;
+  ((v780)=((((i64)(v779)))-(((i64)(v778)))));
+  ((v781)=((i64)8));
+  if ((((v780))>((v781)))) {
+    i64* v782;
+    ((v782)=(__ZH_LOP_partition_i64Pi64P((v778), (v779))));
+    (__ZH_LOP_qsort_i64Pi64P((v778), (v782)));
+    ((v782)=((i64*)((((i64)(v782)))+(((((i64)1))*(((i64)8)))))));
+    (__ZH_LOP_qsort_i64Pi64P((v782), (v779)));
+  }
+}
+void __ZH_BOP__dotcall_dotsort_Vec_lessi64_greaterP(__ZH_TYPE_Vec_lessi64_greater* v783){
+  __ZH_TYPE_VecIter_lessi64_greater v787;
+  __ZH_TYPE_VecIter_lessi64_greater v785;
+  (__ZH_LOP_qsort_i64Pi64P(((&(*(((v785)=(__ZH_BOP__dotcall_dotbegin_Vec_lessi64_greaterP((v783)))), (&(v785)))))->ptr), ((&(*(((v787)=(__ZH_BOP__dotcall_dotend_Vec_lessi64_greaterP((v783)))), (&(v787)))))->ptr)));
+}
+void __ZH_LOP_sort_Vec_lessi64_greaterR(__ZH_TYPE_Vec_lessi64_greater* v788){
+  (__ZH_BOP__dotcall_dotsort_Vec_lessi64_greaterP((&(*v788))));
+}
+__ZH_TYPE_Vec_lessi64_greater __ZH_BOP__dotcall_dotmap_Vec_lessi64_greaterPF_lessi64_spacei64R_greater(__ZH_TYPE_Vec_lessi64_greater* v789, i64(*v790)(i64*)) {{
+  __ZH_TYPE_Vec_lessi64_greater v797;
+  __ZH_TYPE_Vec_lessi64_greater v791;
+  ((v791)=(__ZH_LOP_Vec_lessi64_greater_i64((((v789))->size))));
+  {
+      i64 v795;
+      i64 v794;
+      i64 v793;
+      __ZH_TYPE_Range v792;
+      ((v792)=(__ZH_BOP__dot_dot_i64i64(((i64)0), (((v789))->size))));
+      ((v793)=(__ZH_BOP__dotcall_dotbegin_RangeP((&(v792)))));
+      ((v794)=(__ZH_BOP__dotcall_dotend_RangeP((&(v792)))));
+      ((v795)=(v793));
+      while ((__ZH_BOP__dotcall_dotuneq_i64Pi64((&(v795)), (v794)))) {
+        ((*__ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterPi64((&(v791)), (v795)))=((*(v790))(&(*__ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterPi64((v789), (v795))))));
+        (__ZH_BOP__dotcall_dotnext_i64P((&(v795))));
+      }
+    }
+  ((v797)=(__ZH_LOP_Vec_lessi64_greater_Vec_lessi64_greaterR(&(v791))));
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v791))));
+  return (v797);
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v791))));
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v797))));
+};printf("%s", "reached function end without returning anything op Vec<i64> .call.map Vec<i64>P slf F<i64 i64R> f\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Vec_lessi64_greater __ZH_BOP__dotcall_dotfilter_Vec_lessi64_greaterPF_lessbool_spacei64R_greater(__ZH_TYPE_Vec_lessi64_greater* v798, bool(*v799)(i64*)) {{
+  __ZH_TYPE_Vec_lessi64_greater v806;
+  __ZH_TYPE_Vec_lessi64_greater v800;
+  ((v800)=(__ZH_LOP_Vec_lessi64_greater_()));
+  {
+      i64 v804;
+      i64 v803;
+      i64 v802;
+      __ZH_TYPE_Range v801;
+      ((v801)=(__ZH_BOP__dot_dot_i64i64(((i64)0), (((v798))->size))));
+      ((v802)=(__ZH_BOP__dotcall_dotbegin_RangeP((&(v801)))));
+      ((v803)=(__ZH_BOP__dotcall_dotend_RangeP((&(v801)))));
+      ((v804)=(v802));
+      while ((__ZH_BOP__dotcall_dotuneq_i64Pi64((&(v804)), (v803)))) {
+        if (((*(v799))(&(*__ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterPi64((v798), (v804)))))) {
+          (__ZH_BOP__plus_equal_Vec_lessi64_greaterRi64(&(v800), (*__ZH_BOP__dotcall_dotsub_Vec_lessi64_greaterPi64((v798), (v804)))));
+        }
+        (__ZH_BOP__dotcall_dotnext_i64P((&(v804))));
+      }
+    }
+  ((v806)=(__ZH_LOP_Vec_lessi64_greater_Vec_lessi64_greaterR(&(v800))));
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v800))));
+  return (v806);
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v800))));
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v806))));
+};printf("%s", "reached function end without returning anything op Vec<i64> .call.filter Vec<i64>P slf F<bool i64R> f\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Vec_lessi64_greater __ZH_LOP_iota_i64i64(i64 v807, i64 v808) {{
+  __ZH_TYPE_Vec_lessi64_greater v815;
+  __ZH_TYPE_Vec_lessi64_greater v809;
+  ((v809)=(__ZH_LOP_Vec_lessi64_greater_i64((((v808))-((v807))))));
+  {
+      i64 v813;
+      i64 v812;
+      i64 v811;
+      __ZH_TYPE_Range v810;
+      ((v810)=(__ZH_BOP__dot_dot_i64i64((v807), (v808))));
+      ((v811)=(__ZH_BOP__dotcall_dotbegin_RangeP((&(v810)))));
+      ((v812)=(__ZH_BOP__dotcall_dotend_RangeP((&(v810)))));
+      ((v813)=(v811));
+      while ((__ZH_BOP__dotcall_dotuneq_i64Pi64((&(v813)), (v812)))) {
+        ((*__ZH_BOP__dotcall_dotat_Vec_lessi64_greaterPi64((&(v809)), (((v813))-((v807)))))=(v813));
+        (__ZH_BOP__dotcall_dotnext_i64P((&(v813))));
+      }
+    }
+  ((v815)=(__ZH_LOP_Vec_lessi64_greater_Vec_lessi64_greaterR(&(v809))));
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v809))));
+  return (v815);
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v809))));
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v815))));
+};printf("%s", "reached function end without returning anything lop Vec<i64> iota i64 begin i64 end\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Vec_lessi64_greater __ZH_BOP__dotcall_dotcall_RangeP(__ZH_TYPE_Range* v816) {{
+  __ZH_TYPE_Vec_lessi64_greater v823;
+  __ZH_TYPE_Vec_lessi64_greater v817;
+  ((v817)=(__ZH_LOP_Vec_lessi64_greater_()));
+  {
+      i64 v821;
+      i64 v820;
+      i64 v819;
+      __ZH_TYPE_Range v818;
+      ((v818)=(*(v816)));
+      ((v819)=(__ZH_BOP__dotcall_dotbegin_RangeP((&(v818)))));
+      ((v820)=(__ZH_BOP__dotcall_dotend_RangeP((&(v818)))));
+      ((v821)=(v819));
+      while ((__ZH_BOP__dotcall_dotuneq_i64Pi64((&(v821)), (v820)))) {
+        (__ZH_BOP__plus_equal_Vec_lessi64_greaterRi64(&(v817), (v821)));
+        (__ZH_BOP__dotcall_dotnext_i64P((&(v821))));
+      }
+    }
+  ((v823)=(__ZH_LOP_Vec_lessi64_greater_Vec_lessi64_greaterR(&(v817))));
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v817))));
+  return (v823);
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v817))));
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v823))));
+};printf("%s", "reached function end without returning anything op Vec<i64> .call.call RangeP slf\n"); exit(EXIT_FAILURE);}
+char __ZH_BOP__dotcall_dotsub_strPi64(str* v824, i64 v825) {{
+  char v827;
+  ((v827)=(*((char*)((((i64)(*(v824))))+((v825))))));
+  return (v827);
+};printf("%s", "reached function end without returning anything op char .call.sub strP slf i64 pos\n"); exit(EXIT_FAILURE);}
+str __ZH_LOP_str_() {{
+  str v830;
+  u8* v828;
+  ((v828)=((u8*)(alloc(((i64)1)))));
+  ((*(v828))=((u8)0));
+  ((v830)=((str)(v828)));
+  return (v830);
+};printf("%s", "reached function end without returning anything lop str str\n"); exit(EXIT_FAILURE);}
+bool __ZH_BOP__equal_equal_charstr(char v831, str v832) {{
+  bool v834;
+  ((v834)=(((v831))==((__ZH_BOP__dotcall_dotsub_strPi64((&(v832)), ((i64)0))))));
+  return (v834);
+};printf("%s", "reached function end without returning anything op bool == char ch str s\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_VecIter_lesschar_greater __ZH_LOP_VecIter_lesschar_greater_charP(char* v863) {{
+  __ZH_TYPE_VecIter_lesschar_greater v866;
+  __ZH_TYPE_VecIter_lesschar_greater v864;
+  (((&(v864))->ptr)=(v863));
+  ((v866)=(v864));
+  return (v866);
+};printf("%s", "reached function end without returning anything lop VecIter<char> VecIter<char> charP ptr\n"); exit(EXIT_FAILURE);}
+void __ZH_BOP__dotcall_dotnext_VecIter_lesschar_greaterP(__ZH_TYPE_VecIter_lesschar_greater* v867){
+  ((((v867))->ptr)=((char*)((((i64)(((v867))->ptr)))+(((((i64)1))*(((i64)1)))))));
+}
+bool __ZH_BOP__dotcall_dotuneq_VecIter_lesschar_greaterPVecIter_lesschar_greater(__ZH_TYPE_VecIter_lesschar_greater* v868, __ZH_TYPE_VecIter_lesschar_greater v869) {{
+  bool v871;
+  ((v871)=((((i64)(((v868))->ptr)))!=(((i64)((&(v869))->ptr)))));
+  return (v871);
+};printf("%s", "reached function end without returning anything op bool .call.uneq VecIter<char>P slf VecIter<char> other\n"); exit(EXIT_FAILURE);}
+char* __ZH_LOP__asterisk_VecIter_lesschar_greater(__ZH_TYPE_VecIter_lesschar_greater v872) {{
+  char v874;
+  ((v874)=(*((&(v872))->ptr)));
+  return &(v874);
+};printf("%s", "reached function end without returning anything lop charR * VecIter<char> slf\n"); exit(EXIT_FAILURE);}
+char* __ZH_BOP__dotcall_dotatP_Vec_lesschar_greaterPi64(__ZH_TYPE_Vec_lesschar_greater* v835, i64 v836) {{
+  char* v838;
+  ((v838)=((char*)((char*)((((i64)(((v835))->head)))+((((v836))*(((i64)1))))))));
+  return (v838);
+};printf("%s", "reached function end without returning anything op charP .call.atP Vec<char>P slf i64 pos\n"); exit(EXIT_FAILURE);}
+char* __ZH_BOP__dotcall_dotat_Vec_lesschar_greaterPi64(__ZH_TYPE_Vec_lesschar_greater* v839, i64 v840) {{
+  char v842;
+  ((v842)=(*(__ZH_BOP__dotcall_dotatP_Vec_lesschar_greaterPi64((v839), (v840)))));
+  return &(v842);
+};printf("%s", "reached function end without returning anything op charR .call.at Vec<char>P slf i64 pos\n"); exit(EXIT_FAILURE);}
+void __ZH_BOP__dotcall_dotprint_Vec_lesschar_greaterP(__ZH_TYPE_Vec_lesschar_greater* v843){
+  (printf("%s", ((str)"[")));
+  {
+      i64 v847;
+      i64 v846;
+      i64 v845;
+      __ZH_TYPE_Range v844;
+      ((v844)=(__ZH_BOP__dot_dot_i64i64(((i64)0), (((v843))->size))));
+      ((v845)=(__ZH_BOP__dotcall_dotbegin_RangeP((&(v844)))));
+      ((v846)=(__ZH_BOP__dotcall_dotend_RangeP((&(v844)))));
+      ((v847)=(v845));
+      while ((__ZH_BOP__dotcall_dotuneq_i64Pi64((&(v847)), (v846)))) {
+        if ((!((!((v847)))))) {
+          (printf("%s", ((str)" ")));
+        }
+        (printf("%c", (*(__ZH_BOP__dotcall_dotatP_Vec_lesschar_greaterPi64((v843), (v847))))));
+        (__ZH_BOP__dotcall_dotnext_i64P((&(v847))));
+      }
+    }
+  (printf("%s", ((str)"]")));
+}
+void __ZH_BOP__dotcall_dotprintln_Vec_lesschar_greaterP(__ZH_TYPE_Vec_lesschar_greater* v848){
+  {
+      i64 v852;
+      i64 v851;
+      i64 v850;
+      __ZH_TYPE_Range v849;
+      ((v849)=(__ZH_BOP__dot_dot_i64i64(((i64)0), (((v848))->size))));
+      ((v850)=(__ZH_BOP__dotcall_dotbegin_RangeP((&(v849)))));
+      ((v851)=(__ZH_BOP__dotcall_dotend_RangeP((&(v849)))));
+      ((v852)=(v850));
+      while ((__ZH_BOP__dotcall_dotuneq_i64Pi64((&(v852)), (v851)))) {
+        (printf("%c\n", (*(__ZH_BOP__dotcall_dotatP_Vec_lesschar_greaterPi64((v848), (v852))))));
+        (__ZH_BOP__dotcall_dotnext_i64P((&(v852))));
+      }
+    }
+}
+void __ZH_BOP__dotcall_dotdouble_cap_Vec_lesschar_greaterP(__ZH_TYPE_Vec_lesschar_greater* v853){
+  i64 v854;
+  ((v854)=(((v853))->cap));
+  if ((((v854))==(((i64)0)))) {
+    ((v854)=((i64)1));
+    ((((v853))->head)=((char*)(alloc(((i64)1)))));
+    ((((v853))->cap)=(v854));
+  } else {
+    char* v855;
+    (__ZH_BOP__asterisk_equal_i64Ri64(&(v854), ((i64)2)));
+    ((v855)=((char*)(alloc((((v854))*(((i64)1)))))));
+    {
+        i64 v859;
+        i64 v858;
+        i64 v857;
+        __ZH_TYPE_Range v856;
+        ((v856)=(__ZH_BOP__dot_dot_i64i64(((i64)0), (((v853))->size))));
+        ((v857)=(__ZH_BOP__dotcall_dotbegin_RangeP((&(v856)))));
+        ((v858)=(__ZH_BOP__dotcall_dotend_RangeP((&(v856)))));
+        ((v859)=(v857));
+        while ((__ZH_BOP__dotcall_dotuneq_i64Pi64((&(v859)), (v858)))) {
+          ((*((char*)((((i64)(v855)))+((((v859))*(((i64)1)))))))=(*__ZH_BOP__dotcall_dotat_Vec_lesschar_greaterPi64((v853), (v859))));
+          (__ZH_BOP__dotcall_dotnext_i64P((&(v859))));
+        }
+      }
+    (free((void*) ((i64)(((v853))->head))));
+    ((((v853))->head)=(v855));
+  }
+  ((((v853))->cap)=(v854));
+}
+void __ZH_BOP__dotcall_dotpush_back_Vec_lesschar_greaterPchar(__ZH_TYPE_Vec_lesschar_greater* v860, char v861){
+  if ((((((v860))->size))==((((v860))->cap)))) {
+    (__ZH_BOP__dotcall_dotdouble_cap_Vec_lesschar_greaterP((v860)));
+  }
+  ((*__ZH_BOP__dotcall_dotat_Vec_lesschar_greaterPi64((v860), (((v860))->size)))=(v861));
+  (*__ZH_LOP__plus_plus_i64R(&(((v860))->size)));
+}
+void __ZH_BOP__dotcall_dotpop_back_Vec_lesschar_greaterP(__ZH_TYPE_Vec_lesschar_greater* v862){
+  (*__ZH_LOP__minus_minus_i64R(&(((v862))->size)));
+}
+__ZH_TYPE_VecIter_lesschar_greater __ZH_BOP__dotcall_dotbegin_Vec_lesschar_greaterP(__ZH_TYPE_Vec_lesschar_greater* v875) {{
+  __ZH_TYPE_VecIter_lesschar_greater v877;
+  ((v877)=(__ZH_LOP_VecIter_lesschar_greater_charP((((v875))->head))));
+  return (v877);
+};printf("%s", "reached function end without returning anything op VecIter<char> .call.begin Vec<char>P slf\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_VecIter_lesschar_greater __ZH_BOP__dotcall_dotend_Vec_lesschar_greaterP(__ZH_TYPE_Vec_lesschar_greater* v878) {{
+  __ZH_TYPE_VecIter_lesschar_greater v880;
+  ((v880)=(__ZH_LOP_VecIter_lesschar_greater_charP((__ZH_BOP__dotcall_dotatP_Vec_lesschar_greaterPi64((v878), (((v878))->size))))));
+  return (v880);
+};printf("%s", "reached function end without returning anything op VecIter<char> .call.end Vec<char>P slf\n"); exit(EXIT_FAILURE);}
+char* __ZH_BOP__dotcall_dotfront_Vec_lesschar_greaterP(__ZH_TYPE_Vec_lesschar_greater* v881) {{
+  char v883;
+  ((v883)=(*(((v881))->head)));
+  return &(v883);
+};printf("%s", "reached function end without returning anything op charR .call.front Vec<char>P slf\n"); exit(EXIT_FAILURE);}
+char* __ZH_BOP__dotcall_dotback_Vec_lesschar_greaterP(__ZH_TYPE_Vec_lesschar_greater* v884) {{
+  char v886;
+  ((v886)=(*(__ZH_BOP__dotcall_dotatP_Vec_lesschar_greaterPi64((v884), (((((v884))->size))-(((i64)1)))))));
+  return &(v886);
+};printf("%s", "reached function end without returning anything op charR .call.back Vec<char>P slf\n"); exit(EXIT_FAILURE);}
+void __ZH_BOP__dotcall_dotdtor_Vec_lesschar_greaterP(__ZH_TYPE_Vec_lesschar_greater* v887){
+  if ((!((!(((i64)(((v887))->head))))))) {
+    (free((void*) ((i64)(((v887))->head))));
+    ((((v887))->size)=((i64)0));
+    ((((v887))->cap)=((i64)0));
+    ((((v887))->head)=((char*)((i64)0)));
+  }
+}
+__ZH_TYPE_Vec_lesschar_greater __ZH_LOP_Vec_lesschar_greater_i64(i64 v888) {{
+  __ZH_TYPE_Vec_lesschar_greater v895;
+  __ZH_TYPE_Vec_lesschar_greater v889;
+  (((&(v889))->head)=((char*)((i64)0)));
+  (((&(v889))->size)=((i64)0));
+  (((&(v889))->cap)=((i64)0));
+  while (((((&(v889))->cap))<((v888)))) {
+    (__ZH_BOP__dotcall_dotdouble_cap_Vec_lesschar_greaterP((&(v889))));
+  }
+  (((&(v889))->size)=(v888));
+  (((&(v889))->cap)=(v888));
+  {
+      i64 v893;
+      i64 v892;
+      i64 v891;
+      __ZH_TYPE_Range v890;
+      ((v890)=(__ZH_BOP__dot_dot_i64i64(((i64)0), ((&(v889))->size))));
+      ((v891)=(__ZH_BOP__dotcall_dotbegin_RangeP((&(v890)))));
+      ((v892)=(__ZH_BOP__dotcall_dotend_RangeP((&(v890)))));
+      ((v893)=(v891));
+      while ((__ZH_BOP__dotcall_dotuneq_i64Pi64((&(v893)), (v892)))) {
+        ((*__ZH_BOP__dotcall_dotat_Vec_lesschar_greaterPi64((&(v889)), (v893)))=(__ZH_LOP_char_()));
+        (__ZH_BOP__dotcall_dotnext_i64P((&(v893))));
+      }
+    }
+  ((v895)=(v889));
+  (__ZH_BOP__dotcall_dotdtor_Vec_lesschar_greaterP((&(v889))));
+  return (v895);
+  (__ZH_BOP__dotcall_dotdtor_Vec_lesschar_greaterP((&(v889))));
+  (__ZH_BOP__dotcall_dotdtor_Vec_lesschar_greaterP((&(v895))));
+};printf("%s", "reached function end without returning anything lop Vec<char> Vec<char> i64 size\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Vec_lesschar_greater __ZH_LOP_Vec_lesschar_greater_i64char(i64 v896, char v897) {{
+  __ZH_TYPE_Vec_lesschar_greater v904;
+  __ZH_TYPE_Vec_lesschar_greater v898;
+  ((v898)=(__ZH_LOP_Vec_lesschar_greater_i64((v896))));
+  {
+      i64 v902;
+      i64 v901;
+      i64 v900;
+      __ZH_TYPE_Range v899;
+      ((v899)=(__ZH_BOP__dot_dot_i64i64(((i64)0), ((&(v898))->size))));
+      ((v900)=(__ZH_BOP__dotcall_dotbegin_RangeP((&(v899)))));
+      ((v901)=(__ZH_BOP__dotcall_dotend_RangeP((&(v899)))));
+      ((v902)=(v900));
+      while ((__ZH_BOP__dotcall_dotuneq_i64Pi64((&(v902)), (v901)))) {
+        ((*__ZH_BOP__dotcall_dotat_Vec_lesschar_greaterPi64((&(v898)), (v902)))=(v897));
+        (__ZH_BOP__dotcall_dotnext_i64P((&(v902))));
+      }
+    }
+  ((v904)=(v898));
+  (__ZH_BOP__dotcall_dotdtor_Vec_lesschar_greaterP((&(v898))));
+  return (v904);
+  (__ZH_BOP__dotcall_dotdtor_Vec_lesschar_greaterP((&(v898))));
+  (__ZH_BOP__dotcall_dotdtor_Vec_lesschar_greaterP((&(v904))));
+};printf("%s", "reached function end without returning anything lop Vec<char> Vec<char> i64 size char default\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Vec_lesschar_greater __ZH_LOP_Vec_lesschar_greater_() {{
+  __ZH_TYPE_Vec_lesschar_greater v906;
+  ((v906)=(__ZH_LOP_Vec_lesschar_greater_i64(((i64)0))));
+  return (v906);
+  (__ZH_BOP__dotcall_dotdtor_Vec_lesschar_greaterP((&(v906))));
+};printf("%s", "reached function end without returning anything lop Vec<char> Vec<char>\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Vec_lesschar_greater __ZH_LOP_Vec_lesschar_greater_Vec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v907) {{
+  __ZH_TYPE_Vec_lesschar_greater v914;
+  __ZH_TYPE_Vec_lesschar_greater v908;
+  ((v908)=(__ZH_LOP_Vec_lesschar_greater_i64(((&(*v907))->size))));
+  {
+      i64 v912;
+      i64 v911;
+      i64 v910;
+      __ZH_TYPE_Range v909;
+      ((v909)=(__ZH_BOP__dot_dot_i64i64(((i64)0), ((&(*v907))->size))));
+      ((v910)=(__ZH_BOP__dotcall_dotbegin_RangeP((&(v909)))));
+      ((v911)=(__ZH_BOP__dotcall_dotend_RangeP((&(v909)))));
+      ((v912)=(v910));
+      while ((__ZH_BOP__dotcall_dotuneq_i64Pi64((&(v912)), (v911)))) {
+        ((*__ZH_BOP__dotcall_dotat_Vec_lesschar_greaterPi64((&(v908)), (v912)))=(*__ZH_BOP__dotcall_dotat_Vec_lesschar_greaterPi64((&(*v907)), (v912))));
+        (__ZH_BOP__dotcall_dotnext_i64P((&(v912))));
+      }
+    }
+  ((v914)=(__ZH_LOP_Vec_lesschar_greater_Vec_lesschar_greaterR(&(v908))));
+  (__ZH_BOP__dotcall_dotdtor_Vec_lesschar_greaterP((&(v908))));
+  return (v914);
+  (__ZH_BOP__dotcall_dotdtor_Vec_lesschar_greaterP((&(v908))));
+  (__ZH_BOP__dotcall_dotdtor_Vec_lesschar_greaterP((&(v914))));
+};printf("%s", "reached function end without returning anything lop Vec<char> Vec<char> Vec<char>R other\n"); exit(EXIT_FAILURE);}
+void __ZH_BOP__plus_equal_Vec_lesschar_greaterRchar(__ZH_TYPE_Vec_lesschar_greater* v915, char v916){
+  (__ZH_BOP__dotcall_dotpush_back_Vec_lesschar_greaterPchar((&(*v915)), (v916)));
+}
+void __ZH_BOP__plus_equal_Vec_lesschar_greaterRVec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v917, __ZH_TYPE_Vec_lesschar_greater* v918){
+  {
+      __ZH_TYPE_VecIter_lesschar_greater v922;
+      __ZH_TYPE_VecIter_lesschar_greater v921;
+      __ZH_TYPE_VecIter_lesschar_greater v920;
+      __ZH_TYPE_Vec_lesschar_greater v919;
+      ((v919)=(__ZH_LOP_Vec_lesschar_greater_Vec_lesschar_greaterR(&(*v918))));
+      ((v920)=(__ZH_BOP__dotcall_dotbegin_Vec_lesschar_greaterP((&(v919)))));
+      ((v921)=(__ZH_BOP__dotcall_dotend_Vec_lesschar_greaterP((&(v919)))));
+      ((v922)=(v920));
+      while ((__ZH_BOP__dotcall_dotuneq_VecIter_lesschar_greaterPVecIter_lesschar_greater((&(v922)), (v921)))) {
+        (__ZH_BOP__dotcall_dotpush_back_Vec_lesschar_greaterPchar((&(*v917)), (*__ZH_LOP__asterisk_VecIter_lesschar_greater((v922)))));
+        (__ZH_BOP__dotcall_dotnext_VecIter_lesschar_greaterP((&(v922))));
+      }
+    }
+}
+__ZH_TYPE_Vec_lesschar_greater __ZH_BOP__comma_comma_charchar(char v923, char v924) {{
+  __ZH_TYPE_Vec_lesschar_greater v927;
+  __ZH_TYPE_Vec_lesschar_greater v925;
+  (__ZH_BOP__plus_equal_Vec_lesschar_greaterRchar(&(v925), (v923)));
+  (__ZH_BOP__plus_equal_Vec_lesschar_greaterRchar(&(v925), (v924)));
+  ((v927)=(__ZH_LOP_Vec_lesschar_greater_Vec_lesschar_greaterR(&(v925))));
+  (__ZH_BOP__dotcall_dotdtor_Vec_lesschar_greaterP((&(v925))));
+  return (v927);
+  (__ZH_BOP__dotcall_dotdtor_Vec_lesschar_greaterP((&(v925))));
+  (__ZH_BOP__dotcall_dotdtor_Vec_lesschar_greaterP((&(v927))));
+};printf("%s", "reached function end without returning anything op Vec<char> ,, char a char b\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Vec_lesschar_greater* __ZH_BOP__comma_comma_Vec_lesschar_greaterRchar(__ZH_TYPE_Vec_lesschar_greater* v928, char v929) {{
+  __ZH_TYPE_Vec_lesschar_greater v931;
+  (__ZH_BOP__plus_equal_Vec_lesschar_greaterRchar(&(*v928), (v929)));
+  ((v931)=(__ZH_LOP_Vec_lesschar_greater_Vec_lesschar_greaterR(&(*v928))));
+  return &(v931);
+  (__ZH_BOP__dotcall_dotdtor_Vec_lesschar_greaterP((&(v931))));
+};printf("%s", "reached function end without returning anything op Vec<char>R ,, Vec<char>R v char a\n"); exit(EXIT_FAILURE);}
+void __ZH_LOP_put_Vec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v932){
+  (__ZH_BOP__dotcall_dotprint_Vec_lesschar_greaterP((&(*v932))));
+}
+void __ZH_LOP_out_Vec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v933){
+  (__ZH_BOP__dotcall_dotprint_Vec_lesschar_greaterP((&(*v933))));
+  (printf("%s\n", ((str)"")));
+}
+__ZH_TYPE_Out __ZH_ROP__less_Vec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v934) {{
+  __ZH_TYPE_Out v936;
+  (__ZH_LOP_out_Vec_lesschar_greaterR(&(*v934)));
+  ((v936)=(__ZH_LOP_Out_()));
+  return (v936);
+};printf("%s", "reached function end without returning anything rop Out < Vec<char>R i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_LOP__less_Vec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v937) {{
+  __ZH_TYPE_Out v939;
+  ((__ZH_LOP_put_Vec_lesschar_greaterR(&(*v937))), (printf("%s", ((str)" "))));
+  ((v939)=(__ZH_LOP_Out_()));
+  return (v939);
+};printf("%s", "reached function end without returning anything lop Out < Vec<char>R i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_BOP__less_OutVec_lesschar_greaterR(__ZH_TYPE_Out v940, __ZH_TYPE_Vec_lesschar_greater* v941) {{
+  __ZH_TYPE_Out v943;
+  ((__ZH_LOP_put_Vec_lesschar_greaterR(&(*v941))), (printf("%s", ((str)" "))));
+  ((v943)=(__ZH_LOP_Out_()));
+  return (v943);
+};printf("%s", "reached function end without returning anything op Out < Out o Vec<char>R i\n"); exit(EXIT_FAILURE);}
+char* __ZH_BOP__dotcall_dotsub_Vec_lesschar_greaterPi64(__ZH_TYPE_Vec_lesschar_greater* v944, i64 v945) {{
+  char v947;
+  if ((((v945))<(((i64)0)))) {
+    (__ZH_BOP__plus_equal_i64Ri64(&(v945), (((v944))->size)));
+  }
+  ((v947)=(*__ZH_BOP__dotcall_dotat_Vec_lesschar_greaterPi64((v944), (v945))));
+  return &(v947);
+};printf("%s", "reached function end without returning anything op charR .call.sub Vec<char>P slf i64 id\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Vec_lesschar_greater __ZH_BOP__dotcall_dotsub_Vec_lesschar_greaterPi64i64(__ZH_TYPE_Vec_lesschar_greater* v948, i64 v949, i64 v950) {{
+  __ZH_TYPE_Vec_lesschar_greater v957;
+  __ZH_TYPE_Vec_lesschar_greater v951;
+  ((v951)=(__ZH_LOP_Vec_lesschar_greater_i64(((i64)0))));
+  {
+      i64 v955;
+      i64 v954;
+      i64 v953;
+      __ZH_TYPE_Range v952;
+      ((v952)=(__ZH_BOP__dot_dot_i64i64((v949), (v950))));
+      ((v953)=(__ZH_BOP__dotcall_dotbegin_RangeP((&(v952)))));
+      ((v954)=(__ZH_BOP__dotcall_dotend_RangeP((&(v952)))));
+      ((v955)=(v953));
+      while ((__ZH_BOP__dotcall_dotuneq_i64Pi64((&(v955)), (v954)))) {
+        (__ZH_BOP__dotcall_dotpush_back_Vec_lesschar_greaterPchar((&(v951)), (*__ZH_BOP__dotcall_dotat_Vec_lesschar_greaterPi64((v948), (v955)))));
+        (__ZH_BOP__dotcall_dotnext_i64P((&(v955))));
+      }
+    }
+  ((v957)=(__ZH_LOP_Vec_lesschar_greater_Vec_lesschar_greaterR(&(v951))));
+  (__ZH_BOP__dotcall_dotdtor_Vec_lesschar_greaterP((&(v951))));
+  return (v957);
+  (__ZH_BOP__dotcall_dotdtor_Vec_lesschar_greaterP((&(v951))));
+  (__ZH_BOP__dotcall_dotdtor_Vec_lesschar_greaterP((&(v957))));
+};printf("%s", "reached function end without returning anything op Vec<char> .call.sub Vec<char>P slf i64 begin i64 end\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Vec_lesschar_greater __ZH_BOP__dotcall_dotsub_Vec_lesschar_greaterPRange(__ZH_TYPE_Vec_lesschar_greater* v958, __ZH_TYPE_Range v959) {{
+  __ZH_TYPE_Vec_lesschar_greater v963;
+  i64 v961;
+  i64 v960;
+  (((v960)=((&(v959))->begin)), ((v961)=((&(v959))->end)));
+  if ((((v960))<(((i64)0)))) {
+    (__ZH_BOP__plus_equal_i64Ri64(&(v960), (((v958))->size)));
+  }
+  if ((((v960))<(((i64)0)))) {
+    ((v960)=((i64)0));
+  }
+  if ((((v961))<(((i64)0)))) {
+    (__ZH_BOP__plus_equal_i64Ri64(&(v961), (((v958))->size)));
+  }
+  if ((((v961))>((((v958))->size)))) {
+    ((v961)=(((v958))->size));
+  }
+  ((v963)=(__ZH_BOP__dotcall_dotsub_Vec_lesschar_greaterPi64i64((v958), (v960), (v961))));
+  return (v963);
+  (__ZH_BOP__dotcall_dotdtor_Vec_lesschar_greaterP((&(v963))));
+};printf("%s", "reached function end without returning anything op Vec<char> .call.sub Vec<char>P slf Range r\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Vec_lesschar_greater __ZH_BOP__dotcall_dotsub_Vec_lesschar_greaterP(__ZH_TYPE_Vec_lesschar_greater* v964) {{
+  __ZH_TYPE_Vec_lesschar_greater v966;
+  ((v966)=(__ZH_BOP__dotcall_dotsub_Vec_lesschar_greaterPi64i64((v964), ((i64)0), (((v964))->size))));
+  return (v966);
+  (__ZH_BOP__dotcall_dotdtor_Vec_lesschar_greaterP((&(v966))));
+};printf("%s", "reached function end without returning anything op Vec<char> .call.sub Vec<char>P slf\n"); exit(EXIT_FAILURE);}
+bool __ZH_BOP__less_Vec_lesschar_greaterRVec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v967, __ZH_TYPE_Vec_lesschar_greater* v968) {{
+  bool v970;
+  ((v970)=((bool)0));
+  return (v970);
+};printf("%s", "reached function end without returning anything op bool < Vec<char>R a Vec<char>R b\n"); exit(EXIT_FAILURE);}
+void __ZH_LOP_swap_charPcharP(char* v971, char* v972){
+  char v973;
+  ((v973)=(*(v971)));
+  ((*(v971))=(*(v972)));
+  ((*(v972))=(v973));
+}
+char* __ZH_LOP_partition_charPcharP(char* v974, char* v975) {{
+  char* v980;
+  char* v978;
+  char* v977;
+  char* v976;
+  (((v976)=((char*)((((i64)(v975)))-(((((i64)1))*(((i64)1))))))), ((v977)=(v974)), ((v978)=(v974)));
+  ((v978)=(v974));
+  while (((((i64)(v978)))!=(((i64)(v976))))) {
+    if ((((*(v978)))<((*(v976))))) {
+      (__ZH_LOP_swap_charPcharP((v977), (v978)));
+      ((v977)=((char*)((((i64)(v977)))+(((((i64)1))*(((i64)1)))))));
+    }
+    ((v978)=((char*)((((i64)(v978)))+(((((i64)1))*(((i64)1)))))));
+  }
+  (__ZH_LOP_swap_charPcharP((v977), (v976)));
+  ((v980)=(v977));
+  return (v980);
+};printf("%s", "reached function end without returning anything lop charP partition charP low charP high\n"); exit(EXIT_FAILURE);}
+void __ZH_LOP_qsort_charPcharP(char* v981, char* v982){
+  i64 v984;
+  i64 v983;
+  ((v983)=((((i64)(v982)))-(((i64)(v981)))));
+  ((v984)=((i64)1));
+  if ((((v983))>((v984)))) {
+    char* v985;
+    ((v985)=(__ZH_LOP_partition_charPcharP((v981), (v982))));
+    (__ZH_LOP_qsort_charPcharP((v981), (v985)));
+    ((v985)=((char*)((((i64)(v985)))+(((((i64)1))*(((i64)1)))))));
+    (__ZH_LOP_qsort_charPcharP((v985), (v982)));
+  }
+}
+void __ZH_BOP__dotcall_dotsort_Vec_lesschar_greaterP(__ZH_TYPE_Vec_lesschar_greater* v986){
+  __ZH_TYPE_VecIter_lesschar_greater v990;
+  __ZH_TYPE_VecIter_lesschar_greater v988;
+  (__ZH_LOP_qsort_charPcharP(((&(*(((v988)=(__ZH_BOP__dotcall_dotbegin_Vec_lesschar_greaterP((v986)))), (&(v988)))))->ptr), ((&(*(((v990)=(__ZH_BOP__dotcall_dotend_Vec_lesschar_greaterP((v986)))), (&(v990)))))->ptr)));
+}
+void __ZH_LOP_sort_Vec_lesschar_greaterR(__ZH_TYPE_Vec_lesschar_greater* v991){
+  (__ZH_BOP__dotcall_dotsort_Vec_lesschar_greaterP((&(*v991))));
+}
+__ZH_TYPE_Vec_lesschar_greater __ZH_BOP__dotcall_dotmap_Vec_lesschar_greaterPF_lesschar_spacecharR_greater(__ZH_TYPE_Vec_lesschar_greater* v992, char(*v993)(char*)) {{
+  __ZH_TYPE_Vec_lesschar_greater v1000;
+  __ZH_TYPE_Vec_lesschar_greater v994;
+  ((v994)=(__ZH_LOP_Vec_lesschar_greater_i64((((v992))->size))));
+  {
+      i64 v998;
+      i64 v997;
+      i64 v996;
+      __ZH_TYPE_Range v995;
+      ((v995)=(__ZH_BOP__dot_dot_i64i64(((i64)0), (((v992))->size))));
+      ((v996)=(__ZH_BOP__dotcall_dotbegin_RangeP((&(v995)))));
+      ((v997)=(__ZH_BOP__dotcall_dotend_RangeP((&(v995)))));
+      ((v998)=(v996));
+      while ((__ZH_BOP__dotcall_dotuneq_i64Pi64((&(v998)), (v997)))) {
+        ((*__ZH_BOP__dotcall_dotsub_Vec_lesschar_greaterPi64((&(v994)), (v998)))=((*(v993))(&(*__ZH_BOP__dotcall_dotsub_Vec_lesschar_greaterPi64((v992), (v998))))));
+        (__ZH_BOP__dotcall_dotnext_i64P((&(v998))));
+      }
+    }
+  ((v1000)=(__ZH_LOP_Vec_lesschar_greater_Vec_lesschar_greaterR(&(v994))));
+  (__ZH_BOP__dotcall_dotdtor_Vec_lesschar_greaterP((&(v994))));
+  return (v1000);
+  (__ZH_BOP__dotcall_dotdtor_Vec_lesschar_greaterP((&(v994))));
+  (__ZH_BOP__dotcall_dotdtor_Vec_lesschar_greaterP((&(v1000))));
+};printf("%s", "reached function end without returning anything op Vec<char> .call.map Vec<char>P slf F<char charR> f\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Vec_lesschar_greater __ZH_BOP__dotcall_dotfilter_Vec_lesschar_greaterPF_lessbool_spacecharR_greater(__ZH_TYPE_Vec_lesschar_greater* v1001, bool(*v1002)(char*)) {{
+  __ZH_TYPE_Vec_lesschar_greater v1009;
+  __ZH_TYPE_Vec_lesschar_greater v1003;
+  ((v1003)=(__ZH_LOP_Vec_lesschar_greater_()));
+  {
+      i64 v1007;
+      i64 v1006;
+      i64 v1005;
+      __ZH_TYPE_Range v1004;
+      ((v1004)=(__ZH_BOP__dot_dot_i64i64(((i64)0), (((v1001))->size))));
+      ((v1005)=(__ZH_BOP__dotcall_dotbegin_RangeP((&(v1004)))));
+      ((v1006)=(__ZH_BOP__dotcall_dotend_RangeP((&(v1004)))));
+      ((v1007)=(v1005));
+      while ((__ZH_BOP__dotcall_dotuneq_i64Pi64((&(v1007)), (v1006)))) {
+        if (((*(v1002))(&(*__ZH_BOP__dotcall_dotsub_Vec_lesschar_greaterPi64((v1001), (v1007)))))) {
+          (__ZH_BOP__plus_equal_Vec_lesschar_greaterRchar(&(v1003), (*__ZH_BOP__dotcall_dotsub_Vec_lesschar_greaterPi64((v1001), (v1007)))));
+        }
+        (__ZH_BOP__dotcall_dotnext_i64P((&(v1007))));
+      }
+    }
+  ((v1009)=(__ZH_LOP_Vec_lesschar_greater_Vec_lesschar_greaterR(&(v1003))));
+  (__ZH_BOP__dotcall_dotdtor_Vec_lesschar_greaterP((&(v1003))));
+  return (v1009);
+  (__ZH_BOP__dotcall_dotdtor_Vec_lesschar_greaterP((&(v1003))));
+  (__ZH_BOP__dotcall_dotdtor_Vec_lesschar_greaterP((&(v1009))));
+};printf("%s", "reached function end without returning anything op Vec<char> .call.filter Vec<char>P slf F<bool charR> f\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Str __ZH_LOP_Str_() {{
+  __ZH_TYPE_Str v1012;
+  __ZH_TYPE_Str v1010;
+  (((&(v1010))->data)=(__ZH_LOP_Vec_lesschar_greater_()));
+  (__ZH_BOP__dotcall_dotpush_back_Vec_lesschar_greaterPchar((&((&(v1010))->data)), ((char)((u8)0))));
+  (((&(v1010))->size)=((i64)0));
+  ((v1012)=(v1010));
+  return (v1012);
+};printf("%s", "reached function end without returning anything lop Str Str\n"); exit(EXIT_FAILURE);}
+void __ZH_BOP__dotcall_dotdtor_StrP(__ZH_TYPE_Str* v1013){
+  (__ZH_BOP__dotcall_dotdtor_Vec_lesschar_greaterP((&(((v1013))->data))));
+}
+str __ZH_BOP__dotcall_dotcstr_StrP(__ZH_TYPE_Str* v1014) {{
+  str v1017;
+  __ZH_TYPE_VecIter_lesschar_greater v1015;
+  ((v1015)=(__ZH_BOP__dotcall_dotbegin_Vec_lesschar_greaterP((&(((v1014))->data)))));
+  ((v1017)=((str)((&(v1015))->ptr)));
+  return (v1017);
+};printf("%s", "reached function end without returning anything op str .call.cstr StrP slf\n"); exit(EXIT_FAILURE);}
+char* __ZH_BOP__dotcall_dotat_StrPi64(__ZH_TYPE_Str* v1018, i64 v1019) {{
+  char v1021;
+  ((v1021)=(*__ZH_BOP__dotcall_dotat_Vec_lesschar_greaterPi64((&(((v1018))->data)), (v1019))));
+  return &(v1021);
+};printf("%s", "reached function end without returning anything op charR .call.at StrP slf i64 pos\n"); exit(EXIT_FAILURE);}
+char* __ZH_BOP__dotcall_dotsub_StrPi64(__ZH_TYPE_Str* v1022, i64 v1023) {{
+  char v1025;
+  ((v1025)=(*__ZH_BOP__dotcall_dotat_Vec_lesschar_greaterPi64((&(((v1022))->data)), (v1023))));
+  return &(v1025);
+};printf("%s", "reached function end without returning anything op charR .call.sub StrP slf i64 pos\n"); exit(EXIT_FAILURE);}
+char* __ZH_BOP__dotcall_dotatP_StrPi64(__ZH_TYPE_Str* v1026, i64 v1027) {{
+  char* v1029;
+  ((v1029)=(__ZH_BOP__dotcall_dotatP_Vec_lesschar_greaterPi64((&(((v1026))->data)), (v1027))));
+  return (v1029);
+};printf("%s", "reached function end without returning anything op charP .call.atP StrP slf i64 pos\n"); exit(EXIT_FAILURE);}
+void __ZH_BOP__dotcall_dotpush_back_StrPchar(__ZH_TYPE_Str* v1030, char v1031){
+  (__ZH_BOP__dotcall_dotpop_back_Vec_lesschar_greaterP((&(((v1030))->data))));
+  (__ZH_BOP__dotcall_dotpush_back_Vec_lesschar_greaterPchar((&(((v1030))->data)), (v1031)));
+  (__ZH_BOP__dotcall_dotpush_back_Vec_lesschar_greaterPchar((&(((v1030))->data)), ((char)((u8)0))));
+  (*__ZH_LOP__plus_plus_i64R(&(((v1030))->size)));
+}
+void __ZH_BOP__dotcall_dotpop_back_StrP(__ZH_TYPE_Str* v1032){
+  (__ZH_BOP__dotcall_dotpop_back_Vec_lesschar_greaterP((&(((v1032))->data))));
+  (__ZH_BOP__dotcall_dotpop_back_Vec_lesschar_greaterP((&(((v1032))->data))));
+  (__ZH_BOP__dotcall_dotpush_back_Vec_lesschar_greaterPchar((&(((v1032))->data)), ((char)((u8)0))));
+  (*__ZH_LOP__minus_minus_i64R(&(((v1032))->size)));
+}
+__ZH_TYPE_Str __ZH_LOP_Str_str(str v1033) {{
+  __ZH_TYPE_Str v1036;
+  __ZH_TYPE_Str v1034;
+  ((v1034)=(__ZH_LOP_Str_()));
+  (__ZH_BOP__dotcall_dotpop_back_Vec_lesschar_greaterP((&((&(v1034))->data))));
+  while ((((*((char*)(v1033))))!=(((char)((u8)0))))) {
+    (__ZH_BOP__dotcall_dotpush_back_Vec_lesschar_greaterPchar((&((&(v1034))->data)), (*((char*)(v1033)))));
+    ((v1033)=((str)((((i64)(v1033)))+(((i64)1)))));
+  }
+  (__ZH_BOP__dotcall_dotpush_back_Vec_lesschar_greaterPchar((&((&(v1034))->data)), ((char)((u8)0))));
+  (((&(v1034))->size)=((((&((&(v1034))->data))->size))-(((i64)1))));
+  ((v1036)=(v1034));
+  (__ZH_BOP__dotcall_dotdtor_StrP((&(v1034))));
+  return (v1036);
+  (__ZH_BOP__dotcall_dotdtor_StrP((&(v1034))));
+  (__ZH_BOP__dotcall_dotdtor_StrP((&(v1036))));
+};printf("%s", "reached function end without returning anything lop Str Str str s\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Str __ZH_LOP_Str_StrR(__ZH_TYPE_Str* v1037) {{
+  __ZH_TYPE_Str v1040;
+  __ZH_TYPE_Str v1038;
+  ((v1038)=(__ZH_LOP_Str_()));
+  (((&(v1038))->data)=(__ZH_LOP_Vec_lesschar_greater_Vec_lesschar_greaterR(&((&(*v1037))->data))));
+  (((&(v1038))->size)=((&(*v1037))->size));
+  ((v1040)=(__ZH_LOP_Str_StrR(&(v1038))));
+  (__ZH_BOP__dotcall_dotdtor_StrP((&(v1038))));
+  return (v1040);
+  (__ZH_BOP__dotcall_dotdtor_StrP((&(v1038))));
+  (__ZH_BOP__dotcall_dotdtor_StrP((&(v1040))));
+};printf("%s", "reached function end without returning anything lop Str Str StrR s\n"); exit(EXIT_FAILURE);}
+i64 __ZH_LOP_len_str(str v1041) {{
+  i64 v1044;
+  i64 v1042;
+  ((v1042)=((i64)0));
+  while ((((*((char*)(v1041))))!=(((char)((u8)0))))) {
+    (*__ZH_LOP__plus_plus_i64R(&(v1042)));
+    ((v1041)=((str)((((i64)(v1041)))+(((i64)1)))));
+  }
+  ((v1044)=(v1042));
+  return (v1044);
+};printf("%s", "reached function end without returning anything lop i64 len str s\n"); exit(EXIT_FAILURE);}
+void __ZH_LOP_out_StrR(__ZH_TYPE_Str* v1045){
+  (printf("%s\n", (__ZH_BOP__dotcall_dotcstr_StrP((&(*v1045))))));
+}
+void __ZH_LOP_put_StrR(__ZH_TYPE_Str* v1046){
+  (printf("%s", (__ZH_BOP__dotcall_dotcstr_StrP((&(*v1046))))));
+}
+void __ZH_BOP__plus_equal_StrRchar(__ZH_TYPE_Str* v1047, char v1048){
+  (__ZH_BOP__dotcall_dotpush_back_StrPchar((&(*v1047)), (v1048)));
+}
+void __ZH_BOP__plus_equal_StrRStrR(__ZH_TYPE_Str* v1049, __ZH_TYPE_Str* v1050){
+  {
+      i64 v1054;
+      i64 v1053;
+      i64 v1052;
+      __ZH_TYPE_Range v1051;
+      ((v1051)=(__ZH_BOP__dot_dot_i64i64(((i64)0), ((&(*v1050))->size))));
+      ((v1052)=(__ZH_BOP__dotcall_dotbegin_RangeP((&(v1051)))));
+      ((v1053)=(__ZH_BOP__dotcall_dotend_RangeP((&(v1051)))));
+      ((v1054)=(v1052));
+      while ((__ZH_BOP__dotcall_dotuneq_i64Pi64((&(v1054)), (v1053)))) {
+        char v1055;
+        ((v1055)=((char)((i8)115)));
+        ((v1055)=(*__ZH_BOP__dotcall_dotat_StrPi64((&(*v1050)), (v1054))));
+        (__ZH_BOP__plus_equal_StrRchar(&(*v1049), (v1055)));
+        (__ZH_BOP__dotcall_dotnext_i64P((&(v1054))));
+      }
+    }
+}
+void __ZH_BOP__plus_equal_StrRstr(__ZH_TYPE_Str* v1056, str v1057){
+  i64 v1058;
+  ((v1058)=(__ZH_LOP_len_str((v1057))));
+  {
+      i64 v1062;
+      i64 v1061;
+      i64 v1060;
+      __ZH_TYPE_Range v1059;
+      ((v1059)=(__ZH_BOP__dot_dot_i64i64(((i64)0), (v1058))));
+      ((v1060)=(__ZH_BOP__dotcall_dotbegin_RangeP((&(v1059)))));
+      ((v1061)=(__ZH_BOP__dotcall_dotend_RangeP((&(v1059)))));
+      ((v1062)=(v1060));
+      while ((__ZH_BOP__dotcall_dotuneq_i64Pi64((&(v1062)), (v1061)))) {
+        (__ZH_BOP__plus_equal_StrRchar(&(*v1056), (__ZH_BOP__dotcall_dotsub_strPi64((&(v1057)), (v1062)))));
+        (__ZH_BOP__dotcall_dotnext_i64P((&(v1062))));
+      }
+    }
+}
+__ZH_TYPE_Str __ZH_BOP__plus_StrRStrR(__ZH_TYPE_Str* v1063, __ZH_TYPE_Str* v1064) {{
+  __ZH_TYPE_Str v1067;
+  __ZH_TYPE_Str v1065;
+  ((v1065)=(__ZH_LOP_Str_StrR(&(*v1063))));
+  (__ZH_BOP__plus_equal_StrRStrR(&(v1065), &(*v1064)));
+  ((v1067)=(__ZH_LOP_Str_StrR(&(v1065))));
+  (__ZH_BOP__dotcall_dotdtor_StrP((&(v1065))));
+  return (v1067);
+  (__ZH_BOP__dotcall_dotdtor_StrP((&(v1065))));
+  (__ZH_BOP__dotcall_dotdtor_StrP((&(v1067))));
+};printf("%s", "reached function end without returning anything op Str + StrR a StrR b\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Str __ZH_BOP__plus_strstr(str v1068, str v1069) {{
+  __ZH_TYPE_Str v1075;
+  __ZH_TYPE_Str v1074;
+  __ZH_TYPE_Str v1072;
+  ((v1075)=(__ZH_BOP__plus_StrRStrR(&(*(((v1072)=(__ZH_LOP_Str_str((v1068)))), (&(v1072)))), &(*(((v1074)=(__ZH_LOP_Str_str((v1069)))), (&(v1074)))))));
+  (__ZH_BOP__dotcall_dotdtor_StrP((&(v1072))));
+  (__ZH_BOP__dotcall_dotdtor_StrP((&(v1074))));
+  return (v1075);
+  (__ZH_BOP__dotcall_dotdtor_StrP((&(v1072))));
+  (__ZH_BOP__dotcall_dotdtor_StrP((&(v1074))));
+  (__ZH_BOP__dotcall_dotdtor_StrP((&(v1075))));
+};printf("%s", "reached function end without returning anything op Str + str a str b\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_ROP__less_StrR(__ZH_TYPE_Str* v1076) {{
+  __ZH_TYPE_Out v1078;
+  (__ZH_LOP_out_StrR(&(*v1076)));
+  ((v1078)=(__ZH_LOP_Out_()));
+  return (v1078);
+};printf("%s", "reached function end without returning anything rop Out < StrR i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_LOP__less_StrR(__ZH_TYPE_Str* v1079) {{
+  __ZH_TYPE_Out v1081;
+  ((__ZH_LOP_put_StrR(&(*v1079))), (printf("%s", ((str)" "))));
+  ((v1081)=(__ZH_LOP_Out_()));
+  return (v1081);
+};printf("%s", "reached function end without returning anything lop Out < StrR i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Out __ZH_BOP__less_OutStrR(__ZH_TYPE_Out v1082, __ZH_TYPE_Str* v1083) {{
+  __ZH_TYPE_Out v1085;
+  ((__ZH_LOP_put_StrR(&(*v1083))), (printf("%s", ((str)" "))));
+  ((v1085)=(__ZH_LOP_Out_()));
+  return (v1085);
+};printf("%s", "reached function end without returning anything op Out < Out o StrR i\n"); exit(EXIT_FAILURE);}
+bool __ZH_BOP__less_StrRStrR(__ZH_TYPE_Str* v1086, __ZH_TYPE_Str* v1087) {{
+  bool v1101;
+  {
+      i64 v1091;
+      i64 v1090;
+      i64 v1089;
+      __ZH_TYPE_Range v1088;
+      ((v1088)=(__ZH_BOP__dot_dot_i64i64(((i64)0), (__ZH_LOP_min_i64i64(((&(*v1086))->size), ((&(*v1087))->size))))));
+      ((v1089)=(__ZH_BOP__dotcall_dotbegin_RangeP((&(v1088)))));
+      ((v1090)=(__ZH_BOP__dotcall_dotend_RangeP((&(v1088)))));
+      ((v1091)=(v1089));
+      while ((__ZH_BOP__dotcall_dotuneq_i64Pi64((&(v1091)), (v1090)))) {
+        if ((((*__ZH_BOP__dotcall_dotsub_StrPi64((&(*v1086)), (v1091))))<((*__ZH_BOP__dotcall_dotsub_StrPi64((&(*v1087)), (v1091)))))) {
+          bool v1093;
+          ((v1093)=((bool)1));
+          return (v1093);
+        }
+ else if ((((*__ZH_BOP__dotcall_dotsub_StrPi64((&(*v1086)), (v1091))))>((*__ZH_BOP__dotcall_dotsub_StrPi64((&(*v1087)), (v1091)))))) {
+          bool v1095;
+          ((v1095)=((bool)0));
+          return (v1095);
+        }
+        (__ZH_BOP__dotcall_dotnext_i64P((&(v1091))));
+      }
+    }
+  if (((((&(*v1086))->size))<(((&(*v1087))->size)))) {
+    bool v1097;
+    ((v1097)=((bool)1));
+    return (v1097);
+  }
+ else if (((((&(*v1086))->size))>(((&(*v1087))->size)))) {
+    bool v1099;
+    ((v1099)=((bool)0));
+    return (v1099);
+  }
+  ((v1101)=((bool)0));
+  return (v1101);
+};printf("%s", "reached function end without returning anything op bool < StrR a StrR b\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Str __ZH_BOP__asterisk_stri64(str v1102, i64 v1103) {{
+  __ZH_TYPE_Str v1111;
+  __ZH_TYPE_Str v1105;
+  __ZH_TYPE_Str v1113;
+  __ZH_TYPE_Str v1104;
+  ((v1104)=(__ZH_LOP_Str_()));
+  ((v1105)=(__ZH_LOP_Str_str((v1102))));
+  {
+      i64 v1109;
+      i64 v1108;
+      i64 v1107;
+      __ZH_TYPE_Range v1106;
+      ((v1106)=(__ZH_BOP__dot_dot_i64i64(((i64)0), (v1103))));
+      ((v1107)=(__ZH_BOP__dotcall_dotbegin_RangeP((&(v1106)))));
+      ((v1108)=(__ZH_BOP__dotcall_dotend_RangeP((&(v1106)))));
+      ((v1109)=(v1107));
+      while ((__ZH_BOP__dotcall_dotuneq_i64Pi64((&(v1109)), (v1108)))) {
+        (__ZH_BOP__plus_equal_StrRStrR(&(v1104), &(v1105)));
+        (__ZH_BOP__dotcall_dotnext_i64P((&(v1109))));
+      }
+    }
+  ((v1111)=(__ZH_LOP_Str_StrR(&(v1104))));
+  (__ZH_BOP__dotcall_dotdtor_StrP((&(v1104))));
+  (__ZH_BOP__dotcall_dotdtor_StrP((&(v1105))));
+  return (v1111);
+  ((v1113)=(__ZH_LOP_Str_()));
+  (__ZH_BOP__dotcall_dotdtor_StrP((&(v1104))));
+  (__ZH_BOP__dotcall_dotdtor_StrP((&(v1105))));
+  (__ZH_BOP__dotcall_dotdtor_StrP((&(v1111))));
+  return (v1113);
+  (__ZH_BOP__dotcall_dotdtor_StrP((&(v1104))));
+  (__ZH_BOP__dotcall_dotdtor_StrP((&(v1105))));
+  (__ZH_BOP__dotcall_dotdtor_StrP((&(v1111))));
+  (__ZH_BOP__dotcall_dotdtor_StrP((&(v1113))));
+};printf("%s", "reached function end without returning anything op Str * str s i64 i\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Str __ZH_LOP__dollar_str(str v1114) {{
+  __ZH_TYPE_Str v1116;
+  ((v1116)=(__ZH_LOP_Str_str((v1114))));
+  return (v1116);
+  (__ZH_BOP__dotcall_dotdtor_StrP((&(v1116))));
+};printf("%s", "reached function end without returning anything lop Str $ str s\n"); exit(EXIT_FAILURE);}
+str __ZH_LOP_frog_() {{
+  str v1118;
+  ((v1118)=((str)"         _____\n       /       \\__\n     /             \\\n   /   ^    ^        |\n  |     ..            |\n  /|        _/       / \n / .\\_____/         /\n/U\\|    \\___|   |__/\n            /  /\n            |/U\\ "));
+  return (v1118);
+};printf("%s", "reached function end without returning anything lop str frog\n"); exit(EXIT_FAILURE);}
+f64 __ZH_LOP_sqrt_f64(f64 v1119) {{
+  f64 v1126;
+  f64 v1120;
+  ((v1120)=((f64)1.000000));
+  {
+      i64 v1124;
+      i64 v1123;
+      i64 v1122;
+      __ZH_TYPE_Range v1121;
+      ((v1121)=(__ZH_BOP__dot_dot_i64i64(((i64)0), ((i64)10))));
+      ((v1122)=(__ZH_BOP__dotcall_dotbegin_RangeP((&(v1121)))));
+      ((v1123)=(__ZH_BOP__dotcall_dotend_RangeP((&(v1121)))));
+      ((v1124)=(v1122));
+      while ((__ZH_BOP__dotcall_dotuneq_i64Pi64((&(v1124)), (v1123)))) {
+        (__ZH_BOP__minus_equal_f64Rf64(&(v1120), (((((((v1120))*((v1120))))-((v1119))))/(((((f64)2.000000))*((v1120)))))));
+        (__ZH_BOP__dotcall_dotnext_i64P((&(v1124))));
+      }
+    }
+  ((v1126)=(v1120));
+  return (v1126);
+};printf("%s", "reached function end without returning anything lop f64 sqrt f64 x\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_V2 __ZH_LOP_V2_f64f64(f64 v1127, f64 v1128) {{
+  __ZH_TYPE_V2 v1131;
+  __ZH_TYPE_V2 v1129;
+  (((&(v1129))->x)=(v1127));
+  (((&(v1129))->y)=(v1128));
+  ((v1131)=(v1129));
+  return (v1131);
+};printf("%s", "reached function end without returning anything lop V2 V2 f64 x f64 y\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_V2 __ZH_BOP__plus_V2V2(__ZH_TYPE_V2 v1132, __ZH_TYPE_V2 v1133) {{
+  __ZH_TYPE_V2 v1135;
+  (__ZH_BOP__plus_equal_f64Rf64(&((&(v1132))->x), ((&(v1133))->x)));
+  (__ZH_BOP__plus_equal_f64Rf64(&((&(v1132))->y), ((&(v1133))->y)));
+  ((v1135)=(v1132));
+  return (v1135);
+};printf("%s", "reached function end without returning anything op V2 + V2 a V2 b\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_V2 __ZH_BOP__asterisk_V2V2(__ZH_TYPE_V2 v1136, __ZH_TYPE_V2 v1137) {{
+  __ZH_TYPE_V2 v1140;
+  __ZH_TYPE_V2 v1138;
+  (((&(v1138))->x)=((((((&(v1136))->x))*(((&(v1137))->x))))-(((((&(v1136))->y))*(((&(v1137))->y))))));
+  (((&(v1138))->y)=((((((&(v1136))->x))*(((&(v1137))->y))))+(((((&(v1136))->y))*(((&(v1137))->x))))));
+  ((v1140)=(v1138));
+  return (v1140);
+};printf("%s", "reached function end without returning anything op V2 * V2 a V2 b\n"); exit(EXIT_FAILURE);}
+f64 __ZH_LOP_abs_V2(__ZH_TYPE_V2 v1141) {{
+  f64 v1143;
+  ((v1143)=(__ZH_LOP_sqrt_f64(((((((&(v1141))->x))*(((&(v1141))->x))))+(((((&(v1141))->y))*(((&(v1141))->y))))))));
+  return (v1143);
+};printf("%s", "reached function end without returning anything lop f64 abs V2 a\n"); exit(EXIT_FAILURE);}
+void __ZH_LOP_put_V2(__ZH_TYPE_V2 v1144){
+  (printf("%f", ((&(v1144))->x)));
+  (printf("%s", ((str)" ")));
+  (printf("%f", ((&(v1144))->y)));
+}
+void __ZH_LOP_out_V2(__ZH_TYPE_V2 v1145){
+  (printf("%f", ((&(v1145))->x)));
+  (printf("%s", ((str)" ")));
+  (printf("%f", ((&(v1145))->y)));
+  (printf("%s\n", ((str)"")));
+}
+__ZH_TYPE_Out __ZH_ROP__less_V2(__ZH_TYPE_V2 v1146) {{
+  __ZH_TYPE_Out v1148;
+  (__ZH_LOP_out_V2((v1146)));
+  ((v1148)=(__ZH_LOP_Out_()));
+  return (v1148);
 };printf("%s", "reached function end without returning anything rop Out < V2 i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_LOP__less_V2(__ZH_TYPE_V2 v753) {{
-  ((__ZH_LOP_put_V2((v753))), (printf("%s", ((str)" "))));
-  return (__ZH_LOP_Out_());
+__ZH_TYPE_Out __ZH_LOP__less_V2(__ZH_TYPE_V2 v1149) {{
+  __ZH_TYPE_Out v1151;
+  ((__ZH_LOP_put_V2((v1149))), (printf("%s", ((str)" "))));
+  ((v1151)=(__ZH_LOP_Out_()));
+  return (v1151);
 };printf("%s", "reached function end without returning anything lop Out < V2 i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_BOP__less_OutV2(__ZH_TYPE_Out v754, __ZH_TYPE_V2 v755) {{
-  ((__ZH_LOP_put_V2((v755))), (printf("%s", ((str)" "))));
-  return (__ZH_LOP_Out_());
+__ZH_TYPE_Out __ZH_BOP__less_OutV2(__ZH_TYPE_Out v1152, __ZH_TYPE_V2 v1153) {{
+  __ZH_TYPE_Out v1155;
+  ((__ZH_LOP_put_V2((v1153))), (printf("%s", ((str)" "))));
+  ((v1155)=(__ZH_LOP_Out_()));
+  return (v1155);
 };printf("%s", "reached function end without returning anything op Out < Out o V2 i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Rng __ZH_LOP_Rng_i64(i64 v756) {{
-  __ZH_TYPE_Rng v757;
-  (((&(v757))->seed)=(v756));
-  return (v757);
+__ZH_TYPE_Rng __ZH_LOP_Rng_i64(i64 v1156) {{
+  __ZH_TYPE_Rng v1159;
+  __ZH_TYPE_Rng v1157;
+  (((&(v1157))->seed)=(v1156));
+  ((v1159)=(v1157));
+  return (v1159);
 };printf("%s", "reached function end without returning anything lop Rng Rng i64 seed\n"); exit(EXIT_FAILURE);}
 __ZH_TYPE_Rng __ZH_LOP_Rng_() {{
-  return (__ZH_LOP_Rng_i64(((i64)5323)));
+  __ZH_TYPE_Rng v1161;
+  ((v1161)=(__ZH_LOP_Rng_i64(((i64)5323))));
+  return (v1161);
 };printf("%s", "reached function end without returning anything lop Rng Rng\n"); exit(EXIT_FAILURE);}
-i64 __ZH_BOP__dotcall_dotcall_RngP(__ZH_TYPE_Rng* v758) {{
-  ((((v758))->seed)=((((((i64)8253729))*((((v758))->seed))))+(((i64)2396403))));
-  return (((((v758))->seed))%(((i64)32767)));
+i64 __ZH_BOP__dotcall_dotcall_RngP(__ZH_TYPE_Rng* v1162) {{
+  i64 v1164;
+  ((((v1162))->seed)=((((((i64)8253729))*((((v1162))->seed))))+(((i64)2396403))));
+  ((v1164)=(((((v1162))->seed))%(((i64)32767))));
+  return (v1164);
 };printf("%s", "reached function end without returning anything op i64 .call.call RngP slf\n"); exit(EXIT_FAILURE);}
-bool __ZH_LOP_isPrime_i64R(i64* v759) {{
-  i64 v760;
-  ((v760)=((i64)2));
-  while ((((*v759))>((v760)))) {
-    if ((__ZH_BOP__percent_percent_i64i64((*v759), (v760)))) {
-      return ((bool)0);
+bool __ZH_LOP_isPrime_i64R(i64* v1165) {{
+  bool v1170;
+  i64 v1166;
+  ((v1166)=((i64)2));
+  while ((((*v1165))>((v1166)))) {
+    if ((__ZH_BOP__percent_percent_i64i64((*v1165), (v1166)))) {
+      bool v1168;
+      ((v1168)=((bool)0));
+      return (v1168);
     }
-    (__ZH_ROP__plus_plus_i64R(&(v760)));
+    (__ZH_ROP__plus_plus_i64R(&(v1166)));
   }
-  return (((*v759))>(((i64)1)));
+  ((v1170)=(((*v1165))>(((i64)1))));
+  return (v1170);
 };printf("%s", "reached function end without returning anything lop bool isPrime i64R num\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_Vec_lessi64_greater __ZH_LOP_filterMap_Vec_lessi64_greaterRF_lessbool_spacei64R_greaterF_lessi64_spacei64R_greater(__ZH_TYPE_Vec_lessi64_greater* v1171, bool(*v1172)(i64*), i64(*v1173)(i64*)) {{
+  __ZH_TYPE_Vec_lessi64_greater v1177;
+  __ZH_TYPE_Vec_lessi64_greater v1176;
+  ((v1177)=(__ZH_BOP__dotcall_dotmap_Vec_lessi64_greaterPF_lessi64_spacei64R_greater((&(*(((v1176)=(__ZH_BOP__dotcall_dotfilter_Vec_lessi64_greaterPF_lessbool_spacei64R_greater((&(*v1171)), (v1172)))), (&(v1176))))), (v1173))));
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v1176))));
+  return (v1177);
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v1176))));
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v1177))));
+};printf("%s", "reached function end without returning anything lop Vec<i64> filterMap Vec<i64>R v F<bool i64R> f1 F<i64 i64R> f2\n"); exit(EXIT_FAILURE);}
 int main(int argc, char *argv[]) {
-  __ZH_TYPE_Vec_lessi64_greater v772;
-  __ZH_TYPE_Vec_lessi64_greater v770;
-  __ZH_TYPE_Vec_lessi64_greater v768;
-  __ZH_TYPE_Vec_lessi64_greater v764;
-  __ZH_TYPE_Vec_lessi64_greater v762;
-  (__ZH_LOP_out_Vec_lessi64_greaterR(&(*(((v764)=(__ZH_BOP__dotcall_dotfilter_Vec_lessi64_greaterPF_lessbool_spacei64R_greater((&(*(((v762)=(__ZH_LOP_iota_i64i64(((i64)0), ((i64)50)))), (&(v762))))), (__ZH_LOP_isPrime_i64R)))), (&(v764))))));
-  (__ZH_LOP_out_Vec_lessi64_greaterR(&(*(((v772)=(__ZH_BOP__dotcall_dotmap_Vec_lessi64_greaterPF_lessi64_spacei64R_greater((&(*(((v770)=(__ZH_BOP__dotcall_dotfilter_Vec_lessi64_greaterPF_lessbool_spacei64R_greater((&(*(((v768)=(__ZH_LOP_iota_i64i64(((i64)0), ((i64)10)))), (&(v768))))), (__ZH_LOP_f1_i64R)))), (&(v770))))), (__ZH_LOP_f2_i64R)))), (&(v772))))));
-  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v762))));
-  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v764))));
-  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v768))));
-  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v770))));
-  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v772))));
+  __ZH_TYPE_Vec_lessi64_greater v1197;
+  __ZH_TYPE_Vec_lessi64_greater v1193;
+  __ZH_TYPE_Vec_lessi64_greater v1191;
+  __ZH_TYPE_Vec_lessi64_greater v1195;
+  __ZH_TYPE_Vec_lessi64_greater v1189;
+  __ZH_TYPE_Vec_lessi64_greater v1181;
+  __ZH_TYPE_Vec_lessi64_greater v1179;
+  (__ZH_LOP_out_Vec_lessi64_greaterR(&(*(((v1181)=(__ZH_BOP__dotcall_dotfilter_Vec_lessi64_greaterPF_lessbool_spacei64R_greater((&(*(((v1179)=(__ZH_LOP_iota_i64i64(((i64)0), ((i64)50)))), (&(v1179))))), (__ZH_LOP_isPrime_i64R)))), (&(v1181))))));
+  (__ZH_LOP_out_Vec_lessi64_greaterR(&(*(((v1193)=(__ZH_BOP__dotcall_dotmap_Vec_lessi64_greaterPF_lessi64_spacei64R_greater((&(*(((v1191)=(__ZH_BOP__dotcall_dotfilter_Vec_lessi64_greaterPF_lessbool_spacei64R_greater((&(*(((v1189)=(__ZH_LOP_iota_i64i64(((i64)0), ((i64)20)))), (&(v1189))))), (__ZH_LOP_f1_i64R)))), (&(v1191))))), (__ZH_LOP_f2_i64R)))), (&(v1193))))));
+  (__ZH_LOP_out_Vec_lessi64_greaterR(&(*(((v1197)=(__ZH_LOP_filterMap_Vec_lessi64_greaterRF_lessbool_spacei64R_greaterF_lessi64_spacei64R_greater(&(*(((v1195)=(__ZH_LOP_iota_i64i64(((i64)0), ((i64)20)))), (&(v1195)))), (__ZH_LOP_f1_i64R), (__ZH_LOP_f2_i64R)))), (&(v1197))))));
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v1179))));
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v1181))));
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v1189))));
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v1191))));
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v1193))));
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v1195))));
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v1197))));
 }
-bool __ZH_LOP_f1_i64R(i64* v765) {{
-  return (__ZH_BOP__percent_percent_i64i64((*v765), ((i64)2)));
+bool __ZH_LOP_f1_i64R(i64* v1182) {{
+  bool v1184;
+  ((v1184)=(__ZH_BOP__percent_percent_i64i64((*v1182), ((i64)2))));
+  return (v1184);
 };printf("%s", "reached function end without returning anything lop bool f1 i64R i\n"); exit(EXIT_FAILURE);}
-i64 __ZH_LOP_f2_i64R(i64* v766) {{
-  return (((*v766))*((*v766)));
+i64 __ZH_LOP_f2_i64R(i64* v1185) {{
+  i64 v1187;
+  ((v1187)=(((*v1185))*((*v1185))));
+  return (v1187);
 };printf("%s", "reached function end without returning anything lop i64 f2 i64R i\n"); exit(EXIT_FAILURE);}

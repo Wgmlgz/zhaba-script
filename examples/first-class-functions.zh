@@ -7,7 +7,8 @@ fn bool isPrime intR num
 
 /** Reference function with F<ret args...> */
 fn Vec<int> filterMap Vec<int>R v F<bool intR> f1 F<int intR> f2
-  <<< v.filter(f1).map(f2)
+  r := v.filter(f1).map(f2)
+  <<< r
 
 fn main
   /** Filters only prime numbers */
