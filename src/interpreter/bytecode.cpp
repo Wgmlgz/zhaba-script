@@ -125,7 +125,7 @@ void ByteCode::loadLabels() {
 
       case instr::jmp: cur += 4;
         break;
-      case instr::call: cur += 4;
+      case instr::call:
         break;
       case instr::ret: cur += 4 + 4;
         break;
@@ -326,7 +326,7 @@ std::pair<std::string, std::map<size_t, std::string>> ByteCode::dis() {
       }
         break;
       INSTR_I32(jmp)
-      INSTR_I32(call)
+      INSTR(call)
       INSTR_I32(jmp_if_bool)
       INSTR_I32_2(ret)
       INSTR_I32(push_literal_ptr)

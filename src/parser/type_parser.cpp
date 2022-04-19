@@ -114,31 +114,41 @@ Type parse(tokeniter &token, const ScopeInfo &parent_scope) {
     }
     res.setPtr(ptr_c);
 
-    /** Generate new implementation */
-    if (id == static_cast<TYPE>(-1)) {
-      /** Type substitution */
-      if (generic_types.size() != zhdata.generics[str].names.size())
-        throw ParserError(begin_token,
-            *token, "Number of generic types doesn't match: found " +
-                std::to_string(generic_types.size()) + ", but " +
-                std::to_string(zhdata.generics[str].names.size()) + " expected");
+    if (str == "F") {
+      res.setType(TYPE::FT);
+      res.setTypes(generic_types);
+      return res;
+    } else {
+      /** Generate new implementation */
+      if (id == static_cast<TYPE>(-1)) {
+        /** Type substitution */
+        if (generic_types.size() != zhdata.generics[str].names.size())
+          throw ParserError(
+              begin_token, *token,
+              "Number of generic types doesn't match: found " +
+                  std::to_string(generic_types.size()) + ", but " +
+                  std::to_string(zhdata.generics[str].names.size()) +
+                  " expected");
 
-      ScopeInfo scope(&zhdata.sttree->scope);
-      for (int i = 0; i < generic_types.size(); ++i) {
-        scope.setTypedef(zhdata.generics[str].names[i], generic_types[i]);
+        ScopeInfo scope(&zhdata.sttree->scope);
+        for (int i = 0; i < generic_types.size(); ++i) {
+          scope.setTypedef(zhdata.generics[str].names[i], generic_types[i]);
+        }
+        /** Try generate generic implementation */
+        parsePushStruct(name, zhdata.generics[str].block, scope);
+        for (auto &block : zhdata.generics[str].impl_blocks) {
+          block->reset();
+          auto funcs =
+              parseImpl(block, Type(static_cast<TYPE>(getStructId(name))),
+                        scope, zhdata.sttree->scope);
+          for (auto i : funcs) zhdata.sttree->functions.push_back(i);
+        }
+        id = getStructId(name);
       }
-      /** Try generate generic implementation */
-      parsePushStruct(name, zhdata.generics[str].block, scope);
-      for (auto &block : zhdata.generics[str].impl_blocks) {
-        block->reset();
-        auto funcs = parseImpl(block, Type(static_cast<TYPE>(getStructId(name))), scope, zhdata.sttree->scope);
-        for (auto i : funcs)
-          zhdata.sttree->functions.push_back(i);
-      }
-      id = getStructId(name);
+      res.setType(static_cast<TYPE>(id));
+      // res.setTmpl(generic_types);
     }
-    res.setType(static_cast<TYPE>(id));
-    // res.setTmpl(generic_types);
+
   } else if (is_generic) {
     throw ParserError(*token, "Generic type parsing failed, expected '<'");
   }

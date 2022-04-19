@@ -477,8 +477,17 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
                        scope.getVarId(id->val));
       tmp->type = scope.getVarType(id->val);
       exp = tmp;
+    } else if (scope.containsFn(id->val)) {
+      auto fn = scope.getFn(id->val);
+      std::vector<types::Type> types{fn->type};
+      for (const auto &[name, type] : fn->args) types.push_back(type);
+      auto fn_type = types::Type(types::TYPE::FT, 0, false, false, types);
+      auto tmp = new FnLiteral(id->begin, id->end, fn);
+      tmp->type = fn_type;
+      exp = tmp;
     } else
-      throw ParserError(id->begin, id->end, "Unknown variable '" + id->val + "'");
+      throw ParserError(id->begin, id->end,
+                        "Unknown variable '" + id->val + "'");
   } else if (auto op = dynamic_cast<BinOperator *>(exp)) {
     if (op->val == ",") {
       op->lhs = postprocess(op->lhs, scope);
@@ -663,8 +672,8 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
         op->type = bool_type;
       } else {
         /** Member call */
-        if (op->val.size() >= 6 and op->val.substr(0, 6) == ".call.") {
-          if (op->lhs->type.getPtr() == 0) {
+        if (op->val.size() >= 6 && op->val.substr(0, 6) == ".call.") {
+          if (op->lhs->type.getPtr() == 0 && !op->lhs->type.isFn()) {
             if (!(op->lhs->type.getLval() || op->lhs->type.getRef())) {
               op->lhs = makeLval(op->lhs, scope);
             }
@@ -696,8 +705,21 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
         for (auto &i : types) i.setRef(false);
 
         types::funcHead func_head{op->val, types};
-        if (scope.containsBinOp(func_head)) {
-          auto& bop = scope.getBinOp(func_head);
+        if (op->val.size() >= 6 && op->val.substr(0, 6) == ".call." &&
+            op->lhs->type.isFn()) {
+          const auto& args = op->lhs->type.getTypes();
+          op->func = nullptr;
+          op->type = args.front();
+
+          for (auto i = 1; i < args.size(); ++i) {
+            /** Call copy ctors */
+            if (!args[i].getRef()) copyExp(*exps[i], scope);
+            /** Cast to lval if needed */
+            else if (!(*exps[i])->type.getLval() && !(*exps[i])->type.getRef())
+              makeLval(*(exps[i]), scope);
+          }
+        } else if (scope.containsBinOp(func_head)) {
+          auto bop = scope.getBinOp(func_head);
           op->func = bop;
           exp->type = bop->type;
           for (int i = 0; i < bop->args.size(); ++i) {
@@ -713,7 +735,7 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
             for (auto &i : types)
               if (&i != &types.front()) types_str += i.toString() + " ";
             throw ParserError(op->begin, op->end,
-                              "There is no instance member function `" +
+                              "There is no instance of member function `" +
                                   op->val.substr(6, op->val.size() - 6) +
                                   "` for type `" + types.front().toString() +
                                   "` with args types: " + types_str);

@@ -38,6 +38,11 @@ class ScopeInfo {
   std::map<types::funcHead, Function*> PO_OD_;
   std::map<types::funcHead, Function*> FN_OD_;
 
+  std::map<std::string, Function*> B_OD_NAME_;
+  std::map<std::string, Function*> PR_OD_NAME_;
+  std::map<std::string, Function*> PO_OD_NAME_;
+  std::map<std::string, Function*> FN_OD_NAME_;
+
   ScopeInfo(const ScopeInfo* new_parent);
   ScopeInfo(const ScopeInfo&) = delete;
 
@@ -94,6 +99,46 @@ class ScopeInfo {
     container.emplace(name, val);                                             \
   }
 
+#define MAKE_SCOPE_ACCESS_OP(property, properties, display, container)        \
+  bool contains##property(const types::funcHead& name) const {                \
+    if (container.contains(name)) return true;                                \
+    if (parent) return parent->contains##property(name);                      \
+    return false;                                                             \
+  }                                                                           \
+  bool contains##property(const std::string& name) const {                    \
+    if (container##NAME_.contains(name)) return true;                         \
+    if (parent) return parent->contains##property(name);                      \
+    return false;                                                             \
+  }                                                                           \
+  const Function*& get##property(const types::funcHead& name) const {         \
+    if (!contains##property(name))                                            \
+      throw std::runtime_error(#display " is not defined in this scope");     \
+    if (container.contains(name))                                             \
+      return const_cast<const Function*&>(container.at(name));                \
+    return parent->get##property(name);                                       \
+  }                                                                           \
+  const Function*& get##property(const std::string& name) const {             \
+    if (!contains##property(name))                                            \
+      throw std::runtime_error(#display " is not defined in this scope");     \
+    if (container##NAME_.contains(name))                                      \
+      return const_cast<const Function*&>(container##NAME_.at(name));         \
+    return parent->get##property(name);                                       \
+  }                                                                           \
+  Function*& get##property(const types::funcHead& name) {                     \
+    return const_cast<Function*&>(                                            \
+        static_cast<const ScopeInfo&>(*this).get##property(name));            \
+  }                                                                           \
+  Function*& get##property(const std::string& name) {                         \
+    return const_cast<Function*&>(                                            \
+        static_cast<const ScopeInfo&>(*this).get##property(name));            \
+  }                                                                           \
+  void set##property(const types::funcHead& name, Function*& val) {           \
+    if (container.contains(name))                                             \
+      throw std::runtime_error(#display " is already defined in this scope"); \
+    container.emplace(name, val);                                             \
+    container##NAME_.emplace(name.first, val);                                \
+  }
+
 #define MAKE_SCOPE_ACCESS_SET(property, properties, display, container,       \
                               access_type)                                    \
   bool contains##property(const access_type& name) const {                    \
@@ -112,14 +157,10 @@ class ScopeInfo {
 
   MAKE_SCOPE_ACCESS(Typedef, Typedefs, typedef, typedefs, types::Type,
                     std::string);
-  MAKE_SCOPE_ACCESS_NOMSG(BinOp, BinOps, binary_operator, B_OD_, Function*,
-                          types::funcHead);
-  MAKE_SCOPE_ACCESS_NOMSG(PrOp, PrOps, prefix_operator, PR_OD_, Function*,
-                          types::funcHead);
-  MAKE_SCOPE_ACCESS_NOMSG(PoOp, PoOps, postfix_operator, PO_OD_, Function*,
-                          types::funcHead);
-  MAKE_SCOPE_ACCESS_NOMSG(Fn, Fns, function, FN_OD_, Function*,
-                          types::funcHead);
+  MAKE_SCOPE_ACCESS_OP(BinOp, BinOps, binary_operator, B_OD_);
+  MAKE_SCOPE_ACCESS_OP(PrOp, PrOps, prefix_operator, PR_OD_);
+  MAKE_SCOPE_ACCESS_OP(PoOp, PoOps, postfix_operator, PO_OD_);
+  MAKE_SCOPE_ACCESS_OP(Fn, Fns, function, FN_OD_);
 
   MAKE_SCOPE_ACCESS_NOMSG(BinOpP, BinOpsP, binary_operator_priority,
                           bin_operators_, int64_t, std::string);

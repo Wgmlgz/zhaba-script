@@ -7,29 +7,42 @@
 #include <vector>
 #include <compare>
 
+struct Function;
+
 namespace types {
 
 enum class TYPE : int32_t {
   voidT,
-  charT, strT,
+  charT,
+  strT,
   boolT,
-  i8T, i16T, i32T, i64T,
-  u8T, u16T, u32T, u64T,
-  f32T, f64T
+  i8T,
+  i16T,
+  i32T,
+  i64T,
+  u8T,
+  u16T,
+  u32T,
+  u64T,
+  f32T,
+  f64T,
+  FT
 };
 
 class Type {
  public:
   /** Ctor Dtor */
-  explicit Type(const TYPE &type = TYPE::voidT, uint8_t ptr = 0, bool lval = false,
-                bool ref = false);
-  virtual ~Type();
+  explicit Type(const TYPE &type = TYPE::voidT, uint8_t ptr = 0,
+                bool lval = false, bool ref = false,
+                const std::vector<Type> &types = {});
 
   /** Getters */
   [[nodiscard]] TYPE getTypeId() const;
   [[nodiscard]] bool getLval() const;
   [[nodiscard]] bool getRef() const;
   [[nodiscard]] uint8_t getPtr() const;
+  [[nodiscard]] bool isFn() const;
+  [[nodiscard]] const std::vector<Type>& getTypes() const;
   [[nodiscard]] size_t getSize() const;
   [[nodiscard]] size_t getSizeNonRef() const;
   [[nodiscard]] size_t getSizeNonPtr() const;
@@ -39,8 +52,9 @@ class Type {
   void setRef(bool f);
   void setType(TYPE type_);
   void setPtr(uint8_t val);
-  [[nodiscard]] uint32_t getSelfMask() const;
+  void setTypes(const std::vector<Type> &types);
   [[nodiscard]] std::vector<uint32_t> getMask() const;
+  [[nodiscard]] uint32_t getSelfMask_() const;
 
   /** Util */
   [[nodiscard]] Type rvalClone() const;
@@ -52,7 +66,8 @@ class Type {
   bool lval_ = false;
   bool ref_ = false;
   uint8_t ptr_ = 0;
-  std::vector<Type> tmpl_;
+
+  std::vector<Type> types_;
 };
 
 std::strong_ordering operator<=>(const types::Type &lhs, const types::Type &rhs);

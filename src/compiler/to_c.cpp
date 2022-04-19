@@ -132,14 +132,27 @@ MAKE_ABOBA(in_f64, double, "%lf")
   return res;
 }
 
-std::string type2C(const types::Type& type, bool plain = false) {
+std::string type2C(const types::Type& type, std::string name = "") {
   std::string res;
-  if (static_cast<int>(type.getTypeId()) < 50)
+  if (type.isFn()) {
+    const auto& types = type.getTypes();
+    res += type2C(types.front());
+    res += "(*";
+    res += name;
+    res += ")(";
+    bool start = true;
+    for (int i = 1; i < types.size(); ++i) {
+      if (!start) res += ", ";
+      res += type2C(types[i]);
+      start = false;
+    }
+    res += ")";
+  } else if (static_cast<int>(type.getTypeId()) < 50) {
     res += zhdata.cpp_type_names.at(type.getTypeId());
-  else
+  } else {
     res += id2C("__ZH_TYPE_" + zhdata.struct_names.at(type.getTypeId()));
-
-  res += std::string(type.getPtr(), plain ? 'P' : '*');
+  }
+  res += std::string(type.getPtr(), '*');
   if (type.getRef()) res += "*";
   return res;
 }
@@ -171,7 +184,7 @@ std::string rop2C(const Function* head) {
   return rop2C(*head);
 }
 
-std::string exp2C(zhexp::Exp* exp, Function* fn) {
+std::string exp2C(zhexp::Exp* exp) {
   std::string res;
   res += "(";
   if (auto lt = dynamic_cast<zhexp::I8Literal*>(exp)) {
@@ -218,6 +231,8 @@ std::string exp2C(zhexp::Exp* exp, Function* fn) {
         res += i;
     }
     res += "\"";
+  } else if (auto lt = dynamic_cast<zhexp::FnLiteral*>(exp)) {
+    res += funcName2C(lt->val);
   } else if (auto op = dynamic_cast<zhexp::BinOperator*>(exp)) {
     if (op->val == "as") {
       /** I believe in weak typing supremacy 💪 */
@@ -239,11 +254,11 @@ std::string exp2C(zhexp::Exp* exp, Function* fn) {
       res += "(";
       res += type2C(type_b);
       res += ")";
-      res += exp2C(op->lhs, fn);
+      res += exp2C(op->lhs);
     } else if (op->val == "=") {
-      res += exp2C(op->lhs, fn);
+      res += exp2C(op->lhs);
       res += "=";
-      res += exp2C(op->rhs, fn);
+      res += exp2C(op->rhs);
     } else if (op->val == ".") {
       if (op->type.getRef()) {
         res += "*";
@@ -252,17 +267,27 @@ std::string exp2C(zhexp::Exp* exp, Function* fn) {
       if (!op->lhs->type.getPtr()) {
         res += "&";
       }
-      res += exp2C(op->lhs, fn);
+      res += exp2C(op->lhs);
       res += ")->";
       res += static_cast<zhexp::IdLiteral*>(op->rhs)->val;
+    } else if (op->val == ".call.call" && op->lhs->type.isFn()) {
+      res += "(*";
+      res += exp2C(op->lhs);
+      res += ")";
+      res += "(";
+      auto rhs_tuple = castToTuple(op->rhs);
+      auto types = op->lhs->type.getTypes();
+      types.erase(types.begin());
+      res += args2C(rhs_tuple, types);
+      res += ")";
     } else {
       if (op->func && op->func->is_C) {
         res += "(";
-        res += args2C(op->lhs, op->func);
+        res += args2C(op->lhs, {types::Type()});
         res += ")";
         res += op->func->name != "|||" ? op->func->name : "|";
         res += "(";
-        res += args2C(op->rhs, op->func);
+        res += args2C(op->rhs, {types::Type()});
         res += ")";
       } else {
         auto lhs_tuple = castToTuple(op->lhs);
@@ -274,7 +299,7 @@ std::string exp2C(zhexp::Exp* exp, Function* fn) {
           op->func->op_type == Function::OpType::bin ? bop2C(op->func) : (
           op->func->op_type == Function::OpType::lhs ? lop2C(op->func) : rop2C(op->func)
         )) + "(";
-        res += args2C(lhs_tuple, op->func);
+        res += args2C(lhs_tuple, op->func->getHead().second);
         res += ")";
       }
     }
@@ -286,7 +311,7 @@ std::string exp2C(zhexp::Exp* exp, Function* fn) {
   else if (op->val == #name &&                                  \
            op->child->type.getTypeId() == types::TYPE::type_) { \
     res += impl_;                                               \
-    res += args2C(op->child, op->func);                         \
+    res += args2C(op->child, {types::Type()});                  \
     res += ")";                                                 \
   }
       MAKE_LOP_C(in_i8, voidT, "in_i8(")
@@ -394,17 +419,17 @@ std::string exp2C(zhexp::Exp* exp, Function* fn) {
       }
     } else if (op->val == "&") {
       res += "&";
-      res += exp2C(op->child, op->func);
+      res += exp2C(op->child);
     } else if (op->val == "*" && op->func == nullptr) {
       res += "*";
-      res += exp2C(op->child, op->func);
+      res += exp2C(op->child);
     } else {
       if (op->type.getRef()) res += "*";
       res +=  (
         op->func->op_type == Function::OpType::bin ? bop2C(op->func) : (
         op->func->op_type == Function::OpType::lhs ? lop2C(op->func) : rop2C(op->func)
       )) + "(";
-      res += args2C(op->child, op->func);
+      res += args2C(op->child, op->func->getHead().second );
       res += ")";
     }
   } else if (auto var = dynamic_cast<zhexp::Variable*>(exp)) {
@@ -413,12 +438,12 @@ std::string exp2C(zhexp::Exp* exp, Function* fn) {
   } else if (auto op = dynamic_cast<zhexp::PostfixOperator*>(exp)) {
     if (op->type.getRef()) res += "*";
     res += rop2C(op->func) + "(";
-    res += args2C(op->child, op->func);
+    res += args2C(op->child, op->func->getHead().second);
     res += ")";
   } else if (auto tuple = dynamic_cast<zhexp::Tuple*>(exp)) {
     for (size_t i = 0; i < tuple->content.size(); ++i) {
       if (i) res += ", ";
-      res += exp2C(tuple->content[i], fn);
+      res += exp2C(tuple->content[i]);
     }
   } else {
     throw std::runtime_error("unimplemented expToC ");
@@ -427,12 +452,12 @@ std::string exp2C(zhexp::Exp* exp, Function* fn) {
   return res;
 }
 
-std::string args2C(zhexp::Exp* exp, Function* fn) {
+std::string args2C(zhexp::Exp* exp, const std::vector<types::Type>& types) {
   std::string res;
   auto tuple = zhexp::castToTuple(exp);
   for (int i = 0; i < tuple->content.size(); ++i) {
     if (i) res += ", ";
-    if (fn->args[i].type.getRef()) {
+    if (types[i].getRef()) {
       if (!tuple->content[i]->type.getLval() &&
           !tuple->content[i]->type.getRef())
         throw ParserError(
@@ -440,7 +465,7 @@ std::string args2C(zhexp::Exp* exp, Function* fn) {
             "Expression must be lval to be able pass by reference");
       res += "&";
     }
-    res += exp2C(tuple->content[i], fn);
+    res += exp2C(tuple->content[i]);
   }
   return res;
 }
@@ -451,10 +476,15 @@ std::string block2C(STBlock* block, Function* fn, size_t depth) {
 
   for (const auto [name, varInfo] : *block->scope_info.getVars()) {
     res += std::string((depth+1) * tab_size , ' ');
-    res += type2C(varInfo->type);
-    res += " ";
-    res += "v" + std::to_string(varInfo->id);
-    res += ";\n";
+    if (varInfo->type.isFn()) {
+      res += type2C(varInfo->type, "v" + std::to_string(varInfo->id));
+      res += ";\n";
+    } else {
+      res += type2C(varInfo->type);
+      res += " ";
+      res += "v" + std::to_string(varInfo->id);
+      res += ";\n";
+    }
   }
 
   for (auto& i : block->nodes) {
@@ -471,22 +501,22 @@ std::string node2C(STNode* node, Function* fn, size_t depth) {
   std::string res;
   res += std::string(depth * tab_size, ' ');
   if (auto exp = dynamic_cast<STExp*>(node)) {
-    res += exp2C(exp->exp, fn);
+    res += exp2C(exp->exp);
     res += ";";
   } else if (auto ret = dynamic_cast<STRet*>(node)) {
     res += "return ";
     if (fn->type.getRef()) res += "&";
-    res += exp2C(ret->exp, fn);
+    res += exp2C(ret->exp);
     res += ";";
   } else if (auto stif = dynamic_cast<STIf*>(node)) {
     res += "if (";
-    res += exp2C(stif->condition, fn);
+    res += exp2C(stif->condition);
     res += ") ";
 
     res += block2C(stif->body, fn, depth);
     for (int i = 0; i < stif->elseif_body.size(); ++i) {
       res += "\n else if (";
-      res += exp2C(stif->elseif_body[i].first, fn);
+      res += exp2C(stif->elseif_body[i].first);
       res += ") ";
       res += block2C(stif->elseif_body[i].second, fn, depth);
     }
@@ -497,7 +527,7 @@ std::string node2C(STNode* node, Function* fn, size_t depth) {
       res += block2C(stif->else_body, fn, depth);
     }
   } else if (auto stwhile = dynamic_cast<STWhile*>(node)) {
-    res += "while (" + exp2C(stwhile->condition, fn) + ") ";
+    res += "while (" + exp2C(stwhile->condition) + ") ";
     res += block2C(stwhile->body, fn, depth);
   } else if (auto block = dynamic_cast<STBlock*>(node)) {
     res += block2C(block, fn, depth + 1);
@@ -507,16 +537,48 @@ std::string node2C(STNode* node, Function* fn, size_t depth) {
   return res;
 };
 
+std::string funcName2C(Function* func) {
+  return (func->op_type == Function::OpType::bin
+              ? bop2C(func)
+              : (func->op_type == Function::OpType::lhs ? lop2C(func)
+                                                        : rop2C(func)));
+}
+
 std::string funcHead2C(Function* func) {
   std::string str;
   if (func->name == "main") {
     str += "int main(int argc, char *argv[]) ";
   } else {
     str += type2C(func->type) + " ";
-    str +=  (
-      func->op_type == Function::OpType::bin ? bop2C(func) : (
-      func->op_type == Function::OpType::lhs ? lop2C(func) : rop2C(func)
-    )) + "(";
+    str += funcName2C(func) + "(";
+    bool start = true;
+    for (auto& [name, type] : func->args) {
+      if (!start) str += ", ";
+      if (type.isFn()) {
+        str +=
+            type2C(type, "v" + std::to_string(func->args_scope.getVarId(name)));
+      } else {
+        str += type2C(type) + " ";
+        str += "v" + std::to_string(func->args_scope.getVarId(name));
+      }
+      start = false;
+    }
+    str += ")";
+  }
+  return str;
+}
+
+std::string funcHead2FnPtr(Function* func) {
+  std::string str;
+  if (func->name == "main") {
+    str += "int main(int argc, char *argv[]) ";
+  } else {
+    str += type2C(func->type) + " ";
+    str += (func->op_type == Function::OpType::bin
+                ? bop2C(func)
+                : (func->op_type == Function::OpType::lhs ? lop2C(func)
+                                                          : rop2C(func))) +
+           "(";
     bool start = true;
     for (auto& [name, type] : func->args) {
       if (!start) str += ", ";

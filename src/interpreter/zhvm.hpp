@@ -61,8 +61,8 @@ class ZHVM {
     bytecode.loadLabels();
   }
   /**
-   * @brief 
-   * 
+   * @brief
+   *
    * @param max_commands commands to run
    * @return true if run is not completed
    */
@@ -105,7 +105,10 @@ class ZHVM {
   ARITHMETIC_BIN(zhtype##_less, type, bool, <, size)    \
   ARITHMETIC_BIN(zhtype##_more, type, bool, >, size)    \
   ARITHMETIC_BIN(zhtype##_lesseq, type, bool, <=, size) \
-  ARITHMETIC_BIN(zhtype##_moreeq, type, bool, >=, size)
+  ARITHMETIC_BIN(zhtype##_moreeq, type, bool, >=, size) \
+  ARITHMETIC_PR(zhtype##_not, type, bool, !, size)      \
+  ARITHMETIC_PR(zhtype##_neg, type, type, -, size)      \
+  ARITHMETIC_PR(zhtype##_bit_not, type, bool, ~, size)
 
           MAKE_INT_BIN(int8_t, i8, 1)
           MAKE_INT_BIN(int16_t, i16, 2)
@@ -116,7 +119,7 @@ class ZHVM {
           MAKE_INT_BIN(uint32_t, u32, 4)
           MAKE_INT_BIN(uint64_t, u64, 8)
 
-#define MAKE_FLOAT_BIN(type, zhtype, size)                \
+#define MAKE_FLOAT_BIN(type, zhtype, size)              \
   ARITHMETIC_BIN(zhtype##_add, type, type, +, size)     \
   ARITHMETIC_BIN(zhtype##_sub, type, type, -, size)     \
   ARITHMETIC_BIN(zhtype##_mul, type, type, *, size)     \
@@ -126,7 +129,9 @@ class ZHVM {
   ARITHMETIC_BIN(zhtype##_less, type, bool, <, size)    \
   ARITHMETIC_BIN(zhtype##_more, type, bool, >, size)    \
   ARITHMETIC_BIN(zhtype##_lesseq, type, bool, <=, size) \
-  ARITHMETIC_BIN(zhtype##_moreeq, type, bool, >=, size)
+  ARITHMETIC_BIN(zhtype##_moreeq, type, bool, >=, size) \
+  ARITHMETIC_PR(zhtype##_not, type, bool, !, size)      \
+  ARITHMETIC_PR(zhtype##_neg, type, bool, -, size)
 
           MAKE_FLOAT_BIN(float, f32, 4)
           MAKE_FLOAT_BIN(double, f64, 8)
@@ -155,8 +160,8 @@ class ZHVM {
         }
           break;
         case instr::call: {
-          auto target = *bytecode.loadI32(cur);
-          cur += 4;
+          auto target = TOSi32;
+          stack.popBytes(4);
           call_stack.push_back(cur);
           call_stack_frame.push_back(stack.getTop());
           cur = bytecode.label(target);

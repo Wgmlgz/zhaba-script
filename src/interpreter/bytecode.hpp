@@ -30,8 +30,8 @@ class ByteCode {
   std::map<int32_t, std::vector<byte>> literals_data;
   void push_pop_bytes(int val);
   void push_push_bytes(int val);
-  void pushLabel(int32_t label, const std::string& comment);
-  std::map<std::string, int> func_labels;
+  void pushLabel(int32_t label, const std::string &comment);
+  std::map<Function*, int> func_labels;
   std::map<types::TYPE, std::map<std::string, int>> structs_members_offsets;
   int label(int t);
   void loadLabels();

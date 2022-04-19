@@ -94,6 +94,7 @@ const std::unordered_map<std::string, types::TYPE> prim_types{
     {"f64", types::TYPE::f64T},
 
     {"int", types::TYPE::i64T},
+    {"F", types::TYPE::FT},
 };
 
 const std::unordered_map<types::TYPE, std::string> type_names{
@@ -116,6 +117,7 @@ const std::unordered_map<types::TYPE, std::string> type_names{
 
     {types::TYPE::f32T, "f32"},
     {types::TYPE::f64T, "f64"},
+    {types::TYPE::FT, "F"},
 };
 
 const std::unordered_map<types::TYPE, std::string> cpp_type_names{
@@ -138,6 +140,7 @@ const std::unordered_map<types::TYPE, std::string> cpp_type_names{
 
     {types::TYPE::f32T, "f32"},
     {types::TYPE::f64T, "f64"},
+    {types::TYPE::FT, "undefined"},
 };
 
 const std::unordered_map<types::TYPE, size_t> sizes{
@@ -160,6 +163,7 @@ const std::unordered_map<types::TYPE, size_t> sizes{
 
     {types::TYPE::f32T, 4},
     {types::TYPE::f64T, 8},
+    {types::TYPE::FT, 4},
 };
 
 const std::map<types::funcHead, Function *> B_OD = {

@@ -5,13 +5,19 @@
 namespace types {
 
 /** Bitmask layout: ref<1> lval<1> ptr<8> typeid<other> */
-uint32_t types::Type::getSelfMask() const {
+uint32_t types::Type::getSelfMask_() const {
   return (static_cast<int>(typeid_) << 10) | (ptr_ << 2) | (lval_ << 1) | ref_;
+}
+std::vector<uint32_t> types::Type::getMask() const {
+  std::vector<uint32_t> v{getSelfMask_()};
+  for (const auto &i : types_)
+    for (const auto &j : i.getMask()) v.push_back(j);
+  return v;
 }
 
 std::strong_ordering operator<=>(const types::Type &lhs,
                                  const types::Type &rhs) {
-  return lhs.getSelfMask() <=> rhs.getSelfMask();
+  return lhs.getMask() <=> rhs.getMask();
 }
 
 std::string genericToStr(const std::vector<Type> &generic) {
@@ -39,15 +45,21 @@ TYPE getStructId(const std::string &str) {
 }
 
 /* Ctor Dtor */
-types::Type::Type(const types::TYPE &type, uint8_t ptr, bool lval, bool ref)
-    : typeid_(type), ptr_(ptr), lval_(lval), ref_(ref) {}
-types::Type::~Type() = default;
+types::Type::Type(const types::TYPE &type, uint8_t ptr, bool lval, bool ref,
+                  const std::vector<Type> &types)
+    : typeid_(type),
+      ptr_(ptr),
+      lval_(lval),
+      ref_(ref),
+      types_(types) {}
 
 /* Getters */
 TYPE types::Type::getTypeId() const { return typeid_; }
 bool types::Type::getLval() const { return lval_; }
 bool types::Type::getRef() const { return ref_; }
+bool types::Type::isFn() const { return typeid_ == TYPE::FT; }
 uint8_t types::Type::getPtr() const { return ptr_; }
+const std::vector<Type>& types::Type::getTypes() const { return types_; }
 size_t types::Type::getSize() const {
   return (ptr_ || ref_) ? 8 : zhdata.sizes[typeid_];
 }
@@ -63,14 +75,13 @@ void types::Type::setLval(bool f) { lval_ = f; }
 void types::Type::setRef(bool f) { ref_ = f; }
 void types::Type::setType(types::TYPE type_) { typeid_ = type_; }
 void types::Type::setPtr(uint8_t val) { ptr_ = val; }
-
-std::vector<uint32_t> types::Type::getMask() const { return {getSelfMask()}; }
+void types::Type::setTypes(const std::vector<Type> &types) { types_ = types; }
 
 types::Type types::Type::rvalClone() const {
-  return Type(typeid_, ptr_, false, ref_);
+  return Type(typeid_, ptr_, false, ref_, types_);
 }
 types::Type types::Type::nonRefClone() const {
-  return Type(typeid_, ptr_, lval_, false);
+  return Type(typeid_, ptr_, lval_, false, types_);
 }
 
 std::string types::Type::toString() const {
@@ -78,13 +89,10 @@ std::string types::Type::toString() const {
   res += static_cast<int>(typeid_) < 50 ? zhdata.type_names[typeid_]
                                         : zhdata.struct_names[typeid_];
 
-  res += std::string(ptr_, 'P');
-  if (ref_) res += "R";
-
-  if (!tmpl_.empty()) {
+  if (!types_.empty()) {
     res += "<";
     bool f = false;
-    for (const auto &i : tmpl_) {
+    for (const auto &i : types_) {
       if (f)
         res += " ";
       else
@@ -93,7 +101,11 @@ std::string types::Type::toString() const {
     }
     res += ">";
   }
-  if (lval_) res += "&";
+
+  res += std::string(ptr_, 'P');
+  if (ref_) res += "R";
+
+  // if (lval_) res += "&";
   return res;
 }
 }  // namespace types

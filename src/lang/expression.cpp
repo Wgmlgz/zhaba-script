@@ -14,11 +14,11 @@ Tuple::Tuple(const Token &new_begin, const Token &new_end, int64_t new_priority,
              std::vector<Exp *> new_content)
     : Exp(new_begin, new_end), priority(new_priority), content(std::move(new_content)) {}
 std::string Tuple::toString() {
-  std::string res = "<tuple{";
+  std::string res = "<tuple{ ";
   for (auto &i : content) {
     res += i->toString() + " ";
   }
-  res += ">";
+  res += "}>";
   return res;
 }
 
@@ -73,6 +73,15 @@ MAKE_LITERAL(F64Literal, double, Literal, "f64");
 MAKE_LITERAL(BoolLiteral, bool, Literal, "bool");
 MAKE_LITERAL(CharLiteral, char, Literal, "char");
 
+FnLiteral::FnLiteral(const Token &new_begin, const Token &new_end,
+                     Function *new_val)
+    : Literal(new_begin, new_end), val(new_val) {}
+std::string FnLiteral::toString() {
+  std::stringstream ss;
+  ss << val;
+  return "<F " + ss.str() + ">";
+}
+
 StrLiteral::StrLiteral(const Token &new_begin, const Token &new_end, std::string new_val)
     : Literal(new_begin, new_end) {
   val = std::move(new_val);
@@ -102,6 +111,17 @@ CCode::CCode(const Token &new_begin, const Token &new_end, std::string new_code)
     : Exp(new_begin, new_end) {
   code = std::move(new_code);
 }
+
+// Call::Call(const Token &new_begin, const Token &new_end, Exp *new_fn_exp,
+//            Exp *new_args_exp)
+//     : Exp(new_begin, new_end) {
+//   fn_exp = new_fn_exp;
+//   args_exp = new_args_exp;
+// }
+// std::string Call::toString() {
+//   std::string res = "<call>";
+//   return res;
+// }
 
 Operator::Operator(const Token &new_begin, const Token &new_end)
     : Exp(new_begin, new_end) {}

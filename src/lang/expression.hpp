@@ -70,6 +70,7 @@ MAKE_LITERAL_DECL(F64Literal, double, Literal, "f64");
 
 MAKE_LITERAL_DECL(BoolLiteral, bool, Literal, "bool");
 MAKE_LITERAL_DECL(CharLiteral, char, Literal, "char");
+MAKE_LITERAL_DECL(FnLiteral, Function *, Literal, "F");
 
 struct StrLiteral : public Literal {
   std::string val;
@@ -94,6 +95,14 @@ struct CCode : public Exp {
   std::string code;
   CCode(const Token &new_begin, const Token &new_end, std::string new_code);
 };
+
+// struct Call : public Exp {
+//   Exp* fn_exp;
+//   Exp* args_exp;
+//   Call(const Token &new_begin, const Token &new_end, Exp *new_fn_exp,
+//        Exp *new_args_exp);
+//   std::string toString() override;
+// };
 
 struct Operator : public Exp {
   std::string val;

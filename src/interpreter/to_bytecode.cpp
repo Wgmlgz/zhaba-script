@@ -15,12 +15,12 @@ int pushLiteral(zhin::ByteCode& bytecode, const byte* begin, const byte* end,
   return id ? id : literal_id++;
 }
 
-void argsToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, Function* fn,
-             FuncData& funcdata) {
+void argsToB(zhin::ByteCode& bytecode, zhexp::Exp* exp,
+             const std::vector<types::Type>& types, FuncData& funcdata) {
   auto tuple = zhexp::castToTuple(exp);
   for (int i = 0; i < tuple->content.size(); ++i) {
     expToB(bytecode, tuple->content[i], funcdata);
-    if (fn->args[i].type.getRef()) {
+    if (types[i].getRef()) {
       if (!tuple->content[i]->type.getLval() &&
           !tuple->content[i]->type.getRef())
         throw ParserError(
@@ -69,6 +69,9 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
   } else if (auto lt = dynamic_cast<zhexp::CharLiteral*>(exp)) {
     bytecode.pushVal(zhin::instr::push_8);
     bytecode.pushVal((char)(lt->val));
+  } else if (auto lt = dynamic_cast<zhexp::FnLiteral*>(exp)) {
+    bytecode.pushVal(zhin::instr::push_32);
+    bytecode.pushVal((int32_t)(bytecode.func_labels[lt->val]));
   } else if (auto lt = dynamic_cast<zhexp::StrLiteral*>(exp)) {
     auto lid =
         pushLiteral(bytecode, reinterpret_cast<const byte*>(lt->val.c_str()),
@@ -116,6 +119,13 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
         bytecode.pushVal(zhin::instr::deref);
         bytecode.pushVal((int32_t)(op->type.getSizeNonRef()));
       }
+    } else if (op->val == ".call.call" && op->lhs->type.isFn()) {
+      auto rhs_tuple = castToTuple(op->rhs);
+      auto types = op->lhs->type.getTypes();
+      types.erase(types.begin());
+      argsToB(bytecode, rhs_tuple, types, funcdata);
+      expToB(bytecode, op->lhs, funcdata);
+      bytecode.pushVal(zhin::instr::call);
     } else {
       /** C operators */
       if (op->func && op->func->is_C) {
@@ -187,12 +197,12 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
         auto lhs_tuple = castToTuple(op->lhs);
         auto rhs_tuple = castToTuple(op->rhs);
         *lhs_tuple += *rhs_tuple;
-        argsToB(bytecode, lhs_tuple, op->func, funcdata);
+        argsToB(bytecode, lhs_tuple, op->func->getHead().second, funcdata);
         // expToB(bytecode, op->lhs, funcdata);
         // expToB(bytecode, op->rhs, funcdata);
+        bytecode.pushVal(zhin::instr::push_32);
+        bytecode.pushVal((int32_t)(bytecode.func_labels[op->func]));
         bytecode.pushVal(zhin::instr::call);
-        bytecode.pushVal(
-            (int32_t)(bytecode.func_labels[op->func->toUniqueStr()]));
         if (op->type.getRef()) {
           bytecode.pushVal(zhin::instr::deref);
           bytecode.pushVal((int32_t)(op->type.getSizeNonRef()));
@@ -275,20 +285,20 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
       MAKE_LOP_BYTECODE(put, boolT, bytecode.pushVal(zhin::instr::u8_put))
       MAKE_LOP_BYTECODE(out, boolT, bytecode.pushVal(zhin::instr::u8_out))
 
-      MAKE_LOP_BYTECODE(!, i8T, bytecode.pushVal(zhin::instr::i8_not))
-      MAKE_LOP_BYTECODE(!, i16T, bytecode.pushVal(zhin::instr::i16_not))
-      MAKE_LOP_BYTECODE(!, i32T, bytecode.pushVal(zhin::instr::i32_not))
-      MAKE_LOP_BYTECODE(!, i64T, bytecode.pushVal(zhin::instr::i64_not))
+#define MAKE_INT_LOPS(type)                                            \
+  MAKE_LOP_BYTECODE(!, type##T, bytecode.pushVal(zhin::instr::type##_not))     \
+  MAKE_LOP_BYTECODE(~, type##T, bytecode.pushVal(zhin::instr::type##_bit_not)) \
+  MAKE_LOP_BYTECODE(-, type##T, bytecode.pushVal(zhin::instr::type##_neg))
 
-      MAKE_LOP_BYTECODE(~, i8T, bytecode.pushVal(zhin::instr::i8_bit_not))
-      MAKE_LOP_BYTECODE(~, i16T, bytecode.pushVal(zhin::instr::i16_bit_not))
-      MAKE_LOP_BYTECODE(~, i32T, bytecode.pushVal(zhin::instr::i32_bit_not))
-      MAKE_LOP_BYTECODE(~, i64T, bytecode.pushVal(zhin::instr::i64_bit_not))
+      MAKE_INT_LOPS(i8)
+      MAKE_INT_LOPS(i16)
+      MAKE_INT_LOPS(i32)
+      MAKE_INT_LOPS(i64)
 
-      MAKE_LOP_BYTECODE(-, i8T, bytecode.pushVal(zhin::instr::i8_neg))
-      MAKE_LOP_BYTECODE(-, i16T, bytecode.pushVal(zhin::instr::i16_neg))
-      MAKE_LOP_BYTECODE(-, i32T, bytecode.pushVal(zhin::instr::i32_neg))
-      MAKE_LOP_BYTECODE(-, i64T, bytecode.pushVal(zhin::instr::i64_neg))
+      MAKE_INT_LOPS(u8)
+      MAKE_INT_LOPS(u16)
+      MAKE_INT_LOPS(u32)
+      MAKE_INT_LOPS(u64)
 
       MAKE_LOP_BYTECODE(malloc, i64T, bytecode.pushVal(zhin::instr::malloc))
       MAKE_LOP_BYTECODE(free, i64T, bytecode.pushVal(zhin::instr::free))
@@ -310,10 +320,10 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
       //   bytecode.pushVal((int32_t)(op->type.getSizeNonRef()));
       // }
     } else {
-      argsToB(bytecode, op->child, op->func, funcdata);
+      argsToB(bytecode, op->child, op->func->getHead().second, funcdata);
+      bytecode.pushVal(zhin::instr::push_32);
+      bytecode.pushVal((int32_t)(bytecode.func_labels[op->func]));
       bytecode.pushVal(zhin::instr::call);
-      bytecode.pushVal(
-          (int32_t)(bytecode.func_labels[op->func->toUniqueStr()]));
       if (op->type.getRef()) {
         bytecode.pushVal(zhin::instr::deref);
         bytecode.pushVal((int32_t)(op->type.getSizeNonRef()));
@@ -329,9 +339,10 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
     bytecode.pushVal(zhin::instr::deref);
     bytecode.pushVal((int32_t)(var->type.getSizeNonRef()));
   } else if (auto op = dynamic_cast<zhexp::PostfixOperator*>(exp)) {
-    argsToB(bytecode, op->child, op->func, funcdata);
+    argsToB(bytecode, op->child, op->func->getHead().second, funcdata);
+    bytecode.pushVal(zhin::instr::push_32);
+    bytecode.pushVal((int32_t)(bytecode.func_labels[op->func]));
     bytecode.pushVal(zhin::instr::call);
-    bytecode.pushVal((int32_t)(bytecode.func_labels[op->func->toUniqueStr()]));
     if (op->type.getRef()) {
       bytecode.pushVal(zhin::instr::deref);
       bytecode.pushVal((int32_t)(op->type.getSizeNonRef()));
@@ -501,7 +512,7 @@ void funcToB(zhin::ByteCode& bytecode, Function* func) {
     funcdata.offset += type.getSize();
   }
 
-  bytecode.pushLabel(bytecode.func_labels[func->toUniqueStr()],
+  bytecode.pushLabel(bytecode.func_labels[func],
                      func->toUniqueStr());
   blockToB(bytecode, func->body, funcdata, func);
 
@@ -536,12 +547,13 @@ void toB(zhin::ByteCode& bytecode, STTree* block) {
 
   /** Pre generate function labels */
   for (auto& func : block->functions) {
-    bytecode.func_labels[func->toUniqueStr()] =
+    bytecode.func_labels[func] =
         (func->name == "main") ? MAIN_LABEL : getLabel();
   }
   /** Jmp to unique main fn */
-  bytecode.pushVal(zhin::instr::call);
+  bytecode.pushVal(zhin::instr::push_32);
   bytecode.pushVal((int32_t)(MAIN_LABEL));
+  bytecode.pushVal(zhin::instr::call);
   /** Jmp to unique end label */
   bytecode.pushVal(zhin::instr::jmp);
   bytecode.pushVal((int32_t)(END_LABEL));
