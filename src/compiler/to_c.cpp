@@ -349,6 +349,8 @@ std::string exp2C(zhexp::Exp* exp) {
       MAKE_LOP_C(+, u16T, "+(")
       MAKE_LOP_C(+, u32T, "+(")
       MAKE_LOP_C(+, u64T, "+(")
+      MAKE_LOP_C(+, f32T, "+(")
+      MAKE_LOP_C(+, f64T, "+(")
 
       MAKE_LOP_C(-, boolT, "-(")
       MAKE_LOP_C(-, charT, "-(")
@@ -360,6 +362,8 @@ std::string exp2C(zhexp::Exp* exp) {
       MAKE_LOP_C(-, u16T, "-(")
       MAKE_LOP_C(-, u32T, "-(")
       MAKE_LOP_C(-, u64T, "-(")
+      MAKE_LOP_C(-, f32T, "-(")
+      MAKE_LOP_C(-, f64T, "-(")
 
       MAKE_LOP_C(!, boolT, "!(")
       MAKE_LOP_C(!, charT, "!(")
@@ -371,6 +375,8 @@ std::string exp2C(zhexp::Exp* exp) {
       MAKE_LOP_C(!, u16T, "!(")
       MAKE_LOP_C(!, u32T, "!(")
       MAKE_LOP_C(!, u64T, "!(")
+      MAKE_LOP_C(!, f32T, "!(")
+      MAKE_LOP_C(!, f64T, "!(")
 
       MAKE_LOP_C(put, i8T, "printf(\"%d\", ")
       MAKE_LOP_C(out, i8T, "printf(\"%d\\n\", ")

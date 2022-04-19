@@ -255,6 +255,8 @@ const std::map<types::funcHead, Function *> PR_OD{
     MAKE_C_FN_1_ARGS(!, u16T, boolT),
     MAKE_C_FN_1_ARGS(!, u32T, boolT),
     MAKE_C_FN_1_ARGS(!, u64T, boolT),
+    MAKE_C_FN_1_ARGS(!, f32T, boolT),
+    MAKE_C_FN_1_ARGS(!, f64T, boolT),
     
     MAKE_C_FN_1_ARGS(-, boolT, boolT),
     MAKE_C_FN_1_ARGS(-, charT, charT),
@@ -266,6 +268,8 @@ const std::map<types::funcHead, Function *> PR_OD{
     MAKE_C_FN_1_ARGS(-, u16T, u16T),
     MAKE_C_FN_1_ARGS(-, u32T, u32T),
     MAKE_C_FN_1_ARGS(-, u64T, u64T),
+    MAKE_C_FN_1_ARGS(-, f32T, f32T),
+    MAKE_C_FN_1_ARGS(-, f64T, f64T),
 
     MAKE_C_FN_1_ARGS(+, boolT, boolT),
     MAKE_C_FN_1_ARGS(+, charT, charT),

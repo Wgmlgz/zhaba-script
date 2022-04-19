@@ -300,6 +300,13 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
       MAKE_INT_LOPS(u32)
       MAKE_INT_LOPS(u64)
 
+#define MAKE_FLOAT_LOPS(type)                                                    \
+  MAKE_LOP_BYTECODE(!, type##T, bytecode.pushVal(zhin::instr::type##_not))     \
+  MAKE_LOP_BYTECODE(-, type##T, bytecode.pushVal(zhin::instr::type##_neg))
+
+      MAKE_FLOAT_LOPS(f32)
+      MAKE_FLOAT_LOPS(f64)
+
       MAKE_LOP_BYTECODE(malloc, i64T, bytecode.pushVal(zhin::instr::malloc))
       MAKE_LOP_BYTECODE(free, i64T, bytecode.pushVal(zhin::instr::free))
       else {

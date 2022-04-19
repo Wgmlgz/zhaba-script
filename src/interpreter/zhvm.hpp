@@ -131,7 +131,7 @@ class ZHVM {
   ARITHMETIC_BIN(zhtype##_lesseq, type, bool, <=, size) \
   ARITHMETIC_BIN(zhtype##_moreeq, type, bool, >=, size) \
   ARITHMETIC_PR(zhtype##_not, type, bool, !, size)      \
-  ARITHMETIC_PR(zhtype##_neg, type, bool, -, size)
+  ARITHMETIC_PR(zhtype##_neg, type, type, -, size)
 
           MAKE_FLOAT_BIN(float, f32, 4)
           MAKE_FLOAT_BIN(double, f64, 8)

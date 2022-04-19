@@ -105,6 +105,8 @@ void ByteCode::loadLabels() {
     break;                   \
   case instr::type##_not:    \
     break;                   \
+  case instr::type##_neg:    \
+    break;                   \
   case instr::type##_less:   \
     break;                   \
   case instr::type##_more:   \
