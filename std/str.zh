@@ -2,13 +2,12 @@ use vec
 use range
 
 impl str
-  fn char at int pos: <<< *((*slf as int + pos) as charP)
+  fn char sub int pos: <<< *((*slf as int + pos) as charP)
   fn ctor
     ptr := malloc(1) as u8P
     *ptr = 0u8
     <<< ptr as str
-op 12 char ^ str s int i: <<< s.at(i)
-op 10 bool == char ch str s: <<< ch == (s^0)
+op 10 bool == char ch str s: <<< ch == s[0]
 
 type Str
   Vec<char> data
@@ -75,7 +74,7 @@ op 16 += StrR a StrR b
 op 16 += StrR a str b
   len := len(b)
   @ i 0..len: 
-    a += b.at(i)
+    a += b[i]
 op 6 Str + StrR a StrR b
   s := a
   s += b

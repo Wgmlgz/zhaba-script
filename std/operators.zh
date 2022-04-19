@@ -1,81 +1,33 @@
-op 16 += u8R a u8 b: a=(a + b)
-op 16 -= u8R a u8 b: a=(a - b)
-op 16 /= u8R a u8 b: a=(a / b)
-op 16 %= u8R a u8 b: a=(a % b)
-op 16 *= u8R a u8 b: a=(a * b)
-op 16 ^= u8R a u8 b: a=(a ^ b)
-op 16 &= u8R a u8 b: a=(a & b)
-op 16 |= u8R a u8 b: a=(a | b)
+type IntOpMaker T: bool unused
 
-op 16 += u16R a u16 b: a=a + b
-op 16 -= u16R a u16 b: a=a - b
-op 16 /= u16R a u16 b: a=a / b
-op 16 %= u16R a u16 b: a=a % b
-op 16 *= u16R a u16 b: a=a * b
-op 16 ^= u16R a u16 b: a=(a ^ b)
-op 16 &= u16R a u16 b: a=(a & b)
-op 16 |= u16R a u16 b: a=(a | b)
+impl IntOpMaker
+  op 16 += TR a T b: a=a+b
+  op 16 -= TR a T b: a=a-b
+  op 16 /= TR a T b: a=a/b
+  op 16 %= TR a T b: a=a%b
+  op 16 *= TR a T b: a=a*b
+  op 16 ^= TR a T b: a=(a^b)
+  op 16 &= TR a T b: a=(a&b)
+  op 16 |= TR a T b: a=(a|||b)
+  op 5 bool %% T a T b: <<< !(a % b)
+  op 5 bool !% T a T b: <<< !(a %% b)
 
-op 16 += u32R a u32 b: a=a + b
-op 16 -= u32R a u32 b: a=a - b
-op 16 /= u32R a u32 b: a=a / b
-op 16 %= u32R a u32 b: a=a % b
-op 16 *= u32R a u32 b: a=a * b
-op 16 ^= u32R a u32 b: a=(a ^ b)
-op 16 &= u32R a u32 b: a=(a & b)
-op 16 |= u32R a u32 b: a=(a | b)
+fn intOpMaker
+  IntOpMaker<i8> a 
+  IntOpMaker<i16> b 
+  IntOpMaker<i32> c 
+  IntOpMaker<i64> d
+  
+  IntOpMaker<u8> a1 
+  IntOpMaker<u16> b1 
+  IntOpMaker<u32> c1 
+  IntOpMaker<u64> d1 
 
-op 16 += u64R a u64 b: a=a + b
-op 16 -= u64R a u64 b: a=a - b
-op 16 /= u64R a u64 b: a=a / b
-op 16 %= u64R a u64 b: a=a % b
-op 16 *= u64R a u64 b: a=a * b
-op 16 ^= u64R a u64 b: a=(a ^ b)
-op 16 &= u64R a u64 b: a=(a & b)
-op 16 |= u64R a u64 b: a=(a | b)
+lop intR ++ intR x: x+=1; <<<x
+lop intR -- intR x: x-=1; <<<x
+rop int ++ intR x: t:=x; x+=1; <<<t
+rop int -- intR x: t:=x; x-=1; <<<t
 
-
-op 16 += i8R a i8 b: a=a + b
-op 16 -= i8R a i8 b: a=a - b
-op 16 /= i8R a i8 b: a=a / b
-op 16 %= i8R a i8 b: a=a % b
-op 16 *= i8R a i8 b: a=a * b
-op 16 ^= i8R a i8 b: a=(a ^ b)
-op 16 &= i8R a i8 b: a=(a & b)
-op 16 |= i8R a i8 b: a=(a | b)
-
-op 16 += i16R a i16 b: a=a + b
-op 16 -= i16R a i16 b: a=a - b
-op 16 /= i16R a i16 b: a=a / b
-op 16 %= i16R a i16 b: a=a % b
-op 16 *= i16R a i16 b: a=a * b
-op 16 ^= i16R a i16 b: a=(a ^ b)
-op 16 &= i16R a i16 b: a=(a & b)
-op 16 |= i16R a i16 b: a=(a | b)
-
-op 16 += i32R a i32 b: a=a+b
-op 16 -= i32R a i32 b: a=a-b
-op 16 /= i32R a i32 b: a=a/b
-op 16 %= i32R a i32 b: a=a%b
-op 16 *= i32R a i32 b: a=a*b
-op 16 ^= i32R a i32 b: a=(a^b)
-op 16 &= i32R a i32 b: a=(a&b)
-op 16 |= i32R a i32 b: a=(a|b)
-
-op 16 += i64R a i64 b: a=a+b
-op 16 -= i64R a i64 b: a=a-b
-op 16 /= i64R a i64 b: a=a/b
-op 16 %= i64R a i64 b: a=a%b
-op 16 *= i64R a i64 b: a=a*b
-op 16 ^= i64R a i64 b: a=(a^b)
-op 16 &= i64R a i64 b: a=(a&b)
-op 16 |= i64R a i64 b: a=(a|b)
-lop i64R ++ i64R x: x+=1; <<<x
-lop i64R -- i64R x: x-=1; <<<x
-rop i64 ++ i64R x: t:=x; x+=1; <<<t
-rop i64 -- i64R x: t:=x; x-=1; <<<t
-op 5 bool %% i64 a i64 b: <<< !(a % b)
-op 5 bool !% i64 a i64 b: <<< !(a %% b)
 
 op 16 += f32R a f32 b: a=a+b
 op 16 -= f32R a f32 b: a=a-b

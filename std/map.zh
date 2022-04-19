@@ -10,10 +10,7 @@ impl MapNode
     slf.key = key
     slf.val = val
     <<< slf
-  fn ctor:
-    key := K()
-    val := V()
-    <<< MapNode<K V>(key val)
+  fn ctor: <<< MapNode<K V>(K() V())
     
   op 4 bool < MapNode<K V>R a  MapNode<K V>R b
     <<< a.key < b.key

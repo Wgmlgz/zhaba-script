@@ -155,6 +155,17 @@ impl Vec
   fn sort: qsort(slf.begin().ptr slf.end().ptr)
   lop sort Vec<T>R slf: slf.sort()
 
+  /** Functional features */
+  fn Vec<T> map F<T TR> f
+    r := Vec<T>(slf.size)
+    @ i 0..slf.size: r[i] = f(slf[i])
+    <<< r
+  fn Vec<T> filter F<bool TR> f
+    r := Vec<T>()
+    @ i 0..slf.size: ? f(slf[i]): r += slf[i]
+    <<< r 
+    
+
 /** Util */
 fn Vec<int> iota int begin int end
   v := Vec<int>(end - begin)
