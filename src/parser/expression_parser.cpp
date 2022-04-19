@@ -264,7 +264,7 @@ Exp *buildExp(ScopeInfo &scope, tokeniter begin, tokeniter end) {
               preprocessed.emplace_back(
                   new U64Literal(iter, iter, std::stoll(str, 0, base)),
                   i->second);
-            else if (std::regex_match(str, std::regex(".+f")))
+            else if (std::regex_match(str, std::regex("[0-9]+f")))
               preprocessed.emplace_back(
                   new F64Literal(iter, iter, std::stod(str)), i->second);
             else if (std::regex_match(str, std::regex(".+")))

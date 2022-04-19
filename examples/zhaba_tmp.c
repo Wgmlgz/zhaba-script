@@ -508,11 +508,7 @@ __ZH_TYPE_Out __ZH_BOP__less_OutV2(__ZH_TYPE_Out v754, __ZH_TYPE_V2 v755);
 __ZH_TYPE_Rng __ZH_LOP_Rng_i64(i64 v756);
 __ZH_TYPE_Rng __ZH_LOP_Rng_();
 i64 __ZH_BOP__dotcall_dotcall_RngP(__ZH_TYPE_Rng* v758);
-bool __ZH_LOP_isPrime_i64R(i64* v759);
-__ZH_TYPE_Vec_lessi64_greater __ZH_LOP_filterMap_Vec_lessi64_greaterRF_lessbool_spacei64R_greaterF_lessi64_spacei64R_greater(__ZH_TYPE_Vec_lessi64_greater* v761, bool(*v762)(i64*), i64(*v763)(i64*));
 int main(int argc, char *argv[]) ;
-bool __ZH_LOP_f1_i64R(i64* v771);
-i64 __ZH_LOP_f2_i64R(i64* v772);
 
 void __ZH_LOP_intOpMaker_(){
   __ZH_TYPE_IntOpMaker_lessu64_greater v268;
@@ -2235,48 +2231,37 @@ i64 __ZH_BOP__dotcall_dotcall_RngP(__ZH_TYPE_Rng* v758) {{
   ((((v758))->seed)=((((((i64)8253729))*((((v758))->seed))))+(((i64)2396403))));
   return (((((v758))->seed))%(((i64)32767)));
 };printf("%s", "reached function end without returning anything op i64 .call.call RngP slf\n"); exit(EXIT_FAILURE);}
-bool __ZH_LOP_isPrime_i64R(i64* v759) {{
-  i64 v760;
-  ((v760)=((i64)2));
-  while ((((*v759))>((v760)))) {
-    if ((__ZH_BOP__percent_percent_i64i64((*v759), (v760)))) {
-      return ((bool)0);
-    }
-    (__ZH_ROP__plus_plus_i64R(&(v760)));
-  }
-  return (((*v759))>(((i64)1)));
-};printf("%s", "reached function end without returning anything lop bool isPrime i64R num\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Vec_lessi64_greater __ZH_LOP_filterMap_Vec_lessi64_greaterRF_lessbool_spacei64R_greaterF_lessi64_spacei64R_greater(__ZH_TYPE_Vec_lessi64_greater* v761, bool(*v762)(i64*), i64(*v763)(i64*)) {{
-  __ZH_TYPE_Vec_lessi64_greater v766;
-  __ZH_TYPE_Vec_lessi64_greater v765;
-  ((v766)=(__ZH_BOP__dotcall_dotmap_Vec_lessi64_greaterPF_lessi64_spacei64R_greater((&(*(((v765)=(__ZH_BOP__dotcall_dotfilter_Vec_lessi64_greaterPF_lessbool_spacei64R_greater((&(*v761)), (v762)))), (&(v765))))), (v763))));
-  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v765))));
-  return (v766);
-  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v765))));
-  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v766))));
-};printf("%s", "reached function end without returning anything lop Vec<i64> filterMap Vec<i64>R v F<bool i64R> f1 F<i64 i64R> f2\n"); exit(EXIT_FAILURE);}
 int main(int argc, char *argv[]) {
-  __ZH_TYPE_Vec_lessi64_greater v778;
-  __ZH_TYPE_Vec_lessi64_greater v782;
-  __ZH_TYPE_Vec_lessi64_greater v776;
-  __ZH_TYPE_Vec_lessi64_greater v774;
-  __ZH_TYPE_Vec_lessi64_greater v780;
-  __ZH_TYPE_Vec_lessi64_greater v770;
-  __ZH_TYPE_Vec_lessi64_greater v768;
-  (__ZH_LOP_out_Vec_lessi64_greaterR(&(*(((v770)=(__ZH_BOP__dotcall_dotfilter_Vec_lessi64_greaterPF_lessbool_spacei64R_greater((&(*(((v768)=(__ZH_LOP_iota_i64i64(((i64)0), ((i64)50)))), (&(v768))))), (__ZH_LOP_isPrime_i64R)))), (&(v770))))));
-  (__ZH_LOP_out_Vec_lessi64_greaterR(&(*(((v778)=(__ZH_BOP__dotcall_dotmap_Vec_lessi64_greaterPF_lessi64_spacei64R_greater((&(*(((v776)=(__ZH_BOP__dotcall_dotfilter_Vec_lessi64_greaterPF_lessbool_spacei64R_greater((&(*(((v774)=(__ZH_LOP_iota_i64i64(((i64)0), ((i64)20)))), (&(v774))))), (__ZH_LOP_f1_i64R)))), (&(v776))))), (__ZH_LOP_f2_i64R)))), (&(v778))))));
-  (__ZH_LOP_out_Vec_lessi64_greaterR(&(*(((v782)=(__ZH_LOP_filterMap_Vec_lessi64_greaterRF_lessbool_spacei64R_greaterF_lessi64_spacei64R_greater(&(*(((v780)=(__ZH_LOP_iota_i64i64(((i64)0), ((i64)20)))), (&(v780)))), (__ZH_LOP_f1_i64R), (__ZH_LOP_f2_i64R)))), (&(v782))))));
-  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v768))));
-  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v770))));
-  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v774))));
-  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v776))));
-  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v778))));
-  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v780))));
-  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v782))));
+  i64 v766;
+  i32 v765;
+  i16 v764;
+  i8 v763;
+  u32 v761;
+  u64 v762;
+  u16 v760;
+  u8 v759;
+  (__ZH_LOP__less_Out((__ZH_ROP__less_str(((str)"Literals:")))));
+  (__ZH_BOP__less_OutOut((__ZH_LOP__less_str(((str)"Dec 100:"))), (__ZH_ROP__less_i64(((i64)100)))));
+  (__ZH_BOP__less_OutOut((__ZH_LOP__less_str(((str)"Hex 0xff:"))), (__ZH_ROP__less_i64(((i64)255)))));
+  (__ZH_BOP__less_OutOut((__ZH_BOP__less_Outi64((__ZH_LOP__less_str(((str)"Bin 0b101:"))), ((i64)5))), (__ZH_ROP__less_str(((str)"\n")))));
+  ((v759)=((u8)8));
+  ((v760)=((u16)16));
+  ((v761)=((u32)32));
+  ((v762)=((u64)64));
+  ((v763)=((i8)8));
+  ((v764)=((i16)16));
+  ((v765)=((i32)32));
+  ((v766)=((i64)64));
+  (__ZH_BOP__less_OutOut((__ZH_BOP__less_Outu32((__ZH_BOP__less_Outu16((__ZH_BOP__less_OutOut((__ZH_LOP__less_str(((str)"Unsinged:"))), (__ZH_LOP__less_u8((v759))))), (v760))), (v761))), (__ZH_ROP__less_u64((v762)))));
+  (__ZH_BOP__less_OutOut((__ZH_BOP__less_Outi32((__ZH_BOP__less_Outi16((__ZH_BOP__less_OutOut((__ZH_LOP__less_str(((str)"Singed:"))), (__ZH_LOP__less_i8((v763))))), (v764))), (v765))), (__ZH_ROP__less_i64((v766)))));
+  ((v759)=((((u8)0))-(((u8)1))));
+  ((v760)=((((u16)0))-(((u16)1))));
+  ((v761)=((((u32)0))-(((u32)1))));
+  ((v762)=((((u64)0))-(((u64)1))));
+  ((v763)=((((i8)0))-(((i8)1))));
+  ((v764)=((((i16)0))-(((i16)1))));
+  ((v765)=((((i32)0))-(((i32)1))));
+  ((v766)=((((i64)0))-(((i64)1))));
+  (__ZH_BOP__less_OutOut((__ZH_BOP__less_Outu32((__ZH_BOP__less_Outu16((__ZH_BOP__less_OutOut((__ZH_LOP__less_str(((str)"Unsinged -1:"))), (__ZH_LOP__less_u8((v759))))), (v760))), (v761))), (__ZH_ROP__less_u64((v762)))));
+  (__ZH_BOP__less_OutOut((__ZH_BOP__less_Outi32((__ZH_BOP__less_Outi16((__ZH_BOP__less_OutOut((__ZH_LOP__less_str(((str)"Singed -1:"))), (__ZH_LOP__less_i8((v763))))), (v764))), (v765))), (__ZH_ROP__less_i64((v766)))));
 }
-bool __ZH_LOP_f1_i64R(i64* v771) {{
-  return (__ZH_BOP__percent_percent_i64i64((*v771), ((i64)2)));
-};printf("%s", "reached function end without returning anything lop bool f1 i64R i\n"); exit(EXIT_FAILURE);}
-i64 __ZH_LOP_f2_i64R(i64* v772) {{
-  return (((*v772))*((*v772)));
-};printf("%s", "reached function end without returning anything lop i64 f2 i64R i\n"); exit(EXIT_FAILURE);}
