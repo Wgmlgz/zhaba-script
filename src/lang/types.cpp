@@ -17,7 +17,10 @@ std::vector<uint32_t> types::Type::getMask() const {
 
 std::strong_ordering operator<=>(const types::Type &lhs,
                                  const types::Type &rhs) {
-  return lhs.getMask() <=> rhs.getMask();
+  auto a = lhs.getMask(), b = rhs.getMask();
+  if (a < b) return std::strong_ordering::less;
+  if (a > b) return std::strong_ordering::greater;
+  return std::strong_ordering::equal;
 }
 
 std::string genericToStr(const std::vector<Type> &generic) {
