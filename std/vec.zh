@@ -92,7 +92,7 @@ impl Vec
     @ i other: slf.push_back(*i)
 
   op 2 Vec<T> ,, T a T b
-    Vec<T> slf
+    slf := Vec<T>()
     slf += a
     slf += b
     <<< slf
