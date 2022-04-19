@@ -1,0 +1,10 @@
+use std
+
+fn main
+  // m := 
+  fn int da int a int b: <<< a + b
+  f := da(1 2)
+  out ~0u
+  out (1 ||| 3)
+  out (1 & 3)
+  out (1 ^ 3)
