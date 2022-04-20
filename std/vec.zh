@@ -155,16 +155,16 @@ impl Vec
   op 9 bool < Vec<T>R a Vec<T>R b
     @ i 0..min(a.size b.size)
       ? a[i] < b[i]: <<< tru
-      | a[i] > b[i]: <<< fls
+      | b[i] < a[i]: <<< fls
     ? a.size < b.size: <<< tru
     | a.size > b.size: <<< fls
     <<< fls
 
   lop swap TP a TP b: T t = *a; *a = *b; *b = t
 
-  lop TP partition TP low TP high
-    pivot := high - 1 i := low j := low
-    @ j = low j != pivot j = j + 1
+  lop TP partition TP lo TP hi
+    pivot := hi - 1 i := lo j := lo
+    @ j = lo j != pivot j = j + 1
       ? *j < *pivot: swap(i j); i = i + 1
     swap(i  pivot)
     <<< i

@@ -7,11 +7,14 @@ impl str
     ptr := malloc(1) as u8P
     *ptr = 0u8
     <<< ptr as str
+
 op 10 bool == char ch str s: <<< ch == s[0]
 lop char chr str s: <<< s[0]
+
 type Str
   Vec<char> data
   int size
+
 
 impl Str
   fn ctor
@@ -93,7 +96,7 @@ op 9 Out < Out o StrR i: put i, put ' '
 op 9 bool < StrR a StrR b
   @ i 0..min(a.size b.size)
     ? a[i] < b[i]: <<< tru
-    | a[i] > b[i]: <<< fls
+    | b[i] < a[i]: <<< fls
   ? a.size < b.size: <<< tru
   | a.size > b.size: <<< fls
   <<< fls
@@ -113,3 +116,4 @@ lop up StrR s
 lop low StrR s
   @ i s: ? *i == chr'A'..=chr'Z': *i = *i-chr'A'+chr'a'
   
+lop VecIterRange<char> iter str s: <<< iter Str(s)
