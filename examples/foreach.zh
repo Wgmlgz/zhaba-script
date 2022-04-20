@@ -1,0 +1,32 @@
+use std
+
+fn main
+  rng := Rng()
+  m := Map<int int>()
+  v := Vec<int>()
+  
+  /** Foreach with range: begin..end */
+  @ i 0..20: m[rng()] = i * i
+
+  /** Foreach with map */
+  @ i m
+    out *i
+    < 'key:' < ((*i).key) <
+    < 'val:' < ((*i).val) <
+    out ''
+    v += (*i).val
+
+  /** Foreach with vec */
+  put '['
+  @ i v
+    ? i != v.begin(): put ' '
+    put *i
+  out ']'
+  out ''
+
+  /** Foreach with Str */
+  @ i '_ are _ (wow)'
+    ?? *i
+      '_': put 'frogs'
+      _: put *i 
+  out ''
