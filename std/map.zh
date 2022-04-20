@@ -54,12 +54,11 @@ impl Map
   /** Output overload */
   fn print 
     out '{'
-    v := slf.tree.call()
-    @ i v
+    @ i slf.tree
       put '  '
-      put i.ptr.key
+      put (*i).key
       put ': '
-      out i.ptr.val
+      out (*i).val
     put '}'
   lop put Map<K V>R slf: slf.print()
   lop out Map<K V>R slf: slf.print(); out ''
@@ -69,3 +68,5 @@ impl Map
     <<< Out()
   op 9 Out < Out o Map<K V>R i: put i, put ' '
     <<< Out()
+
+  lop AVLIterRange<MapNode<K V> > iter Map<K V>R m: <<< iter(m.tree)

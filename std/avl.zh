@@ -4,9 +4,20 @@ use str
 type AVLNode T
   int h
   T val
-  AVLNode<T>P lhs rhs
+  AVLNode<T>P lhs rhs par
 
+type AVLIter T: AVLNode<T>P next 
 type AVLTree T: AVLNode<T>P root
+type AVLIterRange T: AVLIter<T> begin end
+
+impl AVLIterRange
+  fn AVLIter<T> begin: <<< slf.begin
+  fn AVLIter<T> end: <<< slf.end
+  fn ctor AVLIter<T> begin AVLIter<T> end
+    AVLIterRange<T> slf
+    slf.begin = begin
+    slf.end = end
+    <<< slf
 
 impl AVLNode
   fn ctor TR val
@@ -15,6 +26,7 @@ impl AVLNode
     slf.val = val
     slf.lhs = 0 as AVLNode<T>P
     slf.rhs = 0 as AVLNode<T>P
+    slf.par = 0 as AVLNode<T>P
     <<< slf
 
   lop AVLNode<T>P new AVLNode<T> slf
@@ -37,12 +49,20 @@ impl AVLNode
     tmp := slf.lhs
     slf.lhs = tmp.rhs
     tmp.rhs = slf
+    ? !!slf.rhs: slf.rhs.par = slf
+    ? !!slf.lhs: slf.lhs.par = slf
+    ? !!tmp.rhs: tmp.rhs.par = tmp
+    ? !!tmp.lhs: tmp.lhs.par = tmp
     slf.fix() tmp.fix()
     <<< tmp
   fn AVLNode<T>P lrot
     tmp := slf.rhs
     slf.rhs = tmp.lhs
     tmp.lhs = slf
+    ? !!slf.rhs: slf.rhs.par = slf
+    ? !!slf.lhs: slf.lhs.par = slf
+    ? !!tmp.rhs: tmp.rhs.par = tmp
+    ? !!tmp.lhs: tmp.lhs.par = tmp
     slf.fix() tmp.fix()
     <<< tmp
 
@@ -58,9 +78,16 @@ impl AVLNode
 
   fn AVLNode<T>P insert TR val
     ? !slf: <<< new AVLNode<T>(val)
-    | val < slf.val: slf.lhs = slf.lhs.insert(val) 
-    | slf.val < val: slf.rhs = slf.rhs.insert(val)
+    | val < slf.val:
+      t := slf.lhs.insert(val) 
+      slf.lhs = t
+      t.par = slf
+    | slf.val < val:
+      t := slf.rhs.insert(val)
+      slf.rhs = t
+      t.par = slf
     slf = slf.balance()
+    slf.par = 0 as AVLNode<T>P
     <<< slf
 
   fn AVLNode<T>P sub TR val
@@ -82,6 +109,29 @@ impl AVLNode
     \ < 'null' <
 
 
+impl AVLIter
+  fn ctor AVLNode<T>P root
+    AVLIter<T> slf
+    slf.next = root
+    <<< slf
+  lop TR * AVLIter<T> it: <<< it.next.val
+  lop AVLNode<T>P ++ AVLIter<T>R slf
+    r := slf.next
+    ? !!slf.next.rhs
+      slf.next = slf.next.rhs
+      @ !!slf.next.lhs
+        slf.next = slf.next.lhs
+      <<< r
+    @ tru
+      ? !slf.next.par
+        slf.next = 0 as AVLNode<T>P
+        <<< r
+      ? slf.next.par.lhs == slf.next
+        slf.next = slf.next.par
+        <<< r
+      slf.next = slf.next.par
+  op 10 bool != AVLIter<T> a AVLIter<T> b: <<< a.next != b.next
+  
 impl AVLTree
   /** ctor */
   fn ctor
@@ -89,21 +139,28 @@ impl AVLTree
     slf.root = 0 as AVLNode<T>P
     <<< slf
 
-  /** inserts element */
+  /** Iterators */
+  fn AVLIter<T> begin
+    it := AVLIter<T>(slf.root)
+    ? !it.next: <<< it
+    @ !!it.next.lhs: it.next = it.next.lhs
+    <<< it
+  fn AVLIter<T> end
+    <<< AVLIter<T>(0 as AVLNode<T>P)
+  lop AVLIterRange<T> iter AVLTree<T>R slf
+    AVLIterRange<T> it
+    it.begin = slf.begin()
+    it.end = slf.end()
+    <<< it
+
+  /** Inserts element */
   fn insert T val: slf.root = slf.root.insert(val)
   fn TR sub T val: <<< (*slf.root.sub(val)).val
   op 16 += AVLTree<T>R slf T val: slf.root = slf.root.insert(val)
 
-  /** inorder traversal (convertation to Vec<T>) */
-  lop Vec<T>R toVec Vec<T>R vec AVLNode<T>P ptr
-    ? !!ptr
-      toVec(vec ptr.lhs)
-      vec += ptr.val
-      toVec(vec ptr.rhs)
-    <<< vec
   fn Vec<T> call
     v := Vec<T>()
-    toVec(v slf.root)
+    @ i, *slf: v += *i
     <<< v
 
   /** pretty-print */
