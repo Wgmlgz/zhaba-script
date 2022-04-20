@@ -118,6 +118,7 @@ class ZHVM {
           MAKE_INT_BIN(uint16_t, u16, 2)
           MAKE_INT_BIN(uint32_t, u32, 4)
           MAKE_INT_BIN(uint64_t, u64, 8)
+          MAKE_INT_BIN(char, char, 1)
 
 #define MAKE_FLOAT_BIN(type, zhtype, size)              \
   ARITHMETIC_BIN(zhtype##_add, type, type, +, size)     \
@@ -152,6 +153,7 @@ class ZHVM {
 
 #define TOSf32 *reinterpret_cast<float *>(stack.getBytes(-4, 4))
 #define TOSf64 *reinterpret_cast<double *>(stack.getBytes(-8, 8))
+#define TOSchar *reinterpret_cast<char *>(stack.getBytes(-1, 1))
 
         case instr::jmp: {
           auto target = *bytecode.loadI32(cur);
@@ -287,6 +289,7 @@ class ZHVM {
         MAKE_IO(u16, uint64_t, uint16_t, 2)
         MAKE_IO(u32, uint64_t, uint32_t, 4)
         MAKE_IO(u64, uint64_t, uint64_t, 8)
+        MAKE_IO(char, char, char, 1)
 
         MAKE_IO(f32, float, float, 4)
         MAKE_IO(f64, double, double, 8)
@@ -312,24 +315,6 @@ class ZHVM {
           auto real_ptr = getPtr(ptr, str.size() + 1);
           std::copy_n(str.c_str(), str.size() + 1, real_ptr);
           stack.push(static_cast<int64_t>(ptr));
-        }
-          break;
-        case instr::put_char: {
-          auto ch = TOSi8;
-          stack.popBytes(1);
-          *zhdata.out << static_cast<char>(ch);
-        }
-          break;
-        case instr::out_char: {
-          auto ch = TOSi8;
-          stack.popBytes(1);
-          *zhdata.out << static_cast<char>(ch) << std::endl;
-        }
-          break;
-        case instr::in_char: {
-          char tmp;
-          *zhdata.in >> tmp;
-          stack.push(static_cast<char>(tmp));
         }
           break;
         case instr::push_bytes: {

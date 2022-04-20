@@ -274,31 +274,12 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo& parent_scope, Funct
                 auto foreach_block = new STBlock(&res->scope_info);
 
                 auto range_init = new STExp;
+                auto begin = tuple_->content[1]->begin, end = tuple_->content[1]->end;
                 range_init->exp = new zhexp::BinOperator(
-                    tuple_->content[1]->begin, tuple_->content[1]->end,
-                    ":=", 666,
-                    new zhexp::IdLiteral(tuple_->content[1]->begin,
-                                         tuple_->content[1]->end, "__range"),
-                    tuple_->content[1]);
-                auto begin_exp = new STExp;
-                begin_exp->exp = new zhexp::BinOperator(
-                    tuple_->content[1]->begin, tuple_->content[1]->end,
-                    ":=", 666,
-                    new zhexp::IdLiteral(tuple_->content[1]->begin,
-                                         tuple_->content[1]->end, "__begin"),
-                    new zhexp::BinOperator(
-                        tuple_->content[1]->begin, tuple_->content[1]->end,
-                        ".call.begin", 666,
-                        new zhexp::PrefixOperator(
-                            tuple_->content[1]->begin, tuple_->content[1]->end,
-                            "&", 666,
-                            new zhexp::IdLiteral(tuple_->content[1]->begin,
-                                                 tuple_->content[1]->end,
-                                                 "__range")),
-                        new zhexp::Tuple(tuple_->content[1]->begin,
-                                         tuple_->content[1]->end))
-
-                );
+                    begin, end, ":=", 0,
+                    new zhexp::IdLiteral(begin, end, "__range"),
+                    new zhexp::PrefixOperator(begin, end, "iter", 0,
+                                              tuple_->content[1]));
                 auto end_exp = new STExp;
                 end_exp->exp = new zhexp::BinOperator(
                     tuple_->content[1]->begin, tuple_->content[1]->end,
@@ -324,32 +305,33 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo& parent_scope, Funct
                     ":=", 666,
                     new zhexp::IdLiteral(tuple_->content[0]->begin,
                                          tuple_->content[0]->end, id_l->val),
-                    new zhexp::IdLiteral(tuple_->content[1]->begin,
-                                         tuple_->content[1]->end, "__begin"));
+                    new zhexp::BinOperator(
+                        tuple_->content[1]->begin, tuple_->content[1]->end,
+                        ".call.begin", 666,
+                        new zhexp::PrefixOperator(
+                            tuple_->content[1]->begin, tuple_->content[1]->end,
+                            "&", 666,
+                            new zhexp::IdLiteral(tuple_->content[1]->begin,
+                                                 tuple_->content[1]->end,
+                                                 "__range")),
+                        new zhexp::Tuple(tuple_->content[1]->begin,
+                                         tuple_->content[1]->end)));
 
                 zhexp::Exp* condition = new zhexp::BinOperator(
                     tuple_->content[0]->begin, tuple_->content[1]->end,
-                    ".call.uneq", 666,
-                    new zhexp::PrefixOperator(
-                        tuple_->content[1]->begin, tuple_->content[1]->end, "&",
-                        666,
-                        new zhexp::IdLiteral(tuple_->content[0]->begin,
-                                             tuple_->content[0]->end,
-                                             id_l->val)),
+                    "!=", 666,
+                    new zhexp::IdLiteral(tuple_->content[0]->begin,
+                                         tuple_->content[0]->end, id_l->val),
                     new zhexp::IdLiteral(tuple_->content[1]->begin,
                                          tuple_->content[1]->end, "__end"));
                 auto iter = new STExp;
-                iter->exp = new zhexp::BinOperator(
-                    tuple_->content[1]->begin, tuple_->content[1]->end,
-                    ".call.next", 666,
+                iter->exp = new zhexp::PrefixOperator(
+                    tuple_->content[1]->begin, tuple_->content[1]->end, "++",
+                    666,
                     new zhexp::IdLiteral(tuple_->content[0]->begin,
-                                         tuple_->content[0]->end, id_l->val),
-                    new zhexp::Tuple(tuple_->content[1]->begin,
-                                     tuple_->content[1]->end));
+                                         tuple_->content[0]->end, id_l->val));
                 range_init->exp = zhexp::postprocess(range_init->exp,
                                                      foreach_block->scope_info);
-                begin_exp->exp = zhexp::postprocess(begin_exp->exp,
-                                                    foreach_block->scope_info);
                 end_exp->exp =
                     zhexp::postprocess(end_exp->exp, foreach_block->scope_info);
                 cur_init->exp = zhexp::postprocess(cur_init->exp,
@@ -360,7 +342,6 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo& parent_scope, Funct
                     zhexp::postprocess(iter->exp, foreach_block->scope_info);
 
                 foreach_block->nodes.push_back(range_init);
-                foreach_block->nodes.push_back(begin_exp);
                 foreach_block->nodes.push_back(end_exp);
                 foreach_block->nodes.push_back(cur_init);
 

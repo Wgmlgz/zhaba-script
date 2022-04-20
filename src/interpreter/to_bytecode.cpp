@@ -168,7 +168,7 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
         MAKE_INT_BOP(u16T, u16)
         MAKE_INT_BOP(u32T, u32)
         MAKE_INT_BOP(u64T, u64)
-        MAKE_INT_BOP(charT, u8)
+        MAKE_INT_BOP(charT, char)
 
 #define MAKE_FLOAT_BOP(type, zhtype)      \
   BOP_BYTECODE(+,  type, zhtype##_add)    \
@@ -236,10 +236,11 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
       MAKE_VOID_LOP_BYTECODE(in_u32, bytecode.pushVal(zhin::instr::u32_in))
       MAKE_VOID_LOP_BYTECODE(in_u64, bytecode.pushVal(zhin::instr::u64_in))
 
+      MAKE_VOID_LOP_BYTECODE(in_char, bytecode.pushVal(zhin::instr::char_in))
+
       MAKE_VOID_LOP_BYTECODE(in_f32, bytecode.pushVal(zhin::instr::f32_in))
       MAKE_VOID_LOP_BYTECODE(in_f64, bytecode.pushVal(zhin::instr::f64_in))
 
-      MAKE_VOID_LOP_BYTECODE(in_char, bytecode.pushVal(zhin::instr::in_char))
       MAKE_VOID_LOP_BYTECODE(in_str, bytecode.pushVal(zhin::instr::in_str))
 
       MAKE_VOID_LOP_BYTECODE(in_bool, bytecode.pushVal(zhin::instr::in_bool))
@@ -279,8 +280,8 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
       MAKE_LOP_BYTECODE(put, strT, bytecode.pushVal(zhin::instr::put_str))
       MAKE_LOP_BYTECODE(out, strT, bytecode.pushVal(zhin::instr::out_str))
 
-      MAKE_LOP_BYTECODE(put, charT, bytecode.pushVal(zhin::instr::put_char))
-      MAKE_LOP_BYTECODE(out, charT, bytecode.pushVal(zhin::instr::out_char))
+      MAKE_LOP_BYTECODE(put, charT, bytecode.pushVal(zhin::instr::char_put))
+      MAKE_LOP_BYTECODE(out, charT, bytecode.pushVal(zhin::instr::char_out))
 
       MAKE_LOP_BYTECODE(put, boolT, bytecode.pushVal(zhin::instr::u8_put))
       MAKE_LOP_BYTECODE(out, boolT, bytecode.pushVal(zhin::instr::u8_out))
@@ -300,6 +301,8 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
       MAKE_INT_LOPS(u32)
       MAKE_INT_LOPS(u64)
 
+      MAKE_INT_LOPS(char)
+
 #define MAKE_FLOAT_LOPS(type)                                                    \
   MAKE_LOP_BYTECODE(!, type##T, bytecode.pushVal(zhin::instr::type##_not))     \
   MAKE_LOP_BYTECODE(-, type##T, bytecode.pushVal(zhin::instr::type##_neg))
@@ -316,9 +319,7 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
       expToB(bytecode, op->child, funcdata);
       /** pop deref + int */
       bytecode.popBytes(5);
-    } else if (op->val == "*"
-    //  && op->func == nullptr
-     ) {
+    } else if (op->val == "*" && op->func == nullptr) {
       expToB(bytecode, op->child, funcdata);
       bytecode.pushVal(zhin::instr::deref);
       bytecode.pushVal((int32_t)(op->type.getSize()));

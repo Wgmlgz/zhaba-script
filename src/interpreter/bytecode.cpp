@@ -93,6 +93,7 @@ void ByteCode::loadLabels() {
         INT_LABELS(u16)
         INT_LABELS(u32)
         INT_LABELS(u64)
+        INT_LABELS(char)
 
 #define FLOAT_LABELS(type)   \
   case instr::type##_add:    \
@@ -159,10 +160,6 @@ void ByteCode::loadLabels() {
       case instr::put_str: break;
       case instr::out_str: break;
       case instr::in_str: break;
-
-      case instr::put_char: break;
-      case instr::out_char: break;
-      case instr::in_char: break;
 
       case instr::malloc: break;
       case instr::free: break;
@@ -364,6 +361,7 @@ std::pair<std::string, std::map<size_t, std::string>> ByteCode::dis() {
       INT_INSTR(u16)
       INT_INSTR(u32)
       INT_INSTR(u64)
+      INT_INSTR(char)
 
 #define FLOAT_INSTR(type) \
   INSTR(type##_add)       \
@@ -393,10 +391,6 @@ std::pair<std::string, std::map<size_t, std::string>> ByteCode::dis() {
       INSTR(put_str)
       INSTR(out_str)
       INSTR(in_str)
-
-      INSTR(put_char)
-      INSTR(out_char)
-      INSTR(in_char)
 
       INSTR(push_frame)
       INSTR_I32(deref)

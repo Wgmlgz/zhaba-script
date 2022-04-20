@@ -48,6 +48,7 @@ enum class instr : byte {
   MAKE_INT_B(u16)
   MAKE_INT_B(u32)
   MAKE_INT_B(u64)
+  MAKE_INT_B(char)
 
 #define MAKE_FLOAT_B(type) \
   type ## _add,            \
@@ -95,10 +96,6 @@ enum class instr : byte {
   out_str,  // out TOS str with \n to stdin :: str -> void
   in_str,   // reads str from stdin         :: void -> str
 
-  put_char,  // out TOS char to stdin         :: char -> void
-  out_char,  // out TOS char with \n to stdin :: char -> void
-  in_char,   // reads char from stdin         :: void -> char
-
   put_bool,  // out TOS bool to stdin         :: bool -> void
   out_bool,  // out TOS bool with \n to stdin :: bool -> void
   in_bool,   // reads bool from stdin         :: void -> bool
@@ -112,5 +109,4 @@ enum class instr : byte {
   malloc,  // allocates n bytes :: i64 -> i64
   free,    // frees ptr   :: i64 -> void
 };
-
 }  // namespace zhin

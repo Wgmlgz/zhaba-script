@@ -61,7 +61,8 @@ More advanced features:
 - New operators creation
 - Local (relative to scope) functions and operators definition
 - Pointers
-- References (pass, return and store)
+- Full references support (pass, return and store)
+- Rvalue to lvalue conversion
 
 Objects:
 
@@ -71,6 +72,7 @@ Objects:
 - Copy constructors (and implicit calls)
 - Destructors (and implicit calls)
 - Generic types like `Vec<T>`
+- First-class functions
 
 Standard library
 
@@ -81,6 +83,35 @@ Standard library
 - `frog.zh` - file with cool ASCII image of 🐸
 - `operators.zh` - more advanced operators like %%
 - `brainfuck.zh` - brainfuck interpreter
+
+TODO:
+
+Lang core:
+
+- bool cast in if and for
+- More terminal features (OS independent colors, wait for input in web, control characters)
+- Modules instead of preprocessing
+- C modules
+- Object & Array destructuring
+- Better patten matching 
+- Object destructuring
+- Inline loops (`exp @ loop_exp`), mixed with other inline operations `exp @ loop_exp ? if_exp`
+- Ternary operator (`exp ? true_exp : false_exp`) this syntax will not work, so refactoring is needed
+
+Functional features:
+
+- Generic functions (args without type or even template metaprogramming)
+- Function operators (`|>`, `map`, `reduce`, `filter`)
+- Lambda functions (`args -> exp`, `args -> {block}`)
+
+OOP features:
+
+- Inheritance
+- Virtual inheritance (vtable is needed to generic functions)
+
+Std:
+
+- `Set<T>`
 
 # Why? 🤔
 
@@ -182,15 +213,15 @@ use vec
 fn main
   v := iota(0 10)
 
-  out v  
-  out v[2] 
-  out v[-1]  
-  out v[2..4]    
-  out v[..3]     
-  out v[3..]  
-  out v[] 
-  out v[-4..-2]     
-  out v[-4..] 
+  out v
+  out v[2]
+  out v[-1]
+  out v[2..4]
+  out v[..3]
+  out v[3..]
+  out v[]
+  out v[-4..-2]
+  out v[-4..]
   out v[..-2]
 ```
 

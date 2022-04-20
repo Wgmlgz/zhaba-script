@@ -12,9 +12,23 @@ type VecIter T: TP ptr
 
 impl VecIter
   fn ctor TP ptr: VecIter<T> slf; slf.ptr = ptr; <<< slf
-  fn next: slf.ptr = slf.ptr + 1
-  fn bool uneq VecIter<T> other: <<< slf.ptr != other.ptr
+  lop ++ VecIter<T>R slf: slf.ptr = slf.ptr + 1
+  op 6 VecIter<T> + VecIter<T> slf int i
+    slf.ptr = slf.ptr + i
+    <<< slf 
+  op 10 bool != VecIter<T> a VecIter<T> b: <<< a.ptr != b.ptr
   lop TR * VecIter<T> slf: <<< *slf.ptr
+
+type VecIterRange T: VecIter<T> begin end
+
+impl VecIterRange
+  fn VecIter<T> begin: <<< slf.begin
+  fn VecIter<T> end: <<< slf.end
+  fn ctor VecIter<T> begin VecIter<T> end
+    VecIterRange<T> slf
+    slf.begin = begin
+    slf.end = end
+    <<< slf
 
 impl Vec
   fn TP atP int pos: <<< (slf.head + pos) as TP
@@ -49,8 +63,15 @@ impl Vec
     
   fn pop_back: --slf.size
   
+  /** Iterators */
   fn VecIter<T> begin: <<< VecIter<T>(slf.head) 
   fn VecIter<T> end: <<< VecIter<T>(slf.atP(slf.size))
+  lop VecIterRange<T> iter Vec<T>R slf
+    VecIterRange<T> it
+    it.begin = slf.begin()
+    it.end = slf.end()
+    <<< it
+
   fn TR front: <<< *slf.head
   fn TR back: <<< *slf.atP(slf.size-1)
 
@@ -120,7 +141,7 @@ impl Vec
     @ i begin..end: res.push_back(slf.at(i))
     <<< res
 
-  fn Vec<T> sub Range r
+  fn Vec<T> sub Range<int> r
     begin := r.begin end := r.end
     ? begin < 0: begin += slf.size
     ? begin < 0: begin = 0
@@ -132,7 +153,12 @@ impl Vec
 
   /** Sorting */
   op 9 bool < Vec<T>R a Vec<T>R b
-    <<< false
+    @ i 0..min(a.size b.size)
+      ? a[i] < b[i]: <<< tru
+      | a[i] > b[i]: <<< fls
+    ? a.size < b.size: <<< tru
+    | a.size > b.size: <<< fls
+    <<< fls
 
   lop swap TP a TP b: T t = *a; *a = *b; *b = t
 
@@ -164,7 +190,7 @@ impl Vec
     r := Vec<T>()
     @ i 0..slf.size: ? f(slf[i]): r += slf[i]
     <<< r 
-    
+  
 
 /** Util */
 fn Vec<int> iota int begin int end
@@ -173,7 +199,7 @@ fn Vec<int> iota int begin int end
   <<< v
 
 impl Range
-  fn Vec<int> call
-    res := Vec<int>()
+  fn Vec<T> call
+    res := Vec<T>()
     @ i, *slf: res += i
     <<< res

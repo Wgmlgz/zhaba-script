@@ -5,51 +5,52 @@
  */
 
 use operators
+use util
 
-impl int
-  fn next
-    *slf = *slf + 1
-  fn bool uneq int other
-    <<< *slf != other
-    
-type Range: int begin end
+/** for types only */
+type Range T: T begin end
 
 impl Range
-  fn int begin: <<< slf.begin
-  fn int end: <<< slf.end
+  fn T begin: <<< slf.begin
+  fn T end: <<< slf.end
+  fn ctor T begin T end
+    Range<T> slf
+    slf.begin = begin
+    slf.end = end
+    <<< slf
 
-/**  begin..end */
-op 9 Range .. int begin int end
-  Range slf
-  slf.begin = begin
-  slf.end = end
-  <<< slf
-op 9 Range ..- int begin int end: <<< begin.. -end
+  /**  begin..end */
+  op 9 Range<T> .. T begin T end: <<< Range<T>(begin end)
+  op 9 Range<T> ..- T begin T end: <<< begin.. -end
 
-fn int rangeMin: <<< -9223372036854775807
-fn int rangeMax: <<< 9223372036854775807
-
-/**  begin.. */
-rop Range .. int begin: <<< begin..rangeMax()
-/**  ..end */
-lop Range .. int end: <<< rangeMin()..end
-/**  ..-end */
-lop Range ..- int end: <<< rangeMin().. -end
-/**  -begin..end */
-lop Range - Range r: <<< (-r.begin)..r.end
+  /**  begin.. */
+  rop Range<T> .. T begin: <<< begin..(~T())
+  /**  ..end */
+  lop Range<T> .. T end: <<< (++ ~T())..end
+  /**  ..-end */
+  lop Range<T> ..- T end: <<< (++ ~T()).. -end
+  /**  -begin..end */
+  lop Range<T> - Range<T> r: <<< (-r.begin)..r.end
 
 
-/**  begin..=end */
-op 9 Range ..= int begin int end: <<< begin..(end+1)
-/**  ..=end */
-lop Range ..= int end: <<< rangeMin()..(end+1)
-/**  ..=-end */
-lop Range ..=- int end: <<< rangeMin()..(-end+1)
+  /**  begin..=end */
+  op 9 Range<T> ..= T begin T end: <<< begin..(end+(++ T()))
+  /**  ..=end */
+  lop Range<T> ..= T end: <<< (++ ~T())..(end+(++ ~T()))
+  /**  ..=-end */
+  lop Range<T> ..=- T end: <<< (++ ~T())..(-end+(++ ~T()))
 
 
-/** int in range */
-op 10 bool == int i Range r
-  ? r.begin < r.end: <<< r.begin <= i && i < r.end
-  \ <<< r.end <= i && i < r.begin
+  /** T in range */
+  op 10 bool == T i Range<T> r
+    ? r.begin < r.end: <<< r.begin <= i && i < r.end
+    \ <<< r.end <= i && i < r.begin
 
-  
+  lop Range<T> iter Range<T> r: <<< r
+
+fn rangeMaker
+  Range<i8> a
+  Range<i16> b
+  Range<i32> c
+  Range<i64> d
+  Range<char> e

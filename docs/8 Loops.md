@@ -46,16 +46,15 @@ i:=0
 
 # Foreach
 
-Foreach loop executes a for loop over a range and accepts 2 arguments: a variable name and range expression. Variable name must be identifier and range expression must have `.begin()` and `.end()` methods. Value protected by `.begin()` must be able to be compared with `.end()` value by `!=` operator and also must be able to be incremented by prefix `++` operator. Produced code is equivalent to this:
+Foreach loop executes a for loop over a range and accepts 2 arguments: a variable name and range expression. Variable name must be identifier and range expression must have defined `iter` prefix operator, which produced expression that must have `.begin()` and `.end()` methods. Value provided by `.begin()` must be able to be compared with `.end()` value by `!=` operator and also must be able to be incremented by prefix `++` operator. Produced code is equivalent to this:
 
 ```zh
-__range := range-expression
-__begin := __range.begin()
+__range := iter(<range-expression>)
+<id> := __range.begin()
 __end := __range.end()
-__cur := __begin
-@ __cur.uneq(__end)
+@ <id> != __end
   <body>
-  __cur.next()
+  ++id
 ```
 
 ### Examples

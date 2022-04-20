@@ -808,7 +808,7 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
     op->child = postprocess(op->child, scope);
 
     if (op->val == "&") {
-      if (!op->child->type.getLval())
+      if (!op->child->type.getLval() && !op->child->type.getRef())
         throw ParserError(op->begin, op->end, "Cannot get ptr of rval");
       exp->type = op->child->type;
       exp->type.setPtr(op->child->type.getPtr() + 1);

@@ -8,7 +8,7 @@ impl str
     *ptr = 0u8
     <<< ptr as str
 op 10 bool == char ch str s: <<< ch == s[0]
-
+lop char chr str s: <<< s[0]
 type Str
   Vec<char> data
   int size
@@ -21,7 +21,9 @@ impl Str
     slf.size = 0
     <<< slf
   fn dtor: slf.data.dtor()
-  fn str cstr: iter := slf.data.begin(); <<< iter.ptr as str
+  fn str cstr: it := slf.data.begin(); <<< it.ptr as str
+  lop VecIterRange<char> iter StrR s
+    <<< VecIterRange<char>(s.data.begin() s.data.begin() + s.size)
   fn charR at int pos: <<< slf.data.at(pos)
   fn charR sub int pos: <<< slf.data.at(pos)
   fn charP atP int pos: <<< slf.data.atP(pos)
@@ -90,11 +92,11 @@ op 9 Out < Out o StrR i: put i, put ' '
   
 op 9 bool < StrR a StrR b
   @ i 0..min(a.size b.size)
-    ? a[i] < b[i]: <<< true
-    | a[i] > b[i]: <<< false
-  ? a.size < b.size: <<< true
-  | a.size > b.size: <<< false
-  <<< false
+    ? a[i] < b[i]: <<< tru
+    | a[i] > b[i]: <<< fls
+  ? a.size < b.size: <<< tru
+  | a.size > b.size: <<< fls
+  <<< fls
 
 op 5 Str * str s int i
   slf := Str()
@@ -104,3 +106,10 @@ op 5 Str * str s int i
   <<< Str()
 
 lop Str $ str s: <<< Str(s)
+
+lop up StrR s
+  @ i s: ? *i == chr'a'..=chr'z': *i = *i+chr'A'-chr'a'
+
+lop low StrR s
+  @ i s: ? *i == chr'A'..=chr'Z': *i = *i-chr'A'+chr'a'
+  
