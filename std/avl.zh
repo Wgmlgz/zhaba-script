@@ -156,7 +156,7 @@ impl AVLTree
   /** Inserts element */
   fn insert T val: slf.root = slf.root.insert(val)
   fn TR sub T val: <<< (*slf.root.sub(val)).val
-  op 16 += AVLTree<T>R slf T val: slf.root = slf.root.insert(val)
+  op 17 += AVLTree<T>R slf T val: slf.root = slf.root.insert(val)
 
   fn Vec<T> call
     v := Vec<T>()

@@ -69,14 +69,14 @@ lop out StrR s: out s.cstr()
 lop put StrR s: put s.cstr()
 
 // append
-op 16 += StrR a char ch
+op 17 += StrR a char ch
   a.push_back(ch)
-op 16 += StrR a StrR b
+op 17 += StrR a StrR b
   @ i 0..b.size
     ch := 115i8 as char
     ch = b.at(i)
     a += ch
-op 16 += StrR a str b
+op 17 += StrR a str b
   len := len(b)
   @ i 0..len: 
     a += b[i]

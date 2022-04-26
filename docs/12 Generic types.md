@@ -85,9 +85,9 @@ Generic `impl` block allows you not only to create member function, but also to 
 
 ```zh
 impl Vec
-  op 16 += Vec<T>R slf T val: slf.push_back(val)
+  op 17 += Vec<T>R slf T val: slf.push_back(val)
 
-  op 16 += Vec<T>R slf Vec<T> other
+  op 17 += Vec<T>R slf Vec<T> other
     @ i other: slf.push_back(*i)
 
   lop put Vec<T>R slf: slf.print()

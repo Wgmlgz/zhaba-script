@@ -1,14 +1,9 @@
 use std
 
-fn main
-  v := 2,,2,,2,,2
-  s := Str('aboba ABOBA')
-  @ i v
-    *i = 5
-  < v <
 
-  < s <
-  up(s)
-  < s <
-  low(s)
-  < s <
+fn main
+  f := (intR i) -> i*i
+  v := iota(0 10).filter((intR i) -> i %% 2).map(f)
+  // vv := mp<int bool>(v, (intR i -> i * i %% 2))
+  out v
+  // out vv

@@ -8,6 +8,7 @@ impl u16: fn ctor: <<< 0u16
 impl u32: fn ctor: <<< 0u32
 impl u64: fn ctor: <<< 0u64
 
+impl bool: fn ctor: <<< fls
 impl char: fn ctor: <<< 0i8 as char
 
 fn int max int a int b

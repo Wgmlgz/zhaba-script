@@ -3,14 +3,14 @@ use util
 type IntOpMaker T: bool unused
 
 impl IntOpMaker
-  op 16 += TR a T b: a=a+b
-  op 16 -= TR a T b: a=a-b
-  op 16 /= TR a T b: a=a/b
-  op 16 %= TR a T b: a=a%b
-  op 16 *= TR a T b: a=a*b
-  op 16 ^= TR a T b: a=(a^b)
-  op 16 &= TR a T b: a=(a&b)
-  op 16 |= TR a T b: a=(a|||b)
+  op 17 += TR a T b: a=a+b
+  op 17 -= TR a T b: a=a-b
+  op 17 /= TR a T b: a=a/b
+  op 17 %= TR a T b: a=a%b
+  op 17 *= TR a T b: a=a*b
+  op 17 ^= TR a T b: a=(a^b)
+  op 17 &= TR a T b: a=(a&b)
+  op 17 |= TR a T b: a=(a|||b)
   op 5 bool %% T a T b: <<< !(a % b)
   op 5 bool !% T a T b: <<< !(a %% b)
   lop TR ++ TR x: x+=(T() - ~T()); <<<x
@@ -31,15 +31,17 @@ fn intOpMaker
 
   IntOpMaker<char> aboba 
 
-op 16 += f32R a f32 b: a=a+b
-op 16 -= f32R a f32 b: a=a-b
-op 16 /= f32R a f32 b: a=a/b
-op 16 *= f32R a f32 b: a=a*b
+op 17 += f32R a f32 b: a=a+b
+op 17 -= f32R a f32 b: a=a-b
+op 17 /= f32R a f32 b: a=a/b
+op 17 *= f32R a f32 b: a=a*b
 
-op 16 += f64R a f64 b: a=a+b
-op 16 -= f64R a f64 b: a=a-b
-op 16 /= f64R a f64 b: a=a/b
-op 16 *= f64R a f64 b: a=a*b
+op 17 += f64R a f64 b: a=a+b
+op 17 -= f64R a f64 b: a=a-b
+op 17 /= f64R a f64 b: a=a/b
+op 17 *= f64R a f64 b: a=a*b
+
+op 9 bool < bool a bool b: <<< !a && b
 
 op 4 int ** int a int n
   res := 1

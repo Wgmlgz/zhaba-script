@@ -27,11 +27,11 @@ Examples:
 /** From operators.zh */
 op 5  bool %% int a int b: <<< !(a % b);
 
-op 16 += intR a int b: a = a + b
-op 16 -= intR a int b: a = a - b
-op 16 /= intR a int b: a = a / b
-op 16 %= intR a int b: a = a % b
-op 16 *= intR a int b: a = a * b
+op 17 += intR a int b: a = a + b
+op 17 -= intR a int b: a = a - b
+op 17 /= intR a int b: a = a / b
+op 17 %= intR a int b: a = a % b
+op 17 *= intR a int b: a = a * b
 
 lop ++ intR val: val += 1
 lop -- intR val: val -= 1

@@ -4,7 +4,7 @@ fn main
   rng := Rng()
   m := Map<int int>()
   v := Vec<int>()
-  
+
   /** Foreach with range: begin..end */
   @ i 0..20: m[rng()] = i * i
 
