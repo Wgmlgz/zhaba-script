@@ -484,9 +484,8 @@ std::vector<Function*> parseImpl(ast::ASTBlock* block, const types::Type& type,
     if (!block) throw ParserError("Expected block");
   
     if (func->name == "ctor") {
-      if (func->type.getTypeId() != types::TYPE::voidT)
-        throw ParserError(*line->begin, *line->end, "You cannot change constructor return value");
-      func->type = type;
+      if (func->type.getTypeId() == types::TYPE::voidT) func->type = type;
+      
       func->op_type = Function::OpType::lhs;
     } else if (func->is_fn) {
       func->args.insert(

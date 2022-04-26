@@ -64,6 +64,7 @@ struct Function {
   [[nodiscard]] std::string headToStr() const;
   [[nodiscard]] std::string toUniqueStr() const;
   [[nodiscard]] types::funcHead getHead() const;
+  [[nodiscard]] types::Type getFnType() const;
 
   [[nodiscard]] types::funcHead getHeadNonRefNonLval() const;
 };

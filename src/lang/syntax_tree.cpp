@@ -139,4 +139,10 @@ TreeNode<std::string> *STTree::toGenericTree() {
   return main_node;
 };
 
+types::Type Function::getFnType() const {
+  std::vector<types::Type> types{type};
+  for (const auto &[name, type] : args) types.push_back(type);
+  auto fn_type = types::Type(types::TYPE::FT, 0, false, false, types);
+  return fn_type;
+}
 STTree::STTree(ScopeInfo *parent_scope) : scope(parent_scope) {}

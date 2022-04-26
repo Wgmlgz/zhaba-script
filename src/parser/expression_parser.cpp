@@ -479,11 +479,8 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
       exp = tmp;
     } else if (scope.containsFn(id->val)) {
       auto fn = scope.getFn(id->val);
-      std::vector<types::Type> types{fn->type};
-      for (const auto &[name, type] : fn->args) types.push_back(type);
-      auto fn_type = types::Type(types::TYPE::FT, 0, false, false, types);
       auto tmp = new FnLiteral(id->begin, id->end, fn);
-      tmp->type = fn_type;
+      tmp->type = fn->getFnType();
       exp = tmp;
     } else
       throw ParserError(id->begin, id->end,
@@ -604,7 +601,7 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
         );
       }
     }
-      /** Type cast */
+    /** Type cast */
     else if (op->val == "as") {
       op->lhs = postprocess(op->lhs, scope);
       if (auto type_l = dynamic_cast<TypeLiteral *>(op->rhs)) {
@@ -615,6 +612,65 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
             "Expected type literal, but '" + op->rhs->toString() + "' found"
         );
       }
+    /** Lambda function */
+    } else if (op->val == "->") {
+      auto fn_name = "lambda_" + std::to_string(genId());
+      auto fn = new Function{fn_name, {}, types::Type()};
+      fn->args_scope = ScopeInfo(&zhdata.sttree->scope);
+      ScopeInfo &scope = fn->args_scope;
+
+      /** Process param list */
+      auto args_tuple = castTreeToTuple(op->lhs)->content;
+      auto cur = args_tuple.begin(), end = args_tuple.end();
+      std::unordered_set<std::string> used_vars;
+      while (cur != end) {
+        fn->args.emplace_back();
+        auto type_ptr = dynamic_cast<TypeLiteral *>(*cur);
+        if (!type_ptr)
+          throw ParserError((*cur)->begin, "Expected argument type");
+        fn->args.back().type = type_ptr->literal_type;
+        ++cur;
+
+        if (cur == end)
+          throw ParserError((*cur)->begin, "Expected argument name");
+        auto id_ptr = dynamic_cast<IdLiteral *>(*cur);
+        if (!id_ptr)
+          throw ParserError((*cur)->begin, "Expected argument name");
+
+        if (used_vars.count(id_ptr->val)) 
+          throw ParserError(id_ptr->begin, "Duplicate argument name");
+        fn->args.back().name = id_ptr->val;
+        used_vars.insert(id_ptr->val);
+        ++cur;
+      }
+      for (auto &[name, type] : fn->args) {
+        scope.setVar(name, type);
+        scope.getVarType(name).setLval(true);
+      }
+
+      /** Process body */
+      auto exp = postprocess(op->rhs, scope); // global scope for now
+      fn->body = new STBlock(&scope);
+      fn->type = exp->type;
+
+      STNode* st_node;
+      if (exp->type.getSize()) {
+        auto st_ret = new STRet;
+        st_ret->exp = exp;
+        st_node = st_ret;
+      } else {
+        auto st_exp = new STExp;
+        st_exp->exp = exp;
+        st_node = st_exp;
+      }
+      fn->body->nodes.push_back(st_node);
+
+      /** Finish */
+      zhdata.sttree->functions.push_back(fn);
+      scope.setFn(fn->getHead(), fn);
+      auto fn_literal = new FnLiteral(op->begin, op->end, fn);
+      fn_literal->type = fn->getFnType();
+      return fn_literal;
     } else {
       op->lhs = postprocess(op->lhs, scope);
       op->rhs = postprocess(op->rhs, scope);
