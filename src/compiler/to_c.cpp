@@ -619,7 +619,9 @@ std::string struct2C(types::TYPE id) {
   std::string res = structHead2C(id);
   res += " {\n";
   for (const auto& [name, type] : zhdata.structs[id].members) {
-    res += "  " + type2C(type) + " " + id2C(name) + ";\n";
+    res += "  " +
+           (type.isFn() ? type2C(type, name) : type2C(type) + " " + id2C(name)) +
+           ";\n";
   }
   res += "};\n";
   return res;

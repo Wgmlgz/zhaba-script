@@ -69,6 +69,7 @@ Type parse(std::string &str, const ScopeInfo &scope) {
     ++ptr_c;
     str.pop_back();
   }
+  type.setPtr(ptr_c);
   if (scope.containsTypedef(str)) {
     auto tmp = scope.getTypedef(str);
     type.setType(tmp.getTypeId());
@@ -80,7 +81,6 @@ Type parse(std::string &str, const ScopeInfo &scope) {
   } else {
     throw TypeParsingError();
   }
-  type.setPtr(ptr_c);
   return type;
 }
 

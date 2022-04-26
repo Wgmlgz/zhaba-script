@@ -176,6 +176,7 @@ void castTreeToTupleDfs(Exp *exp, Tuple *&tuple) {
 
 Tuple *castTreeToTuple(Exp *exp) {
   if (exp) {
+    if (auto tuple = dynamic_cast<Tuple *>(exp)) return tuple;
     auto tuple = new Tuple(exp->begin, exp->end);
     castTreeToTupleDfs(exp, tuple);
     return tuple;

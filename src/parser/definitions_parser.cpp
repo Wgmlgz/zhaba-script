@@ -12,11 +12,11 @@ void validateFunction(const ScopeInfo& scope, const Function &func, tokeniter be
   if (func.op_type == Function::OpType::bin) {
     if (scope.containsBinOp(func.getHeadNonRefNonLval()))
       throw ParserError(*begin, *end,
-                        func.toUniqueStr() + "already defined");
+                        func.toUniqueStr() + "is already defined");
   } else if (func.op_type == Function::OpType::lhs) {
     if (scope.containsPrOp(func.getHeadNonRefNonLval()))
       throw ParserError(*begin, *end,
-                        func.toUniqueStr() + "already defined");
+                        func.toUniqueStr() + "is already defined");
     if (func.name == "&") {
       throw ParserError(*begin, *end,
                         "You cannot overload prefix '&' operator");
@@ -28,7 +28,7 @@ void validateFunction(const ScopeInfo& scope, const Function &func, tokeniter be
   } else if (func.op_type == Function::OpType::rhs) {
     if (scope.containsPoOp(func.getHeadNonRefNonLval()))
       throw ParserError(*begin, *end,
-                        func.toUniqueStr() + "already defined");
+                        func.toUniqueStr() + "is already defined");
   }
 }
 
