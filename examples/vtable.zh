@@ -1,0 +1,32 @@
+use std
+
+type VTable: F<void> f
+impl VTable
+  fn __: Op__<VTable> _ // creates `new`, `put` and `out` operators 
+  fn print: t:=slf.f; t()
+impl VTableP: fn ctor: <<< 0 as VTableP
+
+type Child1: VTable base
+impl Child1
+  fn __: Op__<Child1> _ // creates `new`, `put` and `out` operators 
+  fn ctor
+    Child1 slf
+    slf.base.f = () -> out 'child 1'
+    <<< slf
+
+type Child2: VTable base
+impl Child2
+  fn __: Op__<Child2> _
+  fn ctor
+    Child2 slf
+    slf.base.f = () -> out 'child 2'
+    <<< slf
+
+fn main
+  v := Vec<VTableP>(2)
+  v[0] = new Child1() as VTableP
+  v[1] = new Child2() as VTableP
+
+  @ i v
+    t := (*i).f
+    t()

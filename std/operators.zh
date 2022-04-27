@@ -50,3 +50,10 @@ op 4 int ** int a int n
     a *= a
     n /= 2
   <<< res
+
+
+type Op__ T: u8 _
+impl Op__
+  lop TP new T slf: ptr := malloc(sizeof(T)) as TP; *ptr = slf; <<< ptr
+  lop put TP slf: put (slf as int)
+  lop out TP slf: out (slf as int)

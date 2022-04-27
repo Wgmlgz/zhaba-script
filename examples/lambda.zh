@@ -1,0 +1,12 @@
+use std
+
+fn print F<void> f: f()
+
+fn main
+  /** Storing lambda */
+  f := (intR i) -> i*i // f type is `F<int intR>`
+  
+  /** Squares of even numbers  */
+  out iota(0 10).filter((intR i) -> i %% 2).map(f) 
+
+  print(() -> out 'hi!')
