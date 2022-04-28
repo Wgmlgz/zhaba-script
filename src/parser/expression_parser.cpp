@@ -617,7 +617,7 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
       auto fn_name = "lambda_" + std::to_string(genId());
       auto fn = new Function{fn_name, {}, types::Type()};
       fn->args_scope = ScopeInfo(&zhdata.sttree->scope);
-      ScopeInfo &scope = fn->args_scope;
+      ScopeInfo &args_scope = fn->args_scope;
 
       /** Process param list */
       auto args_tuple = castTreeToTuple(op->lhs)->content;
@@ -644,13 +644,13 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
         ++cur;
       }
       for (auto &[name, type] : fn->args) {
-        scope.setVar(name, type);
-        scope.getVarType(name).setLval(true);
+        args_scope.setVar(name, type);
+        args_scope.getVarType(name).setLval(true);
       }
 
       /** Process body */
-      auto exp = postprocess(op->rhs, scope); // global scope for now
-      fn->body = new STBlock(&scope);
+      fn->body = new STBlock(&args_scope);
+      auto exp = postprocess(op->rhs, fn->body->scope_info); // global scope for now
       fn->type = exp->type;
 
       STNode* st_node;
