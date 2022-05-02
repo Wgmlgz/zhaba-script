@@ -135,13 +135,16 @@ Type parse(tokeniter &token, const ScopeInfo &parent_scope) {
           scope.setTypedef(zhdata.generics[str].names[i], generic_types[i]);
         }
         /** Try generate generic implementation */
+        for (auto i : zhdata.generics[str].block->nodes) {
+          // if (dynamic_cast<i>)
+        }
         parsePushStruct(name, zhdata.generics[str].block, scope);
         for (auto &block : zhdata.generics[str].impl_blocks) {
           block->reset();
           auto funcs =
               parseImpl(block, Type(static_cast<TYPE>(getStructId(name))),
                         scope, zhdata.sttree->scope);
-          for (auto i : funcs) zhdata.sttree->functions.push_back(i);
+          for (auto i : funcs) zhdata.functions.push_back(i);
         }
         id = getStructId(name);
       }

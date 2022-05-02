@@ -69,9 +69,9 @@ struct Function {
   [[nodiscard]] types::funcHead getHeadNonRefNonLval() const;
 };
 
-struct STTree {
-  std::list<Function *> functions;
-  TreeNode<std::string> *toGenericTree();
+struct ZHModule {
   ScopeInfo scope;
-  STTree(ScopeInfo* scope);
+
+  TreeNode<std::string> *toGenericTree();
+  ZHModule(ScopeInfo* scope);
 };

@@ -18,14 +18,12 @@ const std::unordered_map<std::string, bool> flags{
 };
 
 const std::vector<std::pair<TOKEN, std::string>> lexer_tokens{
-    {TOKEN::comment_block, R"(((\/\*[\s\S]*?\*\/)))"},
-    {TOKEN::comment_line, R"((((\/\/.*))))"},
     {TOKEN::str_literal, R"(('(\\.|[^'\\])*'|`(?:\\`|[^`])*`))"},
     {TOKEN::id,
      R"((([\~\,\.\+\-\*\\\%\<\>\=\^\&\:\;\|\/\!\#\$\@\?]*\.[\.]+[\~\,\.\+\-\*\\\%\<\>\=\^\&\:\;\|\/\!\#\$\@\?]*)))"},
     {TOKEN::int_literal,
      R"(((?:0x[0-9a-fA-F]+|0b[01]+|[0-9]+(?:\.(?!\.)[0-9]*)?|\.[0-9]+)([iuf][0-9]*)?|true|false|tru|fls))"},
-    {TOKEN::space, R"((( |\\\\\\ *\n)+))"},
+    {TOKEN::space, R"((( *(?:(?:\/\/.*)|(?:\/\*[\s\S]*?\*\/)) *| +)))"},
     {TOKEN::id,
      R"((([_a-zA-Z][_a-zA-Z0-9]*|[\~\,\.\+\-\*\\\%\<\>\=\^\&\:\;\|\/\!\#\$\@\?]+)))"},
     {TOKEN::line_end, R"(((\n)))"},
@@ -246,107 +244,55 @@ const std::map<types::funcHead, Function *> PR_OD{
     }                                                               \
   }
 
-    MAKE_C_FN_1_ARGS(!, boolT, boolT),
-    MAKE_C_FN_1_ARGS(!, charT, boolT),
-    MAKE_C_FN_1_ARGS(!, i8T, boolT),
-    MAKE_C_FN_1_ARGS(!, i16T, boolT),
-    MAKE_C_FN_1_ARGS(!, i32T, boolT),
-    MAKE_C_FN_1_ARGS(!, i64T, boolT),
-    MAKE_C_FN_1_ARGS(!, u8T, boolT),
-    MAKE_C_FN_1_ARGS(!, u16T, boolT),
-    MAKE_C_FN_1_ARGS(!, u32T, boolT),
-    MAKE_C_FN_1_ARGS(!, u64T, boolT),
-    MAKE_C_FN_1_ARGS(!, f32T, boolT),
-    MAKE_C_FN_1_ARGS(!, f64T, boolT),
-    
-    MAKE_C_FN_1_ARGS(-, boolT, boolT),
-    MAKE_C_FN_1_ARGS(-, charT, charT),
-    MAKE_C_FN_1_ARGS(-, i8T, i8T),
-    MAKE_C_FN_1_ARGS(-, i16T, i16T),
-    MAKE_C_FN_1_ARGS(-, i32T, i32T),
-    MAKE_C_FN_1_ARGS(-, i64T, i64T),
-    MAKE_C_FN_1_ARGS(-, u8T, u8T),
-    MAKE_C_FN_1_ARGS(-, u16T, u16T),
-    MAKE_C_FN_1_ARGS(-, u32T, u32T),
-    MAKE_C_FN_1_ARGS(-, u64T, u64T),
-    MAKE_C_FN_1_ARGS(-, f32T, f32T),
-    MAKE_C_FN_1_ARGS(-, f64T, f64T),
+#define MAKE_C_FN_INT(type)                 \
+    MAKE_C_FN_1_ARGS(!, type##T, boolT),    \
+    MAKE_C_FN_1_ARGS(-, type##T, type##T),  \
+    MAKE_C_FN_1_ARGS(+, type##T, type##T),  \
+    MAKE_C_FN_1_ARGS(~, type##T, type##T),  \
+    MAKE_C_FN_1_ARGS(out, type##T, voidT),  \
+    MAKE_C_FN_1_ARGS(put, type##T, voidT),  \
+    MAKE_C_FN_0_ARGS(in_##type, type##T),   \
+    MAKE_C_FN_1_ARGS(i8, type##T, i8T),     \
+    MAKE_C_FN_1_ARGS(i16, type##T, i16T),   \
+    MAKE_C_FN_1_ARGS(i32, type##T, i32T),   \
+    MAKE_C_FN_1_ARGS(i64, type##T, i64T),   \
+    MAKE_C_FN_1_ARGS(u8, type##T, u8T),     \
+    MAKE_C_FN_1_ARGS(u16, type##T, u16T),   \
+    MAKE_C_FN_1_ARGS(u32, type##T, u32T),   \
+    MAKE_C_FN_1_ARGS(u64, type##T, u64T),   \
+    MAKE_C_FN_1_ARGS(f32, type##T, f32T),   \
+    MAKE_C_FN_1_ARGS(f64, type##T, f64T),   \
+    MAKE_C_FN_1_ARGS(bool, type##T, boolT), \
+    MAKE_C_FN_1_ARGS(char, type##T, charT),
 
-    MAKE_C_FN_1_ARGS(+, boolT, boolT),
-    MAKE_C_FN_1_ARGS(+, charT, charT),
-    MAKE_C_FN_1_ARGS(+, i8T, i8T),
-    MAKE_C_FN_1_ARGS(+, i16T, i16T),
-    MAKE_C_FN_1_ARGS(+, i32T, i32T),
-    MAKE_C_FN_1_ARGS(+, i64T, i64T),
-    MAKE_C_FN_1_ARGS(+, u8T, u8T),
-    MAKE_C_FN_1_ARGS(+, u16T, u16T),
-    MAKE_C_FN_1_ARGS(+, u32T, u32T),
-    MAKE_C_FN_1_ARGS(+, u64T, u64T),
 
-    MAKE_C_FN_1_ARGS(~, boolT, boolT),
-    MAKE_C_FN_1_ARGS(~, charT, charT),
-    MAKE_C_FN_1_ARGS(~, i8T, i8T),
-    MAKE_C_FN_1_ARGS(~, i16T, i16T),
-    MAKE_C_FN_1_ARGS(~, i32T, i32T),
-    MAKE_C_FN_1_ARGS(~, i64T, i64T),
-    MAKE_C_FN_1_ARGS(~, u8T, u8T),
-    MAKE_C_FN_1_ARGS(~, u16T, u16T),
-    MAKE_C_FN_1_ARGS(~, u32T, u32T),
-    MAKE_C_FN_1_ARGS(~, u64T, u64T),
+    MAKE_C_FN_INT(i8)
+    MAKE_C_FN_INT(i16)
+    MAKE_C_FN_INT(i32)
+    MAKE_C_FN_INT(i64)
 
-    MAKE_C_FN_1_ARGS(out, i8T, voidT),
-    MAKE_C_FN_1_ARGS(out, i16T, voidT),
-    MAKE_C_FN_1_ARGS(out, i32T, voidT),
-    MAKE_C_FN_1_ARGS(out, i64T, voidT),
+    MAKE_C_FN_INT(u8)
+    MAKE_C_FN_INT(u16)
+    MAKE_C_FN_INT(u32)
+    MAKE_C_FN_INT(u64)
 
-    MAKE_C_FN_1_ARGS(out, u8T, voidT),
-    MAKE_C_FN_1_ARGS(out, u16T, voidT),
-    MAKE_C_FN_1_ARGS(out, u32T, voidT),
-    MAKE_C_FN_1_ARGS(out, u64T, voidT),
+    MAKE_C_FN_INT(char)
+    MAKE_C_FN_INT(bool)
+
+#define MAKE_C_FN_FLOAT(type)              \
+    MAKE_C_FN_1_ARGS(!, type##T, boolT),   \
+    MAKE_C_FN_1_ARGS(-, type##T, type##T), \
+    MAKE_C_FN_1_ARGS(+, type##T, type##T), \
+    MAKE_C_FN_1_ARGS(out, type##T, voidT), \
+    MAKE_C_FN_1_ARGS(put, type##T, voidT), \
+    MAKE_C_FN_0_ARGS(in_##type, type##T), 
+
+MAKE_C_FN_FLOAT(f32)
+MAKE_C_FN_FLOAT(f64)
 
     MAKE_C_FN_1_ARGS(out, strT, voidT),
-    MAKE_C_FN_1_ARGS(out, charT, voidT),
-
-    MAKE_C_FN_1_ARGS(out, boolT, voidT),
-
-    MAKE_C_FN_1_ARGS(out, f32T, voidT),
-    MAKE_C_FN_1_ARGS(out, f64T, voidT),
-
-    MAKE_C_FN_1_ARGS(put, i8T, voidT),
-    MAKE_C_FN_1_ARGS(put, i16T, voidT),
-    MAKE_C_FN_1_ARGS(put, i32T, voidT),
-    MAKE_C_FN_1_ARGS(put, i64T, voidT),
-
-    MAKE_C_FN_1_ARGS(put, u8T, voidT),
-    MAKE_C_FN_1_ARGS(put, u16T, voidT),
-    MAKE_C_FN_1_ARGS(put, u32T, voidT),
-    MAKE_C_FN_1_ARGS(put, u64T, voidT),
-
     MAKE_C_FN_1_ARGS(put, strT, voidT),
-    MAKE_C_FN_1_ARGS(put, charT, voidT),
-
-    MAKE_C_FN_1_ARGS(put, boolT, voidT),
-
-    MAKE_C_FN_1_ARGS(put, f32T, voidT),
-    MAKE_C_FN_1_ARGS(put, f64T, voidT),
-
-    MAKE_C_FN_0_ARGS(in_i8, i8T),
-    MAKE_C_FN_0_ARGS(in_i16, i16T),
-    MAKE_C_FN_0_ARGS(in_i32, i32T),
-    MAKE_C_FN_0_ARGS(in_i64, i64T),
-
-    MAKE_C_FN_0_ARGS(in_u8, u8T),
-    MAKE_C_FN_0_ARGS(in_u16, u16T),
-    MAKE_C_FN_0_ARGS(in_u32, u32T),
-    MAKE_C_FN_0_ARGS(in_u64, u64T),
-
-    MAKE_C_FN_0_ARGS(in_char, charT),
     MAKE_C_FN_0_ARGS(in_str, strT),
-
-    MAKE_C_FN_0_ARGS(in_bool, boolT),
-
-    MAKE_C_FN_0_ARGS(in_f32, f32T),
-    MAKE_C_FN_0_ARGS(in_f64, f64T),
 
     MAKE_C_FN_1_ARGS(malloc, i64T, i64T),
     MAKE_C_FN_1_ARGS(calloc, i64T, voidT),

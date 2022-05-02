@@ -36,7 +36,7 @@ std::string id2C(const std::string& str) {
   return ans;
 }
 
-std::string toC(STTree* block) {
+std::string toC(ZHModule* block) {
   std::string res = R"(#include <stdlib.h>
 #include <stdbool.h>
 #include <stdint.h>
@@ -119,14 +119,14 @@ MAKE_ABOBA(in_f64, double, "%lf")
     res += struct2C(id);
   }
 
-  for (auto i : block->functions) {
+  for (auto i : zhdata.functions) {
     res += funcHead2C(i);
     res += ";\n";
   }
 
   res += "\n";
 
-  for (auto i : block->functions) {
+  for (auto i : zhdata.functions) {
     res += func2C(i);
   }
   return res;
@@ -314,114 +314,104 @@ std::string exp2C(zhexp::Exp* exp) {
     res += args2C(op->child, {types::Type()});                  \
     res += ")";                                                 \
   }
-      MAKE_LOP_C(in_i8, voidT, "in_i8(")
-      MAKE_LOP_C(in_i16, voidT, "in_i16(")
-      MAKE_LOP_C(in_i32, voidT, "in_i32(")
-      MAKE_LOP_C(in_i64, voidT, "in_i64(")
-      MAKE_LOP_C(in_u8, voidT, "in_u8(")
-      MAKE_LOP_C(in_u16, voidT, "in_u16(")
-      MAKE_LOP_C(in_u32, voidT, "in_u32(")
-      MAKE_LOP_C(in_u64, voidT, "in_u64(")
-      MAKE_LOP_C(in_char, voidT, "in_char(")
-      MAKE_LOP_C(in_str, voidT, "in_str(")
-      MAKE_LOP_C(in_bool, voidT, "in_bool(")
-      MAKE_LOP_C(in_f32, voidT, "in_f32(")
-      MAKE_LOP_C(in_f64, voidT, "in_f64(")
 
-      MAKE_LOP_C(~, boolT, "~(")
-      MAKE_LOP_C(~, charT, "~(")
-      MAKE_LOP_C(~, i8T, "~(")
-      MAKE_LOP_C(~, i16T, "~(")
-      MAKE_LOP_C(~, i32T, "~(")
-      MAKE_LOP_C(~, i64T, "~(")
-      MAKE_LOP_C(~, u8T, "~(")
-      MAKE_LOP_C(~, u16T, "~(")
-      MAKE_LOP_C(~, u32T, "~(")
-      MAKE_LOP_C(~, u64T, "~(")
+#define MAKE_C_FN_INT(type)                     \
+  MAKE_LOP_C(!, type##T, "!(")                  \
+  MAKE_LOP_C(-, type##T, "-(")                  \
+  MAKE_LOP_C(+, type##T, "+(")                  \
+  MAKE_LOP_C(~, type##T, "~(")                  \
+  MAKE_LOP_C(in_##type, voidT, "in_" #type "(") \
+  MAKE_LOP_C(i8, type##T, "(i8)(")                \
+  MAKE_LOP_C(i16, type##T, "(i16)(")              \
+  MAKE_LOP_C(i32, type##T, "(i32)(")              \
+  MAKE_LOP_C(i64, type##T, "(i64)(")              \
+  MAKE_LOP_C(u8, type##T, "(u8)(")                \
+  MAKE_LOP_C(u16, type##T, "(u16)(")              \
+  MAKE_LOP_C(u32, type##T, "(u32)(")              \
+  MAKE_LOP_C(u64, type##T, "(u64)(")              \
+  MAKE_LOP_C(f32, type##T, "(f32)(")              \
+  MAKE_LOP_C(f64, type##T, "(f64)(")              \
+  MAKE_LOP_C(bool, type##T, "(bool)(")            \
+  MAKE_LOP_C(char, type##T, "(char)(")
 
-      MAKE_LOP_C(+, boolT, "+(")
-      MAKE_LOP_C(+, charT, "+(")
-      MAKE_LOP_C(+, i8T, "+(")
-      MAKE_LOP_C(+, i16T, "+(")
-      MAKE_LOP_C(+, i32T, "+(")
-      MAKE_LOP_C(+, i64T, "+(")
-      MAKE_LOP_C(+, u8T, "+(")
-      MAKE_LOP_C(+, u16T, "+(")
-      MAKE_LOP_C(+, u32T, "+(")
-      MAKE_LOP_C(+, u64T, "+(")
-      MAKE_LOP_C(+, f32T, "+(")
-      MAKE_LOP_C(+, f64T, "+(")
+  MAKE_C_FN_INT(i8)
+  MAKE_C_FN_INT(i16)
+  MAKE_C_FN_INT(i32)
+  MAKE_C_FN_INT(i64)
+  MAKE_C_FN_INT(u8)
+  MAKE_C_FN_INT(u16)
+  MAKE_C_FN_INT(u32)
+  MAKE_C_FN_INT(u64)
+  MAKE_C_FN_INT(bool)
+  MAKE_C_FN_INT(char)
 
-      MAKE_LOP_C(-, boolT, "-(")
-      MAKE_LOP_C(-, charT, "-(")
-      MAKE_LOP_C(-, i8T, "-(")
-      MAKE_LOP_C(-, i16T, "-(")
-      MAKE_LOP_C(-, i32T, "-(")
-      MAKE_LOP_C(-, i64T, "-(")
-      MAKE_LOP_C(-, u8T, "-(")
-      MAKE_LOP_C(-, u16T, "-(")
-      MAKE_LOP_C(-, u32T, "-(")
-      MAKE_LOP_C(-, u64T, "-(")
-      MAKE_LOP_C(-, f32T, "-(")
-      MAKE_LOP_C(-, f64T, "-(")
+#define MAKE_C_FN_FLOAT(type)                   \
+  MAKE_LOP_C(!, type##T, "!(")                  \
+  MAKE_LOP_C(-, type##T, "-(")                  \
+  MAKE_LOP_C(+, type##T, "+(")                  \
+  MAKE_LOP_C(in_##type, voidT, "in_" #type "(") \
+  MAKE_LOP_C(i8, type##T, "(i8)(")                \
+  MAKE_LOP_C(i16, type##T, "(i16)(")              \
+  MAKE_LOP_C(i32, type##T, "(i32)(")              \
+  MAKE_LOP_C(i64, type##T, "(i64)(")              \
+  MAKE_LOP_C(u8, type##T, "(u8)(")                \
+  MAKE_LOP_C(u16, type##T, "(u16)(")              \
+  MAKE_LOP_C(u32, type##T, "(u32)(")              \
+  MAKE_LOP_C(u64, type##T, "(u64)(")              \
+  MAKE_LOP_C(f32, type##T, "(f32)(")              \
+  MAKE_LOP_C(f64, type##T, "(f64)(")              \
+  MAKE_LOP_C(bool, type##T, "(bool)(")            \
+  MAKE_LOP_C(char, type##T, "(char)(")
 
-      MAKE_LOP_C(!, boolT, "!(")
-      MAKE_LOP_C(!, charT, "!(")
-      MAKE_LOP_C(!, i8T, "!(")
-      MAKE_LOP_C(!, i16T, "!(")
-      MAKE_LOP_C(!, i32T, "!(")
-      MAKE_LOP_C(!, i64T, "!(")
-      MAKE_LOP_C(!, u8T, "!(")
-      MAKE_LOP_C(!, u16T, "!(")
-      MAKE_LOP_C(!, u32T, "!(")
-      MAKE_LOP_C(!, u64T, "!(")
-      MAKE_LOP_C(!, f32T, "!(")
-      MAKE_LOP_C(!, f64T, "!(")
+  MAKE_C_FN_FLOAT(f32)
+  MAKE_C_FN_FLOAT(f64)
 
-      MAKE_LOP_C(put, i8T, "printf(\"%d\", ")
-      MAKE_LOP_C(out, i8T, "printf(\"%d\\n\", ")
+  MAKE_LOP_C(in_str, voidT, "in_str(")
 
-      MAKE_LOP_C(put, i16T, "printf(\"%hd\", ")
-      MAKE_LOP_C(out, i16T, "printf(\"%hd\\n\", ")
+  MAKE_LOP_C(put, i8T, "printf(\"%d\", ")
+  MAKE_LOP_C(out, i8T, "printf(\"%d\\n\", ")
 
-      MAKE_LOP_C(put, i32T, "printf(\"%d\", ")
-      MAKE_LOP_C(out, i32T, "printf(\"%d\\n\", ")
+  MAKE_LOP_C(put, i16T, "printf(\"%hd\", ")
+  MAKE_LOP_C(out, i16T, "printf(\"%hd\\n\", ")
 
-      MAKE_LOP_C(put, i64T, "printf(\"%lld\", ")
-      MAKE_LOP_C(out, i64T, "printf(\"%lld\\n\", ")
+  MAKE_LOP_C(put, i32T, "printf(\"%d\", ")
+  MAKE_LOP_C(out, i32T, "printf(\"%d\\n\", ")
 
-      MAKE_LOP_C(put, u8T, "printf(\"%d\", ")
-      MAKE_LOP_C(out, u8T, "printf(\"%d\\n\", ")
+  MAKE_LOP_C(put, i64T, "printf(\"%lld\", ")
+  MAKE_LOP_C(out, i64T, "printf(\"%lld\\n\", ")
 
-      MAKE_LOP_C(put, u16T, "printf(\"%hd\", ")
-      MAKE_LOP_C(out, u16T, "printf(\"%hd\\n\", ")
+  MAKE_LOP_C(put, u8T, "printf(\"%d\", ")
+  MAKE_LOP_C(out, u8T, "printf(\"%d\\n\", ")
 
-      MAKE_LOP_C(put, u32T, "printf(\"%u\", ")
-      MAKE_LOP_C(out, u32T, "printf(\"%u\\n\", ")
+  MAKE_LOP_C(put, u16T, "printf(\"%hd\", ")
+  MAKE_LOP_C(out, u16T, "printf(\"%hd\\n\", ")
 
-      MAKE_LOP_C(put, u64T, "printf(\"%llu\", ")
-      MAKE_LOP_C(out, u64T, "printf(\"%llu\\n\", ")
+  MAKE_LOP_C(put, u32T, "printf(\"%u\", ")
+  MAKE_LOP_C(out, u32T, "printf(\"%u\\n\", ")
 
-      MAKE_LOP_C(put, f32T, "printf(\"%f\", ")
-      MAKE_LOP_C(out, f32T, "printf(\"%f\\n\", ")
+  MAKE_LOP_C(put, u64T, "printf(\"%llu\", ")
+  MAKE_LOP_C(out, u64T, "printf(\"%llu\\n\", ")
 
-      MAKE_LOP_C(put, f64T, "printf(\"%f\", ")
-      MAKE_LOP_C(out, f64T, "printf(\"%f\\n\", ")
+  MAKE_LOP_C(put, f32T, "printf(\"%f\", ")
+  MAKE_LOP_C(out, f32T, "printf(\"%f\\n\", ")
 
-      MAKE_LOP_C(put, strT, "printf(\"%s\", ")
-      MAKE_LOP_C(out, strT, "printf(\"%s\\n\", ")
+  MAKE_LOP_C(put, f64T, "printf(\"%f\", ")
+  MAKE_LOP_C(out, f64T, "printf(\"%f\\n\", ")
 
-      MAKE_LOP_C(put, charT, "printf(\"%c\", ")
-      MAKE_LOP_C(out, charT, "printf(\"%c\\n\", ")
+  MAKE_LOP_C(put, strT, "printf(\"%s\", ")
+  MAKE_LOP_C(out, strT, "printf(\"%s\\n\", ")
 
-      MAKE_LOP_C(put, boolT, "printf(\"%d\", ")
-      MAKE_LOP_C(out, boolT, "printf(\"%d\\n\", ")
+  MAKE_LOP_C(put, charT, "printf(\"%c\", ")
+  MAKE_LOP_C(out, charT, "printf(\"%c\\n\", ")
 
-      MAKE_LOP_C(malloc, i64T, "alloc(")
-      MAKE_LOP_C(free, i64T, "free((void*) ")
+  MAKE_LOP_C(put, boolT, "printf(\"%d\", ")
+  MAKE_LOP_C(out, boolT, "printf(\"%d\\n\", ")
 
-      else {
-        throw ParserError(op->begin, op->end, "unimplemented C op " + op->val);
+  MAKE_LOP_C(malloc, i64T, "alloc(")
+  MAKE_LOP_C(free, i64T, "free((void*) ")
+
+  else {
+    throw ParserError(op->begin, op->end, "unimplemented C op " + op->val);
       }
     } else if (op->val == "&") {
       res += "&";

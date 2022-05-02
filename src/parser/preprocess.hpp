@@ -8,4 +8,4 @@
 #include "parser_error.hpp"
 
 void defineFlowTokens(std::vector<Token> &tokens);
-void preprocess(std::filesystem::path file_path, std::vector<Token> &res, int depth = 0);
+std::vector<Token> tokenizeFile(std::filesystem::path file_path);

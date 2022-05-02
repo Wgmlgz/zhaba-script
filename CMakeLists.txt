@@ -14,9 +14,9 @@ include_directories(tests)
 
 
 set(lib          
-  src/compiler/Compiler.hpp
-  src/compiler/CompilerTables.hpp
-  src/compiler/FileCompiler.hpp
+  src/compiler/compiler.hpp
+  src/compiler/tables.hpp
+  src/compiler/module_compiler.hpp
   src/compiler/to_c.hpp
   src/compiler/to_c.cpp
   src/interpreter/bytecode.hpp

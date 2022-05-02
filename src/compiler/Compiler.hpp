@@ -1,4 +1,4 @@
 #pragma once
 // #include "ToC.hpp"
-#include "FileCompiler.hpp"
-#include "CompilerTables.hpp"
+#include "module_compiler.hpp"
+#include "tables.hpp"

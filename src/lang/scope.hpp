@@ -13,7 +13,7 @@ struct Function;
 int64_t genId();
 
 class ScopeInfo {
-  const ScopeInfo* parent = nullptr;
+  std::vector<const ScopeInfo*> parents;
 
  public:
   struct VarInfo {
@@ -45,27 +45,29 @@ class ScopeInfo {
 
   ScopeInfo(const ScopeInfo* new_parent);
   ScopeInfo(const ScopeInfo&) = delete;
+  void addParent(const ScopeInfo* new_parent);
 
 #define MAKE_SCOPE_ACCESS(property, properties, display, container,     \
                           return_type, access_type)                     \
   bool contains##property(const access_type& name) const {              \
     if (container.contains(name)) return true;                          \
-    if (parent) return parent->contains##property(name);                \
+    for (const auto parent : parents) {                                 \
+      bool f = parent->contains##property(name);                        \
+      if (f) return true;                                               \
+    }                                                                   \
     return false;                                                       \
   }                                                                     \
-  return_type& get##property(const access_type& name) {                 \
-    if (!contains##property(name))                                      \
-      throw std::runtime_error(#display " '" + name + "'" +             \
-                               "is not defined in this scope");         \
-    if (container.contains(name)) return container.at(name);            \
-    return const_cast<return_type&>(parent->get##property(name));       \
-  }                                                                     \
   const return_type& get##property(const access_type& name) const {     \
-    if (!contains##property(name))                                      \
-      throw std::runtime_error(#display " '" + name + "'" +             \
-                               "is not defined in this scope");         \
     if (container.contains(name)) return container.at(name);            \
-    return parent->get##property(name);                                 \
+    for (const auto parent : parents)                                   \
+      if (parent->contains##property(name))                             \
+        return parent->get##property(name);                             \
+    throw std::runtime_error(#display " '" + name + "'" +               \
+                             "is not defined in this scope");           \
+  }                                                                     \
+  return_type& get##property(const access_type& name) {                 \
+    return const_cast<return_type&>(                                    \
+        static_cast<const ScopeInfo&>(*this).get##property(name));      \
   }                                                                     \
   void set##property(const access_type& name, const return_type& val) { \
     if (container.contains(name))                                       \
@@ -79,15 +81,19 @@ class ScopeInfo {
                                 return_type, access_type)                     \
   bool contains##property(const access_type& name) const {                    \
     if (container.contains(name)) return true;                                \
-    if (parent) return parent->contains##property(name);                      \
+    for (const auto parent : parents) {                                       \
+      bool f = parent->contains##property(name);                              \
+      if (f) return true;                                                     \
+    }                                                                         \
     return false;                                                             \
   }                                                                           \
   const return_type& get##property(const access_type& name) const {           \
-    if (!contains##property(name))                                            \
-      throw std::runtime_error(#display " is not defined in this scope");     \
-    if (container.contains(name))                                             \
-      return const_cast<const return_type&>(container.at(name));              \
-    return parent->get##property(name);                                       \
+    if (container.contains(name)) return container.at(name);                  \
+    for (const auto parent : parents)                                         \
+      if (parent->contains##property(name))                                   \
+        return parent->get##property(name);                                   \
+    throw std::runtime_error(#display " '" + name + "'" +                     \
+                             "is not defined in this scope");                 \
   }                                                                           \
   return_type& get##property(const access_type& name) {                       \
     return const_cast<return_type&>(                                          \
@@ -102,27 +108,37 @@ class ScopeInfo {
 #define MAKE_SCOPE_ACCESS_OP(property, properties, display, container)        \
   bool contains##property(const types::funcHead& name) const {                \
     if (container.contains(name)) return true;                                \
-    if (parent) return parent->contains##property(name);                      \
+    for (const auto parent : parents) {                                       \
+      bool f = parent->contains##property(name);                              \
+      if (f) return true;                                                     \
+    }                                                                         \
     return false;                                                             \
   }                                                                           \
   bool contains##property(const std::string& name) const {                    \
     if (container##NAME_.contains(name)) return true;                         \
-    if (parent) return parent->contains##property(name);                      \
+    for (const auto parent : parents) {                                       \
+      bool f = parent->contains##property(name);                              \
+      if (f) return true;                                                     \
+    }                                                                         \
     return false;                                                             \
   }                                                                           \
   const Function*& get##property(const types::funcHead& name) const {         \
-    if (!contains##property(name))                                            \
-      throw std::runtime_error(#display " is not defined in this scope");     \
     if (container.contains(name))                                             \
       return const_cast<const Function*&>(container.at(name));                \
-    return parent->get##property(name);                                       \
+    for (const auto parent : parents) {                                       \
+      bool b = parent->contains##property(name);                              \
+      if (b) return parent->get##property(name);                              \
+    }                                                                         \
+    throw std::runtime_error(#display " is not defined in this scope");       \
   }                                                                           \
   const Function*& get##property(const std::string& name) const {             \
-    if (!contains##property(name))                                            \
-      throw std::runtime_error(#display " is not defined in this scope");     \
     if (container##NAME_.contains(name))                                      \
       return const_cast<const Function*&>(container##NAME_.at(name));         \
-    return parent->get##property(name);                                       \
+    for (const auto parent : parents) {                                       \
+      bool b = parent->contains##property(name);                              \
+      if (b) return parent->get##property(name);                              \
+    }                                                                         \
+    throw std::runtime_error(#display " is not defined in this scope");       \
   }                                                                           \
   Function*& get##property(const types::funcHead& name) {                     \
     return const_cast<Function*&>(                                            \
@@ -143,7 +159,10 @@ class ScopeInfo {
                               access_type)                                    \
   bool contains##property(const access_type& name) const {                    \
     if (container.contains(name)) return true;                                \
-    if (parent) return parent->contains##property(name);                      \
+    for (const auto parent : parents) {                                       \
+      bool f = parent->contains##property(name);                              \
+      if (f) return true;                                                     \
+    }                                                                         \
     return false;                                                             \
   }                                                                           \
   void set##property(const access_type& name) {                               \
@@ -153,10 +172,10 @@ class ScopeInfo {
   }                                                                           \
   const auto get##properties() { return &container; }
 
-  // MAKE_SCOPE_ACCESS(Var, Vars, variable, vars, types::Type, std::string);
+      // MAKE_SCOPE_ACCESS(Var, Vars, variable, vars, types::Type, std::string);
 
-  MAKE_SCOPE_ACCESS(Typedef, Typedefs, typedef, typedefs, types::Type,
-                    std::string);
+      MAKE_SCOPE_ACCESS(Typedef, Typedefs, typedef, typedefs, types::Type,
+                        std::string);
   MAKE_SCOPE_ACCESS_OP(BinOp, BinOps, binary_operator, B_OD_);
   MAKE_SCOPE_ACCESS_OP(PrOp, PrOps, prefix_operator, PR_OD_);
   MAKE_SCOPE_ACCESS_OP(PoOp, PoOps, postfix_operator, PO_OD_);
@@ -172,78 +191,80 @@ class ScopeInfo {
 
   bool containsVar(const std::string& name) const {
     if (vars_name.contains(name)) return true;
-    if (parent) return parent->containsVar(name);
+    for (const auto parent : parents) {
+      bool f = parent->containsVar(name);
+      if (f) return true;
+    }
     return false;
   }
 
-  types::Type& getVarType(const std::string& name) {
-    if (!containsVar(name))
-      throw std::runtime_error("variable '" + name + "'" +
-                               "is not defined in this scope");
-    if (vars_name.contains(name)) return vars_name.at(name)->type;
-    return const_cast<types::Type&>(parent->getVarType(name));
-  }
-
   const types::Type& getVarType(const std::string& name) const {
-    if (!containsVar(name))
-      throw std::runtime_error("variable '" + name + "'" +
-                               "is not defined in this scope");
     if (vars_name.contains(name)) return vars_name.at(name)->type;
-    return parent->getVarType(name);
+    for (const auto parent : parents)
+      return const_cast<types::Type&>(parent->getVarType(name));
+    throw std::runtime_error("variable '" + name + "'" +
+                             "is not defined in this scope");
   }
 
-  int64_t& getVarId(const std::string& name) {
-    if (!containsVar(name))
-      throw std::runtime_error("variable '" + name + "'" +
-                               "is not defined in this scope");
-    if (vars_name.contains(name)) return vars_name.at(name)->id;
-    return const_cast<int64_t&>(parent->getVarId(name));
+  types::Type& getVarType(const std::string& name) {
+    return const_cast<types::Type&>(
+        static_cast<const ScopeInfo&>(*this).getVarType(name));
   }
 
   const int64_t& getVarId(const std::string& name) const {
-    if (!containsVar(name))
-      throw std::runtime_error("variable '" + name + "'" +
-                               "is not defined in this scope");
     if (vars_name.contains(name)) return vars_name.at(name)->id;
-    return parent->getVarId(name);
+    for (const auto parent : parents) {
+      bool b = parent->containsVar(name);
+      if (b) return const_cast<int64_t&>(parent->getVarId(name));
+    }
+    throw std::runtime_error("variable '" + name + "'" +
+                             "is not defined in this scope");
   }
-  
+
   bool containsVar(const int64_t& id) const {
     if (vars_id.contains(id)) return true;
-    if (parent) return parent->containsVar(id);
+    for (const auto parent : parents) {
+      bool b = parent->containsVar(id);
+      if (b) return true;
+    }
     return false;
   }
 
   const std::string& getVarName(int64_t id) const {
-    if (!containsVar(id))
-      throw std::runtime_error("variable '" + std::to_string(id) + "'" +
-                               "is not defined in this scope");
     if (vars_id.contains(id)) return vars_id.at(id)->name;
-    return parent->getVarName(id);
+    for (const auto parent : parents) {
+      bool b = parent->containsVar(id);
+      if (b) return const_cast<std::string&>(parent->getVarName(id));
+    }
+    throw std::runtime_error("variable '" + std::to_string(id) + "'" +
+                             "is not defined in this scope");
   }
 
   const VarInfo* const& getVarInfo(int64_t id) const {
-    if (!containsVar(id))
-      throw std::runtime_error("variable '" + std::to_string(id) + "'" +
-                               "is not defined in this scope");
     if (vars_id.contains(id)) return vars_id.at(id);
-    return parent->getVarInfo(id);
+    for (const auto parent : parents) {
+      bool b = parent->containsVar(id);
+      if (b) return parent->getVarInfo(id);
+    }
+    throw std::runtime_error("variable '" + std::to_string(id) + "'" +
+                             "is not defined in this scope");
+  }
+
+
+
+  const types::Type& getVarType(const int64_t& id) const {
+    if (vars_id.contains(id)) return vars_id.at(id)->type;
+    for (const auto parent : parents) {
+      bool b = parent->containsVar(id);
+      if (b) return parent->getVarType(id);
+    }
+    throw std::runtime_error("variable '" + std::to_string(id) + "'" +
+                             "is not defined in this scope");
   }
 
   types::Type& getVarType(const int64_t& id) {
-    if (!containsVar(id))
-      throw std::runtime_error("variable '" + std::to_string(id) + "'" +
-                               "is not defined in this scope");
-    if (vars_id.contains(id)) return vars_id.at(id)->type;
-    return const_cast<types::Type&>(parent->getVarType(id));
-  }
-
-  const types::Type& getVarType(const int64_t& id) const {
-    if (!containsVar(id))
-      throw std::runtime_error("variable(id) '" + std::to_string(id) + "'" +
-                               "is not defined in this scope");
-    if (vars_id.contains(id)) return vars_id.at(id)->type;
-    return parent->getVarType(id);
+    return const_cast<types::Type&>(static_cast<const ScopeInfo&>(*this).
+                                        getVarType(id));
   }
 
   void setVar(const std::string& name, const types::Type& val) {
@@ -261,7 +282,7 @@ class ScopeInfo {
   void collectVars(ScopeInfo* last,
                    std::unordered_map<int64_t, VarInfo*>& push_map) const {
     for (auto i : vars_id) push_map.insert(i);
-    if (this == last || !parent) return;
-    parent->collectVars(last, push_map);
+    if (this == last) return;
+    for (const auto parent : parents) parent->collectVars(last, push_map);
   }
 };

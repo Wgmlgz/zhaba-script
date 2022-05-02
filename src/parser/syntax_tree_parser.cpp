@@ -543,11 +543,11 @@ std::vector<Function*> parseImpl(ast::ASTBlock* block, const types::Type& type,
   return res;
 }
 
-void parceFn(STTree* res, ScopeInfo& push_scope, ast::ASTLine* line, ast::ASTBlock* main_block,
+void parceFn(ZHModule* res, ScopeInfo& push_scope, ast::ASTLine* line, ast::ASTBlock* main_block,
              std::vector<ast::ASTNode*>::iterator& cur) {
   /** Parse function header */
-  res->functions.push_back(parseOpHeader(line->begin, line->end, push_scope));
-  auto& func = res->functions.back();
+  zhdata.functions.push_back(parseOpHeader(line->begin, line->end, push_scope));
+  auto& func = zhdata.functions.back();
 
   /** Regiester function */
   std::vector<types::Type> types;
@@ -602,7 +602,7 @@ void parceFn(STTree* res, ScopeInfo& push_scope, ast::ASTLine* line, ast::ASTBlo
   if (cur == main_block->nodes.end())
     throw ParserError(*line->end, "Expected function body");
   if (auto block = dynamic_cast<ast::ASTBlock*>(*cur)) {
-    auto& t = res->functions.back();
+    auto& t = zhdata.functions.back();
     t->body = parseASTblock(block, scope, func);
     t->args_scope = scope;
   } else {
@@ -611,24 +611,106 @@ void parceFn(STTree* res, ScopeInfo& push_scope, ast::ASTLine* line, ast::ASTBlo
   ++cur;
 }
 
-STTree* parseAST(ast::ASTBlock* main_block) {
-  // TODO: add module scope
-  STTree* res = new STTree(nullptr);
-  /* init with default values*/
-  res->scope.bin_operators_ = tables::bin_operators;
-  res->scope.prefix_operators_ = tables::prefix_operators;
-  res->scope.postfix_operators_ = tables::postfix_operators;
+ZHModule* parseAST(std::filesystem::path file_path) {
+  std::vector<Token>& tokens = *new std::vector<Token>(tokenizeFile(file_path));
 
-  res->scope.B_OD_ = tables::B_OD;
-  res->scope.PR_OD_ = tables::PR_OD;
-  res->scope.operators = tables::operators;
+  if (zhdata.flags["show_preprocessed"]) {
+    std::cout << "preprocessed:\n";
+    for (auto& i : tokens) {
+      std::cout << (i.val);
+    }
+    std::cout << std::endl;
+    // std::cout << programm;
+  }
+
+  defineFlowTokens(tokens);
+
+  auto main_block = ast::parse(tokens.begin(), tokens.end());
+
+  if (zhdata.flags["show_ast"]) {
+    auto ast_generic = ast::toGenericTree(main_block);
+    std::cout << "ast:\n";
+    printCompact(ast_generic);
+  }
+
+
+  ZHModule* res = new ZHModule(&zhdata.core_module->scope);
+
+  // if (!parent_module) {
+  //   /* init with default values*/
+  //   res->scope.bin_operators_ = tables::bin_operators;
+  //   res->scope.prefix_operators_ = tables::prefix_operators;
+  //   res->scope.postfix_operators_ = tables::postfix_operators;
+
+  //   res->scope.B_OD_ = tables::B_OD;
+  //   res->scope.PR_OD_ = tables::PR_OD;
+  //   res->scope.operators = tables::operators;
+  // }
 
   zhdata.sttree = res;
   auto cur = main_block->nodes.begin();
 
+  bool all_imported = false;
+  
   while (cur != main_block->nodes.end()) {
     if (auto line = dynamic_cast<ast::ASTLine*>(*cur)) {
       const auto& id = line->begin->val;
+      if (id == "use") {
+        if (all_imported)
+          throw ParserError(*line->begin, *line->end,
+                            "`use` only allowed at the top");
+        std::string path = "";
+
+
+        auto token = line->begin;
+        ++token;
+        while (token != line->end) {
+          auto path_str = token->val;
+          if (token->token == TOKEN::str_literal) {
+            path_str.erase(path_str.begin());
+            path_str.pop_back();
+          }
+          path += token->val;
+          ++token;
+        }
+
+        while (!path.empty() && path.back() == ' ') path.pop_back();
+        while (!path.empty() && path.front() == ' ') path.erase(path.begin());
+
+        auto hasEnding =
+            [](const std::string& fullString, const std::string& ending) {
+              if (fullString.length() >= ending.length()) {
+                return 0 == fullString.compare(fullString.length() -
+                ending.length(),
+                                               ending.length(), ending);
+              } else {
+                return false;
+              }
+            };
+        if (!hasEnding(path, ".zh")) path += ".zh";
+        if (!zhdata.used_modules.contains(path)) {
+          zhdata.used_modules.emplace(path, nullptr);
+          std::filesystem::path file_path = path;
+          if (file_path.is_relative())
+            file_path = file_path.parent_path() / path;
+
+          auto parsed_module = parseAST(file_path);
+          res->scope.addParent(&parsed_module->scope);
+          zhdata.sttree = res;
+          zhdata.used_modules[path] = parsed_module;
+        } else {
+          if (zhdata.used_modules[path])
+            res->scope.addParent(&zhdata.used_modules[path]->scope);
+          else
+            throw ParserError(*line->begin, *line->end,
+                              "module `" + path + "` isn't avaliable yet");
+        }
+
+        ++cur;
+        continue;
+      } else {
+        all_imported = true;
+      }
       if (id == "type") {
         /** Struct declaration */
         if (line->end - line->begin < 3)
@@ -673,6 +755,9 @@ STTree* parseAST(ast::ASTBlock* main_block) {
             throw ParserError(*line->begin, *line->end, err.what());
           }
         } else {
+          if (name == "Str") {
+            int a = 4 + 4;
+          }
           /** Push declared struct */
           types::parsePushStruct(name, block, res->scope);
         }
@@ -706,15 +791,14 @@ STTree* parseAST(ast::ASTBlock* main_block) {
           }
 
           auto funcs = parseImpl(block, type, res->scope, res->scope);
-          for (auto i : funcs)
-            res->functions.push_back(i);
+          for (auto i : funcs) zhdata.functions.push_back(i);
         }
 
         ++cur;
       } else if (id == "op" or id == "lop" or id == "rop" or id == "fn") {
         parceFn(res, res->scope, line, main_block, cur);
       } else {
-        throw ParserError(*line->begin, "Exptected declaratiion");
+        throw ParserError(*line->begin, "Expected declaration");
       }
     } else {
       throw ParserError("Random error lol (cannot cast ast node)");

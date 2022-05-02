@@ -19,7 +19,10 @@ STExp *callDtor(std::pair<ScopeInfo::VarInfo *, Function *> info) {
 };
 
 void copyExp(Exp *&exp, ScopeInfo &scope) {
-  if (!(exp->type.getLval() || exp->type.getRef())) return;
+  if (!(exp->type.getLval() || exp->type.getRef()))
+    return;
+  if (exp->type.getTypeId() < static_cast<types::TYPE>(zhdata.first_struct_id))
+    return;
   if (!scope.containsPrOp({exp->type.nonRefClone().rvalClone().toString(),
                            {exp->type.nonRefClone().rvalClone()}}))
     return;
@@ -666,7 +669,7 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
       fn->body->nodes.push_back(st_node);
 
       /** Finish */
-      zhdata.sttree->functions.push_back(fn);
+      zhdata.functions.push_back(fn);
       scope.setFn(fn->getHead(), fn);
       auto fn_literal = new FnLiteral(op->begin, op->end, fn);
       fn_literal->type = fn->getFnType();

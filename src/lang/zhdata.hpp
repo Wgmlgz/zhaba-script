@@ -40,11 +40,12 @@ struct ZHDATA {
   int64_t parentheses_offset = 1000000;
 
   /** main syntax tree */
-  STTree *sttree;
+  ZHModule *sttree;
+  ZHModule *core_module = nullptr;
 
   Lexer lexer = tables::lexer_tokens;
 
-  std::set<std::string> used_modules;
+  std::map<std::filesystem::path, ZHModule *> used_modules;
   std::list<std::string>
       included_files_names; /** std::list because need valid iterators */
   std::vector<std::string> included_files;
@@ -59,6 +60,10 @@ struct ZHDATA {
   std::unordered_map<std::string, bool> flags = tables::flags;
 
   std::mt19937 rng = std::mt19937(std::random_device()());
+
+  /** all collected functions, to access them use scope */
+  std::list<Function *> functions;
+  ZHDATA();
 };
 
 extern ZHDATA zhdata;

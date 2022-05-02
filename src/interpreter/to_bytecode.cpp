@@ -541,7 +541,7 @@ void funcToB(zhin::ByteCode& bytecode, Function* func) {
   }
 }
 
-void toB(zhin::ByteCode& bytecode, STTree* block) {
+void toB(zhin::ByteCode& bytecode, ZHModule* block) {
   /** Structs members offsets calculation */
   for (const auto& [struct_id, struct_name] : zhdata.struct_names) {
     int offset = 0;
@@ -554,10 +554,10 @@ void toB(zhin::ByteCode& bytecode, STTree* block) {
   }
 
   /** Pre generate function labels */
-  for (auto& func : block->functions) {
+  for (auto& func : zhdata.functions)
     bytecode.func_labels[func] =
         (func->name == "main") ? MAIN_LABEL : getLabel();
-  }
+
   /** Jmp to unique main fn */
   bytecode.pushVal(zhin::instr::push_32);
   bytecode.pushVal((int32_t)(MAIN_LABEL));
@@ -566,9 +566,7 @@ void toB(zhin::ByteCode& bytecode, STTree* block) {
   bytecode.pushVal(zhin::instr::jmp);
   bytecode.pushVal((int32_t)(END_LABEL));
 
-  for (auto& i : block->functions) {
-    funcToB(bytecode, i);
-  }
+  for (auto& i : zhdata.functions) funcToB(bytecode, i);
 
   for (auto& [id, data] : bytecode.literals_data) {
     bytecode.pushVal(zhin::instr::label_data);

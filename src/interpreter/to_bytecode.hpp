@@ -21,6 +21,6 @@ void nodeToB(zhin::ByteCode &bytecode, STNode *node, FuncData &funcdata,
              Function *func);
 void argsToB(zhin::ByteCode &bytecode, zhexp::Exp *exp,
              const std::vector<types::Type> &types, FuncData &funcdata);
-void toB(zhin::ByteCode &bytecode, STTree *block);
+void toB(zhin::ByteCode &bytecode, ZHModule *block);
 
 }  // namespace zhin
