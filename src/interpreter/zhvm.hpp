@@ -11,7 +11,7 @@
 #include <string>
 
 #include "../parser/parser.hpp"
-#include "../compiler/Compiler.hpp"
+#include "../compiler/compiler.hpp"
 #include "../tree_lib/TreeLib.hpp"
 
 #include "./bytecode.hpp"
