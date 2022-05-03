@@ -613,13 +613,14 @@ void parceFn(ZHModule* res, ScopeInfo& push_scope, ast::ASTLine* line, ast::ASTB
 ZHModule* parseAST(std::filesystem::path file_path) {
   std::vector<Token>& tokens = *new std::vector<Token>(tokenizeFile(file_path));
 
+  /** load cache */
+
   if (zhdata.flags["show_preprocessed"]) {
     std::cout << "preprocessed:\n";
     for (auto& i : tokens) {
       std::cout << (i.val);
     }
     std::cout << std::endl;
-    // std::cout << programm;
   }
 
   defineFlowTokens(tokens);
@@ -632,19 +633,7 @@ ZHModule* parseAST(std::filesystem::path file_path) {
     printCompact(ast_generic);
   }
 
-
-  ZHModule* res = new ZHModule(&zhdata.core_module->scope);
-
-  // if (!parent_module) {
-  //   /* init with default values*/
-  //   res->scope.bin_operators_ = tables::bin_operators;
-  //   res->scope.prefix_operators_ = tables::prefix_operators;
-  //   res->scope.postfix_operators_ = tables::postfix_operators;
-
-  //   res->scope.B_OD_ = tables::B_OD;
-  //   res->scope.PR_OD_ = tables::PR_OD;
-  //   res->scope.operators = tables::operators;
-  // }
+  ZHModule* res = new ZHModule(&zhdata.core_module->scope, file_path);
 
   zhdata.sttree = res;
   auto cur = main_block->nodes.begin();
@@ -687,6 +676,9 @@ ZHModule* parseAST(std::filesystem::path file_path) {
               }
             };
         if (!hasEnding(path, ".zh")) path += ".zh";
+        path = resolvePath(path).string();
+        res->dependences.push_back(path);
+
         if (!zhdata.used_modules.contains(path)) {
           zhdata.used_modules.emplace(path, nullptr);
           std::filesystem::path file_path = path;
@@ -694,6 +686,7 @@ ZHModule* parseAST(std::filesystem::path file_path) {
             file_path = file_path.parent_path() / path;
 
           auto parsed_module = parseAST(file_path);
+          res->dependences.push_back(parsed_module->path);
           res->scope.addParent(&parsed_module->scope);
           zhdata.sttree = res;
           zhdata.used_modules[path] = parsed_module;
@@ -773,9 +766,9 @@ ZHModule* parseAST(std::filesystem::path file_path) {
 
         auto token = (line->begin + 2);
         auto v = token->val;
-        if (zhdata.generics.contains(token->val)) {
+        if (res->scope.generics.contains(token->val)) {
           /** Push generic impl */
-          zhdata.generics[token->val].impl_blocks.push_back(block);
+          res->scope.generics.at(token->val)->impl_blocks.push_back(block);
         } else {
           /** Parce regular implementation */
           types::Type type;
@@ -800,5 +793,21 @@ ZHModule* parseAST(std::filesystem::path file_path) {
       throw ParserError("Random error lol (cannot cast ast node)");
     }
   }
+
+  /** save cache */
+  res->saveCache();
   return res;
+}
+
+std::filesystem::path resolvePath(std::filesystem::path file_path) {
+  auto tmp_path = zhdata.bin_path;
+  auto fin = std::ifstream(zhdata.bin_path / file_path);
+  if (fin.fail()) {
+    tmp_path = zhdata.std_path / file_path;
+    fin = std::ifstream(tmp_path);
+    if (fin.fail())
+      throw ParserError(-1, "Cannot open file '" + tmp_path.string() + "' ");
+  }
+  fin.close();
+  return tmp_path;
 }

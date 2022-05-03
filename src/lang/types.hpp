@@ -8,6 +8,10 @@
 #include <unordered_set>
 #include <vector>
 
+#include "../libs/json.hpp"
+
+using json = nlohmann::json;
+
 struct Function;
 
 namespace types {
@@ -68,6 +72,12 @@ class Type {
 
   friend std::strong_ordering operator<=>(const types::Type &lhs,
                                    const types::Type &rhs);
+
+  friend void to_json(json &j, const Type &type) {
+    j = {
+        {"name", "type"},
+    };
+  }
 };
 
 struct TypeInfo {

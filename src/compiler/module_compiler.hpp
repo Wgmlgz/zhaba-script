@@ -12,17 +12,14 @@
 void compileFile(std::filesystem::path file_path) {
   auto start_time = clock();
 
-  auto stree = parseAST(file_path);
+
+  auto stree = parseAST(resolvePath(file_path));
 
   if (zhdata.flags["show_st"]) {
     std::cout << "st:\n";
-    auto st_generic = stree->toGenericTree();
-    printCompact(st_generic);
   }
   if (zhdata.flags["show_st_cool"]) {
     std::cout << "st:\n";
-    auto st_generic = stree->toGenericTree();
-    printASCII(st_generic);
   }
 
   if (zhdata.flags["B"]) {

@@ -13,14 +13,7 @@ void defineFlowTokens(std::vector<Token> &tokens) {
 }
 
 std::vector<Token> tokenizeFile(std::filesystem::path file_path) {
-  auto& file_name = *new std::string(file_path.string());
-  auto fin = std::ifstream(zhdata.bin_path / file_path);
-  if (fin.fail()) {
-    file_path = zhdata.std_path / file_path.filename();
-    fin = std::ifstream(file_path);
-    if (fin.fail())
-      throw ParserError(-1, "Cannot open file '" + file_path.string() + "' ");
-  }
+  auto fin = std::ifstream(file_path);
 
   std::stringstream ss;
   ss << fin.rdbuf();
@@ -30,6 +23,7 @@ std::vector<Token> tokenizeFile(std::filesystem::path file_path) {
   file_data = "\n" + file_data + "\n";
   fin.close();
 
+  auto& file_name = *new std::string(file_path.string());
   return lexer::parse(tables::lexer_tokens, file_data, file_name, zhdata.files_lines,
                             zhdata.flags["tokens"]);
 }

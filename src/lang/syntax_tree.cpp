@@ -123,31 +123,9 @@ types::funcHead Function::getHeadNonRefNonLval() const {
   return res;
 };
 
-TreeNode<std::string> *ZHModule::toGenericTree() {
-  auto main_node = new TreeNode<std::string>;
-  main_node->data = "<STree>";
-
-  // auto functions_node = new TreeNode<std::string>;
-  // main_node->branches.push_back(functions_node);
-  // functions_node->data = "<Functions>";
-  // for (auto &func : functions) {
-  //   auto func_node = new TreeNode<std::string>;
-  //   func_node->data = func->headToStr();
-  //   func_node->branches.push_back(func->body->toGenericTree());
-  //   functions_node->branches.push_back(func_node);
-  // }
-  return main_node;
-};
-
 types::Type Function::getFnType() const {
   std::vector<types::Type> types{type};
   for (const auto &[name, type] : args) types.push_back(type);
   auto fn_type = types::Type(types::FT, 0, false, false, types);
   return fn_type;
-}
-ZHModule::ZHModule(ScopeInfo *parent_scope, const std::filesystem::path &path)
-    : scope(parent_scope) {}
-
-void ZHModule::saveCache() {
-  
 }

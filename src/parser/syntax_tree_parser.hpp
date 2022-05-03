@@ -17,3 +17,5 @@ ZHModule *parseAST(std::filesystem::path file_path);
 void parceFn(ZHModule *res, ScopeInfo &push_scope, ast::ASTLine *line,
              ast::ASTBlock *main_block,
              std::vector<ast::ASTNode *>::iterator &cur);
+
+std::filesystem::path resolvePath(std::filesystem::path file_path);

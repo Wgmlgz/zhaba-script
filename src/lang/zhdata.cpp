@@ -1,7 +1,7 @@
 #include "zhdata.hpp"
 
 ZHDATA::ZHDATA() {
-  core_module = new ZHModule(nullptr);
+  core_module = new ZHModule(nullptr, std::filesystem::current_path());
 
   /* init with default values*/
   core_module->scope.bin_operators_ = tables::bin_operators;

@@ -6,7 +6,10 @@
 #include <string>
 #include <unordered_map>
 
+#include "../libs/json.hpp"
 #include "types.hpp"
+
+using json = nlohmann::json;
 
 struct Function;
 
@@ -19,6 +22,8 @@ int64_t genId();
 template <template <typename...> class C, typename K, typename V>
 class DynamicContainer {
  public:
+  bool empty() const { return !ptr; }
+
   C<K, V>& get() {
     if (!ptr) ptr = new C<K, V>();
     return const_cast<C<K, V>&>(*ptr);
@@ -56,10 +61,23 @@ class DynamicContainer {
   }
 
   DynamicContainer(const std::vector<const DynamicContainer*>& new_parents = {}) : parents(new_parents) {}
+
  private:
   const mutable C<K, V>* ptr = nullptr;
   std::vector<const DynamicContainer*> parents = {};
 };
+
+template <template <typename...> class C, typename K, typename V>
+void to_json(json& j, const DynamicContainer<C, K, V>& container) {
+  if (container.empty()) {
+    j = nullptr;
+    return;
+  }
+  for (const auto& [key, val] : container.get()) {
+    j[key] = val;
+  }
+  j = "undef";
+}
 
 class ScopeInfo {
   std::vector<const ScopeInfo*> parents;
@@ -69,13 +87,19 @@ class ScopeInfo {
     std::string name;
     types::Type type;
     int64_t id;
+
+    friend void to_json(json& j, const VarInfo* var_info) {
+      j = {
+          {"name", var_info->name},
+          {"id", var_info->id},
+      };
+    }
   };
 
- private:
+ public:
   DynamicContainer<std::map, std::string, VarInfo*> vars_name;
   DynamicContainer<std::map, int64_t, VarInfo*> vars_id;
 
- public:
   DynamicContainer<std::map, std::string, types::Generic*> generics;
 
   DynamicContainer<std::map, std::string, types::TYPE> struct_ids;
@@ -334,4 +358,7 @@ class ScopeInfo {
     if (this == last) return;
     for (const auto parent : parents) parent->collectVars(last, push_map);
   }
+
 };
+
+void to_json(json& j, const ScopeInfo& p);

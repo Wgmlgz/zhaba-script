@@ -20,3 +20,7 @@ int64_t genId() {
   static int64_t id = 100;
   return ++id;
 }
+
+void to_json(json& j, const ScopeInfo& p) {
+  j = {{"vars_name", p.vars_name}, {"typedefs", p.typedefs}};
+}

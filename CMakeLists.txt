@@ -14,6 +14,7 @@ include_directories(tests)
 
 
 set(lib          
+  src/libs/json.hpp
   src/compiler/compiler.hpp
   src/compiler/tables.hpp
   src/compiler/module_compiler.hpp
@@ -33,6 +34,8 @@ set(lib
   src/lang/scope.hpp
   src/lang/scope.cpp
   src/lang/syntax_tree.hpp
+  src/lang/module.cpp
+  src/lang/module.hpp
   src/lang/token.cpp
   src/lang/token.hpp
   src/lang/types.hpp

@@ -1,10 +1,12 @@
 #pragma once
 #include <list>
+#include <filesystem>
 
 #include "../tree_lib/Tree.hpp"
 #include "ast.hpp"
 #include "expression.hpp"
 #include "scope.hpp"
+#include "module.hpp"
 
 struct STNode {
   virtual ~STNode();
@@ -67,11 +69,4 @@ struct Function {
   [[nodiscard]] types::Type getFnType() const;
 
   [[nodiscard]] types::funcHead getHeadNonRefNonLval() const;
-};
-
-struct ZHModule {
-  ScopeInfo scope;
-
-  TreeNode<std::string> *toGenericTree();
-  ZHModule(ScopeInfo* scope);
 };
