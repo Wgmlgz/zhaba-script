@@ -3,16 +3,13 @@
 namespace types {
 
 void parsePushStruct(const std::string &name, ast::ASTBlock *block,
-                     const ScopeInfo &scope) {
-  const auto id = static_cast<TYPE>(zhdata.last_struct_id);
-  ++zhdata.last_struct_id;
-  zhdata.struct_ids[name] = id;
-  zhdata.struct_names[id] = name;
-  zhdata.incomplete_types.insert(id);
-  zhdata.sizes[static_cast<TYPE>(id)] = 0;
-
+                     ScopeInfo &write_scope, ScopeInfo &scope) {
   if (!block) throw std::runtime_error("null block passed to parseStruct :(");
-  types::StructInfo struct_info;
+  const auto id = static_cast<types::TYPE>(new types::TypeInfo());
+  write_scope.struct_ids.emplace(name, id);
+  zhdata.structs.emplace_back(id);
+  auto& struct_info = *id;
+  struct_info.name = name;
 
   for (auto node : block->nodes) {
     if (auto line = dynamic_cast<ast::ASTLine *>(node)) {
@@ -43,19 +40,13 @@ void parsePushStruct(const std::string &name, ast::ASTBlock *block,
           throw ParserError(*i, "Member '" + member_name + "'already exist");
         }
         struct_info.members[member_name] = cur_type;
-        struct_info.members_list.push_back(member_name);
       }
     } else {
       throw ParserError("Unexprected block");
     }
   }
-  zhdata.structs[id] = struct_info;
-
-  size_t size = 0;
-  for (const auto &[_, type] : struct_info.members) size += type.getSize();
-  zhdata.sizes[static_cast<TYPE>(id)] = size;
-  zhdata.incomplete_types.erase(id);
-  zhdata.structs_order.push_back(static_cast<int>(id));
+  struct_info.complete = true;
+  struct_info.order = zhdata.structs.size();
 }
 
 Type parse(std::string &str, const ScopeInfo &scope) {
@@ -70,14 +61,14 @@ Type parse(std::string &str, const ScopeInfo &scope) {
     str.pop_back();
   }
   type.setPtr(ptr_c);
-  if (scope.containsTypedef(str)) {
-    auto tmp = scope.getTypedef(str);
+  if (scope.typedefs.contains(str)) {
+    auto tmp = scope.typedefs.at(str);
     type.setType(tmp.getTypeId());
     type.setPtr(tmp.getPtr() + type.getPtr());
-  } else if (zhdata.prim_types.count(str)) {
-    type.setType(zhdata.prim_types[str]);
-  } else if (getStructId(str) != types::TYPE(-1)) {
-    type.setType(getStructId(str));
+  } else if (tables::prim_types.count(str)) {
+    type.setType(tables::prim_types.at(str));
+  } else if (scope.struct_ids.contains(str)) {
+    type.setType(scope.struct_ids.at(str));
   } else {
     throw TypeParsingError();
   }
@@ -99,7 +90,9 @@ Type parse(tokeniter &token, const ScopeInfo &parent_scope) {
   if (token->val == "<") {
     auto generic_types = parseTemplate(token, parent_scope);
     auto name = str + genericToStr(generic_types);
-    auto id = getStructId(name);
+    auto id = parent_scope.struct_ids.contains(name)
+                  ? parent_scope.struct_ids.at(name)
+                  : nullptr;
 
     std::string m_str = token->val;
     int ptr_c = 0;
@@ -115,12 +108,12 @@ Type parse(tokeniter &token, const ScopeInfo &parent_scope) {
     res.setPtr(ptr_c);
 
     if (str == "F") {
-      res.setType(TYPE::FT);
+      res.setType(FT);
       res.setTypes(generic_types);
       return res;
     } else {
       /** Generate new implementation */
-      if (id == static_cast<TYPE>(-1)) {
+      if (!id) {
         /** Type substitution */
         if (generic_types.size() != zhdata.generics[str].names.size())
           throw ParserError(
@@ -130,32 +123,32 @@ Type parse(tokeniter &token, const ScopeInfo &parent_scope) {
                   std::to_string(zhdata.generics[str].names.size()) +
                   " expected");
 
-        ScopeInfo scope(&zhdata.sttree->scope);
+        ScopeInfo scope(zhdata.generics[str].scope);
         for (int i = 0; i < generic_types.size(); ++i) {
-          scope.setTypedef(zhdata.generics[str].names[i], generic_types[i]);
+          scope.typedefs.emplace(zhdata.generics[str].names[i], generic_types[i]);
         }
         /** Try generate generic implementation */
-        for (auto i : zhdata.generics[str].block->nodes) {
+        // for (auto i : zhdata.generics[str].block->nodes) {
           // if (dynamic_cast<i>)
-        }
-        parsePushStruct(name, zhdata.generics[str].block, scope);
+        // }
+        parsePushStruct(name, zhdata.generics[str].block,
+                        *zhdata.generics[str].scope, scope);
         for (auto &block : zhdata.generics[str].impl_blocks) {
           block->reset();
-          auto funcs =
-              parseImpl(block, Type(static_cast<TYPE>(getStructId(name))),
-                        scope, zhdata.sttree->scope);
+          auto funcs = parseImpl(
+              block, Type(zhdata.generics[str].scope->struct_ids.at(name)),
+              scope, *zhdata.generics[str].scope);
           for (auto i : funcs) zhdata.functions.push_back(i);
         }
-        id = getStructId(name);
+        id = zhdata.generics[str].scope->struct_ids.at(name);
       }
-      res.setType(static_cast<TYPE>(id));
-      // res.setTmpl(generic_types);
+      res.setType(id);
     }
 
   } else if (is_generic) {
     throw ParserError(*token, "Generic type parsing failed, expected '<'");
   }
-  if (zhdata.incomplete_types.contains(res.getTypeId()) &&
+  if (!res.getTypeId()->complete &&
       !(res.getPtr() || res.getRef())) {
     throw ParserError(begin_token, *token,
                       "Incomplete type is not allowed here (you probably need "

@@ -12,6 +12,51 @@ struct Function;
 
 int64_t genId();
 
+template <template <typename, typename> class C, typename K, typename V>
+class DynamicContainer {
+ public:
+  C<K, V>& get() {
+    if (!ptr) ptr = new C<K, V>();
+    return const_cast<C<K, V>&>(*ptr);
+  }
+  const C<K, V>& get() const {
+    return const_cast<const C<K, V>&>(
+        const_cast<DynamicContainer*>(this)->get());
+  }
+
+  bool contains(const K& key) const {
+    if (ptr && ptr->contains(key)) return true;
+    for (const auto parent : parents)
+      if (parent && parent->contains(key)) return true;
+    return false;
+  }
+
+  const V& at(const K& key) const {
+    if (ptr && ptr->contains(key)) return ptr->at(key);
+    for (const auto parent : parents)
+      if (parent->contains(key)) return parent->at(key);
+    throw std::runtime_error("DynamicContainer error");
+  }
+
+  V& at(const K& key) {
+    return const_cast<V&>(
+        const_cast<const DynamicContainer<C, K, V>*>(this)->at(key));
+  }
+
+  void emplace(auto&&... args) { get().emplace(args...); }
+
+  void operator=(const auto& other) { ptr = new C<K, V>(other); }
+
+  void addParent(const DynamicContainer* new_parent) {
+    parents.push_back(new_parent);
+  }
+
+  DynamicContainer(const std::vector<const DynamicContainer*>& new_parents = {}) : parents(new_parents) {}
+ private:
+  const mutable C<K, V>* ptr = nullptr;
+  std::vector<const DynamicContainer*> parents = {};
+};
+
 class ScopeInfo {
   std::vector<const ScopeInfo*> parents;
 
@@ -23,25 +68,26 @@ class ScopeInfo {
   };
 
  private:
-  std::unordered_map<std::string, VarInfo*> vars_name;
-  std::unordered_map<int64_t, VarInfo*> vars_id;
-  std::map<std::string, types::Type> typedefs;
+  DynamicContainer<std::map, std::string, VarInfo*> vars_name;
+  DynamicContainer<std::map, int64_t, VarInfo*> vars_id;
 
  public:
-  std::unordered_set<std::string> operators;
-  std::unordered_map<std::string, int64_t> bin_operators_;
-  std::unordered_map<std::string, int64_t> prefix_operators_;
-  std::unordered_map<std::string, int64_t> postfix_operators_;
+  DynamicContainer<std::map, std::string, types::TYPE> struct_ids;
+  DynamicContainer<std::map, std::string, types::Type> typedefs;
+  std::set<std::string> operators;
+  DynamicContainer<std::map, std::string, int64_t> bin_operators_;
+  DynamicContainer<std::map, std::string, int64_t> prefix_operators_;
+  DynamicContainer<std::map, std::string, int64_t> postfix_operators_;
 
-  std::map<types::funcHead, Function*> B_OD_;
-  std::map<types::funcHead, Function*> PR_OD_;
-  std::map<types::funcHead, Function*> PO_OD_;
-  std::map<types::funcHead, Function*> FN_OD_;
+  DynamicContainer<std::map, types::funcHead, Function*> B_OD_;
+  DynamicContainer<std::map, types::funcHead, Function*> PR_OD_;
+  DynamicContainer<std::map, types::funcHead, Function*> PO_OD_;
+  DynamicContainer<std::map, types::funcHead, Function*> FN_OD_;
 
-  std::map<std::string, Function*> B_OD_NAME_;
-  std::map<std::string, Function*> PR_OD_NAME_;
-  std::map<std::string, Function*> PO_OD_NAME_;
-  std::map<std::string, Function*> FN_OD_NAME_;
+  DynamicContainer<std::map, std::string, Function*> B_OD_NAME_;
+  DynamicContainer<std::map, std::string, Function*> PR_OD_NAME_;
+  DynamicContainer<std::map, std::string, Function*> PO_OD_NAME_;
+  DynamicContainer<std::map, std::string, Function*> FN_OD_NAME_;
 
   ScopeInfo(const ScopeInfo* new_parent);
   ScopeInfo(const ScopeInfo&) = delete;
@@ -73,7 +119,7 @@ class ScopeInfo {
     if (container.contains(name))                                       \
       throw std::runtime_error(#display " '" + name + "'" +             \
                                "is already defined in this scope");     \
-    container.insert({name, val});                                      \
+    container.emplace(name, val);                                       \
   }                                                                     \
   const auto get##properties() { return &container; }
 
@@ -172,10 +218,6 @@ class ScopeInfo {
   }                                                                           \
   const auto get##properties() { return &container; }
 
-      // MAKE_SCOPE_ACCESS(Var, Vars, variable, vars, types::Type, std::string);
-
-      MAKE_SCOPE_ACCESS(Typedef, Typedefs, typedef, typedefs, types::Type,
-                        std::string);
   MAKE_SCOPE_ACCESS_OP(BinOp, BinOps, binary_operator, B_OD_);
   MAKE_SCOPE_ACCESS_OP(PrOp, PrOps, prefix_operator, PR_OD_);
   MAKE_SCOPE_ACCESS_OP(PoOp, PoOps, postfix_operator, PO_OD_);
@@ -272,16 +314,17 @@ class ScopeInfo {
       throw std::runtime_error("variable '" + name + "'" +
                                "is already defined in this scope");
     auto info = new VarInfo{name, val, genId()};
-    vars_name.insert({name, info});
-    vars_id.insert({info->id, info});
+    vars_name.emplace(name, info);
+    vars_id.emplace(info->id, info);
   }
 
-  const auto getVars() { return &vars_name; }
+  const auto getVars() { return vars_name.get(); }
 
   /** Collects all variables including `last` scope */
   void collectVars(ScopeInfo* last,
                    std::unordered_map<int64_t, VarInfo*>& push_map) const {
-    for (auto i : vars_id) push_map.insert(i);
+    // std::cout << sizeof(ScopeInfo) << std::endl;
+    for (const auto i : vars_id.get()) push_map.emplace(i);
     if (this == last) return;
     for (const auto parent : parents) parent->collectVars(last, push_map);
   }

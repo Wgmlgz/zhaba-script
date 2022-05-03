@@ -15,14 +15,14 @@ std::string Generic::toString() {
   return res;
 }
 
-void pushGenericType(
-    const std::string &name,
-    const std::vector<std::string> &names,
-    ast::ASTBlock *block
-) {
+void pushGenericType(const std::string &name,
+                     const std::vector<std::string> &names,
+                     ast::ASTBlock *block, ScopeInfo *scope) {
   if (zhdata.generics.contains(name))
     throw std::runtime_error(
         "Generic type '" + name + "' is already defined. (" + zhdata.generics[name].toString() + ")");
-  zhdata.generics.insert({name, {name, names, block}});
+  zhdata.generics.emplace(
+      name,
+      Generic{.name = name, .names = names, .block = block, .scope = scope});
 }
 }

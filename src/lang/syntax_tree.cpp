@@ -7,7 +7,7 @@ TreeNode<std::string> *STBlock::toGenericTree() {
   auto node = new TreeNode<std::string>;
   node->data = "<block>";
   auto vars = new TreeNode<std::string>("<vars>");
-  for (const auto& [name, info] : *scope_info.getVars())
+  for (const auto& [name, info] : scope_info.getVars())
     vars->branches.push_back(
         new TreeNode<std::string>(
             "name: " + name + " id: " + std::to_string(info->id),
@@ -85,7 +85,7 @@ std::string Function::headToStr() const {
   str += name + " ";
   for (auto &arg : args) {
     str += " ";
-    if (arg.type.getTypeId() != types::TYPE::voidT) {
+    if (arg.type.getTypeId() != types::voidT) {
       str += arg.type.toString();
       str += " ";
     }
@@ -142,7 +142,7 @@ TreeNode<std::string> *ZHModule::toGenericTree() {
 types::Type Function::getFnType() const {
   std::vector<types::Type> types{type};
   for (const auto &[name, type] : args) types.push_back(type);
-  auto fn_type = types::Type(types::TYPE::FT, 0, false, false, types);
+  auto fn_type = types::Type(types::FT, 0, false, false, types);
   return fn_type;
 }
 ZHModule::ZHModule(ScopeInfo *parent_scope) : scope(parent_scope) {}

@@ -1,8 +1,37 @@
 #include "lang_tables.hpp"
 
+namespace types {
+const TYPE voidT =
+    new TypeInfo{.name = "void", .complete = true, .builtin = true};
+const TYPE charT =
+    new TypeInfo{.name = "char", .complete = true, .builtin = true};
+const TYPE strT =
+    new TypeInfo{.name = "str", .complete = true, .builtin = true};
+const TYPE boolT =
+    new TypeInfo{.name = "bool", .complete = true, .builtin = true};
+const TYPE i8T = new TypeInfo{.name = "i8", .complete = true, .builtin = true};
+const TYPE i16T =
+    new TypeInfo{.name = "i16", .complete = true, .builtin = true};
+const TYPE i32T =
+    new TypeInfo{.name = "i32", .complete = true, .builtin = true};
+const TYPE i64T =
+    new TypeInfo{.name = "i64", .complete = true, .builtin = true};
+const TYPE u8T = new TypeInfo{.name = "u8", .complete = true, .builtin = true};
+const TYPE u16T =
+    new TypeInfo{.name = "u16", .complete = true, .builtin = true};
+const TYPE u32T =
+    new TypeInfo{.name = "u32", .complete = true, .builtin = true};
+const TYPE u64T =
+    new TypeInfo{.name = "u64", .complete = true, .builtin = true};
+const TYPE f32T =
+    new TypeInfo{.name = "f32", .complete = true, .builtin = true};
+const TYPE f64T =
+    new TypeInfo{.name = "f64", .complete = true, .builtin = true};
+const TYPE FT = new TypeInfo{.name = "F", .complete = true, .builtin = true};
+}
 namespace tables {
 
-const std::unordered_map<std::string, bool> flags{
+const std::map<std::string, bool> flags{
     {"tokens", false},
     {"exp_parser_logs", false},
     {"show_ast", false},
@@ -31,12 +60,12 @@ const std::vector<std::pair<TOKEN, std::string>> lexer_tokens{
     {TOKEN::close_p, R"(((\)|\]|\})))"},
 };
 
-const std::unordered_set<std::string> banned_ids{
+const std::set<std::string> banned_ids{
     "?", "??", "@", "<<<", ":=", "as", "|", "\\", ";"};
 
-const std::unordered_set<std::string> flow_ops{"?", "??", "@", "<<<"};
+const std::set<std::string> flow_ops{"?", "??", "@", "<<<"};
 
-const std::unordered_map<std::string, int64_t> bin_operators{
+const std::map<std::string, int64_t> bin_operators{
     {"(", 2},  {"[", 2},   {"{", 2},    {".", 2},   {"as", 4},  {"/", 5},
     {"%", 5},  {"*", 5},   {"+", 6},    {"-", 6},   {">>", 7},  {"<<", 7},
     {"<", 9},  {">", 9},   {"<=", 9},   {">=", 9},  {"==", 10}, {"!=", 10},
@@ -44,7 +73,7 @@ const std::unordered_map<std::string, int64_t> bin_operators{
     {"=", 17}, {":=", 17}, {",", 18},
 };
 
-const std::unordered_set<std::string> operators{
+const std::set<std::string> operators{
     "!",      ".",      "=",      ":=",      ",",      "*",       "&",
     "as",     "+",      "/",      "%",       "-",      "!=",      "==",
     "out",    "put",    "sizeof", "malloc",  "free",   "<",       ">",
@@ -53,11 +82,11 @@ const std::unordered_set<std::string> operators{
     "in_u16", "in_u32", "in_u64", "in_char", "in_str", "in_bool", "->",
 };
 
-const std::unordered_set<std::string> functions{
+const std::set<std::string> functions{
 
 };
 
-const std::unordered_map<std::string, int64_t> prefix_operators{
+const std::map<std::string, int64_t> prefix_operators{
     {"*", 3},       {"!", 3},      {"~", 3},       {"+", 3},
     {"-", 3},       {"&", 3},      {"out", 3},     {"put", 3},
     {"sizeof", 3},  {"malloc", 3}, {"free", 3},
@@ -67,113 +96,90 @@ const std::unordered_map<std::string, int64_t> prefix_operators{
     {"in_char", 3}, {"in_str", 3}, {"in_bool", 3},
 };
 
-const std::unordered_map<std::string, int64_t> postfix_operators{
+const std::map<std::string, int64_t> postfix_operators{
 
 };
 
-const std::unordered_map<std::string, types::TYPE> prim_types{
-    {"void", types::TYPE::voidT},
+const std::map<std::string, types::TYPE> prim_types{
+    {"void", types::voidT},
 
-    {"char", types::TYPE::charT},
-    {"str", types::TYPE::strT},
+    {"char", types::charT},
+    {"str", types::strT},
 
-    {"bool", types::TYPE::boolT},
+    {"bool", types::boolT},
 
-    {"i8", types::TYPE::i8T},
-    {"i16", types::TYPE::i16T},
-    {"i32", types::TYPE::i32T},
-    {"i64", types::TYPE::i64T},
+    {"i8", types::i8T},
+    {"i16", types::i16T},
+    {"i32", types::i32T},
+    {"i64", types::i64T},
 
-    {"u8", types::TYPE::u8T},
-    {"u16", types::TYPE::u16T},
-    {"u32", types::TYPE::u32T},
-    {"u64", types::TYPE::u64T},
+    {"u8", types::u8T},
+    {"u16", types::u16T},
+    {"u32", types::u32T},
+    {"u64", types::u64T},
 
-    {"f32", types::TYPE::f32T},
-    {"f64", types::TYPE::f64T},
+    {"f32", types::f32T},
+    {"f64", types::f64T},
 
-    {"int", types::TYPE::i64T},
-    {"F", types::TYPE::FT},
+    {"int", types::i64T},
+    {"F", types::FT},
 };
 
-const std::unordered_map<types::TYPE, std::string> type_names{
-    {types::TYPE::voidT, "void"},
+const std::map<types::TYPE, std::string> cpp_type_names{
+    {types::voidT, "void"},
 
-    {types::TYPE::charT, "char"},
-    {types::TYPE::strT, "str"},
+    {types::charT, "char"},
+    {types::strT, "str"},
 
-    {types::TYPE::boolT, "bool"},
+    {types::boolT, "bool"},
 
-    {types::TYPE::i8T, "i8"},
-    {types::TYPE::i16T, "i16"},
-    {types::TYPE::i32T, "i32"},
-    {types::TYPE::i64T, "i64"},
+    {types::i8T, "i8"},
+    {types::i16T, "i16"},
+    {types::i32T, "i32"},
+    {types::i64T, "i64"},
 
-    {types::TYPE::u8T, "u8"},
-    {types::TYPE::u16T, "u16"},
-    {types::TYPE::u32T, "u32"},
-    {types::TYPE::u64T, "u64"},
+    {types::u8T, "u8"},
+    {types::u16T, "u16"},
+    {types::u32T, "u32"},
+    {types::u64T, "u64"},
 
-    {types::TYPE::f32T, "f32"},
-    {types::TYPE::f64T, "f64"},
-    {types::TYPE::FT, "F"},
+    {types::f32T, "f32"},
+    {types::f64T, "f64"},
+    {types::FT, "undefined"},
 };
 
-const std::unordered_map<types::TYPE, std::string> cpp_type_names{
-    {types::TYPE::voidT, "void"},
+const std::map<types::TYPE, size_t> sizes{
+    {types::voidT, 0},
 
-    {types::TYPE::charT, "char"},
-    {types::TYPE::strT, "str"},
+    {types::charT, 1},
+    {types::strT, 8},
 
-    {types::TYPE::boolT, "bool"},
+    {types::boolT, 1},
 
-    {types::TYPE::i8T, "i8"},
-    {types::TYPE::i16T, "i16"},
-    {types::TYPE::i32T, "i32"},
-    {types::TYPE::i64T, "i64"},
+    {types::i8T, 1},
+    {types::i16T, 2},
+    {types::i32T, 4},
+    {types::i64T, 8},
 
-    {types::TYPE::u8T, "u8"},
-    {types::TYPE::u16T, "u16"},
-    {types::TYPE::u32T, "u32"},
-    {types::TYPE::u64T, "u64"},
+    {types::u8T, 1},
+    {types::u16T, 2},
+    {types::u32T, 4},
+    {types::u64T, 8},
 
-    {types::TYPE::f32T, "f32"},
-    {types::TYPE::f64T, "f64"},
-    {types::TYPE::FT, "undefined"},
-};
-
-const std::unordered_map<types::TYPE, size_t> sizes{
-    {types::TYPE::voidT, 0},
-
-    {types::TYPE::charT, 1},
-    {types::TYPE::strT, 8},
-
-    {types::TYPE::boolT, 1},
-
-    {types::TYPE::i8T, 1},
-    {types::TYPE::i16T, 2},
-    {types::TYPE::i32T, 4},
-    {types::TYPE::i64T, 8},
-
-    {types::TYPE::u8T, 1},
-    {types::TYPE::u16T, 2},
-    {types::TYPE::u32T, 4},
-    {types::TYPE::u64T, 8},
-
-    {types::TYPE::f32T, 4},
-    {types::TYPE::f64T, 8},
-    {types::TYPE::FT, 4},
+    {types::f32T, 4},
+    {types::f64T, 8},
+    {types::FT, 4},
 };
 
 const std::map<types::funcHead, Function *> B_OD = {
 #define MAKE_C_BOP(name, lhst, rhst, rt)                                             \
   {                                                                            \
-    {#name, {types::Type(types::TYPE::lhst), types::Type(types::TYPE::rhst)}}, \
+    {#name, {types::Type(types::lhst), types::Type(types::rhst)}}, \
     new Function {                                                             \
       #name,                                                                   \
-      {{"a", types::Type(types::TYPE::lhst)},                                  \
-        {"b", types::Type(types::TYPE::rhst)}},                                \
-      types::Type(types::TYPE::rt), Function::OpType::bin, true                \
+      {{"a", types::Type(types::lhst)},                                  \
+        {"b", types::Type(types::rhst)}},                                \
+      types::Type(types::rt), Function::OpType::bin, true                \
     }                                                                          \
   }
 
@@ -233,14 +239,14 @@ const std::map<types::funcHead, Function *> PR_OD{
 #define MAKE_C_FN_0_ARGS(name, rt)                                           \
   {                                                                          \
     {(#name), {}}, new Function {                                            \
-      (#name), {}, types::Type(types::TYPE::rt), Function::OpType::lhs, true \
+      (#name), {}, types::Type(types::rt), Function::OpType::lhs, true \
     }                                                                        \
   }
 #define MAKE_C_FN_1_ARGS(name, arg1_t, rt)                          \
   {                                                                 \
-    {#name, {types::Type(types::TYPE::arg1_t)}}, new Function {     \
-      (#name), {{"a", types::Type(types::TYPE::arg1_t)}},           \
-          types::Type(types::TYPE::rt), Function::OpType::lhs, true \
+    {#name, {types::Type(types::arg1_t)}}, new Function {     \
+      (#name), {{"a", types::Type(types::arg1_t)}},           \
+          types::Type(types::rt), Function::OpType::lhs, true \
     }                                                               \
   }
 

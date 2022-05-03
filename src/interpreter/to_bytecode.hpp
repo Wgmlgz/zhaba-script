@@ -10,6 +10,10 @@ struct FuncData {
   size_t args_size = 0;
 };
 
+size_t getSize(zhin::ByteCode &bytecode, const types::Type &slf);
+size_t getSizeNonRef(zhin::ByteCode& bytecode, const types::Type &slf);
+size_t getSizeNonPtr(zhin::ByteCode &bytecode, const types::Type &slf);
+
 int getLabel();
 
 int pushLiteral(zhin::ByteCode &bytecode, const byte *begin, const byte *end,

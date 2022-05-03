@@ -1,9 +1,7 @@
 #include "lexer.hpp"
 
-Lexer::Lexer(std::vector<std::pair<TOKEN, std::string>> new_tokens)
-    : tokens(std::move(new_tokens)) {}
-
-std::vector<Token> Lexer::parse(
+std::vector<Token> lexer::parse(
+    const std::vector<std::pair<TOKEN, std::string>> &tokens,
     const std::string &str, const std::string &filename,
     std::map<std::string, std::vector<std::string>> &files_lines, bool DEBUG) {
   std::vector<Token> parse_res;

@@ -7,6 +7,17 @@ int getLabel() {
   return id++;
 }
 
+size_t getSize(zhin::ByteCode& bytecode, const types::Type& slf) {
+  return (slf.getPtr() || slf.getRef()) ? 8 : bytecode.sizes[slf.getTypeId()];
+}
+size_t etSizeNonRef(zhin::ByteCode& bytecode, const types::Type& slf) {
+  return (slf.getPtr()) ? 8 : bytecode.sizes[slf.getTypeId()];
+}
+size_t getSizeNonPtr(zhin::ByteCode& bytecode, const types::Type& slf) {
+  return (slf.getPtr() > 1 or slf.getRef()) ? 8
+                                            : bytecode.sizes[slf.getTypeId()];
+}
+
 int pushLiteral(zhin::ByteCode& bytecode, const byte* begin, const byte* end,
                 int id) {
   static int literal_id = 100;
@@ -84,8 +95,8 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
       /** I believe in weak typing supremacy 💪 */
       auto type_a = op->lhs->type;
       auto type_b = static_cast<zhexp::TypeLiteral*>(op->rhs)->literal_type;
-      auto size_a = type_a.getSize();
-      auto size_b = type_b.getSize();
+      auto size_a = getSize(bytecode, type_a);
+      auto size_b = getSize(bytecode, type_b);
       if (size_a != size_b)
         throw ParserError(
             op->begin, op->end,
@@ -99,7 +110,7 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
       bytecode.popBytes(5);
       expToB(bytecode, op->rhs, funcdata);
       bytecode.pushVal(zhin::instr::assign);
-      bytecode.pushVal((int32_t)(op->lhs->type.getSizeNonRef()));
+      bytecode.pushVal((int32_t)(etSizeNonRef(bytecode, op->lhs->type)));
     } else if (op->val == ".") {
       expToB(bytecode, op->lhs, funcdata);
 
@@ -114,10 +125,10 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
                         [static_cast<zhexp::IdLiteral*>(op->rhs)->val]));
       bytecode.pushVal(zhin::instr::i64_add);
       bytecode.pushVal(zhin::instr::deref);
-      bytecode.pushVal((int32_t)(op->type.getSize()));
+      bytecode.pushVal((int32_t)(getSize(bytecode, op->type)));
       if (op->type.getRef()) {
         bytecode.pushVal(zhin::instr::deref);
-        bytecode.pushVal((int32_t)(op->type.getSizeNonRef()));
+        bytecode.pushVal((int32_t)(etSizeNonRef(bytecode, op->type)));
       }
     } else if (op->val == ".call.call" && op->lhs->type.isFn()) {
       auto rhs_tuple = castToTuple(op->rhs);
@@ -139,8 +150,8 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
         }
 #define BOP_BYTECODE(name, type_, instr_)                     \
   else if (op->val == #name &&                                \
-           op->lhs->type.getTypeId() == types::TYPE::type_ && \
-           op->lhs->type.getTypeId() == types::TYPE::type_) { \
+           op->lhs->type.getTypeId() == types::type_ && \
+           op->lhs->type.getTypeId() == types::type_) { \
     bytecode.pushVal(zhin::instr::instr_);                    \
   }
 
@@ -205,7 +216,7 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
         bytecode.pushVal(zhin::instr::call);
         if (op->type.getRef()) {
           bytecode.pushVal(zhin::instr::deref);
-          bytecode.pushVal((int32_t)(op->type.getSizeNonRef()));
+          bytecode.pushVal((int32_t)(etSizeNonRef(bytecode, op->type)));
         }
       }
     }
@@ -218,7 +229,7 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
       }
 #define MAKE_LOP_BYTECODE(name, type_, impl_)                   \
   else if (op->val == #name &&                                  \
-           op->child->type.getTypeId() == types::TYPE::type_) { \
+           op->child->type.getTypeId() == types::type_) { \
     impl_;                                                      \
   }
 #define MAKE_VOID_LOP_BYTECODE(name, impl_)                              \
@@ -315,6 +326,15 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
       else {
         throw ParserError(op->begin, op->end, "unimplemented B op");
       }
+    } else if (op->val == "sizeof") {
+      size_t size = 0;
+      if (auto type = dynamic_cast<zhexp::TypeLiteral *>(op->child)) {
+        size = getSize(bytecode, type->literal_type);
+      } else {
+        size = getSize(bytecode, op->child->type);
+      }
+      bytecode.pushVal(zhin::instr::push_64);
+      bytecode.pushVal((int64_t)(size));
     } else if (op->val == "&") {
       expToB(bytecode, op->child, funcdata);
       /** pop deref + int */
@@ -322,10 +342,10 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
     } else if (op->val == "*" && op->func == nullptr) {
       expToB(bytecode, op->child, funcdata);
       bytecode.pushVal(zhin::instr::deref);
-      bytecode.pushVal((int32_t)(op->type.getSize()));
+      bytecode.pushVal((int32_t)(getSize(bytecode, op->type)));
       // if (op->type.getRef()) {
       //   bytecode.pushVal(zhin::instr::deref);
-      //   bytecode.pushVal((int32_t)(op->type.getSizeNonRef()));
+      //   bytecode.pushVal((int32_t)(op->type.etSizeNonRef(bytecode, )));
       // }
     } else {
       argsToB(bytecode, op->child, op->func->getHead().second, funcdata);
@@ -334,7 +354,7 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
       bytecode.pushVal(zhin::instr::call);
       if (op->type.getRef()) {
         bytecode.pushVal(zhin::instr::deref);
-        bytecode.pushVal((int32_t)(op->type.getSizeNonRef()));
+        bytecode.pushVal((int32_t)(etSizeNonRef(bytecode, op->type)));
       }
     }
   } else if (auto var = dynamic_cast<zhexp::Variable*>(exp)) {
@@ -342,10 +362,10 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
     bytecode.pushVal((int64_t)(funcdata.offsets[var->getId()]));
     if (var->getType().getRef()) {
       bytecode.pushVal(zhin::instr::deref);
-      bytecode.pushVal((int32_t)(var->type.getSize()));
+      bytecode.pushVal((int32_t)(getSize(bytecode, var->type)));
     }
     bytecode.pushVal(zhin::instr::deref);
-    bytecode.pushVal((int32_t)(var->type.getSizeNonRef()));
+    bytecode.pushVal((int32_t)(etSizeNonRef(bytecode, var->type)));
   } else if (auto op = dynamic_cast<zhexp::PostfixOperator*>(exp)) {
     argsToB(bytecode, op->child, op->func->getHead().second, funcdata);
     bytecode.pushVal(zhin::instr::push_32);
@@ -353,13 +373,13 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
     bytecode.pushVal(zhin::instr::call);
     if (op->type.getRef()) {
       bytecode.pushVal(zhin::instr::deref);
-      bytecode.pushVal((int32_t)(op->type.getSizeNonRef()));
+      bytecode.pushVal((int32_t)(etSizeNonRef(bytecode, op->type)));
     }
   } else if (auto tuple = dynamic_cast<zhexp::Tuple*>(exp)) {
     for (int i = 0; i < tuple->content.size(); ++i) {
       expToB(bytecode, tuple->content[i], funcdata);
       if (i + 1 != tuple->content.size())
-        bytecode.push_pop_bytes(tuple->content[i]->type.getSize());
+        bytecode.push_pop_bytes(getSize(bytecode, tuple->content[i]->type));
     }
   } else {
     throw ParserError("unimplemented expToB ");
@@ -370,7 +390,7 @@ void nodeToB(zhin::ByteCode& bytecode, STNode* node, FuncData& funcdata, Functio
   if (auto exp = dynamic_cast<STExp*>(node)) {
     expToB(bytecode, exp->exp, funcdata);
     /** pop unused return value */
-    bytecode.push_pop_bytes(exp->exp->type.getSize());
+    bytecode.push_pop_bytes(getSize(bytecode, exp->exp->type));
   } else if (auto ret = dynamic_cast<STRet*>(node)) {
     expToB(bytecode, ret->exp, funcdata);
 
@@ -382,7 +402,7 @@ void nodeToB(zhin::ByteCode& bytecode, STNode* node, FuncData& funcdata, Functio
     /** Write return value to args pos */
     bytecode.pushVal(zhin::instr::ret);
     bytecode.pushVal((int32_t)(funcdata.args_size));
-    bytecode.pushVal((int32_t)(func->type.getSize()));
+    bytecode.pushVal((int32_t)(getSize(bytecode, func->type)));
   } else if (auto stif = dynamic_cast<STIf*>(node)) {
     /**
      * exp_if
@@ -485,18 +505,18 @@ void nodeToB(zhin::ByteCode& bytecode, STNode* node, FuncData& funcdata, Functio
 void blockToB(zhin::ByteCode& bytecode, STBlock* block, FuncData& funcdata, Function* func) {
   /** Push local vars info */
   size_t local_vars_size = 0;
-  for (const auto& [name, info] : *block->scope_info.getVars()) {
+  for (const auto& [name, info] : block->scope_info.getVars()) {
     funcdata.offsets.emplace(info->id, funcdata.offset);
-    funcdata.offset += info->type.getSize();
-    local_vars_size += info->type.getSize();
+    funcdata.offset += getSize(bytecode, info->type);
+    local_vars_size += getSize(bytecode, info->type);
   }
   bytecode.push_push_bytes(local_vars_size);
 
   for (auto& i : block->nodes) nodeToB(bytecode, i, funcdata, func);
 
   /** Pop local vars info */
-  for (const auto& [name, info] : *block->scope_info.getVars()) {
-    funcdata.offset -= info->type.getSize();
+  for (const auto& [name, info] : block->scope_info.getVars()) {
+    funcdata.offset -= getSize(bytecode, info->type);
   }
   bytecode.push_pop_bytes(local_vars_size);
 }
@@ -508,8 +528,8 @@ void blockToB(zhin::ByteCode& bytecode, STBlock* block, FuncData& funcdata, Func
 void funcToB(zhin::ByteCode& bytecode, Function* func) {
   FuncData funcdata;
   for (const auto& [name, type] : func->args) {
-    funcdata.offset -= type.getSize();
-    funcdata.args_size += type.getSize();
+    funcdata.offset -= getSize(bytecode, type);
+    funcdata.args_size += getSize(bytecode, type);
   }
   for (const auto& [name, type] : func->args) {
     auto id = func->body->scope_info.getVarId(name);
@@ -517,19 +537,19 @@ void funcToB(zhin::ByteCode& bytecode, Function* func) {
     // std::cout << func->args_scope.getVarId(name) << std::endl;
 
     funcdata.offsets.emplace(id, funcdata.offset);
-    funcdata.offset += type.getSize();
+    funcdata.offset += getSize(bytecode, type);
   }
 
   bytecode.pushLabel(bytecode.func_labels[func],
                      func->toUniqueStr());
   blockToB(bytecode, func->body, funcdata, func);
 
-  if (func->type.getTypeId() == types::TYPE::voidT) {
+  if (func->type.getTypeId() == types::voidT) {
     /** Implicit return for safety when flow reached end of the function */
-    bytecode.push_push_bytes(func->type.getSize());
+    bytecode.push_push_bytes(getSize(bytecode, func->type));
     bytecode.pushVal(zhin::instr::ret);
     bytecode.pushVal((int32_t)(funcdata.args_size));
-    bytecode.pushVal((int32_t)(func->type.getSize()));
+    bytecode.pushVal((int32_t)(getSize(bytecode, func->type)));
   } else {
     /** Emergency exit */
     static std::string msg = "reached function end without returning anything";
@@ -543,14 +563,16 @@ void funcToB(zhin::ByteCode& bytecode, Function* func) {
 
 void toB(zhin::ByteCode& bytecode, ZHModule* block) {
   /** Structs members offsets calculation */
-  for (const auto& [struct_id, struct_name] : zhdata.struct_names) {
+  for (const auto& struct_info : zhdata.structs) {
+    if (struct_info->builtin) continue;
     int offset = 0;
-    auto& struct_map = bytecode.structs_members_offsets[struct_id];
-    const auto& struct_info = zhdata.structs[struct_id];
-    for (const auto& member_name : struct_info.members_list) {
+    auto& struct_map = bytecode.structs_members_offsets[struct_info];
+    for (const auto& [member_name, member_type]: struct_info->members) {
       struct_map[member_name] = offset;
-      offset += struct_info.members.at(member_name).getSize();
+      offset += getSize(bytecode, member_type);
     }
+
+    bytecode.sizes[struct_info] = offset;
   }
 
   /** Pre generate function labels */

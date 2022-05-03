@@ -1,38 +1,40 @@
 #pragma once
 
+#include <compare>
+#include <map>
 #include <queue>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
-#include <compare>
 
 struct Function;
 
 namespace types {
 
-enum class TYPE : int32_t {
-  voidT,
-  charT,
-  strT,
-  boolT,
-  i8T,
-  i16T,
-  i32T,
-  i64T,
-  u8T,
-  u16T,
-  u32T,
-  u64T,
-  f32T,
-  f64T,
-  FT
-};
+struct TypeInfo;
+typedef TypeInfo *TYPE;
+
+extern const TYPE voidT;
+extern const TYPE charT;
+extern const TYPE strT;
+extern const TYPE boolT;
+extern const TYPE i8T;
+extern const TYPE i16T;
+extern const TYPE i32T;
+extern const TYPE i64T;
+extern const TYPE u8T;
+extern const TYPE u16T;
+extern const TYPE u32T;
+extern const TYPE u64T;
+extern const TYPE f32T;
+extern const TYPE f64T;
+extern const TYPE FT;
 
 class Type {
  public:
   /** Ctor Dtor */
-  explicit Type(const TYPE &type = TYPE::voidT, uint8_t ptr = 0,
+  explicit Type(const TYPE &type = voidT, uint8_t ptr = 0,
                 bool lval = false, bool ref = false,
                 const std::vector<Type> &types = {});
 
@@ -43,9 +45,6 @@ class Type {
   [[nodiscard]] uint8_t getPtr() const;
   [[nodiscard]] bool isFn() const;
   [[nodiscard]] const std::vector<Type>& getTypes() const;
-  [[nodiscard]] size_t getSize() const;
-  [[nodiscard]] size_t getSizeNonRef() const;
-  [[nodiscard]] size_t getSizeNonPtr() const;
 
   /** Setters */
   void setLval(bool f);
@@ -53,8 +52,6 @@ class Type {
   void setType(TYPE type_);
   void setPtr(uint8_t val);
   void setTypes(const std::vector<Type> &types);
-  [[nodiscard]] std::vector<uint32_t> getMask() const;
-  [[nodiscard]] uint32_t getSelfMask_() const;
 
   /** Util */
   [[nodiscard]] Type rvalClone() const;
@@ -62,25 +59,28 @@ class Type {
   [[nodiscard]] std::string toString() const;
 
  private:
-  TYPE typeid_ = TYPE::voidT;
+  TYPE typeid_ = voidT;
   bool lval_ = false;
   bool ref_ = false;
   uint8_t ptr_ = 0;
 
   std::vector<Type> types_;
+
+  friend std::strong_ordering operator<=>(const types::Type &lhs,
+                                   const types::Type &rhs);
 };
 
-std::strong_ordering operator<=>(const types::Type &lhs, const types::Type &rhs);
+struct TypeInfo {
+  std::map<std::string, Type> members;
+  std::string name = "undefined_type_name";
 
-struct StructInfo {
-  std::unordered_map<std::string, Type> members;
-  std::vector<std::string> members_list;
+  bool complete = false;
+  bool builtin = false;
+  size_t order = 0;
 };
-
 
 std::string genericToStr(const std::vector<Type> &generic);
-void pushStruct(const std::string &name, const StructInfo &info);
-TYPE getStructId(const std::string &str);
+void pushStruct(const std::string &name, const TypeInfo &info);
 
 typedef std::pair<std::string, std::vector<Type>> funcHead;
 };  // namespace types

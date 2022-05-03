@@ -89,33 +89,41 @@ res +=  "  scanf(" #mod ", &tmp);\n" ;                 \
 res +=  "  return tmp;\n"          ;               \
 res += "}\n";
 
-MAKE_ABOBA(in_i8, i8, "%i")
-MAKE_ABOBA(in_i16, i16, "%i")
-MAKE_ABOBA(in_i32, i32, "%i")
-MAKE_ABOBA(in_i64, i64, "%i")
-MAKE_ABOBA(in_u8, u8, "%i")
-MAKE_ABOBA(in_u16, u16, "%i")
-MAKE_ABOBA(in_u32, u32, "%i")
-MAKE_ABOBA(in_u64, u64, "%i")
-MAKE_ABOBA(in_char, char, "%i")
-MAKE_ABOBA(in_str, char*, "%s")
-MAKE_ABOBA(in_bool, bool, "%i")
-MAKE_ABOBA(in_f32, float, "%f")
-MAKE_ABOBA(in_f64, double, "%lf")
+  MAKE_ABOBA(in_i8, i8, "%i")
+  MAKE_ABOBA(in_i16, i16, "%i")
+  MAKE_ABOBA(in_i32, i32, "%i")
+  MAKE_ABOBA(in_i64, i64, "%i")
+  MAKE_ABOBA(in_u8, u8, "%i")
+  MAKE_ABOBA(in_u16, u16, "%i")
+  MAKE_ABOBA(in_u32, u32, "%i")
+  MAKE_ABOBA(in_u64, u64, "%i")
+  MAKE_ABOBA(in_char, char, "%i")
+  MAKE_ABOBA(in_str, char*, "%s")
+  MAKE_ABOBA(in_bool, bool, "%i")
+  MAKE_ABOBA(in_f32, float, "%f")
+  MAKE_ABOBA(in_f64, double, "%lf")
 
-  for (auto i : zhdata.structs_order) {
-    auto id = static_cast<types::TYPE>(i);
+  std::vector<std::pair<size_t, types::TYPE>> order;
+  for (const auto& info : zhdata.structs) {
+    if (info->builtin) continue;
+    order.emplace_back(info->order, info);
+  }
+  std::sort(order.begin(), order.end(),
+            [](auto& lhs, auto& rhs) { return lhs.first < rhs.first; });
+
+  for (auto [_, i] : order) {
+    auto id = i;
     res += structHead2C(id);
     res += ";\n";
-    res += "typedef struct __PROT_ZH_TYPE_" + id2C(zhdata.struct_names[id]);
-    res += " __ZH_TYPE_" + id2C(zhdata.struct_names[id]);
+    res += "typedef struct __PROT_ZH_TYPE_" + id2C(id->name);
+    res += " __ZH_TYPE_" + id2C(id->name);
     res += ";\n";
   }
 
   res += "\n";
 
-  for (auto i : zhdata.structs_order) {
-    auto id = static_cast<types::TYPE>(i);
+  for (auto [_, i] : order) {
+    auto id = i;
     res += struct2C(id);
   }
 
@@ -147,10 +155,10 @@ std::string type2C(const types::Type& type, std::string name = "") {
       start = false;
     }
     res += ")";
-  } else if (static_cast<int>(type.getTypeId()) < 50) {
-    res += zhdata.cpp_type_names.at(type.getTypeId());
+  } else if (type.getTypeId()->builtin) {
+    res += tables::cpp_type_names.at(type.getTypeId());
   } else {
-    res += id2C("__ZH_TYPE_" + zhdata.struct_names.at(type.getTypeId()));
+    res += id2C("__ZH_TYPE_" + type.getTypeId()->name);
   }
   res += std::string(type.getPtr(), '*');
   if (type.getRef()) res += "*";
@@ -238,16 +246,9 @@ std::string exp2C(zhexp::Exp* exp) {
       /** I believe in weak typing supremacy 💪 */
       auto type_a = op->lhs->type;
       auto type_b = static_cast<zhexp::TypeLiteral*>(op->rhs)->literal_type;
-      auto size_a = type_a.getSize();
-      auto size_b = type_b.getSize();
-      if (size_a != size_b)
-        throw ParserError(
-            op->begin, op->end,
-            "Attempt to cast types with different sizes: " + type_a.toString() +
-                "(" + std::to_string(size_a) + ") and " + type_a.toString() +
-                "(" + std::to_string(size_b) + ")");
-      if (!(type_b.getPtr() || type_b.getRef() || type_b.getTypeId() < (types::TYPE)(zhdata.first_struct_id)) ||
-          !(type_a.getPtr() || type_a.getRef() || type_a.getTypeId() < (types::TYPE)(zhdata.first_struct_id)))
+
+      if (!(type_b.getPtr() || type_b.getRef() || type_b.getTypeId()->builtin)||
+          !(type_a.getPtr() || type_a.getRef() || type_a.getTypeId()->builtin))
         throw ParserError(
             op->begin, op->end,
             "C doesn't allow conversion to non-scalar type `" + type_b.toString() + "`");
@@ -309,7 +310,7 @@ std::string exp2C(zhexp::Exp* exp) {
       }
 #define MAKE_LOP_C(name, type_, impl_)                          \
   else if (op->val == #name &&                                  \
-           op->child->type.getTypeId() == types::TYPE::type_) { \
+           op->child->type.getTypeId() == types::type_) { \
     res += impl_;                                               \
     res += args2C(op->child, {types::Type()});                  \
     res += ")";                                                 \
@@ -416,6 +417,9 @@ std::string exp2C(zhexp::Exp* exp) {
     } else if (op->val == "&") {
       res += "&";
       res += exp2C(op->child);
+    } else if (op->val == "sizeof") {
+      res += "sizeof";
+      res += exp2C(op->child);
     } else if (op->val == "*" && op->func == nullptr) {
       res += "*";
       res += exp2C(op->child);
@@ -428,6 +432,8 @@ std::string exp2C(zhexp::Exp* exp) {
       res += args2C(op->child, op->func->getHead().second );
       res += ")";
     }
+  } else if (auto tp = dynamic_cast<zhexp::TypeLiteral*>(exp)) {
+    res += type2C(tp->literal_type);
   } else if (auto var = dynamic_cast<zhexp::Variable*>(exp)) {
     if (var->getType().getRef()) res += "*";
     res += "v" + std::to_string(var->getId());
@@ -470,7 +476,7 @@ std::string block2C(STBlock* block, Function* fn, size_t depth) {
   std::string res;
   res += "{\n";
 
-  for (const auto [name, varInfo] : *block->scope_info.getVars()) {
+  for (const auto [name, varInfo] : block->scope_info.getVars()) {
     res += std::string((depth+1) * tab_size , ' ');
     if (varInfo->type.isFn()) {
       res += type2C(varInfo->type, "v" + std::to_string(varInfo->id));
@@ -588,7 +594,7 @@ std::string funcHead2FnPtr(Function* func) {
 }
 
 std::string func2C(Function* fn) {
-  bool is_void = fn->type.getTypeId() == types::TYPE::voidT;
+  bool is_void = fn->type.getTypeId() == types::voidT;
   std::string res = funcHead2C(fn) + (is_void ? "" : " {") +
                     block2C(fn->body, fn) + (is_void ? "" : ";");
   if (!is_void) {
@@ -602,13 +608,13 @@ std::string func2C(Function* fn) {
 }
 
 std::string structHead2C(types::TYPE id) {
-  return "struct __PROT_ZH_TYPE_" + id2C(zhdata.struct_names[id]);
+  return "struct __PROT_ZH_TYPE_" + id2C(id->name);
 }
 
 std::string struct2C(types::TYPE id) {
   std::string res = structHead2C(id);
   res += " {\n";
-  for (const auto& [name, type] : zhdata.structs[id].members) {
+  for (const auto& [name, type] : id->members) {
     res += "  " +
            (type.isFn() ? type2C(type, name) : type2C(type) + " " + id2C(name)) +
            ";\n";

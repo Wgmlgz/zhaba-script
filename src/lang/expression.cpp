@@ -10,9 +10,9 @@ std::string Exp::toString() {
 
 Tuple::Tuple(const Token &new_begin, const Token &new_end)
     : Exp(new_begin, new_end) {}
-Tuple::Tuple(const Token &new_begin, const Token &new_end, int64_t new_priority,
+Tuple::Tuple(const Token &new_begin, const Token &new_end,
              std::vector<Exp *> new_content)
-    : Exp(new_begin, new_end), priority(new_priority), content(std::move(new_content)) {}
+    : Exp(new_begin, new_end), content(std::move(new_content)) {}
 std::string Tuple::toString() {
   std::string res = "<tuple{ ";
   for (auto &i : content) {
@@ -43,7 +43,7 @@ TypeLiteral::TypeLiteral(const Token &new_begin, const Token &new_end,
                          const types::Type &new_type)
     : Literal(new_begin, new_end) {
   literal_type = new_type;
-  type = types::Type(types::TYPE::voidT);
+  type = types::Type(types::voidT);
 }
 std::string TypeLiteral::toString() {
   std::string res = "<typeL'" + literal_type.toString() + "'>";
@@ -107,61 +107,41 @@ FlowOperator::FlowOperator(const Token &new_begin, const Token &new_end,
   operand = new_operand;
 }
 
-CCode::CCode(const Token &new_begin, const Token &new_end, std::string new_code)
-    : Exp(new_begin, new_end) {
-  code = std::move(new_code);
-}
-
-// Call::Call(const Token &new_begin, const Token &new_end, Exp *new_fn_exp,
-//            Exp *new_args_exp)
-//     : Exp(new_begin, new_end) {
-//   fn_exp = new_fn_exp;
-//   args_exp = new_args_exp;
-// }
-// std::string Call::toString() {
-//   std::string res = "<call>";
-//   return res;
-// }
-
 Operator::Operator(const Token &new_begin, const Token &new_end)
     : Exp(new_begin, new_end) {}
-Operator::Operator(const Token &new_begin, const Token &new_end, std::string new_val,
-                   int64_t new_priority)
+Operator::Operator(const Token &new_begin, const Token &new_end,
+                   std::string new_val)
     : Exp(new_begin, new_end) {
   val = std::move(new_val);
-  priority = new_priority;
 }
 std::string Operator::toString() {
   std::string res = "<operator'" + val + "'>";
   return res;
 }
 
-BinOperator::BinOperator(const Token &new_begin, const Token &new_end, std::string new_val,
-                         int64_t new_priority, Exp *new_lhs,
-                         Exp *new_rhs
-) : Operator(new_begin, new_end) {
+BinOperator::BinOperator(const Token &new_begin, const Token &new_end,
+                         std::string new_val, Exp *new_lhs, Exp *new_rhs)
+    : Operator(new_begin, new_end) {
   val = std::move(new_val);
-  priority = new_priority;
   lhs = new_lhs;
   rhs = new_rhs;
 }
 
 UnaryOperator::UnaryOperator(const Token &new_begin, const Token &new_end,
-                             std::string new_val, int64_t new_priority, Exp *new_child)
+                             std::string new_val, Exp *new_child)
     : Operator(new_begin, new_end) {
   val = std::move(new_val);
-  priority = new_priority;
   child = new_child;
 }
 
 PrefixOperator::PrefixOperator(const Token &new_begin, const Token &new_end,
-                               std::string new_val, int64_t new_priority, Exp *new_child)
-    : UnaryOperator(new_begin, new_end, std::move(new_val), new_priority, new_child) {}
+                               std::string new_val, Exp *new_child)
+    : UnaryOperator(new_begin, new_end, std::move(new_val), new_child) {}
 
 PostfixOperator::PostfixOperator(const Token &new_begin, const Token &new_end,
-                                 std::string new_val, int64_t new_priority, Exp *new_child)
-    : UnaryOperator(new_begin, new_end, std::move(new_val), new_priority, new_child) {}
-
+                                 std::string new_val, Exp *new_child)
+    : UnaryOperator(new_begin, new_end, std::move(new_val),
+                    new_child) {}
 
 void castTreeToTupleDfs(Exp *exp, Tuple *&tuple) {
   if (auto op = dynamic_cast<BinOperator *>(exp)) {
@@ -187,7 +167,7 @@ Tuple *castTreeToTuple(Exp *exp) {
 Tuple *castToTuple(Exp *exp) {
   if (exp) {
     if (auto tuple = dynamic_cast<Tuple *>(exp)) return tuple;
-    return new Tuple(exp->begin, exp->end, 0, {exp});
+    return new Tuple(exp->begin, exp->end, {exp});
   }
   return nullptr;
 }
@@ -200,9 +180,6 @@ void operator+=(Tuple &a, const Tuple &b) {
 TreeNode<std::string> *toGenericTree(Exp *exp) {
   if (!exp) return new TreeNode<std::string>("<nullptr>");
   auto node = new TreeNode<std::string>;
-  if (auto op = dynamic_cast<CCode *>(exp)) {
-    node->data = "cpp: '" + op->code + "'";
-  }
   if (auto op = dynamic_cast<FlowOperator *>(exp)) {
     node->data = "'" + op->val + "'";
     node->branches.push_back(toGenericTree(op->operand));
@@ -241,14 +218,13 @@ TreeNode<std::string> *toGenericTree(Exp *exp) {
   }
 
   if (auto *op = dynamic_cast<BinOperator *>(exp)) {
-    node->data = "'" + op->val + "'b" + std::to_string((int) op->priority);
+    node->data = "'" + op->val + "'";
     node->branches.push_back(toGenericTree(op->lhs));
     node->branches.push_back(toGenericTree(op->rhs));
   }
   if (auto *op = dynamic_cast<UnaryOperator *>(exp)) {
     node->data = "'" + op->val +
-        (dynamic_cast<PrefixOperator *>(op) ? "'pr" : "'po") +
-        std::to_string((int) op->priority);
+        (dynamic_cast<PrefixOperator *>(op) ? "'pr" : "'po");
     node->data += " fptr:" + std::to_string((uint64_t) op->func);
     node->branches.push_back(toGenericTree(op->child));
   }
