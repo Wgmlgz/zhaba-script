@@ -12,7 +12,7 @@ struct Function;
 
 int64_t genId();
 
-template <template <typename, typename> class C, typename K, typename V>
+template <template <typename...> class C, typename K, typename V>
 class DynamicContainer {
  public:
   C<K, V>& get() {
