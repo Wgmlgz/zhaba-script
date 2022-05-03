@@ -145,4 +145,9 @@ types::Type Function::getFnType() const {
   auto fn_type = types::Type(types::FT, 0, false, false, types);
   return fn_type;
 }
-ZHModule::ZHModule(ScopeInfo *parent_scope) : scope(parent_scope) {}
+ZHModule::ZHModule(ScopeInfo *parent_scope, const std::filesystem::path &path)
+    : scope(parent_scope) {}
+
+void ZHModule::saveCache() {
+  
+}

@@ -10,6 +10,10 @@
 
 struct Function;
 
+namespace types {
+struct Generic;
+}
+
 int64_t genId();
 
 template <template <typename...> class C, typename K, typename V>
@@ -72,6 +76,8 @@ class ScopeInfo {
   DynamicContainer<std::map, int64_t, VarInfo*> vars_id;
 
  public:
+  DynamicContainer<std::map, std::string, types::Generic*> generics;
+
   DynamicContainer<std::map, std::string, types::TYPE> struct_ids;
   DynamicContainer<std::map, std::string, types::Type> typedefs;
   std::set<std::string> operators;
