@@ -208,7 +208,7 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
         auto lhs_tuple = castToTuple(op->lhs);
         auto rhs_tuple = castToTuple(op->rhs);
         *lhs_tuple += *rhs_tuple;
-        argsToB(bytecode, lhs_tuple, op->func->getHead().second, funcdata);
+        argsToB(bytecode, lhs_tuple, op->func->getHead().types, funcdata);
         // expToB(bytecode, op->lhs, funcdata);
         // expToB(bytecode, op->rhs, funcdata);
         bytecode.pushVal(zhin::instr::push_32);
@@ -348,7 +348,7 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
       //   bytecode.pushVal((int32_t)(op->type.etSizeNonRef(bytecode, )));
       // }
     } else {
-      argsToB(bytecode, op->child, op->func->getHead().second, funcdata);
+      argsToB(bytecode, op->child, op->func->getHead().types, funcdata);
       bytecode.pushVal(zhin::instr::push_32);
       bytecode.pushVal((int32_t)(bytecode.func_labels[op->func]));
       bytecode.pushVal(zhin::instr::call);
@@ -367,7 +367,7 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
     bytecode.pushVal(zhin::instr::deref);
     bytecode.pushVal((int32_t)(etSizeNonRef(bytecode, var->type)));
   } else if (auto op = dynamic_cast<zhexp::PostfixOperator*>(exp)) {
-    argsToB(bytecode, op->child, op->func->getHead().second, funcdata);
+    argsToB(bytecode, op->child, op->func->getHead().types, funcdata);
     bytecode.pushVal(zhin::instr::push_32);
     bytecode.pushVal((int32_t)(bytecode.func_labels[op->func]));
     bytecode.pushVal(zhin::instr::call);

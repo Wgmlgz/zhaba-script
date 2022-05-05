@@ -13,6 +13,7 @@
 using json = nlohmann::json;
 
 struct Function;
+enum class OpType { lhs, rhs, bin };
 
 namespace types {
 
@@ -75,7 +76,11 @@ class Type {
 
   friend void to_json(json &j, const Type &type) {
     j = {
-        {"name", "type"},
+        {"lval", type.lval_},
+        {"ref", type.ref_},
+        {"ptr", type.ptr_},
+        {"typeid__ptr__", reinterpret_cast<std::uintptr_t>(type.typeid_)},
+        {"types", type.types_},
     };
   }
 };
@@ -87,10 +92,39 @@ struct TypeInfo {
   bool complete = false;
   bool builtin = false;
   size_t order = 0;
+
+  friend void to_json(json &j, const TypeInfo *type_info) {
+    j = {
+        {"__ptr__", reinterpret_cast<std::uintptr_t>(type_info)},
+        {"members", type_info->members},
+        {"name", type_info->name},
+        {"complete", type_info->complete},
+        {"builtin", type_info->builtin},
+        {"order", type_info->order},
+    };
+  }
 };
 
 std::string genericToStr(const std::vector<Type> &generic);
 void pushStruct(const std::string &name, const TypeInfo &info);
 
-typedef std::pair<std::string, std::vector<Type>> funcHead;
+struct funcHead {
+ std::string name;
+ std::vector<Type> types;
+};
+
+
 };  // namespace types
+
+namespace std {
+template <>
+struct less<types::funcHead> {
+  bool operator()(const types::funcHead &lhs,
+                  const types::funcHead &rhs) const {
+    if (lhs.name != rhs.name) return lhs.name < rhs.name;
+    return lhs.types < rhs.types;
+  }
+};
+}  // namespace std
+
+void to_json(json &j, const types::funcHead &generic);

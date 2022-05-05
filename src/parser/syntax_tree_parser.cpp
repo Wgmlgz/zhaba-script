@@ -485,13 +485,13 @@ std::vector<Function*> parseImpl(ast::ASTBlock* block, const types::Type& type,
     if (func->name == "ctor") {
       if (func->type.getTypeId() == types::voidT) func->type = type;
       
-      func->op_type = Function::OpType::lhs;
+      func->op_type = OpType::lhs;
     } else if (func->is_fn) {
       func->args.insert(
           func->args.begin(),
           {"slf", types::Type(type.getTypeId(), type.getPtr() + 1, 1)});
       func->name = ".call." + func->name;
-      func->op_type = Function::OpType::bin;
+      func->op_type = OpType::bin;
     }
     std::vector<types::Type> types;
     for (auto& [name, type] : func->args) {
@@ -515,17 +515,17 @@ std::vector<Function*> parseImpl(ast::ASTBlock* block, const types::Type& type,
       if (!push_scope.containsBinOpP(func->name)) 
         push_scope.setBinOpP(func->name, p);
     } else {
-      if (func->op_type == Function::OpType::bin) {
+      if (func->op_type == OpType::bin) {
         push_scope.setBinOp({func->name, types}, func);
         if (!push_scope.containsBinOpP(func->name))
           push_scope.setBinOpP(func->name, func->priority);
-      } else if (func->op_type == Function::OpType::lhs) {
+      } else if (func->op_type == OpType::lhs) {
         push_scope.setPrOp({func->name, types}, func);
         /** prefix operator priority */
         int64_t p = 3;
         if (!push_scope.containsPrOpP(func->name))
-            push_scope.setPrOpP(func->name, p);
-        } else {
+          push_scope.setPrOpP(func->name, p);
+      } else {
         push_scope.setPoOp({func->name, types}, func);
         /** postfix operator priority */
         int64_t p = 2;
@@ -533,7 +533,8 @@ std::vector<Function*> parseImpl(ast::ASTBlock* block, const types::Type& type,
           push_scope.setPoOpP(func->name, p);
       }
     }
-    if (!push_scope.containsOp(func->name)) push_scope.setOp(func->name);
+    if (!push_scope.operators.contains(func->name))
+      push_scope.operators.emplace(func->name, true);
 
     func->body = parseASTblock(block, scope, func);
     func->args_scope = scope;
@@ -562,8 +563,8 @@ void parceFn(ZHModule* res, ScopeInfo& push_scope, ast::ASTLine* line, ast::ASTB
       throw ParserError(*line->begin, *line->end, err.what());
     }
   } else {
-    if(!push_scope.containsOp(func->name)) push_scope.setOp(func->name);
-    if (func->op_type == Function::OpType::bin) {
+    if(!push_scope.operators.contains(func->name)) push_scope.operators.emplace(func->name, true);
+    if (func->op_type == OpType::bin) {
       push_scope.setBinOp({func->name, types}, func);
       if (push_scope.containsBinOpP(func->name)) {
         if (func->priority != push_scope.getBinOpP(func->name))
@@ -575,12 +576,12 @@ void parceFn(ZHModule* res, ScopeInfo& push_scope, ast::ASTLine* line, ast::ASTB
       } else {
         push_scope.setBinOpP(func->name, func->priority);
       }
-    } else if (func->op_type == Function::OpType::lhs) {
+    } else if (func->op_type == OpType::lhs) {
       push_scope.setPrOp({func->name, types}, func);
       if (!push_scope.containsPrOpP(func->name)) {
         push_scope.setPrOpP(func->name, func->priority);
       }
-    } else if (func->op_type == Function::OpType::rhs) {
+    } else if (func->op_type == OpType::rhs) {
       push_scope.setPoOp({func->name, types}, func);
       if (!push_scope.containsPoOpP(func->name)) {
         push_scope.setPoOpP(func->name, func->priority);
@@ -676,14 +677,16 @@ ZHModule* parseAST(std::filesystem::path file_path) {
               }
             };
         if (!hasEnding(path, ".zh")) path += ".zh";
+        if (std::filesystem::path(path).is_relative())
+          path = (file_path.parent_path() / path).string();
+
         path = resolvePath(path).string();
         res->dependences.push_back(path);
 
         if (!zhdata.used_modules.contains(path)) {
           zhdata.used_modules.emplace(path, nullptr);
           std::filesystem::path file_path = path;
-          if (file_path.is_relative())
-            file_path = file_path.parent_path() / path;
+
 
           auto parsed_module = parseAST(file_path);
           res->dependences.push_back(parsed_module->path);
@@ -711,7 +714,7 @@ ZHModule* parseAST(std::filesystem::path file_path) {
           throw ParserError(*line->end, "Expected identifier token for struct type name");
 
         std::string name = (line->begin + 2)->val;
-        if (res->scope.struct_ids.contains(name)) {
+        if (res->scope.types.contains(name)) {
           throw ParserError(*line->begin, *line->end,
                             "Type '" + name + "'already exist");
         }
@@ -800,14 +803,10 @@ ZHModule* parseAST(std::filesystem::path file_path) {
 }
 
 std::filesystem::path resolvePath(std::filesystem::path file_path) {
-  auto tmp_path = zhdata.bin_path;
-  auto fin = std::ifstream(zhdata.bin_path / file_path);
-  if (fin.fail()) {
-    tmp_path = zhdata.std_path / file_path;
-    fin = std::ifstream(tmp_path);
-    if (fin.fail())
-      throw ParserError(-1, "Cannot open file '" + tmp_path.string() + "' ");
-  }
-  fin.close();
-  return tmp_path;
+  if (std::filesystem::exists(file_path))
+    return file_path;
+
+  if (std::filesystem::exists(zhdata.std_path / file_path))
+    return zhdata.std_path / file_path;
+  throw ParserError(-1, "Cannot open file '" + file_path.string() + "' ");
 }

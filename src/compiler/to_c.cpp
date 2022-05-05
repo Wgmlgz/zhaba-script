@@ -297,10 +297,10 @@ std::string exp2C(zhexp::Exp* exp) {
 
         if (op->type.getRef()) res += "*";
         res +=  (
-          op->func->op_type == Function::OpType::bin ? bop2C(op->func) : (
-          op->func->op_type == Function::OpType::lhs ? lop2C(op->func) : rop2C(op->func)
+          op->func->op_type == OpType::bin ? bop2C(op->func) : (
+          op->func->op_type == OpType::lhs ? lop2C(op->func) : rop2C(op->func)
         )) + "(";
-        res += args2C(lhs_tuple, op->func->getHead().second);
+        res += args2C(lhs_tuple, op->func->getHead().types);
         res += ")";
       }
     }
@@ -426,10 +426,10 @@ std::string exp2C(zhexp::Exp* exp) {
     } else {
       if (op->type.getRef()) res += "*";
       res +=  (
-        op->func->op_type == Function::OpType::bin ? bop2C(op->func) : (
-        op->func->op_type == Function::OpType::lhs ? lop2C(op->func) : rop2C(op->func)
+        op->func->op_type == OpType::bin ? bop2C(op->func) : (
+        op->func->op_type == OpType::lhs ? lop2C(op->func) : rop2C(op->func)
       )) + "(";
-      res += args2C(op->child, op->func->getHead().second );
+      res += args2C(op->child, op->func->getHead().types );
       res += ")";
     }
   } else if (auto tp = dynamic_cast<zhexp::TypeLiteral*>(exp)) {
@@ -440,7 +440,7 @@ std::string exp2C(zhexp::Exp* exp) {
   } else if (auto op = dynamic_cast<zhexp::PostfixOperator*>(exp)) {
     if (op->type.getRef()) res += "*";
     res += rop2C(op->func) + "(";
-    res += args2C(op->child, op->func->getHead().second);
+    res += args2C(op->child, op->func->getHead().types);
     res += ")";
   } else if (auto tuple = dynamic_cast<zhexp::Tuple*>(exp)) {
     for (size_t i = 0; i < tuple->content.size(); ++i) {
@@ -540,9 +540,9 @@ std::string node2C(STNode* node, Function* fn, size_t depth) {
 };
 
 std::string funcName2C(Function* func) {
-  return (func->op_type == Function::OpType::bin
+  return (func->op_type == OpType::bin
               ? bop2C(func)
-              : (func->op_type == Function::OpType::lhs ? lop2C(func)
+              : (func->op_type == OpType::lhs ? lop2C(func)
                                                         : rop2C(func)));
 }
 
@@ -576,9 +576,9 @@ std::string funcHead2FnPtr(Function* func) {
     str += "int main(int argc, char *argv[]) ";
   } else {
     str += type2C(func->type) + " ";
-    str += (func->op_type == Function::OpType::bin
+    str += (func->op_type == OpType::bin
                 ? bop2C(func)
-                : (func->op_type == Function::OpType::lhs ? lop2C(func)
+                : (func->op_type == OpType::lhs ? lop2C(func)
                                                           : rop2C(func))) +
            "(";
     bool start = true;

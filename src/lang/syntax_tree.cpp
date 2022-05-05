@@ -108,17 +108,17 @@ std::string Function::toUniqueStr() const {
 }
 types::funcHead Function::getHead() const {
   types::funcHead res;
-  res.first = name;
+  res.name = name;
   for (const auto&[name, type] : args) {
-    res.second.push_back(type);
-    res.second.back().setLval(false);
+    res.types.push_back(type);
+    res.types.back().setLval(false);
   }
   return res;
 };
 
 types::funcHead Function::getHeadNonRefNonLval() const {
   types::funcHead res = getHead();
-  for (auto &type : res.second)
+  for (auto &type : res.types)
     type.setLval(false), type.setRef(false);
   return res;
 };
@@ -128,4 +128,13 @@ types::Type Function::getFnType() const {
   for (const auto &[name, type] : args) types.push_back(type);
   auto fn_type = types::Type(types::FT, 0, false, false, types);
   return fn_type;
+}
+
+void to_json(json &j, const Function *fn) {
+  j["name"] = fn->name;
+  // j["args"] = fn->args;
+  j["type"] = fn->type;
+  j["op_type"] = fn->op_type;
+  j["is_c"] = fn->is_C;
+  j["args_scope"] = fn->args_scope;
 }

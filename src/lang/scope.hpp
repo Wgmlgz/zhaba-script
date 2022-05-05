@@ -4,6 +4,7 @@
 #include <set>
 #include <stdexcept>
 #include <string>
+#include <type_traits>
 #include <unordered_map>
 
 #include "../libs/json.hpp"
@@ -12,14 +13,16 @@
 using json = nlohmann::json;
 
 struct Function;
+void to_json(json& j, const Function* generic);
 
 namespace types {
 struct Generic;
+void to_json(json& j, const types::Generic* generic);
 }
 
 int64_t genId();
 
-template <template <typename...> class C, typename K, typename V>
+template <template <typename...> class C, typename K, typename V = void>
 class DynamicContainer {
  public:
   bool empty() const { return !ptr; }
@@ -76,7 +79,6 @@ void to_json(json& j, const DynamicContainer<C, K, V>& container) {
   for (const auto& [key, val] : container.get()) {
     j[key] = val;
   }
-  j = "undef";
 }
 
 class ScopeInfo {
@@ -90,33 +92,55 @@ class ScopeInfo {
 
     friend void to_json(json& j, const VarInfo* var_info) {
       j = {
+          {"__ptr__", reinterpret_cast<std::uintptr_t>(&var_info)},
           {"name", var_info->name},
+          {"type", var_info->type},
           {"id", var_info->id},
       };
     }
   };
 
  public:
-  DynamicContainer<std::map, std::string, VarInfo*> vars_name;
+  /** Variables, owns `VarInfo*` */
+  DynamicContainer<std::map, std::string, VarInfo*> vars;
+  /** Helper, provides variables access by id,
+   * DON'T owns `VarInfo*`,
+   * recoverable from `vars`
+   */
   DynamicContainer<std::map, int64_t, VarInfo*> vars_id;
 
+  /** Defined types owns `types::TYPE` (aka `types::TypeInfo*`) */
+  DynamicContainer<std::map, std::string, types::TYPE> types;
+  /** Typedefs (types aliases)` */
+  DynamicContainer<std::map, std::string, types::Type> typedefs;
+  /** Generic types definitions, owns `types::Generic*` */
   DynamicContainer<std::map, std::string, types::Generic*> generics;
 
-  DynamicContainer<std::map, std::string, types::TYPE> struct_ids;
-  DynamicContainer<std::map, std::string, types::Type> typedefs;
-  std::set<std::string> operators;
+  /** New defined operators */
+  DynamicContainer<std::map, std::string, bool> operators;
+  /** Binary operators priorities */
   DynamicContainer<std::map, std::string, int64_t> bin_operators_;
+  /** Prefix operators priorities */
   DynamicContainer<std::map, std::string, int64_t> prefix_operators_;
+  /** Postfix operators priorities */
   DynamicContainer<std::map, std::string, int64_t> postfix_operators_;
 
+  /** Binary operators, owns `Function*` */
   DynamicContainer<std::map, types::funcHead, Function*> B_OD_;
+  /** Prefix operators, owns `Function*` */
   DynamicContainer<std::map, types::funcHead, Function*> PR_OD_;
+  /** Postfix operators, owns `Function*` */
   DynamicContainer<std::map, types::funcHead, Function*> PO_OD_;
+  /** Functions, owns `Function*` */
   DynamicContainer<std::map, types::funcHead, Function*> FN_OD_;
 
+  /** Last defined binary operator by name, DON'T owns `Function*` */
   DynamicContainer<std::map, std::string, Function*> B_OD_NAME_;
+  /** Last defined prefix operator by name, DON'T owns `Function*` */
   DynamicContainer<std::map, std::string, Function*> PR_OD_NAME_;
+  /** Last defined postfix operator by name, DON'T owns `Function*` */
   DynamicContainer<std::map, std::string, Function*> PO_OD_NAME_;
+  /** Last defined function by name, DON'T owns `Function*` */
   DynamicContainer<std::map, std::string, Function*> FN_OD_NAME_;
 
   ScopeInfo(const ScopeInfo* new_parent);
@@ -228,7 +252,7 @@ class ScopeInfo {
     if (container.contains(name))                                             \
       throw std::runtime_error(#display " is already defined in this scope"); \
     container.emplace(name, val);                                             \
-    container##NAME_.emplace(name.first, val);                                \
+    container##NAME_.emplace(name.name, val);                                \
   }
 
 #define MAKE_SCOPE_ACCESS_SET(property, properties, display, container,       \
@@ -259,10 +283,9 @@ class ScopeInfo {
                           prefix_operators_, int64_t, std::string);
   MAKE_SCOPE_ACCESS_NOMSG(PoOpP, PoOpsP, postfix_operator_priority,
                           postfix_operators_, int64_t, std::string);
-  MAKE_SCOPE_ACCESS_SET(Op, Ops, operators, operators, std::string);
 
   bool containsVar(const std::string& name) const {
-    if (vars_name.contains(name)) return true;
+    if (vars.contains(name)) return true;
     for (const auto parent : parents) {
       bool f = parent->containsVar(name);
       if (f) return true;
@@ -271,7 +294,7 @@ class ScopeInfo {
   }
 
   const types::Type& getVarType(const std::string& name) const {
-    if (vars_name.contains(name)) return vars_name.at(name)->type;
+    if (vars.contains(name)) return vars.at(name)->type;
     for (const auto parent : parents)
       return const_cast<types::Type&>(parent->getVarType(name));
     throw std::runtime_error("variable '" + name + "'" +
@@ -284,7 +307,7 @@ class ScopeInfo {
   }
 
   const int64_t& getVarId(const std::string& name) const {
-    if (vars_name.contains(name)) return vars_name.at(name)->id;
+    if (vars.contains(name)) return vars.at(name)->id;
     for (const auto parent : parents) {
       bool b = parent->containsVar(name);
       if (b) return const_cast<int64_t&>(parent->getVarId(name));
@@ -340,15 +363,15 @@ class ScopeInfo {
   }
 
   void setVar(const std::string& name, const types::Type& val) {
-    if (vars_name.contains(name))
+    if (vars.contains(name))
       throw std::runtime_error("variable '" + name + "'" +
                                "is already defined in this scope");
     auto info = new VarInfo{name, val, genId()};
-    vars_name.emplace(name, info);
+    vars.emplace(name, info);
     vars_id.emplace(info->id, info);
   }
 
-  const auto getVars() { return vars_name.get(); }
+  const auto getVars() { return vars.get(); }
 
   /** Collects all variables including `last` scope */
   void collectVars(ScopeInfo* last,

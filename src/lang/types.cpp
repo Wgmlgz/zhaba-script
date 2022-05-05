@@ -91,3 +91,10 @@ std::string Type::toString() const {
   return res;
 }
 }  // namespace types
+
+
+void to_json(json &j, const types::funcHead &func_head) {
+  std::map<types::funcHead, int> mp;
+  j["name"] = func_head.name;
+  j["args_types"] = func_head.types;
+}

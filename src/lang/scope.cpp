@@ -5,15 +5,17 @@ ScopeInfo::ScopeInfo(const ScopeInfo* new_parent) {
   if (!new_parent) return;
   parents.push_back(new_parent);
   typedefs.addParent(&new_parent->typedefs);
-  struct_ids.addParent(&new_parent->struct_ids);
+  types.addParent(&new_parent->types);
   generics.addParent(&new_parent->generics);
+  operators.addParent(&new_parent->operators);
 }
 void ScopeInfo::addParent(const ScopeInfo* new_parent) {
   if (!new_parent) return;
   parents.push_back(new_parent);
   typedefs.addParent(&new_parent->typedefs);
-  struct_ids.addParent(&new_parent->struct_ids);
+  types.addParent(&new_parent->types);
   generics.addParent(&new_parent->generics);
+  operators.addParent(&new_parent->operators);
 }
 
 int64_t genId() {
@@ -22,5 +24,16 @@ int64_t genId() {
 }
 
 void to_json(json& j, const ScopeInfo& p) {
-  j = {{"vars_name", p.vars_name}, {"typedefs", p.typedefs}};
+  if (!p.vars.empty()) j["vars"] = p.vars;
+
+  if (!p.types.empty()) j["types"] = p.types;
+  if (!p.typedefs.empty()) j["typedefs"] = p.typedefs;
+  if (!p.generics.empty()) j["generics"] = p.generics;
+
+  if (!p.operators.empty()) j["operators"] = p.operators;
+  // if (!p.operators.empty()) j["bin_operators"] = p.bin_operators_;
+  // if (!p.operators.empty()) j["prefix_operators"] = p.prefix_operators_;
+  // if (!p.operators.empty()) j["postfix_operators"] = p.postfix_operators_;
+
+  // if (!p.operators.empty()) j["B_OD_"] = p.B_OD_;
 }

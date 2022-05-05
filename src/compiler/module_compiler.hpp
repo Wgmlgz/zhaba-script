@@ -12,7 +12,6 @@
 void compileFile(std::filesystem::path file_path) {
   auto start_time = clock();
 
-
   auto stree = parseAST(resolvePath(file_path));
 
   if (zhdata.flags["show_st"]) {

@@ -137,7 +137,7 @@ Exp *buildExp(ScopeInfo &scope, tokeniter begin, tokeniter end) {
     else if (i->first->token == TOKEN::close_p)
       i->second = TOKEN_TYPE::close_p;
     else if (i->second == undef && i->first->token == TOKEN::id &&
-             scope.containsOp(i->first->val))
+             scope.operators.contains(i->first->val))
       i->second = TOKEN_TYPE::any_op;
 
   /** Define prefix operators */

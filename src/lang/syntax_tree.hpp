@@ -50,7 +50,6 @@ struct Function {
   std::vector<Arg> args;
   types::Type type;
 
-  enum class OpType { lhs, rhs, bin };
   OpType op_type;
 
   bool is_C = false;
