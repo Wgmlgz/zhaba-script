@@ -476,7 +476,7 @@ std::string block2C(STBlock* block, Function* fn, size_t depth) {
   std::string res;
   res += "{\n";
 
-  for (const auto [name, varInfo] : block->scope_info.getVars()) {
+  for (const auto [name, varInfo] : block->scope_info.vars.get()) {
     res += std::string((depth+1) * tab_size , ' ');
     if (varInfo->type.isFn()) {
       res += type2C(varInfo->type, "v" + std::to_string(varInfo->id));
@@ -558,10 +558,10 @@ std::string funcHead2C(Function* func) {
       if (!start) str += ", ";
       if (type.isFn()) {
         str +=
-            type2C(type, "v" + std::to_string(func->args_scope->getVarId(name)));
+            type2C(type, "v" + std::to_string(func->args_scope->vars.at(name)->id));
       } else {
         str += type2C(type) + " ";
-        str += "v" + std::to_string(func->args_scope->getVarId(name));
+        str += "v" + std::to_string(func->args_scope->vars.at(name)->id);
       }
       start = false;
     }
@@ -585,7 +585,7 @@ std::string funcHead2FnPtr(Function* func) {
     for (auto& [name, type] : func->args) {
       if (!start) str += ", ";
       str += type2C(type) + " ";
-      str += "v" + std::to_string(func->args_scope->getVarId(name));
+      str += "v" + std::to_string(func->args_scope->vars.at(name)->id);
       start = false;
     }
     str += ")";

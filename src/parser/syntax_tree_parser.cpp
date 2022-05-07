@@ -34,7 +34,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, Scope& parent_scope, Function*
             } catch (const std::runtime_error& err) {
               throw ParserError(i->begin, i->end, err.what());
             }
-            res->scope_info.getVarType(id->val).setLval(true);
+            res->scope_info.vars.at(id->val)->type.setLval(true);
           } else {
             /* variable with assignment */
             if (auto assign = dynamic_cast<zhexp::BinOperator*>(i)) {
@@ -63,7 +63,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, Scope& parent_scope, Function*
                     throw ParserError(assign->begin, assign->end, err.what());
                   }
                 }
-                res->scope_info.getVarType(id->val).setLval(true);
+                res->scope_info.vars.at(id->val)->type.setLval(true);
 
                 /* push assignment expression */
                 assign->lhs = zhexp::postprocess(assign->lhs, res->scope_info);
@@ -409,10 +409,10 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, Scope& parent_scope, Function*
                   auto type = var_info->type;
                   type.setPtr(1);
                   type.setLval(false);
-                  if (res->scope_info.containsBinOp({".call.dtor", {type}})) {
+                  if (res->scope_info.B_OP.contains({".call.dtor", {type}})) {
                     to_destroy.push_back(
                         {var_info,
-                         res->scope_info.getBinOp({".call.dtor", {type}})});
+                         res->scope_info.B_OP.at({".call.dtor", {type}})});
                   }
                 }
               }
@@ -452,10 +452,10 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, Scope& parent_scope, Function*
       auto type = var_info->type;
       type.setPtr(1);
       type.setLval(false);
-      if (res->scope_info.containsBinOp(
+      if (res->scope_info.B_OP.contains(
               {".call.dtor", {type}})) {
         to_destroy.push_back(
-            {var_info, res->scope_info.getBinOp({".call.dtor", {type}})});
+            {var_info, res->scope_info.B_OP.at({".call.dtor", {type}})});
       }
     }
   }
@@ -496,7 +496,7 @@ std::vector<Function*> parseImpl(ast::ASTBlock* block, const types::Type& type,
     std::vector<types::Type> types;
     for (auto& [name, type] : func->args) {
       scope.setVar(name, type);
-      scope.getVarType(name).setLval(true);
+      scope.vars.at(name)->type.setLval(true);
       types.push_back(type);
       types.back().setLval(false);
       types.back().setRef(false);
@@ -591,7 +591,7 @@ void parceFn(ZHModule* res, Scope& push_scope, ast::ASTLine* line, ast::ASTBlock
 
   for (auto& [name, type] : func->args) {
     scope.setVar(name, type);
-    scope.getVarType(name).setLval(true);
+    scope.vars.at(name)->type.setLval(true);
   }
 
   /** And then parse body */

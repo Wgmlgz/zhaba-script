@@ -7,7 +7,7 @@ TreeNode<std::string> *STBlock::toGenericTree() {
   auto node = new TreeNode<std::string>;
   node->data = "<block>";
   auto vars = new TreeNode<std::string>("<vars>");
-  for (const auto& [name, info] : scope_info.getVars())
+  for (const auto& [name, info] : scope_info.vars.get())
     vars->branches.push_back(
         new TreeNode<std::string>(
             "name: " + name + " id: " + std::to_string(info->id),

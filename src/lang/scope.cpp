@@ -9,15 +9,15 @@ Scope::Scope(const Scope* new_parent)
       prefix_operators(this),
       postfix_operators(this),
       bin_operators(this),
-      B_OD_(this),
-      PR_OD_(this),
-      PO_OD_(this),
-      FN_OD_(this),
+      B_OP(this),
+      PR_OP(this),
+      PO_OP(this),
+      FN(this),
       last_fn(this),
       dynamic_containers_ptrs({&vars, &vars_id, &types, &typedefs, &generics,
                                &bin_operators, &prefix_operators,
-                               &postfix_operators, &B_OD_, &PR_OD_, &PO_OD_,
-                               &FN_OD_, &last_fn}) {
+                               &postfix_operators, &B_OP, &PR_OP, &PO_OP,
+                               &FN, &last_fn}) {
   if (this == new_parent) throw std::runtime_error("Parent is this");
   if (!new_parent) return;
   parents.push_back(new_parent);
@@ -44,7 +44,7 @@ void to_json(json& j, const Scope& p) {
   if (!p.postfix_operators.empty())
     j["postfix_operators"] = p.postfix_operators;
 
-  if (!p.B_OD_.empty()) j["B_OD_"] = p.B_OD_;
-  if (!p.PR_OD_.empty()) j["PR_OD"] = p.PR_OD_;
-  if (!p.PO_OD_.empty()) j["PO_OD"] = p.PO_OD_;
+  if (!p.B_OP.empty()) j["B_OP"] = p.B_OP;
+  if (!p.PR_OP.empty()) j["PR_OD"] = p.PR_OP;
+  if (!p.PO_OP.empty()) j["PO_OD"] = p.PO_OP;
 }

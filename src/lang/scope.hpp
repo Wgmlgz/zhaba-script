@@ -2,7 +2,6 @@
 #include <array>
 #include <iostream>
 #include <map>
-#include <ranges>
 #include <set>
 #include <stdexcept>
 #include <string>
@@ -31,10 +30,7 @@ class Scope {
   template <std::size_t ID, template <typename...> class C, typename K,
             typename V = void>
   class DynamicContainer {
-#define PARENTS                                                               \
-  scope->parents | std::views::transform([](const Scope* p) {             \
-    return static_cast<DynamicContainer*>(p->dynamic_containers_ptrs.at(ID)); \
-  })
+
    public:
     bool empty() const { return !ptr; }
 
@@ -49,15 +45,21 @@ class Scope {
 
     bool contains(const K& key) const {
       if (ptr && ptr->contains(key)) return true;
-      for (const auto parent : PARENTS)
-        if (parent && parent->contains(key)) return true;
+      for (const auto p : scope->parents) {
+        if (static_cast<DynamicContainer*>(p->dynamic_containers_ptrs.at(ID))
+                ->contains(key))
+          return true;
+      }
       return false;
     }
 
     const V& at(const K& key) const {
       if (ptr && ptr->contains(key)) return ptr->at(key);
-      for (const auto parent : PARENTS)
+      for (const auto p : scope->parents) {
+        auto parent =
+            static_cast<DynamicContainer*>(p->dynamic_containers_ptrs.at(ID));
         if (parent->contains(key)) return parent->at(key);
+      }
       throw std::runtime_error("DynamicContainer error");
     }
 
@@ -131,13 +133,13 @@ class Scope {
   DynamicContainer<7, std::map, std::string, int64_t> postfix_operators;
 
   /** Binary operators, owns `Function*` */
-  DynamicContainer<8, std::map, types::FnHead, Function*> B_OD_;
+  DynamicContainer<8, std::map, types::FnHead, Function*> B_OP;
   /** Prefix operators, owns `Function*` */
-  DynamicContainer<9, std::map, types::FnHead, Function*> PR_OD_;
+  DynamicContainer<9, std::map, types::FnHead, Function*> PR_OP;
   /** Postfix operators, owns `Function*` */
-  DynamicContainer<10, std::map, types::FnHead, Function*> PO_OD_;
+  DynamicContainer<10, std::map, types::FnHead, Function*> PO_OP;
   /** Functions, owns `Function*` */
-  DynamicContainer<11, std::map, types::FnHead, Function*> FN_OD_;
+  DynamicContainer<11, std::map, types::FnHead, Function*> FN;
 
   /** Last defined binary operator by name, DON'T owns `Function*` */
   DynamicContainer<12, std::map, std::string, Function*> last_fn;
@@ -152,116 +154,33 @@ class Scope {
     return bin_operators.contains(op_name) ||
            prefix_operators.contains(op_name) || postfix_operators.contains(op_name);
   }
-#define MAKE_SCOPE_ACCESS_OP(property, properties, display, container)        \
-  bool contains##property(const types::FnHead& name) const {                  \
-    if (container.contains(name)) return true;                                \
-    for (const auto parent : parents) {                                       \
-      bool f = parent->contains##property(name);                              \
-      if (f) return true;                                                     \
-    }                                                                         \
-    return false;                                                             \
-  }                                                                           \
-  const Function*& get##property(const types::FnHead& name) const {           \
-    if (container.contains(name))                                             \
-      return const_cast<const Function*&>(container.at(name));                \
-    for (const auto parent : parents) {                                       \
-      bool b = parent->contains##property(name);                              \
-      if (b) return parent->get##property(name);                              \
-    }                                                                         \
-    throw std::runtime_error(#display " is not defined in this scope");       \
-  }                                                                           \
-  Function*& get##property(const types::FnHead& name) {                       \
-    return const_cast<Function*&>(                                            \
-        static_cast<const Scope&>(*this).get##property(name));            \
-  }                                                                           \
-  void set##property(const types::FnHead& name, Function*& val) {             \
-    if (container.contains(name))                                             \
-      throw std::runtime_error(#display " is already defined in this scope"); \
-    container.emplace(name, val);                                             \
-    last_fn.emplace(name.name, val);                                          \
+
+  void setBinOp(const types::FnHead& name, Function*& val) {
+    if (B_OP.contains(name))
+      throw std::runtime_error(
+          "binary_operator is already defined in this scope");
+    B_OP.emplace(name, val);
+    last_fn.emplace(name.name, val);
   }
-
-  MAKE_SCOPE_ACCESS_OP(BinOp, BinOps, binary_operator, B_OD_);
-  MAKE_SCOPE_ACCESS_OP(PrOp, PrOps, prefix_operator, PR_OD_);
-  MAKE_SCOPE_ACCESS_OP(PoOp, PoOps, postfix_operator, PO_OD_);
-  MAKE_SCOPE_ACCESS_OP(Fn, Fns, function, FN_OD_);
-
-  bool containsVar(const std::string& name) const {
-    if (vars.contains(name)) return true;
-    for (const auto parent : parents) {
-      bool f = parent->containsVar(name);
-      if (f) return true;
-    }
-    return false;
+  void setPrOp(const types::FnHead& name, Function*& val) {
+    if (PR_OP.contains(name))
+      throw std::runtime_error(
+          "prefix_operator is already defined in this scope");
+    PR_OP.emplace(name, val);
+    last_fn.emplace(name.name, val);
   }
-
-  const types::Type& getVarType(const std::string& name) const {
-    if (vars.contains(name)) return vars.at(name)->type;
-    for (const auto parent : parents)
-      return const_cast<types::Type&>(parent->getVarType(name));
-    throw std::runtime_error("variable '" + name + "'" +
-                             "is not defined in this scope");
+  void setPoOp(const types::FnHead& name, Function*& val) {
+    if (PO_OP.contains(name))
+      throw std::runtime_error(
+          "postfix_operator is already defined in this scope");
+    PO_OP.emplace(name, val);
+    last_fn.emplace(name.name, val);
   }
-
-  types::Type& getVarType(const std::string& name) {
-    return const_cast<types::Type&>(
-        static_cast<const Scope&>(*this).getVarType(name));
-  }
-
-  const int64_t& getVarId(const std::string& name) const {
-    if (vars.contains(name)) return vars.at(name)->id;
-    for (const auto parent : parents) {
-      bool b = parent->containsVar(name);
-      if (b) return const_cast<int64_t&>(parent->getVarId(name));
-    }
-    throw std::runtime_error("variable '" + name + "'" +
-                             "is not defined in this scope");
-  }
-
-  bool containsVar(const int64_t& id) const {
-    if (vars_id.contains(id)) return true;
-    for (const auto parent : parents) {
-      bool b = parent->containsVar(id);
-      if (b) return true;
-    }
-    return false;
-  }
-
-  const std::string& getVarName(int64_t id) const {
-    if (vars_id.contains(id)) return vars_id.at(id)->name;
-    for (const auto parent : parents) {
-      bool b = parent->containsVar(id);
-      if (b) return const_cast<std::string&>(parent->getVarName(id));
-    }
-    throw std::runtime_error("variable '" + std::to_string(id) + "'" +
-                             "is not defined in this scope");
-  }
-
-  const VarInfo* const& getVarInfo(int64_t id) const {
-    if (vars_id.contains(id)) return vars_id.at(id);
-    for (const auto parent : parents) {
-      bool b = parent->containsVar(id);
-      if (b) return parent->getVarInfo(id);
-    }
-    throw std::runtime_error("variable '" + std::to_string(id) + "'" +
-                             "is not defined in this scope");
-  }
-
-
-
-  const types::Type& getVarType(const int64_t& id) const {
-    if (vars_id.contains(id)) return vars_id.at(id)->type;
-    for (const auto parent : parents) {
-      bool b = parent->containsVar(id);
-      if (b) return parent->getVarType(id);
-    }
-    throw std::runtime_error("variable '" + std::to_string(id) + "'" +
-                             "is not defined in this scope");
-  }
-
-  types::Type& getVarType(const int64_t& id) {
-    return const_cast<types::Type&>(static_cast<const Scope&>(*this).
-                                        getVarType(id));
+  void setFn(const types::FnHead& name, Function*& val) {
+    if (FN.contains(name))
+      throw std::runtime_error("function is already defined in this scope");
+    FN.emplace(name, val);
+    last_fn.emplace(name.name, val);
   }
 
   void setVar(const std::string& name, const types::Type& val) {
@@ -272,8 +191,6 @@ class Scope {
     vars.emplace(name, info);
     vars_id.emplace(info->id, info);
   }
-
-  const auto getVars() { return vars.get(); }
 
   /** Collects all variables including `last` scope */
   void collectVars(Scope* last,

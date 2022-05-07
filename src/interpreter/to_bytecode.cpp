@@ -505,7 +505,7 @@ void nodeToB(zhin::ByteCode& bytecode, STNode* node, FuncData& funcdata, Functio
 void blockToB(zhin::ByteCode& bytecode, STBlock* block, FuncData& funcdata, Function* func) {
   /** Push local vars info */
   size_t local_vars_size = 0;
-  for (const auto& [name, info] : block->scope_info.getVars()) {
+  for (const auto& [name, info] : block->scope_info.vars.get()) {
     funcdata.offsets.emplace(info->id, funcdata.offset);
     funcdata.offset += getSize(bytecode, info->type);
     local_vars_size += getSize(bytecode, info->type);
@@ -515,7 +515,7 @@ void blockToB(zhin::ByteCode& bytecode, STBlock* block, FuncData& funcdata, Func
   for (auto& i : block->nodes) nodeToB(bytecode, i, funcdata, func);
 
   /** Pop local vars info */
-  for (const auto& [name, info] : block->scope_info.getVars()) {
+  for (const auto& [name, info] : block->scope_info.vars.get()) {
     funcdata.offset -= getSize(bytecode, info->type);
   }
   bytecode.push_pop_bytes(local_vars_size);
@@ -532,9 +532,9 @@ void funcToB(zhin::ByteCode& bytecode, Function* func) {
     funcdata.args_size += getSize(bytecode, type);
   }
   for (const auto& [name, type] : func->args) {
-    auto id = func->body->scope_info.getVarId(name);
+    auto id = func->body->scope_info.vars.at(name)->id;
     // std::cout << func->body << std::endl;
-    // std::cout << func->args_scope.getVarId(name) << std::endl;
+    // std::cout << func->args_scope.vars(name)->id << std::endl;
 
     funcdata.offsets.emplace(id, funcdata.offset);
     funcdata.offset += getSize(bytecode, type);
