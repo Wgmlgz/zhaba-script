@@ -13,6 +13,8 @@
 using json = nlohmann::json;
 
 struct Function;
+void to_json(json &j, const Function *fn);
+
 enum class OpType { lhs, rhs, bin };
 
 namespace types {
@@ -108,9 +110,10 @@ struct TypeInfo {
 std::string genericToStr(const std::vector<Type> &generic);
 void pushStruct(const std::string &name, const TypeInfo &info);
 
-struct funcHead {
- std::string name;
- std::vector<Type> types;
+struct FnHead {
+  std::string name;
+  std::vector<Type> types;
+  friend void to_json(json &j, const types::FnHead &generic);
 };
 
 
@@ -118,13 +121,12 @@ struct funcHead {
 
 namespace std {
 template <>
-struct less<types::funcHead> {
-  bool operator()(const types::funcHead &lhs,
-                  const types::funcHead &rhs) const {
+struct less<types::FnHead> {
+  bool operator()(const types::FnHead &lhs,
+                  const types::FnHead &rhs) const {
     if (lhs.name != rhs.name) return lhs.name < rhs.name;
     return lhs.types < rhs.types;
   }
 };
 }  // namespace std
 
-void to_json(json &j, const types::funcHead &generic);

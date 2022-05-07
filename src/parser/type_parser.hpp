@@ -6,16 +6,16 @@
 
 /** Defined in SyntaxTreeParser.hpp */
 std::vector<Function *> parseImpl(ast::ASTBlock *block, const types::Type &type,
-                                  ScopeInfo &main_scope, ScopeInfo &push_scope);
+                                  Scope &main_scope, Scope &push_scope);
 
 namespace types {
 
-Type parse(std::string &str, const ScopeInfo &scope);
-Type parse(tokeniter &token, const ScopeInfo &scope);
-std::vector<Type> parseTemplate(tokeniter &token, const ScopeInfo &scope);
+Type parse(std::string &str, const Scope &scope);
+Type parse(tokeniter &token, const Scope &scope);
+std::vector<Type> parseTemplate(tokeniter &token, const Scope &scope);
 
 void parsePushStruct(const std::string &name, ast::ASTBlock *block,
-                     ScopeInfo &write_scope, ScopeInfo &scope);
+                     Scope &write_scope, Scope &scope);
 
 struct TypeParsingError {};
 };  // namespace types

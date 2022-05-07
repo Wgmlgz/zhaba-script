@@ -1,6 +1,6 @@
 #include "./definitions_parser.hpp"
 
-void validateFunction(const ScopeInfo& scope, const Function &func, tokeniter begin, tokeniter end) {
+void validateFunction(const Scope& scope, const Function &func, tokeniter begin, tokeniter end) {
   try {
     auto str = func.name;
     types::parse(str, scope);
@@ -32,7 +32,7 @@ void validateFunction(const ScopeInfo& scope, const Function &func, tokeniter be
   }
 }
 
-Function *parseOpHeader(tokeniter begin, tokeniter end, const ScopeInfo &scope) {
+Function *parseOpHeader(tokeniter begin, tokeniter end, const Scope &scope) {
   if (begin >= end) throw ParserError(*begin, "Expected operator declaration");
   auto func = new Function;
   func->begin = &*begin;

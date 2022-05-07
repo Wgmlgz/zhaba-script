@@ -18,7 +18,7 @@ std::string Generic::toString() {
 
 void pushGenericType(const std::string &name,
                      const std::vector<std::string> &names,
-                     ast::ASTBlock *block, ScopeInfo *scope) {
+                     ast::ASTBlock *block, Scope *scope) {
   if (scope->generics.contains(name))
     throw std::runtime_error("Generic type '" + name +
                              "' is already defined. (" +

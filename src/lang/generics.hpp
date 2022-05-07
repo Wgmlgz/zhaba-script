@@ -15,13 +15,13 @@ struct Generic {
   std::vector<std::string> names;
   ast::ASTBlock *block = nullptr;
   std::vector<ast::ASTBlock *> impl_blocks;
-  ScopeInfo *scope;
+  Scope *scope;
 
   std::string toString();
 };
 
 void pushGenericType(const std::string &name,
                      const std::vector<std::string> &names,
-                     ast::ASTBlock *block, ScopeInfo *scope
+                     ast::ASTBlock *block, Scope *scope
 );
 }

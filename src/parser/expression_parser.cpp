@@ -2,7 +2,7 @@
 
 namespace zhexp {
 
-STExp *callDtor(std::pair<ScopeInfo::VarInfo *, Function *> info) {
+STExp *callDtor(std::pair<Scope::VarInfo *, Function *> info) {
   auto token = Token(TOKEN::id, "tmp", 0, 0, "tmp");
 
   auto exp = new zhexp::BinOperator(
@@ -18,7 +18,7 @@ STExp *callDtor(std::pair<ScopeInfo::VarInfo *, Function *> info) {
   return tmp;
 };
 
-void copyExp(Exp *&exp, ScopeInfo &scope) {
+void copyExp(Exp *&exp, Scope &scope) {
   if (!(exp->type.getLval() || exp->type.getRef()))
     return;
   if (exp->type.getTypeId()->builtin)
@@ -45,7 +45,7 @@ void copyExp(Exp *&exp, ScopeInfo &scope) {
  *
  * @param exp is postprocessed
  */
-Exp* makeLval(Exp*& exp, ScopeInfo& scope) {
+Exp* makeLval(Exp*& exp, Scope& scope) {
   auto type = exp->type;
   auto type_ptr = type;
   type_ptr.setPtr(type_ptr.getPtr() + 1);
@@ -78,7 +78,7 @@ Exp* makeLval(Exp*& exp, ScopeInfo& scope) {
 /**
  * @brief Converts expression to expression tree
  */
-Exp *buildExp(ScopeInfo &scope, tokeniter begin, tokeniter end) {
+Exp *buildExp(Scope &scope, tokeniter begin, tokeniter end) {
   /** Flow operator skip */
   if (begin->token == TOKEN::id and tables::flow_ops.count(begin->val)) {
     return new FlowOperator(*begin, *begin, begin->val,
@@ -137,7 +137,7 @@ Exp *buildExp(ScopeInfo &scope, tokeniter begin, tokeniter end) {
     else if (i->first->token == TOKEN::close_p)
       i->second = TOKEN_TYPE::close_p;
     else if (i->second == undef && i->first->token == TOKEN::id &&
-             scope.operators.contains(i->first->val))
+             scope.containsOp(i->first->val))
       i->second = TOKEN_TYPE::any_op;
 
   /** Define prefix operators */
@@ -348,11 +348,11 @@ Exp *buildExp(ScopeInfo &scope, tokeniter begin, tokeniter end) {
       res.emplace_back(iter, type);
     } else if (type == bin_op) {
       auto slf_priority =
-          scope.getBinOpP(dynamic_cast<BinOperator *>(iter)->val);
+          scope.bin_operators.at(dynamic_cast<BinOperator *>(iter)->val);
       while (!stack.empty() &&
              ((stack.back().second == pr_op && 3 <= slf_priority) ||
               (stack.back().second == bin_op &&
-               scope.getBinOpP(
+               scope.bin_operators.at(
                    dynamic_cast<BinOperator *>(stack.back().first)->val) <=
                    slf_priority))) {
         res.emplace_back(stack.back());
@@ -439,7 +439,7 @@ Exp *buildExp(ScopeInfo &scope, tokeniter begin, tokeniter end) {
   return exp;
 }
 
-Exp *postprocess(Exp *exp, ScopeInfo &scope) {
+Exp *postprocess(Exp *exp, Scope &scope) {
   if (auto op = dynamic_cast<FlowOperator *>(exp)) {
     exp->type = types::Type(types::voidT);
     if (op->operand) op->operand = postprocess(op->operand, scope);
@@ -477,8 +477,8 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
                        scope.getVarId(id->val));
       tmp->type = scope.getVarType(id->val);
       exp = tmp;
-    } else if (scope.containsFn(id->val)) {
-      auto fn = scope.getFn(id->val);
+    } else if (scope.last_fn.contains(id->val)) {
+      auto fn = scope.last_fn.at(id->val);
       auto tmp = new FnLiteral(id->begin, id->end, fn);
       tmp->type = fn->getFnType();
       exp = tmp;
@@ -612,8 +612,8 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
     } else if (op->val == "->") {
       auto fn_name = "lambda_" + std::to_string(genId());
       auto fn = new Function{fn_name, {}, types::Type()};
-      fn->args_scope = ScopeInfo(&zhdata.sttree->scope);
-      ScopeInfo &args_scope = fn->args_scope;
+      fn->args_scope = new Scope(&zhdata.sttree->scope);
+      Scope &args_scope = *fn->args_scope;
 
       /** Process param list */
       auto args_tuple = castTreeToTuple(op->lhs)->content;
@@ -761,7 +761,7 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
         for (auto &i : types) i.setLval(false);
         for (auto &i : types) i.setRef(false);
 
-        types::funcHead func_head{op->val, types};
+        types::FnHead func_head{op->val, types};
         if (op->val.size() >= 6 && op->val.substr(0, 6) == ".call." &&
             op->lhs->type.isFn()) {
           const auto& args = op->lhs->type.getTypes();
@@ -823,7 +823,7 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
     for (auto &i : types) i.setLval(false);
     for (auto &i : types) i.setRef(false);
 
-    types::funcHead func_head{op->val, types};
+    types::FnHead func_head{op->val, types};
     if (scope.containsPoOp(func_head)) {
       auto& poop = scope.getPoOp(func_head);
       op->func = poop;
@@ -898,7 +898,7 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
     for (auto &i : types) i.setLval(false);
     for (auto &i : types) i.setRef(false);
 
-    types::funcHead func_head{op->val, types};
+    types::FnHead func_head{op->val, types};
     if (scope.containsPrOp(func_head)) {
       auto& prop = scope.getPrOp(func_head);
       op->func = prop;
@@ -947,7 +947,7 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
 }
 
 Exp *parse(std::vector<Token>::iterator begin,
-           std::vector<Token>::iterator end, ScopeInfo &scope_info) {
+           std::vector<Token>::iterator end, Scope &scope_info) {
   Exp *exp = buildExp(scope_info, begin, end);
   if (zhdata.flags["exp_parser_logs"]) zhexp::printExpTree(exp);
   exp = postprocess(exp, scope_info);

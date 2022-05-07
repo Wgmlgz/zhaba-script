@@ -176,7 +176,7 @@ const std::map<types::TYPE, size_t> sizes{
     {types::FT, 4},
 };
 
-const std::map<types::funcHead, Function *> B_OD = {
+const std::map<types::FnHead, Function *> B_OD = {
 #define MAKE_C_BOP(name, lhst, rhst, rt)                                             \
   {                                                                            \
     {#name, {types::Type(types::lhst), types::Type(types::rhst)}}, \
@@ -240,7 +240,7 @@ const std::map<types::funcHead, Function *> B_OD = {
     MAKE_C_BOP(||, boolT, boolT, boolT),
 };
 
-const std::map<types::funcHead, Function *> PR_OD{
+const std::map<types::FnHead, Function *> PR_OD{
 #define MAKE_C_FN_0_ARGS(name, rt)                                           \
   {                                                                          \
     {(#name), {}}, new Function {                                            \

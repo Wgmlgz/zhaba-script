@@ -14,10 +14,10 @@ struct STNode {
 
 struct STBlock : public STNode {
   std::vector<STNode *> nodes;
-  ScopeInfo scope_info;
+  Scope scope_info;
 
   TreeNode<std::string> *toGenericTree();
-  STBlock(ScopeInfo *parent_scope);
+  STBlock(Scope *parent_scope);
 };
 
 struct STExp : public STNode {
@@ -58,14 +58,14 @@ struct Function {
   int64_t priority = -1;
 
   bool is_fn = false;
-  ScopeInfo args_scope{nullptr};
+  Scope* args_scope = nullptr;
 
   Token *begin = nullptr, *end = nullptr;
 
   [[nodiscard]] std::string headToStr() const;
   [[nodiscard]] std::string toUniqueStr() const;
-  [[nodiscard]] types::funcHead getHead() const;
+  [[nodiscard]] types::FnHead getHead() const;
   [[nodiscard]] types::Type getFnType() const;
 
-  [[nodiscard]] types::funcHead getHeadNonRefNonLval() const;
+  [[nodiscard]] types::FnHead getHeadNonRefNonLval() const;
 };

@@ -13,10 +13,14 @@
 using json = nlohmann::json;
 
 struct ZHModule {
-  ScopeInfo scope;
+  Scope scope;
   std::filesystem::path path;
   std::vector<std::filesystem::path> dependences;
-  ZHModule(ScopeInfo *scope, const std::filesystem::path &new_path);
+
+  std::vector<Token> tokens;
+  ast::ASTBlock* ast;
+
+  ZHModule(Scope *scope, const std::filesystem::path &new_path);
   void saveCache();
 };
 

@@ -23,7 +23,7 @@ extern const std::map<std::string, int64_t> postfix_operators;
 extern const std::map<std::string, types::TYPE> prim_types;
 extern const std::map<types::TYPE, std::string> cpp_type_names;
 extern const std::map<types::TYPE, size_t> sizes;
-extern const std::map<types::funcHead, Function *> B_OD;
-extern const std::map<types::funcHead, Function *> PR_OD;
+extern const std::map<types::FnHead, Function *> B_OD;
+extern const std::map<types::FnHead, Function *> PR_OD;
 }  // namespace tables
 

@@ -6,15 +6,15 @@
 #include "expression_parser.hpp"
 #include "type_parser.hpp"
 
-STBlock *parseASTBlock(ast::ASTBlock *main_block, ScopeInfo cur_scope,
-                       ScopeInfo &parent_scope, types::Type retT);
+STBlock *parseASTBlock(ast::ASTBlock *main_block, Scope cur_scope,
+                       Scope &parent_scope, types::Type retT);
 
 std::vector<Function *> parseImpl(ast::ASTBlock *block, const types::Type &type,
-                                  ScopeInfo &main_scope);
+                                  Scope &main_scope);
 
 ZHModule *parseAST(std::filesystem::path file_path);
 
-void parceFn(ZHModule *res, ScopeInfo &push_scope, ast::ASTLine *line,
+void parceFn(ZHModule *res, Scope &push_scope, ast::ASTLine *line,
              ast::ASTBlock *main_block,
              std::vector<ast::ASTNode *>::iterator &cur);
 

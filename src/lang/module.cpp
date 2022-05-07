@@ -1,6 +1,6 @@
 #include "./module.hpp"
 
-ZHModule::ZHModule(ScopeInfo *parent_scope, const std::filesystem::path &new_path)
+ZHModule::ZHModule(Scope *parent_scope, const std::filesystem::path &new_path)
     : scope(parent_scope), path(new_path) {}
 
 void ZHModule::saveCache() {

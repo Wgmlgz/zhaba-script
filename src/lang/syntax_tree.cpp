@@ -1,6 +1,6 @@
 #include "syntax_tree.hpp"
 
-STBlock::STBlock(ScopeInfo *parent_scope) : scope_info(parent_scope) {}
+STBlock::STBlock(Scope *parent_scope) : scope_info(parent_scope) {}
 STNode::~STNode() = default;
 
 TreeNode<std::string> *STBlock::toGenericTree() {
@@ -106,8 +106,8 @@ std::string Function::toUniqueStr() const {
   }
   return str;
 }
-types::funcHead Function::getHead() const {
-  types::funcHead res;
+types::FnHead Function::getHead() const {
+  types::FnHead res;
   res.name = name;
   for (const auto&[name, type] : args) {
     res.types.push_back(type);
@@ -116,8 +116,8 @@ types::funcHead Function::getHead() const {
   return res;
 };
 
-types::funcHead Function::getHeadNonRefNonLval() const {
-  types::funcHead res = getHead();
+types::FnHead Function::getHeadNonRefNonLval() const {
+  types::FnHead res = getHead();
   for (auto &type : res.types)
     type.setLval(false), type.setRef(false);
   return res;
@@ -136,5 +136,5 @@ void to_json(json &j, const Function *fn) {
   j["type"] = fn->type;
   j["op_type"] = fn->op_type;
   j["is_c"] = fn->is_C;
-  j["args_scope"] = fn->args_scope;
+  j["args_scope"] = *fn->args_scope;
 }

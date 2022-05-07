@@ -558,10 +558,10 @@ std::string funcHead2C(Function* func) {
       if (!start) str += ", ";
       if (type.isFn()) {
         str +=
-            type2C(type, "v" + std::to_string(func->args_scope.getVarId(name)));
+            type2C(type, "v" + std::to_string(func->args_scope->getVarId(name)));
       } else {
         str += type2C(type) + " ";
-        str += "v" + std::to_string(func->args_scope.getVarId(name));
+        str += "v" + std::to_string(func->args_scope->getVarId(name));
       }
       start = false;
     }
@@ -585,7 +585,7 @@ std::string funcHead2FnPtr(Function* func) {
     for (auto& [name, type] : func->args) {
       if (!start) str += ", ";
       str += type2C(type) + " ";
-      str += "v" + std::to_string(func->args_scope.getVarId(name));
+      str += "v" + std::to_string(func->args_scope->getVarId(name));
       start = false;
     }
     str += ")";
