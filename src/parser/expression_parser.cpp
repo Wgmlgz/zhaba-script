@@ -663,7 +663,7 @@ Exp *postprocess(Exp *exp, Scope &scope) {
 
       /** Finish */
       zhdata.functions.push_back(fn);
-      scope.setFn(fn->getHead(), fn);
+      scope.setPrOp(fn->getHead(), fn);
       auto fn_literal = new FnLiteral(op->begin, op->end, fn);
       fn_literal->type = fn->getFnType();
       return fn_literal;
@@ -907,18 +907,6 @@ Exp *postprocess(Exp *exp, Scope &scope) {
       for (int i = 0; i < prop->args.size(); ++i) {
         /** Call copy ctors */
         if (!prop->args[i].type.getRef()) copyExp(*exps[i], scope);
-        /** Cast to lval if needed */
-        else if (!(*exps[i])->type.getLval() && !(*exps[i])->type.getRef())
-          makeLval(*(exps[i]), scope);
-      }
-    } else if (scope.FN.contains(func_head)) {
-      auto &fn = scope.FN.at(func_head);
-      op->func = fn;
-      exp->type = fn->type;
-
-      for (int i = 0; i < fn->args.size(); ++i) {
-        /** Call copy ctors */
-        if (!fn->args[i].type.getRef()) copyExp(*exps[i], scope);
         /** Cast to lval if needed */
         else if (!(*exps[i])->type.getLval() && !(*exps[i])->type.getRef())
           makeLval(*(exps[i]), scope);

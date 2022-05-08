@@ -553,35 +553,29 @@ void parceFn(ZHModule* res, Scope& push_scope, ast::ASTLine* line, ast::ASTBlock
     types.back().setLval(false);
     types.back().setRef(false);
   }
-  if (func->is_fn) {
-    try {
-      push_scope.setFn({func->name, types}, func);
-    } catch (const std::runtime_error& err) {
-      throw ParserError(*line->begin, *line->end, err.what());
+
+  if (func->op_type == OpType::bin) {
+    push_scope.setBinOp({func->name, types}, func);
+    if (push_scope.bin_operators.contains(func->name)) {
+      if (func->priority != push_scope.bin_operators.at(func->name))
+        throw ParserError(
+            *line->begin, *line->end,
+            "Operator priority doesn't match old one (" +
+                std::to_string(push_scope.bin_operators.at(func->name)) +
+                " <- old vs new -> " + std::to_string(func->priority) + ")");
+    } else {
+      push_scope.bin_operators.emplace(func->name, func->priority);
     }
-  } else {
-    if (func->op_type == OpType::bin) {
-      push_scope.setBinOp({func->name, types}, func);
-      if (push_scope.bin_operators.contains(func->name)) {
-        if (func->priority != push_scope.bin_operators.at(func->name))
-          throw ParserError(
-              *line->begin, *line->end,
-              "Operator priority doesn't match old one (" +
-                  std::to_string(push_scope.bin_operators.at(func->name)) +
-                  " <- old vs new -> " + std::to_string(func->priority) + ")");
-      } else {
-        push_scope.bin_operators.emplace(func->name, func->priority);
-      }
-    } else if (func->op_type == OpType::lhs) {
-      push_scope.setPrOp({func->name, types}, func);
+  } else if (func->op_type == OpType::lhs) {
+    push_scope.setPrOp({func->name, types}, func);
+    if (!func->is_fn)
       if (!push_scope.prefix_operators.contains(func->name)) {
         push_scope.prefix_operators.emplace(func->name, func->priority);
       }
-    } else if (func->op_type == OpType::rhs) {
-      push_scope.setPoOp({func->name, types}, func);
-      if (!push_scope.postfix_operators.contains(func->name)) {
-        push_scope.postfix_operators.emplace(func->name, func->priority);
-      }
+  } else if (func->op_type == OpType::rhs) {
+    push_scope.setPoOp({func->name, types}, func);
+    if (!push_scope.postfix_operators.contains(func->name)) {
+      push_scope.postfix_operators.emplace(func->name, func->priority);
     }
   }
 

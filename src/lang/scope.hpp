@@ -25,7 +25,7 @@ int64_t genId();
 
 class Scope {
   std::vector<const Scope*> parents;
-  std::array<void*, 13> dynamic_containers_ptrs;
+  std::array<void*, 12> dynamic_containers_ptrs;
 
   template <std::size_t ID, template <typename...> class C, typename K,
             typename V = void>
@@ -68,7 +68,10 @@ class Scope {
           const_cast<const DynamicContainer*>(this)->at(key));
     }
 
-    void emplace(auto&&... args) { get().emplace(args...); }
+    template <typename... Args>
+    void emplace(Args&&... args) {
+      get().emplace(args...);
+    }
 
     void operator=(const auto& other) { ptr = new C<K, V>(other); }
 
@@ -114,7 +117,6 @@ class Scope {
   DynamicContainer<0, std::map, std::string, VarInfo*> vars;
   /** Helper, provides variables access by id,
    * DON'T owns `VarInfo*`,
-   * recoverable from `vars`
    */
   DynamicContainer<1, std::map, int64_t, VarInfo*> vars_id;
 
@@ -138,11 +140,9 @@ class Scope {
   DynamicContainer<9, std::map, types::FnHead, Function*> PR_OP;
   /** Postfix operators, owns `Function*` */
   DynamicContainer<10, std::map, types::FnHead, Function*> PO_OP;
-  /** Functions, owns `Function*` */
-  DynamicContainer<11, std::map, types::FnHead, Function*> FN;
 
   /** Last defined binary operator by name, DON'T owns `Function*` */
-  DynamicContainer<12, std::map, std::string, Function*> last_fn;
+  DynamicContainer<11, std::map, std::string, Function*> last_fn;
 
 
   Scope(const Scope* new_parent);
@@ -176,13 +176,6 @@ class Scope {
     PO_OP.emplace(name, val);
     last_fn.emplace(name.name, val);
   }
-  void setFn(const types::FnHead& name, Function*& val) {
-    if (FN.contains(name))
-      throw std::runtime_error("function is already defined in this scope");
-    FN.emplace(name, val);
-    last_fn.emplace(name.name, val);
-  }
-
   void setVar(const std::string& name, const types::Type& val) {
     if (vars.contains(name))
       throw std::runtime_error("variable '" + name + "'" +

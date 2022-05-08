@@ -12,12 +12,11 @@ Scope::Scope(const Scope* new_parent)
       B_OP(this),
       PR_OP(this),
       PO_OP(this),
-      FN(this),
       last_fn(this),
       dynamic_containers_ptrs({&vars, &vars_id, &types, &typedefs, &generics,
                                &bin_operators, &prefix_operators,
                                &postfix_operators, &B_OP, &PR_OP, &PO_OP,
-                               &FN, &last_fn}) {
+                               &last_fn}) {
   if (this == new_parent) throw std::runtime_error("Parent is this");
   if (!new_parent) return;
   parents.push_back(new_parent);

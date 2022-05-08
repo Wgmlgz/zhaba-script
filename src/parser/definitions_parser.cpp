@@ -56,14 +56,13 @@ Function *parseOpHeader(tokeniter begin, tokeniter end, const Scope &scope) {
     ++cur;
     if (cur != end and cur->token == TOKEN::space) ++cur;
   } else if (cur->val == "fn") {
-    is_fn = true;
     func->is_fn = true;
     ++cur;
     if (cur != end and cur->token == TOKEN::space) ++cur;
   }
 
   /* Parse priority */
-  if (!is_fn and cur->token == TOKEN::int_literal) {
+  if (!func->is_fn and cur->token == TOKEN::int_literal) {
     func->priority = std::stoi(cur->val);
     ++cur;
     if (cur != end and cur->token == TOKEN::space) ++cur;
