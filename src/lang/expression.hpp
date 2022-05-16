@@ -8,17 +8,16 @@ struct Function;
 namespace zhexp {
 struct Exp {
   const Token &begin, &end;
-  types::Type type = types::Type(types::TYPE::voidT);
+  types::Type type;
   Exp(const Token &new_begin, const Token &new_end);
   virtual ~Exp();
   virtual std::string toString();
 };
 
 struct Tuple : public Exp {
-  int64_t priority{};
   std::vector<Exp *> content;
   Tuple(const Token &new_begin, const Token &new_end);
-  Tuple(const Token &new_begin, const Token &new_end, int64_t new_priority,
+  Tuple(const Token &new_begin, const Token &new_end,
         std::vector<Exp *> new_content);
   std::string toString() override;
 };
@@ -91,26 +90,11 @@ struct FlowOperator : public Exp {
                std::string new_val, Exp *new_operand);
 };
 
-struct CCode : public Exp {
-  std::string code;
-  CCode(const Token &new_begin, const Token &new_end, std::string new_code);
-};
-
-// struct Call : public Exp {
-//   Exp* fn_exp;
-//   Exp* args_exp;
-//   Call(const Token &new_begin, const Token &new_end, Exp *new_fn_exp,
-//        Exp *new_args_exp);
-//   std::string toString() override;
-// };
-
 struct Operator : public Exp {
   std::string val;
   Function *func = nullptr;
-  int64_t priority = -666;
   Operator(const Token &new_begin, const Token &new_end);
-  Operator(const Token &new_begin, const Token &new_end, std::string new_val,
-           int64_t new_priority);
+  Operator(const Token &new_begin, const Token &new_end, std::string new_val);
   std::string toString() override;
 };
 
@@ -118,23 +102,23 @@ struct BinOperator : public Operator {
   Exp *lhs;
   Exp *rhs;
   BinOperator(const Token &new_begin, const Token &new_end, std::string new_val,
-              int64_t new_priority, Exp *new_lhs, Exp *new_rhs);
+              Exp *new_lhs, Exp *new_rhs);
 };
 
 struct UnaryOperator : public Operator {
   Exp *child;
   UnaryOperator(const Token &new_begin, const Token &new_end,
-                std::string new_val, int64_t new_priority, Exp *new_child);
+                std::string new_val, Exp *new_child);
 };
 
 struct PrefixOperator : public UnaryOperator {
   PrefixOperator(const Token &new_begin, const Token &new_end,
-                 std::string new_val, int64_t new_priority, Exp *new_child);
+                 std::string new_val, Exp *new_child);
 };
 
 struct PostfixOperator : public UnaryOperator {
   PostfixOperator(const Token &new_begin, const Token &new_end,
-                  std::string new_val, int64_t new_priority, Exp *new_child);
+                  std::string new_val, Exp *new_child);
 };
 
 void castTreeToTupleDfs(Exp *exp, Tuple *&tuple);

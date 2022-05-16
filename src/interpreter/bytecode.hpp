@@ -13,7 +13,8 @@
 #include <array>
 
 #include "./instructions.hpp"
-#include "types.hpp"
+#include "../lang/types.hpp"
+#include "../lang/lang_tables.hpp"
 #include "runtime_error.hpp"
 
 namespace zhin {
@@ -21,7 +22,7 @@ class ByteCode {
  public:
   bytevec bytes;
 
-  std::mt19937_64 gen = std::mt19937_64(time(0));
+  std::map<types::TYPE, size_t> sizes = tables::sizes;
   std::array<int, 100000> labels;
   std::map<int, std::string> labels_comments;
   std::array<int, 100000> literals_labels;

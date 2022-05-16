@@ -41,7 +41,7 @@ Function *parseOpHeader(tokeniter begin, tokeniter end, const ScopeInfo &scope) 
   bool is_fn = false;
 
   /* Implicit void type */
-  func->type = types::Type(types::TYPE::voidT);
+  func->type = types::Type(types::voidT);
   func->op_type = Function::OpType::lhs;
 
   if (cur->val == "op") {

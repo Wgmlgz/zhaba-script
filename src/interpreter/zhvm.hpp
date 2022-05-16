@@ -11,7 +11,7 @@
 #include <string>
 
 #include "../parser/parser.hpp"
-#include "../compiler/Compiler.hpp"
+#include "../compiler/compiler.hpp"
 #include "../tree_lib/TreeLib.hpp"
 
 #include "./bytecode.hpp"
@@ -26,6 +26,10 @@ namespace zhin {
  * 0xFF54____________ :literals
  */
 class ZHVM {
+  /** input/output stream for interpreter */
+  std::istream *in = &std::cin;
+  std::ostream *out = &std::cout;
+
   /** State */
   size_t cur = 0;
   std::string res;
@@ -267,16 +271,16 @@ class ZHVM {
   case instr::type_##_put: {                             \
     auto t = TOS##type_;                                 \
     stack.popBytes(size_);                               \
-    *zhdata.out << static_cast<c_type_>(t);              \
+    *out << static_cast<c_type_>(t);              \
   } break;                                               \
   case instr::type_##_out: {                             \
     auto t = TOS##type_;                                 \
     stack.popBytes(size_);                               \
-    *zhdata.out << static_cast<c_type_>(t) << std::endl; \
+    *out << static_cast<c_type_>(t) << std::endl; \
   } break;                                               \
   case instr::type_##_in: {                              \
     c_type_ tmp;                                         \
-    *zhdata.in >> tmp;                                   \
+    *in >> tmp;                                   \
     stack.push(static_cast<print_type_>(tmp));           \
   } break;
 
@@ -298,19 +302,19 @@ class ZHVM {
           auto char_ptr = TOSi64;
           stack.popBytes(8);
           auto mem = getPtr(char_ptr, 1);
-          *zhdata.out << reinterpret_cast<char *>(mem);
+          *out << reinterpret_cast<char *>(mem);
         }
           break;
         case instr::out_str: {
           auto char_ptr = TOSi64;
           stack.popBytes(8);
           auto mem = getPtr(char_ptr, 1);
-          *zhdata.out << reinterpret_cast<char *>(mem) << std::endl;
+          *out << reinterpret_cast<char *>(mem) << std::endl;
         }
           break;
         case instr::in_str: {
           std::string str;
-          *zhdata.in >> str;
+          *in >> str;
           auto ptr = heap.malloc(str.size() + 1);
           auto real_ptr = getPtr(ptr, str.size() + 1);
           std::copy_n(str.c_str(), str.size() + 1, real_ptr);

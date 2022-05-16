@@ -10,14 +10,13 @@
 #include <unordered_set>
 #include <utility>
 #include <vector>
+
 #include "../lang/token.hpp"
 
-class Lexer {
-  std::vector<std::pair<TOKEN, std::string>> tokens;
- public:
-  Lexer(std::vector<std::pair<TOKEN, std::string>> new_tokens);
-  std::vector<Token> parse(
-      const std::string &str, const std::string &filename,
-      std::map<std::string, std::vector<std::string>> &files_lines,
-      bool DEBUG = false);
-};
+namespace lexer {
+std::vector<Token> parse(
+    const std::vector<std::pair<TOKEN, std::string>> &tokens,
+    const std::string &str, const std::string &filename,
+    std::map<std::string, std::vector<std::string>> &files_lines,
+    bool DEBUG = false);
+}

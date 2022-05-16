@@ -92,7 +92,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo& parent_scope, Funct
             if (ctr_->val == "?") {
               auto ctr = dynamic_cast<zhexp::FlowOperator*>(
                   zhexp::postprocess(exp_builded, res->scope_info));
-              if (ctr->operand->type.getTypeId() == types::TYPE::boolT) {
+              if (ctr->operand->type.getTypeId() == types::boolT) {
                 auto tmp_if = new STIf;
                 tmp_if->condition = ctr->operand;
                 if (i + 1 != main_block->nodes.end()) {
@@ -139,7 +139,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo& parent_scope, Funct
               auto* scope = &switch_block->scope_info;
               auto ctr = dynamic_cast<zhexp::FlowOperator*>(exp_builded);
               zhexp::Exp* init_exp = new zhexp::BinOperator(
-                  ctr_->begin, ctr_->end, ":=", 0,
+                  ctr_->begin, ctr_->end, ":=",
                   new zhexp::IdLiteral(ctr_->begin, ctr_->end, "switch"), ctr_->operand);
               init_exp = zhexp::postprocess(init_exp, *scope);
               auto init_node = new STExp;
@@ -184,7 +184,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo& parent_scope, Funct
                     }
                   } else {
                     exp_builded = new zhexp::BinOperator(
-                        *line->begin, *line->end, "==", 0,
+                        *line->begin, *line->end, "==",
                         static_cast<zhexp::Exp*>(new zhexp::IdLiteral(
                             *line->begin, *line->end, "switch")),
                         exp_builded);
@@ -231,7 +231,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo& parent_scope, Funct
                   tuple->content.insert(tuple->content.end(), nullptr);
                 }
                 /** else for (init;condition;repeat) */
-                if (tuple->content[1]->type.getTypeId() == types::TYPE::boolT) {
+                if (tuple->content[1]->type.getTypeId() == types::boolT) {
                   if (tuple->content[0]) {
                     auto init = new STExp;
                     init->exp = tuple->content[0];
@@ -276,22 +276,22 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo& parent_scope, Funct
                 auto range_init = new STExp;
                 auto begin = tuple_->content[1]->begin, end = tuple_->content[1]->end;
                 range_init->exp = new zhexp::BinOperator(
-                    begin, end, ":=", 0,
+                    begin, end, ":=",
                     new zhexp::IdLiteral(begin, end, "__range"),
-                    new zhexp::PrefixOperator(begin, end, "iter", 0,
+                    new zhexp::PrefixOperator(begin, end, "iter",
                                               tuple_->content[1]));
                 auto end_exp = new STExp;
                 end_exp->exp = new zhexp::BinOperator(
                     tuple_->content[1]->begin, tuple_->content[1]->end,
-                    ":=", 666,
+                    ":=", 
                     new zhexp::IdLiteral(tuple_->content[1]->begin,
                                          tuple_->content[1]->end, "__end"),
                     new zhexp::BinOperator(
                         tuple_->content[1]->begin, tuple_->content[1]->end,
-                        ".call.end", 666,
+                        ".call.end",
                         new zhexp::PrefixOperator(
                             tuple_->content[1]->begin, tuple_->content[1]->end,
-                            "&", 666,
+                            "&", 
                             new zhexp::IdLiteral(tuple_->content[1]->begin,
                                                  tuple_->content[1]->end,
                                                  "__range")),
@@ -302,15 +302,15 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo& parent_scope, Funct
                 auto cur_init = new STExp;
                 cur_init->exp = new zhexp::BinOperator(
                     tuple_->content[0]->begin, tuple_->content[1]->end,
-                    ":=", 666,
+                    ":=",
                     new zhexp::IdLiteral(tuple_->content[0]->begin,
                                          tuple_->content[0]->end, id_l->val),
                     new zhexp::BinOperator(
                         tuple_->content[1]->begin, tuple_->content[1]->end,
-                        ".call.begin", 666,
+                        ".call.begin",
                         new zhexp::PrefixOperator(
                             tuple_->content[1]->begin, tuple_->content[1]->end,
-                            "&", 666,
+                            "&", 
                             new zhexp::IdLiteral(tuple_->content[1]->begin,
                                                  tuple_->content[1]->end,
                                                  "__range")),
@@ -319,7 +319,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo& parent_scope, Funct
 
                 zhexp::Exp* condition = new zhexp::BinOperator(
                     tuple_->content[0]->begin, tuple_->content[1]->end,
-                    "!=", 666,
+                    "!=",
                     new zhexp::IdLiteral(tuple_->content[0]->begin,
                                          tuple_->content[0]->end, id_l->val),
                     new zhexp::IdLiteral(tuple_->content[1]->begin,
@@ -327,7 +327,6 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo& parent_scope, Funct
                 auto iter = new STExp;
                 iter->exp = new zhexp::PrefixOperator(
                     tuple_->content[1]->begin, tuple_->content[1]->end, "++",
-                    666,
                     new zhexp::IdLiteral(tuple_->content[0]->begin,
                                          tuple_->content[0]->end, id_l->val));
                 range_init->exp = zhexp::postprocess(range_init->exp,
@@ -346,7 +345,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo& parent_scope, Funct
                 foreach_block->nodes.push_back(cur_init);
 
                 /** else for (init;condition;repeat) */
-                if (condition->type.getTypeId() == types::TYPE::boolT) {
+                if (condition->type.getTypeId() == types::boolT) {
                   auto tmp_while = new STWhile;
                   tmp_while->condition = condition;
                   if (i + 1 != main_block->nodes.end()) {
@@ -377,7 +376,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo& parent_scope, Funct
                   zhexp::postprocess(exp_builded, res->scope_info));
               auto tmp_ret = new STRet;
               tmp_ret->exp = ctr->operand;
-              if (fn->type.getTypeId() == types::TYPE::voidT) {
+              if (fn->type.getTypeId() == types::voidT) {
                 if (tmp_ret->exp)
                   throw ParserError(ctr->begin, ctr->end,
                                     "You cannot return something becouse "
@@ -484,7 +483,7 @@ std::vector<Function*> parseImpl(ast::ASTBlock* block, const types::Type& type,
     if (!block) throw ParserError("Expected block");
   
     if (func->name == "ctor") {
-      if (func->type.getTypeId() == types::TYPE::voidT) func->type = type;
+      if (func->type.getTypeId() == types::voidT) func->type = type;
       
       func->op_type = Function::OpType::lhs;
     } else if (func->is_fn) {
@@ -720,7 +719,7 @@ ZHModule* parseAST(std::filesystem::path file_path) {
           throw ParserError(*line->end, "Expected identifier token for struct type name");
 
         std::string name = (line->begin + 2)->val;
-        if (types::getStructId(name) != types::TYPE(-1)) {
+        if (res->scope.struct_ids.contains(name)) {
           throw ParserError(*line->begin, *line->end,
                             "Type '" + name + "'already exist");
         }
@@ -751,16 +750,13 @@ ZHModule* parseAST(std::filesystem::path file_path) {
           throw ParserError(*line->end, "Expected type body");
         if (isGeneric) {
           try {
-            types::pushGenericType(name, generic, block);
+            types::pushGenericType(name, generic, block, &res->scope);
           } catch (std::runtime_error err) {
             throw ParserError(*line->begin, *line->end, err.what());
           }
         } else {
-          if (name == "Str") {
-            int a = 4 + 4;
-          }
           /** Push declared struct */
-          types::parsePushStruct(name, block, res->scope);
+          types::parsePushStruct(name, block, res->scope, res->scope);
         }
         ++cur;
       } else if (id == "impl") {

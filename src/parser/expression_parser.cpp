@@ -6,9 +6,9 @@ STExp *callDtor(std::pair<ScopeInfo::VarInfo *, Function *> info) {
   auto token = Token(TOKEN::id, "tmp", 0, 0, "tmp");
 
   auto exp = new zhexp::BinOperator(
-      token, token, ".call.dtor", 0,
+      token, token, ".call.dtor",
       new zhexp::PrefixOperator(
-          token, token, "&", 3,
+          token, token, "&",
           new zhexp::Variable(token, token, info.first->name, info.first->type,
                               info.first->id)),
       new zhexp::Tuple(token, token));
@@ -21,7 +21,7 @@ STExp *callDtor(std::pair<ScopeInfo::VarInfo *, Function *> info) {
 void copyExp(Exp *&exp, ScopeInfo &scope) {
   if (!(exp->type.getLval() || exp->type.getRef()))
     return;
-  if (exp->type.getTypeId() < static_cast<types::TYPE>(zhdata.first_struct_id))
+  if (exp->type.getTypeId()->builtin)
     return;
   if (!scope.containsPrOp({exp->type.nonRefClone().rvalClone().toString(),
                            {exp->type.nonRefClone().rvalClone()}}))
@@ -30,7 +30,7 @@ void copyExp(Exp *&exp, ScopeInfo &scope) {
     if (pr->val == exp->type.nonRefClone().rvalClone().toString()) return;
 
   auto new_exp = new zhexp::PrefixOperator(
-      exp->begin, exp->end, exp->type.nonRefClone().rvalClone().toString(), 0,
+      exp->begin, exp->end, exp->type.nonRefClone().rvalClone().toString(),
       exp);
   new_exp->func = scope.getPrOp({exp->type.nonRefClone().rvalClone().toString(),
                                  {exp->type.nonRefClone().rvalClone()}});
@@ -59,16 +59,16 @@ Exp* makeLval(Exp*& exp, ScopeInfo& scope) {
   auto var_exp2 = new Variable(exp->begin, exp->end, var_name, type, id);
   var_exp2->type = type;
 
-  auto assign = new BinOperator(exp->begin, exp->end, "=", 0, var_exp1, exp);
+  auto assign = new BinOperator(exp->begin, exp->end, "=", var_exp1, exp);
   assign->type = types::Type();
 
-  auto address_exp = new PrefixOperator(exp->begin, exp->end, "&", 0, var_exp2);
+  auto address_exp = new PrefixOperator(exp->begin, exp->end, "&", var_exp2);
   address_exp->type = type_ptr;
 
-  auto tuple = new Tuple(exp->begin, exp->begin, 0, {assign, address_exp});
+  auto tuple = new Tuple(exp->begin, exp->begin, {assign, address_exp});
   tuple->type = type_ptr;
 
-  auto deref = new PrefixOperator(exp->begin, exp->end, "*", 0, tuple);
+  auto deref = new PrefixOperator(exp->begin, exp->end, "*", tuple);
   deref->type = type;
   deref->type.setLval(true);
 
@@ -172,15 +172,15 @@ Exp *buildExp(ScopeInfo &scope, tokeniter begin, tokeniter end) {
   for (auto i = raw.begin() + 1; i != raw.end() - 1; ++i) {
     if (i->second == pr_op) {
       preprocessed.emplace_back(
-          new PrefixOperator(*i->first, *i->first, i->first->val, 0, nullptr),
+          new PrefixOperator(*i->first, *i->first, i->first->val, nullptr),
           i->second);
     } else if (i->second == po_op) {
       preprocessed.emplace_back(
-          new PostfixOperator(*i->first, *i->first, i->first->val, 0, nullptr),
+          new PostfixOperator(*i->first, *i->first, i->first->val, nullptr),
           i->second);
     } else if (i->second == bin_op) {
       preprocessed.emplace_back(
-          new BinOperator(*i->first, *i->first, i->first->val, 0, nullptr,
+          new BinOperator(*i->first, *i->first, i->first->val, nullptr,
                           nullptr),
           i->second);
     } else if (i->second == open_p || i->second == close_p) {
@@ -313,13 +313,13 @@ Exp *buildExp(ScopeInfo &scope, tokeniter begin, tokeniter end) {
       if ((i + 1)->second == open_p)
         preprocessed.emplace_back(
             new BinOperator(*(i + 1)->first, *(i + 1)->first,
-                            (i + 1)->first->val, 0, nullptr, nullptr),
+                            (i + 1)->first->val, nullptr, nullptr),
             bin_op);
 
       /** Implicit `,` */
       if ((i + 1)->second == undef)
         preprocessed.emplace_back(
-            new BinOperator(*i->first, *i->first, ",", 0, nullptr, nullptr),
+            new BinOperator(*i->first, *i->first, ",", nullptr, nullptr),
             bin_op);
     }
 
@@ -381,17 +381,17 @@ Exp *buildExp(ScopeInfo &scope, tokeniter begin, tokeniter end) {
       if (val == "(" || val == "[" || val == "{") {
         if (auto type_l = dynamic_cast<TypeLiteral*>(b_op->lhs)) {
           exp_stack.push_back(new PrefixOperator(
-              b_op->begin, b_op->end, type_l->literal_type.toString(), 0, b_op->rhs));
+              b_op->begin, b_op->end, type_l->literal_type.toString(), b_op->rhs));
         } else if (auto id_l = dynamic_cast<IdLiteral*>(b_op->lhs)) {
           if (scope.containsVar(id_l->val)) {
             std::string call_name = ".call.call";
             if (val == "[") call_name = ".call.sub";
 
             exp_stack.push_back(new BinOperator(b_op->begin, b_op->end,
-                                                call_name, 0, id_l, b_op->rhs));
+                                                call_name, id_l, b_op->rhs));
           } else {
             exp_stack.push_back(new PrefixOperator(b_op->begin, b_op->end,
-                                                   id_l->val, 0, b_op->rhs));
+                                                   id_l->val, b_op->rhs));
           }
         } else if (dynamic_cast<BinOperator *>(b_op->lhs) &&
                    dynamic_cast<BinOperator *>(b_op->lhs)->val == ".") {
@@ -400,7 +400,7 @@ Exp *buildExp(ScopeInfo &scope, tokeniter begin, tokeniter end) {
           if (ch_b_op->val == ".")
             if (auto mem = dynamic_cast<IdLiteral *>(ch_b_op->rhs)) {
               exp_stack.push_back(new BinOperator(b_op->begin, b_op->end,
-                                                  ".call." + mem->val, 0,
+                                                  ".call." + mem->val,
                                                   ch_b_op->lhs, b_op->rhs));
             }
         } else {
@@ -408,7 +408,7 @@ Exp *buildExp(ScopeInfo &scope, tokeniter begin, tokeniter end) {
           if (val == "[") call_name = ".call.sub";
 
           exp_stack.push_back(new BinOperator(b_op->begin, b_op->end, call_name,
-                                              0, b_op->lhs, b_op->rhs));
+                                              b_op->lhs, b_op->rhs));
         }
       } else {
         exp_stack.push_back(b_op);
@@ -440,38 +440,35 @@ Exp *buildExp(ScopeInfo &scope, tokeniter begin, tokeniter end) {
 }
 
 Exp *postprocess(Exp *exp, ScopeInfo &scope) {
-  if (auto op = dynamic_cast<CCode *>(exp)) {
-    return op;
-  }
   if (auto op = dynamic_cast<FlowOperator *>(exp)) {
-    exp->type = types::Type(types::TYPE::voidT);
+    exp->type = types::Type(types::voidT);
     if (op->operand) op->operand = postprocess(op->operand, scope);
   } else if (auto op = dynamic_cast<I8Literal *>(exp)) {
-    exp->type = types::Type(types::TYPE::i8T);
+    exp->type = types::Type(types::i8T);
   } else if (auto op = dynamic_cast<I16Literal *>(exp)) {
-    exp->type = types::Type(types::TYPE::i16T);
+    exp->type = types::Type(types::i16T);
   } else if (auto op = dynamic_cast<I32Literal *>(exp)) {
-    exp->type = types::Type(types::TYPE::i32T);
+    exp->type = types::Type(types::i32T);
   } else if (auto op = dynamic_cast<I64Literal *>(exp)) {
-    exp->type = types::Type(types::TYPE::i64T);
+    exp->type = types::Type(types::i64T);
   } else if (auto op = dynamic_cast<U8Literal *>(exp)) {
-    exp->type = types::Type(types::TYPE::u8T);
+    exp->type = types::Type(types::u8T);
   } else if (auto op = dynamic_cast<U16Literal *>(exp)) {
-    exp->type = types::Type(types::TYPE::u16T);
+    exp->type = types::Type(types::u16T);
   } else if (auto op = dynamic_cast<U32Literal *>(exp)) {
-    exp->type = types::Type(types::TYPE::u32T);
+    exp->type = types::Type(types::u32T);
   } else if (auto op = dynamic_cast<U64Literal *>(exp)) {
-    exp->type = types::Type(types::TYPE::u64T);
+    exp->type = types::Type(types::u64T);
   } else if (auto op = dynamic_cast<F32Literal *>(exp)) {
-    exp->type = types::Type(types::TYPE::f32T);
+    exp->type = types::Type(types::f32T);
   } else if (auto op = dynamic_cast<F64Literal *>(exp)) {
-    exp->type = types::Type(types::TYPE::f64T);
+    exp->type = types::Type(types::f64T);
   } else if (auto op = dynamic_cast<BoolLiteral *>(exp)) {
-    exp->type = types::Type(types::TYPE::boolT);
+    exp->type = types::Type(types::boolT);
   } else if (auto op = dynamic_cast<CharLiteral *>(exp)) {
-    exp->type = types::Type(types::TYPE::charT);
+    exp->type = types::Type(types::charT);
   } else if (auto op = dynamic_cast<StrLiteral *>(exp)) {
-    exp->type = types::Type(types::TYPE::strT);
+    exp->type = types::Type(types::strT);
     exp->type.setLval(true);
   } else if (auto id = dynamic_cast<IdLiteral *>(exp)) {
     if (scope.containsVar(id->val)) {
@@ -495,16 +492,13 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
 
       bool b = true;
       if (auto t = dynamic_cast<Tuple *>(op->lhs)) {
-        if (t->priority == op->priority) {
-          t->content.insert(t->content.end(), op->rhs);
-          t->type = op->rhs->type;
-          exp = t;
-          b = false;
-        }
+        t->content.insert(t->content.end(), op->rhs);
+        t->type = op->rhs->type;
+        exp = t;
+        b = false;
       }
       if (b) {
         auto t = new Tuple(op->begin, op->end);
-        t->priority = op->priority;
         t->content = {op->lhs, op->rhs};
         exp = t;
         exp->type = op->rhs->type;
@@ -537,7 +531,7 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
     else if (op->val == ":=") {
       op->rhs = postprocess(op->rhs, scope);
       if (auto id_l = dynamic_cast<IdLiteral *>(op->lhs)) {
-        if (op->rhs->type.getTypeId() == types::TYPE::voidT)
+        if (op->rhs->type.getTypeId() == types::voidT)
           throw ParserError(op->begin, op->rhs->end, "Variable type cannot be void");
 
         try {
@@ -553,7 +547,7 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
         tmp->type = scope.getVarType(id_l->val);
         op->lhs = tmp;
         op->val = "=";
-        op->type = types::Type(types::TYPE::voidT);
+        op->type = types::Type(types::voidT);
 
         copyExp(op->rhs, scope);
       } else {
@@ -571,9 +565,8 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
         //         "Expression must be lval or reference to use `.`"
         //     );
       if (auto id = dynamic_cast<IdLiteral *>(op->rhs)) {
-        if (op->lhs->type.getTypeId() >=
-            static_cast<types::TYPE>(zhdata.first_struct_id)) {
-          if (zhdata.structs[op->lhs->type.getTypeId()].members.count(
+        if (!op->lhs->type.getTypeId()->builtin) {
+          if (op->lhs->type.getTypeId()->members.count(
               id->val)) {
             if (op->lhs->type.getPtr() > 1) {
               throw ParserError(
@@ -582,7 +575,7 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
                       std::to_string(op->lhs->type.getPtr()) + " found)"
               );
             }
-            op->type = zhdata.structs[op->lhs->type.getTypeId()].members[id->val];
+            op->type = op->lhs->type.getTypeId()->members[id->val];
             op->type.setLval(op->lhs->type.getLval());
           } else {
             throw ParserError(
@@ -657,7 +650,7 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
       fn->type = exp->type;
 
       STNode* st_node;
-      if (exp->type.getSize()) {
+      if (exp->type.getTypeId() != types::voidT) {
         auto st_ret = new STRet;
         st_ret->exp = exp;
         st_node = st_ret;
@@ -686,45 +679,50 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
        */
       if ((op->val == "+" &&
           ((op->lhs->type.getPtr() &&
-              op->rhs->type.getTypeId() == types::TYPE::i64T) ||
+              op->rhs->type.getTypeId() == types::i64T) ||
               (op->rhs->type.getPtr() &&
-                  op->lhs->type.getTypeId() == types::TYPE::i64T))) or
+                  op->lhs->type.getTypeId() == types::i64T))) or
           (op->val == "-" && op->lhs->type.getPtr() &&
-              op->rhs->type.getTypeId() == types::TYPE::i64T)) {
+              op->rhs->type.getTypeId() == types::i64T)) {
         if (op->rhs->type.getPtr()) std::swap(op->rhs, op->lhs);
         auto orig_type = op->lhs->type;
-        auto int_type = types::Type(types::TYPE::i64T);
+        auto int_type = types::Type(types::i64T);
         op->lhs =
-            new BinOperator(op->begin, op->end, "as", 0, op->lhs,
+            new BinOperator(op->begin, op->end, "as", op->lhs,
                             new TypeLiteral(op->begin, op->end, int_type));
         op->lhs->type = int_type;
 
-        auto int_literal =
-            new I64Literal(op->begin, op->end, orig_type.getSizeNonPtr());
+        auto underlying_type = orig_type;
+        underlying_type.setPtr(underlying_type.getPtr() - 1);
+
+        auto int_literal = new PrefixOperator(
+            op->begin, op->end, "sizeof",
+            new TypeLiteral(op->begin, op->end, underlying_type));
+
         int_literal->type = int_type;
         auto t = new BinOperator(
-            op->begin, op->end, "*", 0, op->rhs, int_literal
+            op->begin, op->end, "*", op->rhs, int_literal
         );
         t->func = scope.getBinOp({"*", {int_type, int_type}});
         t->type = int_type;
         op->rhs = t;
         op->func = scope.getBinOp({op->val, {int_type, int_type}});
         op->type = int_type;
-        op = new BinOperator(op->begin, op->end, "as", 0, op,
+        op = new BinOperator(op->begin, op->end, "as", op,
                              new TypeLiteral(op->begin, op->end, orig_type));
         op->type = orig_type;
         exp = op;
       } else if ((op->val == "==" || op->val == "!=" || op->val == "<=" ||
           op->val == ">=" || op->val == "<" || op->val == ">") &&
           (op->lhs->type.getPtr() && op->rhs->type.getPtr())) {
-        auto int_type = types::Type(types::TYPE::i64T);
-        auto bool_type = types::Type(types::TYPE::boolT);
+        auto int_type = types::Type(types::i64T);
+        auto bool_type = types::Type(types::boolT);
         op->lhs =
-            new BinOperator(op->begin, op->end, "as", 0, op->lhs,
+            new BinOperator(op->begin, op->end, "as", op->lhs,
                             new TypeLiteral(op->begin, op->end, int_type));
         op->lhs->type = int_type;
         op->rhs =
-            new BinOperator(op->begin, op->end, "as", 0, op->rhs,
+            new BinOperator(op->begin, op->end, "as", op->rhs,
                             new TypeLiteral(op->begin, op->end, int_type));
         op->rhs->type = int_type;
         op->func = scope.getBinOp({op->val, {int_type, int_type}});
@@ -737,7 +735,7 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
               op->lhs = makeLval(op->lhs, scope);
             }
             auto ltype = op->lhs->type;
-            op->lhs = new PrefixOperator(op->begin, op->end, "&", 3, op->lhs);
+            op->lhs = new PrefixOperator(op->begin, op->end, "&", op->lhs);
             op->lhs->type = ltype;
             op->lhs->type.setLval(false);
             op->lhs->type.setPtr(1);
@@ -857,7 +855,7 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
       auto var = scope.getVarInfo(scope.getVarId(op->val));
 
       exp = postprocess(
-          new BinOperator(op->begin, op->end, call_name, 0,
+          new BinOperator(op->begin, op->end, call_name,
                           new IdLiteral(op->begin, op->end, var->name),
                           op->child),
           scope);
@@ -881,15 +879,7 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
 
       return exp;
     } else if (op->val == "sizeof") {
-      size_t size = 0;
-      if (auto type = dynamic_cast<TypeLiteral *>(op->child)) {
-        size = type->literal_type.getSize();
-      } else {
-        size = op->child->type.getSize();
-      }
-      auto int_l = new I64Literal(op->begin, op->child->end, size);
-      exp = int_l;
-      exp = postprocess(exp, scope);
+      exp->type = types::Type(types::i64T);
       return exp;
     }
 
