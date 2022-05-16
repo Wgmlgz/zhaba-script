@@ -18,7 +18,7 @@
 struct ZHDATA {
   /** main syntax tree */
   ZHModule *sttree;
-  /** Can't init before main(), because of emscripten bug or something, so init dynamicly */
+  /** Can't init before main, because of emscripten bug or something, so init dynamicly */
   ZHModule *core_module = nullptr;
 
   Map<Path, ZHModule *> used_modules;
