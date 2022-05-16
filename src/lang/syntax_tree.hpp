@@ -5,6 +5,7 @@
 #include "ast.hpp"
 #include "expression.hpp"
 #include "scope.hpp"
+#include "lang_tables.hpp"
 
 struct STNode {
   virtual ~STNode();
@@ -75,3 +76,5 @@ struct ZHModule {
   TreeNode<std::string> *toGenericTree();
   ZHModule(ScopeInfo* scope);
 };
+
+ZHModule *makeCoreModule();

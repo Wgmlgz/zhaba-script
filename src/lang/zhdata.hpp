@@ -63,7 +63,6 @@ struct ZHDATA {
 
   /** all collected functions, to access them use scope */
   std::list<Function *> functions;
-  ZHDATA();
 };
 
 extern ZHDATA zhdata;

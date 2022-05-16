@@ -634,6 +634,7 @@ ZHModule* parseAST(std::filesystem::path file_path) {
   }
 
 
+  if (!zhdata.core_module) zhdata.core_module = makeCoreModule();
   ZHModule* res = new ZHModule(&zhdata.core_module->scope);
 
   // if (!parent_module) {
