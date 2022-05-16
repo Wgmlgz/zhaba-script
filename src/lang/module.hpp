@@ -1,13 +1,13 @@
 #pragma once
 #include <filesystem>
-#include <list>
 #include <fstream>
+#include <list>
 
 #include "../libs/json.hpp"
 #include "../tree_lib/Tree.hpp"
 #include "ast.hpp"
 #include "expression.hpp"
-
+#include "lang_tables.hpp"
 #include "scope.hpp"
 
 using json = nlohmann::json;
@@ -27,3 +27,4 @@ struct ZHModule {
 std::filesystem::path resolvePath(std::filesystem::path file_path);
 
 void to_json(json& j, const ZHModule& module);
+ZHModule* makeCoreModule();
