@@ -601,6 +601,7 @@ void parceFn(ZHModule* res, Scope& push_scope, ast::ASTLine* line, ast::ASTBlock
 }
 
 ZHModule* parseAST(std::filesystem::path file_path) {
+  if (!zhdata.core_module) zhdata.core_module = makeCoreModule(); 
   ZHModule* res = new ZHModule(&zhdata.core_module->scope, file_path);
 
   std::vector<Token>& tokens = *new std::vector<Token>(tokenizeFile(file_path));

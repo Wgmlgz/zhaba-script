@@ -18,7 +18,8 @@
 struct ZHDATA {
   /** main syntax tree */
   ZHModule *sttree;
-  ZHModule *core_module = makeCoreModule();
+  /** Can't init before main(), because of emscripten bug or something, so init dynamicly */
+  ZHModule *core_module = nullptr;
 
   Map<Path, ZHModule *> used_modules;
   Map<Str, Vec<Str>> files_lines;
