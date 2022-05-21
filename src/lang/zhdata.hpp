@@ -27,7 +27,7 @@ struct ZHDATA {
   std::filesystem::path bin_path;
   std::filesystem::path std_path;
 
-  std::map<std::string, bool> flags = tables::flags;
+  std::unordered_map<std::string, bool> flags = tables::flags;
 
   std::mt19937 rng = std::mt19937(std::random_device()());
 

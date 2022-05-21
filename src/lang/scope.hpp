@@ -68,16 +68,16 @@ class ScopeInfo {
   };
 
  private:
-  DynamicContainer<std::map, std::string, VarInfo*> vars_name;
-  DynamicContainer<std::map, int64_t, VarInfo*> vars_id;
+  DynamicContainer<std::unordered_map, std::string, VarInfo*> vars_name;
+  DynamicContainer<std::unordered_map, int64_t, VarInfo*> vars_id;
 
  public:
-  DynamicContainer<std::map, std::string, types::TYPE> struct_ids;
+  DynamicContainer<std::unordered_map, std::string, types::TYPE> struct_ids;
   DynamicContainer<std::map, std::string, types::Type> typedefs;
-  std::set<std::string> operators;
-  DynamicContainer<std::map, std::string, int64_t> bin_operators_;
-  DynamicContainer<std::map, std::string, int64_t> prefix_operators_;
-  DynamicContainer<std::map, std::string, int64_t> postfix_operators_;
+  std::unordered_set<std::string> operators;
+  DynamicContainer<std::unordered_map, std::string, int64_t> bin_operators_;
+  DynamicContainer<std::unordered_map, std::string, int64_t> prefix_operators_;
+  DynamicContainer<std::unordered_map, std::string, int64_t> postfix_operators_;
 
   DynamicContainer<std::map, types::funcHead, Function*> B_OD_;
   DynamicContainer<std::map, types::funcHead, Function*> PR_OD_;

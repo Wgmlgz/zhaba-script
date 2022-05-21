@@ -31,7 +31,7 @@ const TYPE FT = new TypeInfo{.name = "F", .complete = true, .builtin = true};
 }
 namespace tables {
 
-const std::map<std::string, bool> flags{
+const std::unordered_map<std::string, bool> flags{
     {"tokens", false},
     {"exp_parser_logs", false},
     {"show_ast", false},
@@ -60,12 +60,12 @@ const std::vector<std::pair<TOKEN, std::string>> lexer_tokens{
     {TOKEN::close_p, R"(((\)|\]|\})))"},
 };
 
-const std::set<std::string> banned_ids{
+const std::unordered_set<std::string> banned_ids{
     "?", "??", "@", "<<<", ":=", "as", "|", "\\", ";"};
 
-const std::set<std::string> flow_ops{"?", "??", "@", "<<<"};
+const std::unordered_set<std::string> flow_ops{"?", "??", "@", "<<<"};
 
-const std::map<std::string, int64_t> bin_operators{
+const std::unordered_map<std::string, int64_t> bin_operators{
     {"(", 2},  {"[", 2},   {"{", 2},    {".", 2},   {"as", 4},  {"/", 5},
     {"%", 5},  {"*", 5},   {"+", 6},    {"-", 6},   {">>", 7},  {"<<", 7},
     {"<", 9},  {">", 9},   {"<=", 9},   {">=", 9},  {"==", 10}, {"!=", 10},
@@ -73,7 +73,7 @@ const std::map<std::string, int64_t> bin_operators{
     {"=", 17}, {":=", 17}, {",", 18},
 };
 
-const std::set<std::string> operators{
+const std::unordered_set<std::string> operators{
     "!",      ".",      "=",      ":=",      ",",      "*",       "&",
     "as",     "+",      "/",      "%",       "-",      "!=",      "==",
     "out",    "put",    "sizeof", "malloc",  "free",   "<",       ">",
@@ -82,11 +82,11 @@ const std::set<std::string> operators{
     "in_u16", "in_u32", "in_u64", "in_char", "in_str", "in_bool", "->",
 };
 
-const std::set<std::string> functions{
+const std::unordered_set<std::string> functions{
 
 };
 
-const std::map<std::string, int64_t> prefix_operators{
+const std::unordered_map<std::string, int64_t> prefix_operators{
     {"*", 3},       {"!", 3},      {"~", 3},       {"+", 3},
     {"-", 3},       {"&", 3},      {"out", 3},     {"put", 3},
     {"sizeof", 3},  {"malloc", 3}, {"free", 3},
@@ -96,11 +96,11 @@ const std::map<std::string, int64_t> prefix_operators{
     {"in_char", 3}, {"in_str", 3}, {"in_bool", 3},
 };
 
-const std::map<std::string, int64_t> postfix_operators{
+const std::unordered_map<std::string, int64_t> postfix_operators{
 
 };
 
-const std::map<std::string, types::TYPE> prim_types{
+const std::unordered_map<std::string, types::TYPE> prim_types{
     {"void", types::voidT},
 
     {"char", types::charT},
@@ -125,30 +125,23 @@ const std::map<std::string, types::TYPE> prim_types{
     {"F", types::FT},
 };
 
-const std::map<types::TYPE, std::string> cpp_type_names{
+const std::unordered_map<types::TYPE, std::string> cpp_type_names{
     {types::voidT, "void"},
 
-    {types::charT, "char"},
-    {types::strT, "str"},
+    {types::charT, "char"}, {types::strT, "str"},
 
     {types::boolT, "bool"},
 
-    {types::i8T, "i8"},
-    {types::i16T, "i16"},
-    {types::i32T, "i32"},
+    {types::i8T, "i8"},     {types::i16T, "i16"}, {types::i32T, "i32"},
     {types::i64T, "i64"},
 
-    {types::u8T, "u8"},
-    {types::u16T, "u16"},
-    {types::u32T, "u32"},
+    {types::u8T, "u8"},     {types::u16T, "u16"}, {types::u32T, "u32"},
     {types::u64T, "u64"},
 
-    {types::f32T, "f32"},
-    {types::f64T, "f64"},
-    {types::FT, "undefined"},
+    {types::f32T, "f32"},   {types::f64T, "f64"}, {types::FT, "undefined"},
 };
 
-const std::map<types::TYPE, size_t> sizes{
+const std::unordered_map<types::TYPE, size_t> sizes{
     {types::voidT, 0},
 
     {types::charT, 1},
