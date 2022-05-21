@@ -114,25 +114,26 @@ class Scope {
 
  public:
   /** Variables, owns `VarInfo*` */
-  DynamicContainer<0, std::map, std::string, VarInfo*> vars;
+  DynamicContainer<0, std::unordered_map, std::string, VarInfo*> vars;
   /** Helper, provides variables access by id,
    * DON'T owns `VarInfo*`,
    */
-  DynamicContainer<1, std::map, int64_t, VarInfo*> vars_id;
+  DynamicContainer<1, std::unordered_map, int64_t, VarInfo*> vars_id;
 
   /** Defined types owns `types::TYPE` (aka `types::TypeInfo*`) */
-  DynamicContainer<2, std::map, std::string, types::TYPE> types;
+  DynamicContainer<2, std::unordered_map, std::string, types::TYPE> types;
   /** Typedefs (types aliases)` */
-  DynamicContainer<3, std::map, std::string, types::Type> typedefs;
+  DynamicContainer<3, std::unordered_map, std::string, types::Type> typedefs;
   /** Generic types definitions, owns `types::Generic*` */
-  DynamicContainer<4, std::map, std::string, types::Generic*> generics;
+  DynamicContainer<4, std::unordered_map, std::string, types::Generic*> generics;
 
   /** Binary operators priorities */
-  DynamicContainer<5, std::map, std::string, int64_t> bin_operators;
+  DynamicContainer<5, std::unordered_map, std::string, int64_t> bin_operators;
   /** Prefix operators priorities */
-  DynamicContainer<6, std::map, std::string, int64_t> prefix_operators;
+  DynamicContainer<6, std::unordered_map, std::string, int64_t>
+      prefix_operators;
   /** Postfix operators priorities */
-  DynamicContainer<7, std::map, std::string, int64_t> postfix_operators;
+  DynamicContainer<7, std::unordered_map, std::string, int64_t> postfix_operators;
 
   /** Binary operators, owns `Function*` */
   DynamicContainer<8, std::map, types::FnHead, Function*> B_OP;
@@ -142,8 +143,7 @@ class Scope {
   DynamicContainer<10, std::map, types::FnHead, Function*> PO_OP;
 
   /** Last defined binary operator by name, DON'T owns `Function*` */
-  DynamicContainer<11, std::map, std::string, Function*> last_fn;
-
+  DynamicContainer<11, std::unordered_map, std::string, Function*> last_fn;
 
   Scope(const Scope* new_parent);
   Scope(const Scope&) = delete;

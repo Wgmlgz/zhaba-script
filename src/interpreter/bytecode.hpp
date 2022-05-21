@@ -22,7 +22,7 @@ class ByteCode {
  public:
   bytevec bytes;
 
-  std::map<types::TYPE, size_t> sizes = tables::sizes;
+  std::unordered_map<types::TYPE, size_t> sizes = tables::sizes;
   std::array<int, 100000> labels;
   std::map<int, std::string> labels_comments;
   std::array<int, 100000> literals_labels;

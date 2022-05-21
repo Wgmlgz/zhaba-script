@@ -146,32 +146,22 @@ struct __PROT_ZH_TYPE_Vec_lesschar_greater;
 typedef struct __PROT_ZH_TYPE_Vec_lesschar_greater __ZH_TYPE_Vec_lesschar_greater;
 struct __PROT_ZH_TYPE_VecIter_lesschar_greater;
 typedef struct __PROT_ZH_TYPE_VecIter_lesschar_greater __ZH_TYPE_VecIter_lesschar_greater;
-struct __PROT_ZH_TYPE_VecIterRange_lesschar_greater;
-typedef struct __PROT_ZH_TYPE_VecIterRange_lesschar_greater __ZH_TYPE_VecIterRange_lesschar_greater;
 struct __PROT_ZH_TYPE_Str;
 typedef struct __PROT_ZH_TYPE_Str __ZH_TYPE_Str;
+struct __PROT_ZH_TYPE_VecIterRange_lesschar_greater;
+typedef struct __PROT_ZH_TYPE_VecIterRange_lesschar_greater __ZH_TYPE_VecIterRange_lesschar_greater;
 struct __PROT_ZH_TYPE_V2;
 typedef struct __PROT_ZH_TYPE_V2 __ZH_TYPE_V2;
 struct __PROT_ZH_TYPE_Rng;
 typedef struct __PROT_ZH_TYPE_Rng __ZH_TYPE_Rng;
-struct __PROT_ZH_TYPE_MapNode_lessi64_spacei64_greater;
-typedef struct __PROT_ZH_TYPE_MapNode_lessi64_spacei64_greater __ZH_TYPE_MapNode_lessi64_spacei64_greater;
-struct __PROT_ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater;
-typedef struct __PROT_ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater __ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater;
-struct __PROT_ZH_TYPE_AVLTree_lessMapNode_lessi64_spacei64_greater_greater;
-typedef struct __PROT_ZH_TYPE_AVLTree_lessMapNode_lessi64_spacei64_greater_greater __ZH_TYPE_AVLTree_lessMapNode_lessi64_spacei64_greater_greater;
-struct __PROT_ZH_TYPE_AVLIter_lessMapNode_lessi64_spacei64_greater_greater;
-typedef struct __PROT_ZH_TYPE_AVLIter_lessMapNode_lessi64_spacei64_greater_greater __ZH_TYPE_AVLIter_lessMapNode_lessi64_spacei64_greater_greater;
-struct __PROT_ZH_TYPE_AVLIterRange_lessMapNode_lessi64_spacei64_greater_greater;
-typedef struct __PROT_ZH_TYPE_AVLIterRange_lessMapNode_lessi64_spacei64_greater_greater __ZH_TYPE_AVLIterRange_lessMapNode_lessi64_spacei64_greater_greater;
-struct __PROT_ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater;
-typedef struct __PROT_ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater __ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater;
-struct __PROT_ZH_TYPE_VecIter_lessMapNode_lessi64_spacei64_greater_greater;
-typedef struct __PROT_ZH_TYPE_VecIter_lessMapNode_lessi64_spacei64_greater_greater __ZH_TYPE_VecIter_lessMapNode_lessi64_spacei64_greater_greater;
-struct __PROT_ZH_TYPE_VecIterRange_lessMapNode_lessi64_spacei64_greater_greater;
-typedef struct __PROT_ZH_TYPE_VecIterRange_lessMapNode_lessi64_spacei64_greater_greater __ZH_TYPE_VecIterRange_lessMapNode_lessi64_spacei64_greater_greater;
-struct __PROT_ZH_TYPE_Map_lessi64_spacei64_greater;
-typedef struct __PROT_ZH_TYPE_Map_lessi64_spacei64_greater __ZH_TYPE_Map_lessi64_spacei64_greater;
+struct __PROT_ZH_TYPE_AVLTree_lessi64_greater;
+typedef struct __PROT_ZH_TYPE_AVLTree_lessi64_greater __ZH_TYPE_AVLTree_lessi64_greater;
+struct __PROT_ZH_TYPE_AVLNode_lessi64_greater;
+typedef struct __PROT_ZH_TYPE_AVLNode_lessi64_greater __ZH_TYPE_AVLNode_lessi64_greater;
+struct __PROT_ZH_TYPE_AVLIter_lessi64_greater;
+typedef struct __PROT_ZH_TYPE_AVLIter_lessi64_greater __ZH_TYPE_AVLIter_lessi64_greater;
+struct __PROT_ZH_TYPE_AVLIterRange_lessi64_greater;
+typedef struct __PROT_ZH_TYPE_AVLIterRange_lessi64_greater __ZH_TYPE_AVLIterRange_lessi64_greater;
 
 struct __PROT_ZH_TYPE_IntOpMaker_lessi8_greater {
   bool unused;
@@ -204,95 +194,76 @@ struct __PROT_ZH_TYPE_Out {
   bool complex;
 };
 struct __PROT_ZH_TYPE_Range_lessi8_greater {
-  i8 end;
   i8 begin;
+  i8 end;
 };
 struct __PROT_ZH_TYPE_Range_lessi16_greater {
-  i16 end;
   i16 begin;
+  i16 end;
 };
 struct __PROT_ZH_TYPE_Range_lessi32_greater {
-  i32 end;
   i32 begin;
+  i32 end;
 };
 struct __PROT_ZH_TYPE_Range_lessi64_greater {
-  i64 end;
   i64 begin;
+  i64 end;
 };
 struct __PROT_ZH_TYPE_Range_lesschar_greater {
-  char end;
   char begin;
+  char end;
 };
 struct __PROT_ZH_TYPE_Vec_lessi64_greater {
-  i64* head;
   i64 cap;
+  i64* head;
   i64 size;
 };
 struct __PROT_ZH_TYPE_VecIter_lessi64_greater {
   i64* ptr;
 };
 struct __PROT_ZH_TYPE_VecIterRange_lessi64_greater {
-  __ZH_TYPE_VecIter_lessi64_greater end;
   __ZH_TYPE_VecIter_lessi64_greater begin;
+  __ZH_TYPE_VecIter_lessi64_greater end;
 };
 struct __PROT_ZH_TYPE_Vec_lesschar_greater {
-  char* head;
   i64 cap;
+  char* head;
   i64 size;
 };
 struct __PROT_ZH_TYPE_VecIter_lesschar_greater {
   char* ptr;
 };
-struct __PROT_ZH_TYPE_VecIterRange_lesschar_greater {
-  __ZH_TYPE_VecIter_lesschar_greater end;
-  __ZH_TYPE_VecIter_lesschar_greater begin;
-};
 struct __PROT_ZH_TYPE_Str {
-  i64 size;
   __ZH_TYPE_Vec_lesschar_greater data;
+  i64 size;
+};
+struct __PROT_ZH_TYPE_VecIterRange_lesschar_greater {
+  __ZH_TYPE_VecIter_lesschar_greater begin;
+  __ZH_TYPE_VecIter_lesschar_greater end;
 };
 struct __PROT_ZH_TYPE_V2 {
-  f64 y;
   f64 x;
+  f64 y;
 };
 struct __PROT_ZH_TYPE_Rng {
   i64 seed;
 };
-struct __PROT_ZH_TYPE_MapNode_lessi64_spacei64_greater {
-  i64 val;
-  i64 key;
+struct __PROT_ZH_TYPE_AVLTree_lessi64_greater {
+  __ZH_TYPE_AVLNode_lessi64_greater* root;
 };
-struct __PROT_ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater {
-  __ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater* par;
-  __ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater* rhs;
-  __ZH_TYPE_MapNode_lessi64_spacei64_greater val;
-  __ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater* lhs;
+struct __PROT_ZH_TYPE_AVLNode_lessi64_greater {
   i64 h;
+  __ZH_TYPE_AVLNode_lessi64_greater* lhs;
+  __ZH_TYPE_AVLNode_lessi64_greater* par;
+  __ZH_TYPE_AVLNode_lessi64_greater* rhs;
+  i64 val;
 };
-struct __PROT_ZH_TYPE_AVLTree_lessMapNode_lessi64_spacei64_greater_greater {
-  __ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater* root;
+struct __PROT_ZH_TYPE_AVLIter_lessi64_greater {
+  __ZH_TYPE_AVLNode_lessi64_greater* next;
 };
-struct __PROT_ZH_TYPE_AVLIter_lessMapNode_lessi64_spacei64_greater_greater {
-  __ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater* next;
-};
-struct __PROT_ZH_TYPE_AVLIterRange_lessMapNode_lessi64_spacei64_greater_greater {
-  __ZH_TYPE_AVLIter_lessMapNode_lessi64_spacei64_greater_greater end;
-  __ZH_TYPE_AVLIter_lessMapNode_lessi64_spacei64_greater_greater begin;
-};
-struct __PROT_ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater {
-  __ZH_TYPE_MapNode_lessi64_spacei64_greater* head;
-  i64 cap;
-  i64 size;
-};
-struct __PROT_ZH_TYPE_VecIter_lessMapNode_lessi64_spacei64_greater_greater {
-  __ZH_TYPE_MapNode_lessi64_spacei64_greater* ptr;
-};
-struct __PROT_ZH_TYPE_VecIterRange_lessMapNode_lessi64_spacei64_greater_greater {
-  __ZH_TYPE_VecIter_lessMapNode_lessi64_spacei64_greater_greater end;
-  __ZH_TYPE_VecIter_lessMapNode_lessi64_spacei64_greater_greater begin;
-};
-struct __PROT_ZH_TYPE_Map_lessi64_spacei64_greater {
-  __ZH_TYPE_AVLTree_lessMapNode_lessi64_spacei64_greater_greater tree;
+struct __PROT_ZH_TYPE_AVLIterRange_lessi64_greater {
+  __ZH_TYPE_AVLIter_lessi64_greater begin;
+  __ZH_TYPE_AVLIter_lessi64_greater end;
 };
 i8 __ZH_LOP_i8_();
 i16 __ZH_LOP_i16_();
@@ -717,100 +688,35 @@ __ZH_TYPE_Rng __ZH_LOP_Rng_i64(i64 v987);
 __ZH_TYPE_Rng __ZH_LOP_Rng_();
 i64 __ZH_BOP__dotcall_dotcall_RngP(__ZH_TYPE_Rng* v989);
 int main(int argc, char *argv[]) ;
-__ZH_TYPE_MapNode_lessi64_spacei64_greater __ZH_LOP_MapNode_lessi64_spacei64_greater_i64Ri64R(i64* v993, i64* v994);
-__ZH_TYPE_MapNode_lessi64_spacei64_greater __ZH_LOP_MapNode_lessi64_spacei64_greater_();
-bool __ZH_BOP__less_MapNode_lessi64_spacei64_greaterRMapNode_lessi64_spacei64_greaterR(__ZH_TYPE_MapNode_lessi64_spacei64_greater* v1000, __ZH_TYPE_MapNode_lessi64_spacei64_greater* v1001);
-void __ZH_LOP_put_MapNode_lessi64_spacei64_greaterR(__ZH_TYPE_MapNode_lessi64_spacei64_greater* v1002);
-void __ZH_LOP_out_MapNode_lessi64_spacei64_greaterR(__ZH_TYPE_MapNode_lessi64_spacei64_greater* v1003);
-__ZH_TYPE_Out __ZH_ROP__less_MapNode_lessi64_spacei64_greaterR(__ZH_TYPE_MapNode_lessi64_spacei64_greater* v1004);
-__ZH_TYPE_Out __ZH_LOP__less_MapNode_lessi64_spacei64_greaterR(__ZH_TYPE_MapNode_lessi64_spacei64_greater* v1005);
-__ZH_TYPE_Out __ZH_BOP__less_OutMapNode_lessi64_spacei64_greaterR(__ZH_TYPE_Out v1006, __ZH_TYPE_MapNode_lessi64_spacei64_greater* v1007);
-__ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater __ZH_LOP_AVLNode_lessMapNode_lessi64_spacei64_greater_greater_MapNode_lessi64_spacei64_greaterR(__ZH_TYPE_MapNode_lessi64_spacei64_greater* v1008);
-__ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater* __ZH_LOP_new_AVLNode_lessMapNode_lessi64_spacei64_greater_greater(__ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater v1010);
-bool __ZH_LOP__exclamation_exclamation_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater* v1012);
-bool __ZH_LOP__exclamation_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater* v1013);
-i64 __ZH_BOP__dotcall_doth_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater* v1014);
-i64 __ZH_BOP__dotcall_dotbf_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater* v1015);
-void __ZH_BOP__dotcall_dotfix_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater* v1016);
-__ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater* __ZH_BOP__dotcall_dotrrot_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater* v1017);
-__ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater* __ZH_BOP__dotcall_dotlrot_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater* v1019);
-__ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater* __ZH_BOP__dotcall_dotbalance_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater* v1021);
-__ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater* __ZH_BOP__dotcall_dotinsert_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterPMapNode_lessi64_spacei64_greaterR(__ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater* v1022, __ZH_TYPE_MapNode_lessi64_spacei64_greater* v1023);
-__ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater* __ZH_BOP__dotcall_dotsub_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterPMapNode_lessi64_spacei64_greaterR(__ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater* v1026, __ZH_TYPE_MapNode_lessi64_spacei64_greater* v1027);
-void __ZH_BOP__dotcall_dotshow_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterPStrR(__ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater* v1029, __ZH_TYPE_Str* v1030);
-__ZH_TYPE_AVLIter_lessMapNode_lessi64_spacei64_greater_greater __ZH_LOP_AVLIter_lessMapNode_lessi64_spacei64_greater_greater_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater* v1034);
-__ZH_TYPE_MapNode_lessi64_spacei64_greater* __ZH_LOP__asterisk_AVLIter_lessMapNode_lessi64_spacei64_greater_greater(__ZH_TYPE_AVLIter_lessMapNode_lessi64_spacei64_greater_greater v1036);
-__ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater* __ZH_LOP__plus_plus_AVLIter_lessMapNode_lessi64_spacei64_greater_greaterR(__ZH_TYPE_AVLIter_lessMapNode_lessi64_spacei64_greater_greater* v1037);
-bool __ZH_BOP__exclamation_equal_AVLIter_lessMapNode_lessi64_spacei64_greater_greaterAVLIter_lessMapNode_lessi64_spacei64_greater_greater(__ZH_TYPE_AVLIter_lessMapNode_lessi64_spacei64_greater_greater v1039, __ZH_TYPE_AVLIter_lessMapNode_lessi64_spacei64_greater_greater v1040);
-__ZH_TYPE_AVLIter_lessMapNode_lessi64_spacei64_greater_greater __ZH_BOP__dotcall_dotbegin_AVLIterRange_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_AVLIterRange_lessMapNode_lessi64_spacei64_greater_greater* v1044);
-__ZH_TYPE_AVLIter_lessMapNode_lessi64_spacei64_greater_greater __ZH_BOP__dotcall_dotend_AVLIterRange_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_AVLIterRange_lessMapNode_lessi64_spacei64_greater_greater* v1045);
-__ZH_TYPE_AVLIterRange_lessMapNode_lessi64_spacei64_greater_greater __ZH_LOP_AVLIterRange_lessMapNode_lessi64_spacei64_greater_greater_AVLIter_lessMapNode_lessi64_spacei64_greater_greaterAVLIter_lessMapNode_lessi64_spacei64_greater_greater(__ZH_TYPE_AVLIter_lessMapNode_lessi64_spacei64_greater_greater v1046, __ZH_TYPE_AVLIter_lessMapNode_lessi64_spacei64_greater_greater v1047);
-__ZH_TYPE_VecIter_lessMapNode_lessi64_spacei64_greater_greater __ZH_LOP_VecIter_lessMapNode_lessi64_spacei64_greater_greater_MapNode_lessi64_spacei64_greaterP(__ZH_TYPE_MapNode_lessi64_spacei64_greater* v1078);
-void __ZH_LOP__plus_plus_VecIter_lessMapNode_lessi64_spacei64_greater_greaterR(__ZH_TYPE_VecIter_lessMapNode_lessi64_spacei64_greater_greater* v1080);
-__ZH_TYPE_VecIter_lessMapNode_lessi64_spacei64_greater_greater __ZH_BOP__plus_VecIter_lessMapNode_lessi64_spacei64_greater_greateri64(__ZH_TYPE_VecIter_lessMapNode_lessi64_spacei64_greater_greater v1081, i64 v1082);
-bool __ZH_BOP__exclamation_equal_VecIter_lessMapNode_lessi64_spacei64_greater_greaterVecIter_lessMapNode_lessi64_spacei64_greater_greater(__ZH_TYPE_VecIter_lessMapNode_lessi64_spacei64_greater_greater v1083, __ZH_TYPE_VecIter_lessMapNode_lessi64_spacei64_greater_greater v1084);
-__ZH_TYPE_MapNode_lessi64_spacei64_greater* __ZH_LOP__asterisk_VecIter_lessMapNode_lessi64_spacei64_greater_greater(__ZH_TYPE_VecIter_lessMapNode_lessi64_spacei64_greater_greater v1085);
-__ZH_TYPE_VecIter_lessMapNode_lessi64_spacei64_greater_greater __ZH_BOP__dotcall_dotbegin_VecIterRange_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_VecIterRange_lessMapNode_lessi64_spacei64_greater_greater* v1088);
-__ZH_TYPE_VecIter_lessMapNode_lessi64_spacei64_greater_greater __ZH_BOP__dotcall_dotend_VecIterRange_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_VecIterRange_lessMapNode_lessi64_spacei64_greater_greater* v1089);
-__ZH_TYPE_VecIterRange_lessMapNode_lessi64_spacei64_greater_greater __ZH_LOP_VecIterRange_lessMapNode_lessi64_spacei64_greater_greater_VecIter_lessMapNode_lessi64_spacei64_greater_greaterVecIter_lessMapNode_lessi64_spacei64_greater_greater(__ZH_TYPE_VecIter_lessMapNode_lessi64_spacei64_greater_greater v1090, __ZH_TYPE_VecIter_lessMapNode_lessi64_spacei64_greater_greater v1091);
-__ZH_TYPE_MapNode_lessi64_spacei64_greater* __ZH_BOP__dotcall_dotatP_Vec_lessMapNode_lessi64_spacei64_greater_greaterPi64(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1057, i64 v1058);
-__ZH_TYPE_MapNode_lessi64_spacei64_greater* __ZH_BOP__dotcall_dotat_Vec_lessMapNode_lessi64_spacei64_greater_greaterPi64(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1059, i64 v1060);
-void __ZH_BOP__dotcall_dotprint_Vec_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1061);
-void __ZH_BOP__dotcall_dotprintln_Vec_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1065);
-void __ZH_BOP__dotcall_dotdouble_cap_Vec_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1069);
-void __ZH_BOP__dotcall_dotpush_back_Vec_lessMapNode_lessi64_spacei64_greater_greaterPMapNode_lessi64_spacei64_greater(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1075, __ZH_TYPE_MapNode_lessi64_spacei64_greater v1076);
-void __ZH_BOP__dotcall_dotpop_back_Vec_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1077);
-__ZH_TYPE_VecIter_lessMapNode_lessi64_spacei64_greater_greater __ZH_BOP__dotcall_dotbegin_Vec_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1086);
-__ZH_TYPE_VecIter_lessMapNode_lessi64_spacei64_greater_greater __ZH_BOP__dotcall_dotend_Vec_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1087);
-__ZH_TYPE_VecIterRange_lessMapNode_lessi64_spacei64_greater_greater __ZH_LOP_iter_Vec_lessMapNode_lessi64_spacei64_greater_greaterR(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1093);
-__ZH_TYPE_MapNode_lessi64_spacei64_greater* __ZH_BOP__dotcall_dotfront_Vec_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1095);
-__ZH_TYPE_MapNode_lessi64_spacei64_greater* __ZH_BOP__dotcall_dotback_Vec_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1096);
-void __ZH_BOP__dotcall_dotdtor_Vec_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1097);
-__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater __ZH_LOP_Vec_lessMapNode_lessi64_spacei64_greater_greater_i64(i64 v1098);
-__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater __ZH_LOP_Vec_lessMapNode_lessi64_spacei64_greater_greater_i64MapNode_lessi64_spacei64_greater(i64 v1103, __ZH_TYPE_MapNode_lessi64_spacei64_greater v1104);
-__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater __ZH_LOP_Vec_lessMapNode_lessi64_spacei64_greater_greater_();
-__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater __ZH_LOP_Vec_lessMapNode_lessi64_spacei64_greater_greater_Vec_lessMapNode_lessi64_spacei64_greater_greaterR(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1109);
-void __ZH_BOP__plus_equal_Vec_lessMapNode_lessi64_spacei64_greater_greaterRMapNode_lessi64_spacei64_greater(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1114, __ZH_TYPE_MapNode_lessi64_spacei64_greater v1115);
-void __ZH_BOP__plus_equal_Vec_lessMapNode_lessi64_spacei64_greater_greaterRVec_lessMapNode_lessi64_spacei64_greater_greaterR(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1116, __ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1117);
-__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater __ZH_BOP__comma_comma_MapNode_lessi64_spacei64_greaterMapNode_lessi64_spacei64_greater(__ZH_TYPE_MapNode_lessi64_spacei64_greater v1121, __ZH_TYPE_MapNode_lessi64_spacei64_greater v1122);
-__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* __ZH_BOP__comma_comma_Vec_lessMapNode_lessi64_spacei64_greater_greaterRMapNode_lessi64_spacei64_greater(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1124, __ZH_TYPE_MapNode_lessi64_spacei64_greater v1125);
-void __ZH_LOP_put_Vec_lessMapNode_lessi64_spacei64_greater_greaterR(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1126);
-void __ZH_LOP_out_Vec_lessMapNode_lessi64_spacei64_greater_greaterR(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1127);
-__ZH_TYPE_Out __ZH_ROP__less_Vec_lessMapNode_lessi64_spacei64_greater_greaterR(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1128);
-__ZH_TYPE_Out __ZH_LOP__less_Vec_lessMapNode_lessi64_spacei64_greater_greaterR(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1129);
-__ZH_TYPE_Out __ZH_BOP__less_OutVec_lessMapNode_lessi64_spacei64_greater_greaterR(__ZH_TYPE_Out v1130, __ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1131);
-__ZH_TYPE_MapNode_lessi64_spacei64_greater* __ZH_BOP__dotcall_dotsub_Vec_lessMapNode_lessi64_spacei64_greater_greaterPi64(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1132, i64 v1133);
-__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater __ZH_BOP__dotcall_dotsub_Vec_lessMapNode_lessi64_spacei64_greater_greaterPi64i64(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1134, i64 v1135, i64 v1136);
-__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater __ZH_BOP__dotcall_dotsub_Vec_lessMapNode_lessi64_spacei64_greater_greaterPRange_lessi64_greater(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1141, __ZH_TYPE_Range_lessi64_greater v1142);
-__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater __ZH_BOP__dotcall_dotsub_Vec_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1145);
-bool __ZH_BOP__less_Vec_lessMapNode_lessi64_spacei64_greater_greaterRVec_lessMapNode_lessi64_spacei64_greater_greaterR(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1146, __ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1147);
-void __ZH_LOP_swap_MapNode_lessi64_spacei64_greaterPMapNode_lessi64_spacei64_greaterP(__ZH_TYPE_MapNode_lessi64_spacei64_greater* v1151, __ZH_TYPE_MapNode_lessi64_spacei64_greater* v1152);
-__ZH_TYPE_MapNode_lessi64_spacei64_greater* __ZH_LOP_partition_MapNode_lessi64_spacei64_greaterPMapNode_lessi64_spacei64_greaterP(__ZH_TYPE_MapNode_lessi64_spacei64_greater* v1154, __ZH_TYPE_MapNode_lessi64_spacei64_greater* v1155);
-void __ZH_LOP_qsort_MapNode_lessi64_spacei64_greaterPMapNode_lessi64_spacei64_greaterP(__ZH_TYPE_MapNode_lessi64_spacei64_greater* v1159, __ZH_TYPE_MapNode_lessi64_spacei64_greater* v1160);
-void __ZH_BOP__dotcall_dotsort_Vec_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1164);
-void __ZH_LOP_sort_Vec_lessMapNode_lessi64_spacei64_greater_greaterR(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1169);
-__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater __ZH_BOP__dotcall_dotmap_Vec_lessMapNode_lessi64_spacei64_greater_greaterPF_lessMapNode_lessi64_spacei64_greater_spaceMapNode_lessi64_spacei64_greaterR_greater(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1170, __ZH_TYPE_MapNode_lessi64_spacei64_greater(*v1171)(__ZH_TYPE_MapNode_lessi64_spacei64_greater*));
-__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater __ZH_BOP__dotcall_dotfilter_Vec_lessMapNode_lessi64_spacei64_greater_greaterPF_lessbool_spaceMapNode_lessi64_spacei64_greaterR_greater(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1176, bool(*v1177)(__ZH_TYPE_MapNode_lessi64_spacei64_greater*));
-__ZH_TYPE_AVLTree_lessMapNode_lessi64_spacei64_greater_greater __ZH_LOP_AVLTree_lessMapNode_lessi64_spacei64_greater_greater_();
-__ZH_TYPE_AVLIter_lessMapNode_lessi64_spacei64_greater_greater __ZH_BOP__dotcall_dotbegin_AVLTree_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_AVLTree_lessMapNode_lessi64_spacei64_greater_greater* v1041);
-__ZH_TYPE_AVLIter_lessMapNode_lessi64_spacei64_greater_greater __ZH_BOP__dotcall_dotend_AVLTree_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_AVLTree_lessMapNode_lessi64_spacei64_greater_greater* v1043);
-__ZH_TYPE_AVLIterRange_lessMapNode_lessi64_spacei64_greater_greater __ZH_LOP_iter_AVLTree_lessMapNode_lessi64_spacei64_greater_greaterR(__ZH_TYPE_AVLTree_lessMapNode_lessi64_spacei64_greater_greater* v1049);
-void __ZH_BOP__dotcall_dotinsert_AVLTree_lessMapNode_lessi64_spacei64_greater_greaterPMapNode_lessi64_spacei64_greater(__ZH_TYPE_AVLTree_lessMapNode_lessi64_spacei64_greater_greater* v1051, __ZH_TYPE_MapNode_lessi64_spacei64_greater v1052);
-__ZH_TYPE_MapNode_lessi64_spacei64_greater* __ZH_BOP__dotcall_dotsub_AVLTree_lessMapNode_lessi64_spacei64_greater_greaterPMapNode_lessi64_spacei64_greater(__ZH_TYPE_AVLTree_lessMapNode_lessi64_spacei64_greater_greater* v1053, __ZH_TYPE_MapNode_lessi64_spacei64_greater v1054);
-void __ZH_BOP__plus_equal_AVLTree_lessMapNode_lessi64_spacei64_greater_greaterRMapNode_lessi64_spacei64_greater(__ZH_TYPE_AVLTree_lessMapNode_lessi64_spacei64_greater_greater* v1055, __ZH_TYPE_MapNode_lessi64_spacei64_greater v1056);
-__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater __ZH_BOP__dotcall_dotcall_AVLTree_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_AVLTree_lessMapNode_lessi64_spacei64_greater_greater* v1182);
-void __ZH_BOP__dotcall_dotshow_AVLTree_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_AVLTree_lessMapNode_lessi64_spacei64_greater_greater* v1187);
-__ZH_TYPE_Map_lessi64_spacei64_greater __ZH_LOP_Map_lessi64_spacei64_greater_();
-i64* __ZH_BOP__dotcall_dotsub_Map_lessi64_spacei64_greaterPi64R(__ZH_TYPE_Map_lessi64_spacei64_greater* v1191, i64* v1192);
-void __ZH_BOP__dotcall_dotinsert_Map_lessi64_spacei64_greaterPi64Ri64R(__ZH_TYPE_Map_lessi64_spacei64_greater* v1195, i64* v1196, i64* v1197);
-__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater __ZH_BOP__dotcall_dotcall_Map_lessi64_spacei64_greaterP(__ZH_TYPE_Map_lessi64_spacei64_greater* v1199);
-void __ZH_BOP__dotcall_dotprint_Map_lessi64_spacei64_greaterP(__ZH_TYPE_Map_lessi64_spacei64_greater* v1201);
-void __ZH_LOP_put_Map_lessi64_spacei64_greaterR(__ZH_TYPE_Map_lessi64_spacei64_greater* v1205);
-void __ZH_LOP_out_Map_lessi64_spacei64_greaterR(__ZH_TYPE_Map_lessi64_spacei64_greater* v1206);
-__ZH_TYPE_Out __ZH_ROP__less_Map_lessi64_spacei64_greaterR(__ZH_TYPE_Map_lessi64_spacei64_greater* v1207);
-__ZH_TYPE_Out __ZH_LOP__less_Map_lessi64_spacei64_greaterR(__ZH_TYPE_Map_lessi64_spacei64_greater* v1208);
-__ZH_TYPE_Out __ZH_BOP__less_OutMap_lessi64_spacei64_greaterR(__ZH_TYPE_Out v1209, __ZH_TYPE_Map_lessi64_spacei64_greater* v1210);
-__ZH_TYPE_AVLIterRange_lessMapNode_lessi64_spacei64_greater_greater __ZH_LOP_iter_Map_lessi64_spacei64_greaterR(__ZH_TYPE_Map_lessi64_spacei64_greater* v1211);
+__ZH_TYPE_AVLNode_lessi64_greater __ZH_LOP_AVLNode_lessi64_greater_i64R(i64* v990);
+__ZH_TYPE_AVLNode_lessi64_greater* __ZH_LOP_new_AVLNode_lessi64_greater(__ZH_TYPE_AVLNode_lessi64_greater v992);
+bool __ZH_LOP__exclamation_exclamation_AVLNode_lessi64_greaterP(__ZH_TYPE_AVLNode_lessi64_greater* v994);
+bool __ZH_LOP__exclamation_AVLNode_lessi64_greaterP(__ZH_TYPE_AVLNode_lessi64_greater* v995);
+i64 __ZH_BOP__dotcall_doth_AVLNode_lessi64_greaterP(__ZH_TYPE_AVLNode_lessi64_greater* v996);
+i64 __ZH_BOP__dotcall_dotbf_AVLNode_lessi64_greaterP(__ZH_TYPE_AVLNode_lessi64_greater* v997);
+void __ZH_BOP__dotcall_dotfix_AVLNode_lessi64_greaterP(__ZH_TYPE_AVLNode_lessi64_greater* v998);
+__ZH_TYPE_AVLNode_lessi64_greater* __ZH_BOP__dotcall_dotrrot_AVLNode_lessi64_greaterP(__ZH_TYPE_AVLNode_lessi64_greater* v999);
+__ZH_TYPE_AVLNode_lessi64_greater* __ZH_BOP__dotcall_dotlrot_AVLNode_lessi64_greaterP(__ZH_TYPE_AVLNode_lessi64_greater* v1001);
+__ZH_TYPE_AVLNode_lessi64_greater* __ZH_BOP__dotcall_dotbalance_AVLNode_lessi64_greaterP(__ZH_TYPE_AVLNode_lessi64_greater* v1003);
+__ZH_TYPE_AVLNode_lessi64_greater* __ZH_BOP__dotcall_dotinsert_AVLNode_lessi64_greaterPi64R(__ZH_TYPE_AVLNode_lessi64_greater* v1004, i64* v1005);
+__ZH_TYPE_AVLNode_lessi64_greater* __ZH_BOP__dotcall_dotsub_AVLNode_lessi64_greaterPi64R(__ZH_TYPE_AVLNode_lessi64_greater* v1008, i64* v1009);
+void __ZH_BOP__dotcall_dotshow_AVLNode_lessi64_greaterPStrR(__ZH_TYPE_AVLNode_lessi64_greater* v1011, __ZH_TYPE_Str* v1012);
+__ZH_TYPE_AVLIter_lessi64_greater __ZH_LOP_AVLIter_lessi64_greater_AVLNode_lessi64_greaterP(__ZH_TYPE_AVLNode_lessi64_greater* v1016);
+i64* __ZH_LOP__asterisk_AVLIter_lessi64_greater(__ZH_TYPE_AVLIter_lessi64_greater v1018);
+__ZH_TYPE_AVLNode_lessi64_greater* __ZH_LOP__plus_plus_AVLIter_lessi64_greaterR(__ZH_TYPE_AVLIter_lessi64_greater* v1019);
+bool __ZH_BOP__exclamation_equal_AVLIter_lessi64_greaterAVLIter_lessi64_greater(__ZH_TYPE_AVLIter_lessi64_greater v1021, __ZH_TYPE_AVLIter_lessi64_greater v1022);
+__ZH_TYPE_AVLIter_lessi64_greater __ZH_BOP__dotcall_dotbegin_AVLIterRange_lessi64_greaterP(__ZH_TYPE_AVLIterRange_lessi64_greater* v1026);
+__ZH_TYPE_AVLIter_lessi64_greater __ZH_BOP__dotcall_dotend_AVLIterRange_lessi64_greaterP(__ZH_TYPE_AVLIterRange_lessi64_greater* v1027);
+__ZH_TYPE_AVLIterRange_lessi64_greater __ZH_LOP_AVLIterRange_lessi64_greater_AVLIter_lessi64_greaterAVLIter_lessi64_greater(__ZH_TYPE_AVLIter_lessi64_greater v1028, __ZH_TYPE_AVLIter_lessi64_greater v1029);
+__ZH_TYPE_AVLTree_lessi64_greater __ZH_LOP_AVLTree_lessi64_greater_();
+__ZH_TYPE_AVLIter_lessi64_greater __ZH_BOP__dotcall_dotbegin_AVLTree_lessi64_greaterP(__ZH_TYPE_AVLTree_lessi64_greater* v1023);
+__ZH_TYPE_AVLIter_lessi64_greater __ZH_BOP__dotcall_dotend_AVLTree_lessi64_greaterP(__ZH_TYPE_AVLTree_lessi64_greater* v1025);
+__ZH_TYPE_AVLIterRange_lessi64_greater __ZH_LOP_iter_AVLTree_lessi64_greaterR(__ZH_TYPE_AVLTree_lessi64_greater* v1031);
+void __ZH_BOP__dotcall_dotinsert_AVLTree_lessi64_greaterPi64(__ZH_TYPE_AVLTree_lessi64_greater* v1033, i64 v1034);
+i64* __ZH_BOP__dotcall_dotsub_AVLTree_lessi64_greaterPi64(__ZH_TYPE_AVLTree_lessi64_greater* v1035, i64 v1036);
+void __ZH_BOP__plus_equal_AVLTree_lessi64_greaterRi64(__ZH_TYPE_AVLTree_lessi64_greater* v1037, i64 v1038);
+__ZH_TYPE_Vec_lessi64_greater __ZH_BOP__dotcall_dotcall_AVLTree_lessi64_greaterP(__ZH_TYPE_AVLTree_lessi64_greater* v1039);
+void __ZH_BOP__dotcall_dotshow_AVLTree_lessi64_greaterP(__ZH_TYPE_AVLTree_lessi64_greater* v1044);
 
 i8 __ZH_LOP_i8_() {{
   return ((i8)0);
@@ -1899,10 +1805,10 @@ __ZH_TYPE_VecIter_lessi64_greater __ZH_LOP_VecIter_lessi64_greater_i64P(i64* v65
   return (v654);
 };printf("%s", "reached function end without returning anything lop VecIter<i64> VecIter<i64> i64P ptr\n"); exit(EXIT_FAILURE);}
 void __ZH_LOP__plus_plus_VecIter_lessi64_greaterR(__ZH_TYPE_VecIter_lessi64_greater* v655){
-  (((&(*v655))->ptr)=((i64*)((((i64)((&(*v655))->ptr)))+(((((i64)1))*(((i64)8)))))));
+  (((&(*v655))->ptr)=((i64*)((((i64)((&(*v655))->ptr)))+(((((i64)1))*((sizeof(i64))))))));
 }
 __ZH_TYPE_VecIter_lessi64_greater __ZH_BOP__plus_VecIter_lessi64_greateri64(__ZH_TYPE_VecIter_lessi64_greater v656, i64 v657) {{
-  (((&(v656))->ptr)=((i64*)((((i64)((&(v656))->ptr)))+((((v657))*(((i64)8)))))));
+  (((&(v656))->ptr)=((i64*)((((i64)((&(v656))->ptr)))+((((v657))*((sizeof(i64))))))));
   return (v656);
 };printf("%s", "reached function end without returning anything op VecIter<i64> + VecIter<i64> slf i64 i\n"); exit(EXIT_FAILURE);}
 bool __ZH_BOP__exclamation_equal_VecIter_lessi64_greaterVecIter_lessi64_greater(__ZH_TYPE_VecIter_lessi64_greater v658, __ZH_TYPE_VecIter_lessi64_greater v659) {{
@@ -1924,7 +1830,7 @@ __ZH_TYPE_VecIterRange_lessi64_greater __ZH_LOP_VecIterRange_lessi64_greater_Vec
   return (v667);
 };printf("%s", "reached function end without returning anything lop VecIterRange<i64> VecIterRange<i64> VecIter<i64> begin VecIter<i64> end\n"); exit(EXIT_FAILURE);}
 i64* __ZH_BOP__dotcall_dotatP_Vec_lessi64_greaterPi64(__ZH_TYPE_Vec_lessi64_greater* v632, i64 v633) {{
-  return ((i64*)((i64*)((((i64)(((v632))->head)))+((((v633))*(((i64)8)))))));
+  return ((i64*)((i64*)((((i64)(((v632))->head)))+((((v633))*((sizeof(i64))))))));
 };printf("%s", "reached function end without returning anything op i64P .call.atP Vec<i64>P slf i64 pos\n"); exit(EXIT_FAILURE);}
 i64* __ZH_BOP__dotcall_dotat_Vec_lessi64_greaterPi64(__ZH_TYPE_Vec_lessi64_greater* v634, i64 v635) {{
   return &(*(__ZH_BOP__dotcall_dotatP_Vec_lessi64_greaterPi64((v634), (v635))));
@@ -1967,12 +1873,12 @@ void __ZH_BOP__dotcall_dotdouble_cap_Vec_lessi64_greaterP(__ZH_TYPE_Vec_lessi64_
   ((v645)=(((v644))->cap));
   if ((((v645))==(((i64)0)))) {
     ((v645)=((i64)1));
-    ((((v644))->head)=((i64*)(alloc(((i64)8)))));
+    ((((v644))->head)=((i64*)(alloc((sizeof(i64))))));
     ((((v644))->cap)=(v645));
   } else {
     i64* v646;
     (__ZH_BOP__asterisk_equal_i64Ri64(&(v645), ((i64)2)));
-    ((v646)=((i64*)(alloc((((v645))*(((i64)8)))))));
+    ((v646)=((i64*)(alloc((((v645))*((sizeof(i64))))))));
     {
         i64 v649;
         i64 v648;
@@ -1981,7 +1887,7 @@ void __ZH_BOP__dotcall_dotdouble_cap_Vec_lessi64_greaterP(__ZH_TYPE_Vec_lessi64_
         ((v648)=(__ZH_BOP__dotcall_dotend_Range_lessi64_greaterP((&(v647)))));
         ((v649)=(__ZH_BOP__dotcall_dotbegin_Range_lessi64_greaterP((&(v647)))));
         while ((((v649))!=((v648)))) {
-          ((*((i64*)((((i64)(v646)))+((((v649))*(((i64)8)))))))=(*__ZH_BOP__dotcall_dotat_Vec_lessi64_greaterPi64((v644), (v649))));
+          ((*((i64*)((((i64)(v646)))+((((v649))*((sizeof(i64))))))))=(*__ZH_BOP__dotcall_dotat_Vec_lessi64_greaterPi64((v644), (v649))));
           (*__ZH_LOP__plus_plus_i64R(&(v649)));
         }
       }
@@ -2219,14 +2125,14 @@ i64* __ZH_LOP_partition_i64Pi64P(i64* v729, i64* v730) {{
   i64* v733;
   i64* v732;
   i64* v731;
-  (((v731)=((i64*)((((i64)(v730)))-(((((i64)1))*(((i64)8))))))), ((v732)=(v729)), ((v733)=(v729)));
+  (((v731)=((i64*)((((i64)(v730)))-(((((i64)1))*((sizeof(i64)))))))), ((v732)=(v729)), ((v733)=(v729)));
   ((v733)=(v729));
   while (((((i64)(v733)))!=(((i64)(v731))))) {
     if ((((*(v733)))<((*(v731))))) {
       (__ZH_LOP_swap_i64Pi64P((v732), (v733)));
-      ((v732)=((i64*)((((i64)(v732)))+(((((i64)1))*(((i64)8)))))));
+      ((v732)=((i64*)((((i64)(v732)))+(((((i64)1))*((sizeof(i64))))))));
     }
-    ((v733)=((i64*)((((i64)(v733)))+(((((i64)1))*(((i64)8)))))));
+    ((v733)=((i64*)((((i64)(v733)))+(((((i64)1))*((sizeof(i64))))))));
   }
   (__ZH_LOP_swap_i64Pi64P((v732), (v731)));
   return (v732);
@@ -2235,12 +2141,12 @@ void __ZH_LOP_qsort_i64Pi64P(i64* v734, i64* v735){
   i64 v737;
   i64 v736;
   ((v736)=((((i64)(v735)))-(((i64)(v734)))));
-  ((v737)=((i64)8));
+  ((v737)=(sizeof(i64)));
   if ((((v736))>((v737)))) {
     i64* v738;
     ((v738)=(__ZH_LOP_partition_i64Pi64P((v734), (v735))));
     (__ZH_LOP_qsort_i64Pi64P((v734), (v738)));
-    ((v738)=((i64*)((((i64)(v738)))+(((((i64)1))*(((i64)8)))))));
+    ((v738)=((i64*)((((i64)(v738)))+(((((i64)1))*((sizeof(i64))))))));
     (__ZH_LOP_qsort_i64Pi64P((v738), (v735)));
   }
 }
@@ -2329,10 +2235,10 @@ __ZH_TYPE_VecIter_lesschar_greater __ZH_LOP_VecIter_lesschar_greater_charP(char*
   return (v791);
 };printf("%s", "reached function end without returning anything lop VecIter<char> VecIter<char> charP ptr\n"); exit(EXIT_FAILURE);}
 void __ZH_LOP__plus_plus_VecIter_lesschar_greaterR(__ZH_TYPE_VecIter_lesschar_greater* v792){
-  (((&(*v792))->ptr)=((char*)((((i64)((&(*v792))->ptr)))+(((((i64)1))*(((i64)1)))))));
+  (((&(*v792))->ptr)=((char*)((((i64)((&(*v792))->ptr)))+(((((i64)1))*((sizeof(char))))))));
 }
 __ZH_TYPE_VecIter_lesschar_greater __ZH_BOP__plus_VecIter_lesschar_greateri64(__ZH_TYPE_VecIter_lesschar_greater v793, i64 v794) {{
-  (((&(v793))->ptr)=((char*)((((i64)((&(v793))->ptr)))+((((v794))*(((i64)1)))))));
+  (((&(v793))->ptr)=((char*)((((i64)((&(v793))->ptr)))+((((v794))*((sizeof(char))))))));
   return (v793);
 };printf("%s", "reached function end without returning anything op VecIter<char> + VecIter<char> slf i64 i\n"); exit(EXIT_FAILURE);}
 bool __ZH_BOP__exclamation_equal_VecIter_lesschar_greaterVecIter_lesschar_greater(__ZH_TYPE_VecIter_lesschar_greater v795, __ZH_TYPE_VecIter_lesschar_greater v796) {{
@@ -2354,7 +2260,7 @@ __ZH_TYPE_VecIterRange_lesschar_greater __ZH_LOP_VecIterRange_lesschar_greater_V
   return (v804);
 };printf("%s", "reached function end without returning anything lop VecIterRange<char> VecIterRange<char> VecIter<char> begin VecIter<char> end\n"); exit(EXIT_FAILURE);}
 char* __ZH_BOP__dotcall_dotatP_Vec_lesschar_greaterPi64(__ZH_TYPE_Vec_lesschar_greater* v769, i64 v770) {{
-  return ((char*)((char*)((((i64)(((v769))->head)))+((((v770))*(((i64)1)))))));
+  return ((char*)((char*)((((i64)(((v769))->head)))+((((v770))*((sizeof(char))))))));
 };printf("%s", "reached function end without returning anything op charP .call.atP Vec<char>P slf i64 pos\n"); exit(EXIT_FAILURE);}
 char* __ZH_BOP__dotcall_dotat_Vec_lesschar_greaterPi64(__ZH_TYPE_Vec_lesschar_greater* v771, i64 v772) {{
   return &(*(__ZH_BOP__dotcall_dotatP_Vec_lesschar_greaterPi64((v771), (v772))));
@@ -2397,12 +2303,12 @@ void __ZH_BOP__dotcall_dotdouble_cap_Vec_lesschar_greaterP(__ZH_TYPE_Vec_lesscha
   ((v782)=(((v781))->cap));
   if ((((v782))==(((i64)0)))) {
     ((v782)=((i64)1));
-    ((((v781))->head)=((char*)(alloc(((i64)1)))));
+    ((((v781))->head)=((char*)(alloc((sizeof(char))))));
     ((((v781))->cap)=(v782));
   } else {
     char* v783;
     (__ZH_BOP__asterisk_equal_i64Ri64(&(v782), ((i64)2)));
-    ((v783)=((char*)(alloc((((v782))*(((i64)1)))))));
+    ((v783)=((char*)(alloc((((v782))*((sizeof(char))))))));
     {
         i64 v786;
         i64 v785;
@@ -2411,7 +2317,7 @@ void __ZH_BOP__dotcall_dotdouble_cap_Vec_lesschar_greaterP(__ZH_TYPE_Vec_lesscha
         ((v785)=(__ZH_BOP__dotcall_dotend_Range_lessi64_greaterP((&(v784)))));
         ((v786)=(__ZH_BOP__dotcall_dotbegin_Range_lessi64_greaterP((&(v784)))));
         while ((((v786))!=((v785)))) {
-          ((*((char*)((((i64)(v783)))+((((v786))*(((i64)1)))))))=(*__ZH_BOP__dotcall_dotat_Vec_lesschar_greaterPi64((v781), (v786))));
+          ((*((char*)((((i64)(v783)))+((((v786))*((sizeof(char))))))))=(*__ZH_BOP__dotcall_dotat_Vec_lesschar_greaterPi64((v781), (v786))));
           (*__ZH_LOP__plus_plus_i64R(&(v786)));
         }
       }
@@ -2649,14 +2555,14 @@ char* __ZH_LOP_partition_charPcharP(char* v866, char* v867) {{
   char* v870;
   char* v869;
   char* v868;
-  (((v868)=((char*)((((i64)(v867)))-(((((i64)1))*(((i64)1))))))), ((v869)=(v866)), ((v870)=(v866)));
+  (((v868)=((char*)((((i64)(v867)))-(((((i64)1))*((sizeof(char)))))))), ((v869)=(v866)), ((v870)=(v866)));
   ((v870)=(v866));
   while (((((i64)(v870)))!=(((i64)(v868))))) {
     if ((((*(v870)))<((*(v868))))) {
       (__ZH_LOP_swap_charPcharP((v869), (v870)));
-      ((v869)=((char*)((((i64)(v869)))+(((((i64)1))*(((i64)1)))))));
+      ((v869)=((char*)((((i64)(v869)))+(((((i64)1))*((sizeof(char))))))));
     }
-    ((v870)=((char*)((((i64)(v870)))+(((((i64)1))*(((i64)1)))))));
+    ((v870)=((char*)((((i64)(v870)))+(((((i64)1))*((sizeof(char))))))));
   }
   (__ZH_LOP_swap_charPcharP((v869), (v868)));
   return (v869);
@@ -2665,12 +2571,12 @@ void __ZH_LOP_qsort_charPcharP(char* v871, char* v872){
   i64 v874;
   i64 v873;
   ((v873)=((((i64)(v872)))-(((i64)(v871)))));
-  ((v874)=((i64)1));
+  ((v874)=(sizeof(char)));
   if ((((v873))>((v874)))) {
     char* v875;
     ((v875)=(__ZH_LOP_partition_charPcharP((v871), (v872))));
     (__ZH_LOP_qsort_charPcharP((v871), (v875)));
-    ((v875)=((char*)((((i64)(v875)))+(((((i64)1))*(((i64)1)))))));
+    ((v875)=((char*)((((i64)(v875)))+(((((i64)1))*((sizeof(char))))))));
     (__ZH_LOP_qsort_charPcharP((v875), (v872)));
   }
 }
@@ -3027,767 +2933,272 @@ i64 __ZH_BOP__dotcall_dotcall_RngP(__ZH_TYPE_Rng* v989) {{
   return (((((v989))->seed))%(((i64)32767)));
 };printf("%s", "reached function end without returning anything op i64 .call.call RngP slf\n"); exit(EXIT_FAILURE);}
 int main(int argc, char *argv[]) {
-  __ZH_TYPE_Map_lessi64_spacei64_greater v1212;
-  __ZH_TYPE_Vec_lessi64_greater v992;
-  __ZH_TYPE_Vec_lessi64_greater v991;
-  ((v992)=(__ZH_LOP_Vec_lessi64_greater_Vec_lessi64_greaterR(&(*__ZH_BOP__comma_comma_Vec_lessi64_greaterRi64(&(*__ZH_BOP__comma_comma_Vec_lessi64_greaterRi64(&(*__ZH_BOP__comma_comma_Vec_lessi64_greaterRi64(&(*__ZH_BOP__comma_comma_Vec_lessi64_greaterRi64(&(*__ZH_BOP__comma_comma_Vec_lessi64_greaterRi64(&(*__ZH_BOP__comma_comma_Vec_lessi64_greaterRi64(&(*__ZH_BOP__comma_comma_Vec_lessi64_greaterRi64(&(*(((v991)=(__ZH_BOP__comma_comma_i64i64(((i64)1), ((i64)5)))), (&(v991)))), ((i64)6))), ((i64)1))), ((i64)4))), ((i64)6))), ((i64)87))), ((i64)1))), ((i64)1))))));
-  ((v1212)=(__ZH_LOP_Map_lessi64_spacei64_greater_()));
+  __ZH_TYPE_Rng v1048;
+  __ZH_TYPE_AVLTree_lessi64_greater v1047;
+  ((v1047)=(__ZH_LOP_AVLTree_lessi64_greater_()));
+  ((v1048)=(__ZH_LOP_Rng_()));
   {
-      __ZH_TYPE_VecIter_lessi64_greater v1215;
-      __ZH_TYPE_VecIter_lessi64_greater v1214;
-      __ZH_TYPE_VecIterRange_lessi64_greater v1213;
-      ((v1213)=(__ZH_LOP_iter_Vec_lessi64_greaterR(&(v992))));
-      ((v1214)=(__ZH_BOP__dotcall_dotend_VecIterRange_lessi64_greaterP((&(v1213)))));
-      ((v1215)=(__ZH_BOP__dotcall_dotbegin_VecIterRange_lessi64_greaterP((&(v1213)))));
-      while ((__ZH_BOP__exclamation_equal_VecIter_lessi64_greaterVecIter_lessi64_greater((v1215), (v1214)))) {
-        (*__ZH_LOP__plus_plus_i64R(&(*__ZH_BOP__dotcall_dotsub_Map_lessi64_spacei64_greaterPi64R((&(v1212)), &(*__ZH_LOP__asterisk_VecIter_lessi64_greater((v1215)))))));
-        (__ZH_LOP__plus_plus_VecIter_lessi64_greaterR(&(v1215)));
+      i64 v1051;
+      i64 v1050;
+      __ZH_TYPE_Range_lessi64_greater v1049;
+      ((v1049)=(__ZH_LOP_iter_Range_lessi64_greater((__ZH_BOP__dot_dot_i64i64(((i64)0), ((i64)10))))));
+      ((v1050)=(__ZH_BOP__dotcall_dotend_Range_lessi64_greaterP((&(v1049)))));
+      ((v1051)=(__ZH_BOP__dotcall_dotbegin_Range_lessi64_greaterP((&(v1049)))));
+      while ((((v1051))!=((v1050)))) {
+        __ZH_TYPE_Vec_lessi64_greater v1054;
+        i64 v1052;
+        ((v1052)=(__ZH_BOP__dotcall_dotcall_RngP((&(v1048)))));
+        ((printf("%s", ((str)"inserting "))), (printf("%lld", (v1052))), (printf("%s\n", ((str)":"))));
+        (__ZH_BOP__plus_equal_AVLTree_lessi64_greaterRi64(&(v1047), (v1052)));
+        (__ZH_LOP_out_Vec_lessi64_greaterR(&(*(((v1054)=(__ZH_BOP__dotcall_dotcall_AVLTree_lessi64_greaterP((&(v1047))))), (&(v1054))))));
+        (__ZH_BOP__dotcall_dotshow_AVLTree_lessi64_greaterP((&(v1047))));
+        (printf("%s\n", ((str)"")));
+        (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v1054))));
+        (*__ZH_LOP__plus_plus_i64R(&(v1051)));
       }
     }
-  (__ZH_LOP__less_Out((__ZH_ROP__less_Map_lessi64_spacei64_greaterR(&(v1212)))));
-  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v991))));
-  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v992))));
 }
-__ZH_TYPE_MapNode_lessi64_spacei64_greater __ZH_LOP_MapNode_lessi64_spacei64_greater_i64Ri64R(i64* v993, i64* v994) {{
-  __ZH_TYPE_MapNode_lessi64_spacei64_greater v995;
-  (((&(v995))->key)=(*v993));
-  (((&(v995))->val)=(*v994));
-  return (v995);
-};printf("%s", "reached function end without returning anything lop MapNode<i64 i64> MapNode<i64 i64> i64R key i64R val\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_MapNode_lessi64_spacei64_greater __ZH_LOP_MapNode_lessi64_spacei64_greater_() {{
-  i64 v999;
-  i64 v997;
-  return (__ZH_LOP_MapNode_lessi64_spacei64_greater_i64Ri64R(&(*(((v997)=(__ZH_LOP_i64_())), (&(v997)))), &(*(((v999)=(__ZH_LOP_i64_())), (&(v999))))));
-};printf("%s", "reached function end without returning anything lop MapNode<i64 i64> MapNode<i64 i64>\n"); exit(EXIT_FAILURE);}
-bool __ZH_BOP__less_MapNode_lessi64_spacei64_greaterRMapNode_lessi64_spacei64_greaterR(__ZH_TYPE_MapNode_lessi64_spacei64_greater* v1000, __ZH_TYPE_MapNode_lessi64_spacei64_greater* v1001) {{
-  return ((((&(*v1000))->key))<(((&(*v1001))->key)));
-};printf("%s", "reached function end without returning anything op bool < MapNode<i64 i64>R a MapNode<i64 i64>R b\n"); exit(EXIT_FAILURE);}
-void __ZH_LOP_put_MapNode_lessi64_spacei64_greaterR(__ZH_TYPE_MapNode_lessi64_spacei64_greater* v1002){
-  (printf("%s", ((str)"{")));
-  (printf("%lld", ((&(*v1002))->key)));
-  (printf("%s", ((str)": ")));
-  (printf("%lld", ((&(*v1002))->val)));
-  (printf("%s", ((str)"}")));
-}
-void __ZH_LOP_out_MapNode_lessi64_spacei64_greaterR(__ZH_TYPE_MapNode_lessi64_spacei64_greater* v1003){
-  (__ZH_LOP_put_MapNode_lessi64_spacei64_greaterR(&(*v1003)));
-  (printf("%s\n", ((str)"")));
-}
-__ZH_TYPE_Out __ZH_ROP__less_MapNode_lessi64_spacei64_greaterR(__ZH_TYPE_MapNode_lessi64_spacei64_greater* v1004) {{
-  (__ZH_LOP_out_MapNode_lessi64_spacei64_greaterR(&(*v1004)));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything rop Out < MapNode<i64 i64>R i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_LOP__less_MapNode_lessi64_spacei64_greaterR(__ZH_TYPE_MapNode_lessi64_spacei64_greater* v1005) {{
-  ((__ZH_LOP_put_MapNode_lessi64_spacei64_greaterR(&(*v1005))), (printf("%s", ((str)" "))));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything lop Out < MapNode<i64 i64>R i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_BOP__less_OutMapNode_lessi64_spacei64_greaterR(__ZH_TYPE_Out v1006, __ZH_TYPE_MapNode_lessi64_spacei64_greater* v1007) {{
-  ((__ZH_LOP_put_MapNode_lessi64_spacei64_greaterR(&(*v1007))), (printf("%s", ((str)" "))));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything op Out < Out o MapNode<i64 i64>R i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater __ZH_LOP_AVLNode_lessMapNode_lessi64_spacei64_greater_greater_MapNode_lessi64_spacei64_greaterR(__ZH_TYPE_MapNode_lessi64_spacei64_greater* v1008) {{
-  __ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater v1009;
-  (((&(v1009))->h)=((i64)1));
-  (((&(v1009))->val)=(*v1008));
-  (((&(v1009))->lhs)=((__ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater*)((i64)0)));
-  (((&(v1009))->rhs)=((__ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater*)((i64)0)));
-  (((&(v1009))->par)=((__ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater*)((i64)0)));
-  return (v1009);
-};printf("%s", "reached function end without returning anything lop AVLNode<MapNode<i64 i64>> AVLNode<MapNode<i64 i64>> MapNode<i64 i64>R val\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater* __ZH_LOP_new_AVLNode_lessMapNode_lessi64_spacei64_greater_greater(__ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater v1010) {{
-  __ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater* v1011;
-  ((v1011)=((__ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater*)(alloc(((i64)48)))));
-  ((*(v1011))=(v1010));
-  return (v1011);
-};printf("%s", "reached function end without returning anything lop AVLNode<MapNode<i64 i64>>P new AVLNode<MapNode<i64 i64>> slf\n"); exit(EXIT_FAILURE);}
-bool __ZH_LOP__exclamation_exclamation_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater* v1012) {{
-  return ((((i64)(v1012)))!=(((i64)0)));
-};printf("%s", "reached function end without returning anything lop bool !! AVLNode<MapNode<i64 i64>>P ptr\n"); exit(EXIT_FAILURE);}
-bool __ZH_LOP__exclamation_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater* v1013) {{
-  return ((((i64)(v1013)))==(((i64)0)));
-};printf("%s", "reached function end without returning anything lop bool ! AVLNode<MapNode<i64 i64>>P ptr\n"); exit(EXIT_FAILURE);}
-i64 __ZH_BOP__dotcall_doth_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater* v1014) {{
-  if ((__ZH_LOP__exclamation_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP((v1014)))) {
+__ZH_TYPE_AVLNode_lessi64_greater __ZH_LOP_AVLNode_lessi64_greater_i64R(i64* v990) {{
+  __ZH_TYPE_AVLNode_lessi64_greater v991;
+  (((&(v991))->h)=((i64)1));
+  (((&(v991))->val)=(*v990));
+  (((&(v991))->lhs)=((__ZH_TYPE_AVLNode_lessi64_greater*)((i64)0)));
+  (((&(v991))->rhs)=((__ZH_TYPE_AVLNode_lessi64_greater*)((i64)0)));
+  (((&(v991))->par)=((__ZH_TYPE_AVLNode_lessi64_greater*)((i64)0)));
+  return (v991);
+};printf("%s", "reached function end without returning anything lop AVLNode<i64> AVLNode<i64> i64R val\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_AVLNode_lessi64_greater* __ZH_LOP_new_AVLNode_lessi64_greater(__ZH_TYPE_AVLNode_lessi64_greater v992) {{
+  __ZH_TYPE_AVLNode_lessi64_greater* v993;
+  ((v993)=((__ZH_TYPE_AVLNode_lessi64_greater*)(alloc((sizeof(__ZH_TYPE_AVLNode_lessi64_greater))))));
+  ((*(v993))=(v992));
+  return (v993);
+};printf("%s", "reached function end without returning anything lop AVLNode<i64>P new AVLNode<i64> slf\n"); exit(EXIT_FAILURE);}
+bool __ZH_LOP__exclamation_exclamation_AVLNode_lessi64_greaterP(__ZH_TYPE_AVLNode_lessi64_greater* v994) {{
+  return ((((i64)(v994)))!=(((i64)0)));
+};printf("%s", "reached function end without returning anything lop bool !! AVLNode<i64>P ptr\n"); exit(EXIT_FAILURE);}
+bool __ZH_LOP__exclamation_AVLNode_lessi64_greaterP(__ZH_TYPE_AVLNode_lessi64_greater* v995) {{
+  return ((((i64)(v995)))==(((i64)0)));
+};printf("%s", "reached function end without returning anything lop bool ! AVLNode<i64>P ptr\n"); exit(EXIT_FAILURE);}
+i64 __ZH_BOP__dotcall_doth_AVLNode_lessi64_greaterP(__ZH_TYPE_AVLNode_lessi64_greater* v996) {{
+  if ((__ZH_LOP__exclamation_AVLNode_lessi64_greaterP((v996)))) {
     return ((i64)0);
   } else {
-    return (((v1014))->h);
+    return (((v996))->h);
   }
-};printf("%s", "reached function end without returning anything op i64 .call.h AVLNode<MapNode<i64 i64>>P slf\n"); exit(EXIT_FAILURE);}
-i64 __ZH_BOP__dotcall_dotbf_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater* v1015) {{
-  return (((__ZH_BOP__dotcall_doth_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP((((v1015))->rhs))))-((__ZH_BOP__dotcall_doth_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP((((v1015))->lhs)))));
-};printf("%s", "reached function end without returning anything op i64 .call.bf AVLNode<MapNode<i64 i64>>P slf\n"); exit(EXIT_FAILURE);}
-void __ZH_BOP__dotcall_dotfix_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater* v1016){
-  ((((v1016))->h)=((((i64)1))+((__ZH_LOP_max_i64i64((__ZH_BOP__dotcall_doth_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP((((v1016))->rhs))), (__ZH_BOP__dotcall_doth_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP((((v1016))->lhs))))))));
+};printf("%s", "reached function end without returning anything op i64 .call.h AVLNode<i64>P slf\n"); exit(EXIT_FAILURE);}
+i64 __ZH_BOP__dotcall_dotbf_AVLNode_lessi64_greaterP(__ZH_TYPE_AVLNode_lessi64_greater* v997) {{
+  return (((__ZH_BOP__dotcall_doth_AVLNode_lessi64_greaterP((((v997))->rhs))))-((__ZH_BOP__dotcall_doth_AVLNode_lessi64_greaterP((((v997))->lhs)))));
+};printf("%s", "reached function end without returning anything op i64 .call.bf AVLNode<i64>P slf\n"); exit(EXIT_FAILURE);}
+void __ZH_BOP__dotcall_dotfix_AVLNode_lessi64_greaterP(__ZH_TYPE_AVLNode_lessi64_greater* v998){
+  ((((v998))->h)=((((i64)1))+((__ZH_LOP_max_i64i64((__ZH_BOP__dotcall_doth_AVLNode_lessi64_greaterP((((v998))->rhs))), (__ZH_BOP__dotcall_doth_AVLNode_lessi64_greaterP((((v998))->lhs))))))));
 }
-__ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater* __ZH_BOP__dotcall_dotrrot_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater* v1017) {{
-  __ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater* v1018;
-  ((v1018)=(((v1017))->lhs));
-  ((((v1017))->lhs)=(((v1018))->rhs));
-  ((((v1018))->rhs)=(v1017));
-  if ((__ZH_LOP__exclamation_exclamation_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP((((v1017))->rhs)))) {
-    ((((((v1017))->rhs))->par)=(v1017));
+__ZH_TYPE_AVLNode_lessi64_greater* __ZH_BOP__dotcall_dotrrot_AVLNode_lessi64_greaterP(__ZH_TYPE_AVLNode_lessi64_greater* v999) {{
+  __ZH_TYPE_AVLNode_lessi64_greater* v1000;
+  ((v1000)=(((v999))->lhs));
+  ((((v999))->lhs)=(((v1000))->rhs));
+  ((((v1000))->rhs)=(v999));
+  if ((__ZH_LOP__exclamation_exclamation_AVLNode_lessi64_greaterP((((v999))->rhs)))) {
+    ((((((v999))->rhs))->par)=(v999));
   }
-  if ((__ZH_LOP__exclamation_exclamation_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP((((v1017))->lhs)))) {
-    ((((((v1017))->lhs))->par)=(v1017));
+  if ((__ZH_LOP__exclamation_exclamation_AVLNode_lessi64_greaterP((((v999))->lhs)))) {
+    ((((((v999))->lhs))->par)=(v999));
   }
-  if ((__ZH_LOP__exclamation_exclamation_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP((((v1018))->rhs)))) {
-    ((((((v1018))->rhs))->par)=(v1018));
+  if ((__ZH_LOP__exclamation_exclamation_AVLNode_lessi64_greaterP((((v1000))->rhs)))) {
+    ((((((v1000))->rhs))->par)=(v1000));
   }
-  if ((__ZH_LOP__exclamation_exclamation_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP((((v1018))->lhs)))) {
-    ((((((v1018))->lhs))->par)=(v1018));
+  if ((__ZH_LOP__exclamation_exclamation_AVLNode_lessi64_greaterP((((v1000))->lhs)))) {
+    ((((((v1000))->lhs))->par)=(v1000));
   }
-  ((__ZH_BOP__dotcall_dotfix_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP((v1017))), (__ZH_BOP__dotcall_dotfix_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP((v1018))));
-  return (v1018);
-};printf("%s", "reached function end without returning anything op AVLNode<MapNode<i64 i64>>P .call.rrot AVLNode<MapNode<i64 i64>>P slf\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater* __ZH_BOP__dotcall_dotlrot_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater* v1019) {{
-  __ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater* v1020;
-  ((v1020)=(((v1019))->rhs));
-  ((((v1019))->rhs)=(((v1020))->lhs));
-  ((((v1020))->lhs)=(v1019));
-  if ((__ZH_LOP__exclamation_exclamation_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP((((v1019))->rhs)))) {
-    ((((((v1019))->rhs))->par)=(v1019));
+  ((__ZH_BOP__dotcall_dotfix_AVLNode_lessi64_greaterP((v999))), (__ZH_BOP__dotcall_dotfix_AVLNode_lessi64_greaterP((v1000))));
+  return (v1000);
+};printf("%s", "reached function end without returning anything op AVLNode<i64>P .call.rrot AVLNode<i64>P slf\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_AVLNode_lessi64_greater* __ZH_BOP__dotcall_dotlrot_AVLNode_lessi64_greaterP(__ZH_TYPE_AVLNode_lessi64_greater* v1001) {{
+  __ZH_TYPE_AVLNode_lessi64_greater* v1002;
+  ((v1002)=(((v1001))->rhs));
+  ((((v1001))->rhs)=(((v1002))->lhs));
+  ((((v1002))->lhs)=(v1001));
+  if ((__ZH_LOP__exclamation_exclamation_AVLNode_lessi64_greaterP((((v1001))->rhs)))) {
+    ((((((v1001))->rhs))->par)=(v1001));
   }
-  if ((__ZH_LOP__exclamation_exclamation_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP((((v1019))->lhs)))) {
-    ((((((v1019))->lhs))->par)=(v1019));
+  if ((__ZH_LOP__exclamation_exclamation_AVLNode_lessi64_greaterP((((v1001))->lhs)))) {
+    ((((((v1001))->lhs))->par)=(v1001));
   }
-  if ((__ZH_LOP__exclamation_exclamation_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP((((v1020))->rhs)))) {
-    ((((((v1020))->rhs))->par)=(v1020));
+  if ((__ZH_LOP__exclamation_exclamation_AVLNode_lessi64_greaterP((((v1002))->rhs)))) {
+    ((((((v1002))->rhs))->par)=(v1002));
   }
-  if ((__ZH_LOP__exclamation_exclamation_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP((((v1020))->lhs)))) {
-    ((((((v1020))->lhs))->par)=(v1020));
+  if ((__ZH_LOP__exclamation_exclamation_AVLNode_lessi64_greaterP((((v1002))->lhs)))) {
+    ((((((v1002))->lhs))->par)=(v1002));
   }
-  ((__ZH_BOP__dotcall_dotfix_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP((v1019))), (__ZH_BOP__dotcall_dotfix_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP((v1020))));
-  return (v1020);
-};printf("%s", "reached function end without returning anything op AVLNode<MapNode<i64 i64>>P .call.lrot AVLNode<MapNode<i64 i64>>P slf\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater* __ZH_BOP__dotcall_dotbalance_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater* v1021) {{
-  (__ZH_BOP__dotcall_dotfix_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP((v1021)));
-  if ((((__ZH_BOP__dotcall_dotbf_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP((v1021))))==(((i64)2)))) {
-    if ((((__ZH_BOP__dotcall_dotbf_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP((((v1021))->rhs))))<(((i64)0)))) {
-      ((((v1021))->rhs)=(__ZH_BOP__dotcall_dotrrot_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP((((v1021))->rhs))));
+  ((__ZH_BOP__dotcall_dotfix_AVLNode_lessi64_greaterP((v1001))), (__ZH_BOP__dotcall_dotfix_AVLNode_lessi64_greaterP((v1002))));
+  return (v1002);
+};printf("%s", "reached function end without returning anything op AVLNode<i64>P .call.lrot AVLNode<i64>P slf\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_AVLNode_lessi64_greater* __ZH_BOP__dotcall_dotbalance_AVLNode_lessi64_greaterP(__ZH_TYPE_AVLNode_lessi64_greater* v1003) {{
+  (__ZH_BOP__dotcall_dotfix_AVLNode_lessi64_greaterP((v1003)));
+  if ((((__ZH_BOP__dotcall_dotbf_AVLNode_lessi64_greaterP((v1003))))==(((i64)2)))) {
+    if ((((__ZH_BOP__dotcall_dotbf_AVLNode_lessi64_greaterP((((v1003))->rhs))))<(((i64)0)))) {
+      ((((v1003))->rhs)=(__ZH_BOP__dotcall_dotrrot_AVLNode_lessi64_greaterP((((v1003))->rhs))));
     }
-    return (__ZH_BOP__dotcall_dotlrot_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP((v1021)));
+    return (__ZH_BOP__dotcall_dotlrot_AVLNode_lessi64_greaterP((v1003)));
   }
- else if ((((__ZH_BOP__dotcall_dotbf_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP((v1021))))==((-(((i64)2)))))) {
-    if ((((__ZH_BOP__dotcall_dotbf_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP((((v1021))->lhs))))>(((i64)0)))) {
-      ((((v1021))->lhs)=(__ZH_BOP__dotcall_dotlrot_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP((((v1021))->lhs))));
+ else if ((((__ZH_BOP__dotcall_dotbf_AVLNode_lessi64_greaterP((v1003))))==((-(((i64)2)))))) {
+    if ((((__ZH_BOP__dotcall_dotbf_AVLNode_lessi64_greaterP((((v1003))->lhs))))>(((i64)0)))) {
+      ((((v1003))->lhs)=(__ZH_BOP__dotcall_dotlrot_AVLNode_lessi64_greaterP((((v1003))->lhs))));
     }
-    return (__ZH_BOP__dotcall_dotrrot_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP((v1021)));
+    return (__ZH_BOP__dotcall_dotrrot_AVLNode_lessi64_greaterP((v1003)));
   }
-  return (v1021);
-};printf("%s", "reached function end without returning anything op AVLNode<MapNode<i64 i64>>P .call.balance AVLNode<MapNode<i64 i64>>P slf\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater* __ZH_BOP__dotcall_dotinsert_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterPMapNode_lessi64_spacei64_greaterR(__ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater* v1022, __ZH_TYPE_MapNode_lessi64_spacei64_greater* v1023) {{
-  if ((__ZH_LOP__exclamation_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP((v1022)))) {
-    return (__ZH_LOP_new_AVLNode_lessMapNode_lessi64_spacei64_greater_greater((__ZH_LOP_AVLNode_lessMapNode_lessi64_spacei64_greater_greater_MapNode_lessi64_spacei64_greaterR(&(*v1023)))));
+  return (v1003);
+};printf("%s", "reached function end without returning anything op AVLNode<i64>P .call.balance AVLNode<i64>P slf\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_AVLNode_lessi64_greater* __ZH_BOP__dotcall_dotinsert_AVLNode_lessi64_greaterPi64R(__ZH_TYPE_AVLNode_lessi64_greater* v1004, i64* v1005) {{
+  if ((__ZH_LOP__exclamation_AVLNode_lessi64_greaterP((v1004)))) {
+    return (__ZH_LOP_new_AVLNode_lessi64_greater((__ZH_LOP_AVLNode_lessi64_greater_i64R(&(*v1005)))));
   }
- else if ((__ZH_BOP__less_MapNode_lessi64_spacei64_greaterRMapNode_lessi64_spacei64_greaterR(&(*v1023), &(((v1022))->val)))) {
-    __ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater* v1024;
-    ((v1024)=(__ZH_BOP__dotcall_dotinsert_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterPMapNode_lessi64_spacei64_greaterR((((v1022))->lhs), &(*v1023))));
-    ((((v1022))->lhs)=(v1024));
-    ((((v1024))->par)=(v1022));
+ else if ((((*v1005))<((((v1004))->val)))) {
+    __ZH_TYPE_AVLNode_lessi64_greater* v1006;
+    ((v1006)=(__ZH_BOP__dotcall_dotinsert_AVLNode_lessi64_greaterPi64R((((v1004))->lhs), &(*v1005))));
+    ((((v1004))->lhs)=(v1006));
+    ((((v1006))->par)=(v1004));
   }
- else if ((__ZH_BOP__less_MapNode_lessi64_spacei64_greaterRMapNode_lessi64_spacei64_greaterR(&(((v1022))->val), &(*v1023)))) {
-    __ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater* v1025;
-    ((v1025)=(__ZH_BOP__dotcall_dotinsert_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterPMapNode_lessi64_spacei64_greaterR((((v1022))->rhs), &(*v1023))));
-    ((((v1022))->rhs)=(v1025));
-    ((((v1025))->par)=(v1022));
+ else if ((((((v1004))->val))<((*v1005)))) {
+    __ZH_TYPE_AVLNode_lessi64_greater* v1007;
+    ((v1007)=(__ZH_BOP__dotcall_dotinsert_AVLNode_lessi64_greaterPi64R((((v1004))->rhs), &(*v1005))));
+    ((((v1004))->rhs)=(v1007));
+    ((((v1007))->par)=(v1004));
   }
-  ((v1022)=(__ZH_BOP__dotcall_dotbalance_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP((v1022))));
-  ((((v1022))->par)=((__ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater*)((i64)0)));
-  return (v1022);
-};printf("%s", "reached function end without returning anything op AVLNode<MapNode<i64 i64>>P .call.insert AVLNode<MapNode<i64 i64>>P slf MapNode<i64 i64>R val\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater* __ZH_BOP__dotcall_dotsub_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterPMapNode_lessi64_spacei64_greaterR(__ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater* v1026, __ZH_TYPE_MapNode_lessi64_spacei64_greater* v1027) {{
-  __ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater* v1028;
-  if ((__ZH_LOP__exclamation_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP((v1026)))) {
-    return ((__ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater*)((i64)0));
+  ((v1004)=(__ZH_BOP__dotcall_dotbalance_AVLNode_lessi64_greaterP((v1004))));
+  ((((v1004))->par)=((__ZH_TYPE_AVLNode_lessi64_greater*)((i64)0)));
+  return (v1004);
+};printf("%s", "reached function end without returning anything op AVLNode<i64>P .call.insert AVLNode<i64>P slf i64R val\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_AVLNode_lessi64_greater* __ZH_BOP__dotcall_dotsub_AVLNode_lessi64_greaterPi64R(__ZH_TYPE_AVLNode_lessi64_greater* v1008, i64* v1009) {{
+  __ZH_TYPE_AVLNode_lessi64_greater* v1010;
+  if ((__ZH_LOP__exclamation_AVLNode_lessi64_greaterP((v1008)))) {
+    return ((__ZH_TYPE_AVLNode_lessi64_greater*)((i64)0));
   }
-  ((v1028)=((__ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater*)((i64)0)));
-  if ((__ZH_BOP__less_MapNode_lessi64_spacei64_greaterRMapNode_lessi64_spacei64_greaterR(&(*v1027), &(((v1026))->val)))) {
-    ((v1028)=(__ZH_BOP__dotcall_dotsub_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterPMapNode_lessi64_spacei64_greaterR((((v1026))->lhs), &(*v1027))));
+  ((v1010)=((__ZH_TYPE_AVLNode_lessi64_greater*)((i64)0)));
+  if ((((*v1009))<((((v1008))->val)))) {
+    ((v1010)=(__ZH_BOP__dotcall_dotsub_AVLNode_lessi64_greaterPi64R((((v1008))->lhs), &(*v1009))));
   }
- else if ((__ZH_BOP__less_MapNode_lessi64_spacei64_greaterRMapNode_lessi64_spacei64_greaterR(&(((v1026))->val), &(*v1027)))) {
-    ((v1028)=(__ZH_BOP__dotcall_dotsub_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterPMapNode_lessi64_spacei64_greaterR((((v1026))->rhs), &(*v1027))));
+ else if ((((((v1008))->val))<((*v1009)))) {
+    ((v1010)=(__ZH_BOP__dotcall_dotsub_AVLNode_lessi64_greaterPi64R((((v1008))->rhs), &(*v1009))));
   } else {
-    return (v1026);
+    return (v1008);
   }
-  return (v1028);
-};printf("%s", "reached function end without returning anything op AVLNode<MapNode<i64 i64>>P .call.sub AVLNode<MapNode<i64 i64>>P slf MapNode<i64 i64>R val\n"); exit(EXIT_FAILURE);}
-void __ZH_BOP__dotcall_dotshow_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterPStrR(__ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater* v1029, __ZH_TYPE_Str* v1030){
-  if ((__ZH_LOP__exclamation_exclamation_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP((v1029)))) {
-    __ZH_TYPE_Str v1032;
-    __ZH_TYPE_Str v1031;
-    ((__ZH_LOP_out_MapNode_lessi64_spacei64_greaterR(&(((v1029))->val))), (__ZH_LOP_put_StrR(&(*v1030))), (printf("%s", ((str)"|--"))));
-    (((v1031)=(__ZH_LOP_Str_StrR(&(*v1030)))), (__ZH_BOP__plus_equal_StrRstr(&(v1031), ((str)"|  "))));
-    (__ZH_BOP__dotcall_dotshow_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterPStrR((((v1029))->lhs), &(v1031)));
-    ((__ZH_LOP_put_StrR(&(*v1030))), (printf("%s", ((str)"'--"))));
-    (((v1032)=(__ZH_LOP_Str_StrR(&(*v1030)))), (__ZH_BOP__plus_equal_StrRstr(&(v1032), ((str)"   "))));
-    (__ZH_BOP__dotcall_dotshow_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterPStrR((((v1029))->rhs), &(v1032)));
-    (__ZH_BOP__dotcall_dotdtor_StrP((&(v1031))));
-    (__ZH_BOP__dotcall_dotdtor_StrP((&(v1032))));
+  return (v1010);
+};printf("%s", "reached function end without returning anything op AVLNode<i64>P .call.sub AVLNode<i64>P slf i64R val\n"); exit(EXIT_FAILURE);}
+void __ZH_BOP__dotcall_dotshow_AVLNode_lessi64_greaterPStrR(__ZH_TYPE_AVLNode_lessi64_greater* v1011, __ZH_TYPE_Str* v1012){
+  if ((__ZH_LOP__exclamation_exclamation_AVLNode_lessi64_greaterP((v1011)))) {
+    __ZH_TYPE_Str v1014;
+    __ZH_TYPE_Str v1013;
+    ((printf("%lld\n", (((v1011))->val))), (__ZH_LOP_put_StrR(&(*v1012))), (printf("%s", ((str)"|--"))));
+    (((v1013)=(__ZH_LOP_Str_StrR(&(*v1012)))), (__ZH_BOP__plus_equal_StrRstr(&(v1013), ((str)"|  "))));
+    (__ZH_BOP__dotcall_dotshow_AVLNode_lessi64_greaterPStrR((((v1011))->lhs), &(v1013)));
+    ((__ZH_LOP_put_StrR(&(*v1012))), (printf("%s", ((str)"'--"))));
+    (((v1014)=(__ZH_LOP_Str_StrR(&(*v1012)))), (__ZH_BOP__plus_equal_StrRstr(&(v1014), ((str)"   "))));
+    (__ZH_BOP__dotcall_dotshow_AVLNode_lessi64_greaterPStrR((((v1011))->rhs), &(v1014)));
+    (__ZH_BOP__dotcall_dotdtor_StrP((&(v1013))));
+    (__ZH_BOP__dotcall_dotdtor_StrP((&(v1014))));
   } else {
     (__ZH_LOP__less_Out((__ZH_ROP__less_str(((str)"null")))));
   }
 }
-__ZH_TYPE_AVLIter_lessMapNode_lessi64_spacei64_greater_greater __ZH_LOP_AVLIter_lessMapNode_lessi64_spacei64_greater_greater_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater* v1034) {{
-  __ZH_TYPE_AVLIter_lessMapNode_lessi64_spacei64_greater_greater v1035;
-  (((&(v1035))->next)=(v1034));
-  return (v1035);
-};printf("%s", "reached function end without returning anything lop AVLIter<MapNode<i64 i64>> AVLIter<MapNode<i64 i64>> AVLNode<MapNode<i64 i64>>P root\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_MapNode_lessi64_spacei64_greater* __ZH_LOP__asterisk_AVLIter_lessMapNode_lessi64_spacei64_greater_greater(__ZH_TYPE_AVLIter_lessMapNode_lessi64_spacei64_greater_greater v1036) {{
-  return &((((&(v1036))->next))->val);
-};printf("%s", "reached function end without returning anything lop MapNode<i64 i64>R * AVLIter<MapNode<i64 i64>> it\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater* __ZH_LOP__plus_plus_AVLIter_lessMapNode_lessi64_spacei64_greater_greaterR(__ZH_TYPE_AVLIter_lessMapNode_lessi64_spacei64_greater_greater* v1037) {{
-  __ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater* v1038;
-  ((v1038)=((&(*v1037))->next));
-  if ((__ZH_LOP__exclamation_exclamation_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP(((((&(*v1037))->next))->rhs)))) {
-    (((&(*v1037))->next)=((((&(*v1037))->next))->rhs));
-    while ((__ZH_LOP__exclamation_exclamation_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP(((((&(*v1037))->next))->lhs)))) {
-      (((&(*v1037))->next)=((((&(*v1037))->next))->lhs));
+__ZH_TYPE_AVLIter_lessi64_greater __ZH_LOP_AVLIter_lessi64_greater_AVLNode_lessi64_greaterP(__ZH_TYPE_AVLNode_lessi64_greater* v1016) {{
+  __ZH_TYPE_AVLIter_lessi64_greater v1017;
+  (((&(v1017))->next)=(v1016));
+  return (v1017);
+};printf("%s", "reached function end without returning anything lop AVLIter<i64> AVLIter<i64> AVLNode<i64>P root\n"); exit(EXIT_FAILURE);}
+i64* __ZH_LOP__asterisk_AVLIter_lessi64_greater(__ZH_TYPE_AVLIter_lessi64_greater v1018) {{
+  return &((((&(v1018))->next))->val);
+};printf("%s", "reached function end without returning anything lop i64R * AVLIter<i64> it\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_AVLNode_lessi64_greater* __ZH_LOP__plus_plus_AVLIter_lessi64_greaterR(__ZH_TYPE_AVLIter_lessi64_greater* v1019) {{
+  __ZH_TYPE_AVLNode_lessi64_greater* v1020;
+  ((v1020)=((&(*v1019))->next));
+  if ((__ZH_LOP__exclamation_exclamation_AVLNode_lessi64_greaterP(((((&(*v1019))->next))->rhs)))) {
+    (((&(*v1019))->next)=((((&(*v1019))->next))->rhs));
+    while ((__ZH_LOP__exclamation_exclamation_AVLNode_lessi64_greaterP(((((&(*v1019))->next))->lhs)))) {
+      (((&(*v1019))->next)=((((&(*v1019))->next))->lhs));
     }
-    return (v1038);
+    return (v1020);
   }
   while (((bool)1)) {
-    if ((__ZH_LOP__exclamation_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP(((((&(*v1037))->next))->par)))) {
-      (((&(*v1037))->next)=((__ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater*)((i64)0)));
-      return (v1038);
+    if ((__ZH_LOP__exclamation_AVLNode_lessi64_greaterP(((((&(*v1019))->next))->par)))) {
+      (((&(*v1019))->next)=((__ZH_TYPE_AVLNode_lessi64_greater*)((i64)0)));
+      return (v1020);
     }
-    if (((((i64)((((((&(*v1037))->next))->par))->lhs)))==(((i64)((&(*v1037))->next))))) {
-      (((&(*v1037))->next)=((((&(*v1037))->next))->par));
-      return (v1038);
+    if (((((i64)((((((&(*v1019))->next))->par))->lhs)))==(((i64)((&(*v1019))->next))))) {
+      (((&(*v1019))->next)=((((&(*v1019))->next))->par));
+      return (v1020);
     }
-    (((&(*v1037))->next)=((((&(*v1037))->next))->par));
+    (((&(*v1019))->next)=((((&(*v1019))->next))->par));
   }
-};printf("%s", "reached function end without returning anything lop AVLNode<MapNode<i64 i64>>P ++ AVLIter<MapNode<i64 i64>>R slf\n"); exit(EXIT_FAILURE);}
-bool __ZH_BOP__exclamation_equal_AVLIter_lessMapNode_lessi64_spacei64_greater_greaterAVLIter_lessMapNode_lessi64_spacei64_greater_greater(__ZH_TYPE_AVLIter_lessMapNode_lessi64_spacei64_greater_greater v1039, __ZH_TYPE_AVLIter_lessMapNode_lessi64_spacei64_greater_greater v1040) {{
-  return ((((i64)((&(v1039))->next)))!=(((i64)((&(v1040))->next))));
-};printf("%s", "reached function end without returning anything op bool != AVLIter<MapNode<i64 i64>> a AVLIter<MapNode<i64 i64>> b\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_AVLIter_lessMapNode_lessi64_spacei64_greater_greater __ZH_BOP__dotcall_dotbegin_AVLIterRange_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_AVLIterRange_lessMapNode_lessi64_spacei64_greater_greater* v1044) {{
-  return (((v1044))->begin);
-};printf("%s", "reached function end without returning anything op AVLIter<MapNode<i64 i64>> .call.begin AVLIterRange<MapNode<i64 i64>>P slf\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_AVLIter_lessMapNode_lessi64_spacei64_greater_greater __ZH_BOP__dotcall_dotend_AVLIterRange_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_AVLIterRange_lessMapNode_lessi64_spacei64_greater_greater* v1045) {{
-  return (((v1045))->end);
-};printf("%s", "reached function end without returning anything op AVLIter<MapNode<i64 i64>> .call.end AVLIterRange<MapNode<i64 i64>>P slf\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_AVLIterRange_lessMapNode_lessi64_spacei64_greater_greater __ZH_LOP_AVLIterRange_lessMapNode_lessi64_spacei64_greater_greater_AVLIter_lessMapNode_lessi64_spacei64_greater_greaterAVLIter_lessMapNode_lessi64_spacei64_greater_greater(__ZH_TYPE_AVLIter_lessMapNode_lessi64_spacei64_greater_greater v1046, __ZH_TYPE_AVLIter_lessMapNode_lessi64_spacei64_greater_greater v1047) {{
-  __ZH_TYPE_AVLIterRange_lessMapNode_lessi64_spacei64_greater_greater v1048;
-  (((&(v1048))->begin)=(v1046));
-  (((&(v1048))->end)=(v1047));
-  return (v1048);
-};printf("%s", "reached function end without returning anything lop AVLIterRange<MapNode<i64 i64>> AVLIterRange<MapNode<i64 i64>> AVLIter<MapNode<i64 i64>> begin AVLIter<MapNode<i64 i64>> end\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_VecIter_lessMapNode_lessi64_spacei64_greater_greater __ZH_LOP_VecIter_lessMapNode_lessi64_spacei64_greater_greater_MapNode_lessi64_spacei64_greaterP(__ZH_TYPE_MapNode_lessi64_spacei64_greater* v1078) {{
-  __ZH_TYPE_VecIter_lessMapNode_lessi64_spacei64_greater_greater v1079;
-  (((&(v1079))->ptr)=(v1078));
-  return (v1079);
-};printf("%s", "reached function end without returning anything lop VecIter<MapNode<i64 i64>> VecIter<MapNode<i64 i64>> MapNode<i64 i64>P ptr\n"); exit(EXIT_FAILURE);}
-void __ZH_LOP__plus_plus_VecIter_lessMapNode_lessi64_spacei64_greater_greaterR(__ZH_TYPE_VecIter_lessMapNode_lessi64_spacei64_greater_greater* v1080){
-  (((&(*v1080))->ptr)=((__ZH_TYPE_MapNode_lessi64_spacei64_greater*)((((i64)((&(*v1080))->ptr)))+(((((i64)1))*(((i64)16)))))));
+};printf("%s", "reached function end without returning anything lop AVLNode<i64>P ++ AVLIter<i64>R slf\n"); exit(EXIT_FAILURE);}
+bool __ZH_BOP__exclamation_equal_AVLIter_lessi64_greaterAVLIter_lessi64_greater(__ZH_TYPE_AVLIter_lessi64_greater v1021, __ZH_TYPE_AVLIter_lessi64_greater v1022) {{
+  return ((((i64)((&(v1021))->next)))!=(((i64)((&(v1022))->next))));
+};printf("%s", "reached function end without returning anything op bool != AVLIter<i64> a AVLIter<i64> b\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_AVLIter_lessi64_greater __ZH_BOP__dotcall_dotbegin_AVLIterRange_lessi64_greaterP(__ZH_TYPE_AVLIterRange_lessi64_greater* v1026) {{
+  return (((v1026))->begin);
+};printf("%s", "reached function end without returning anything op AVLIter<i64> .call.begin AVLIterRange<i64>P slf\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_AVLIter_lessi64_greater __ZH_BOP__dotcall_dotend_AVLIterRange_lessi64_greaterP(__ZH_TYPE_AVLIterRange_lessi64_greater* v1027) {{
+  return (((v1027))->end);
+};printf("%s", "reached function end without returning anything op AVLIter<i64> .call.end AVLIterRange<i64>P slf\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_AVLIterRange_lessi64_greater __ZH_LOP_AVLIterRange_lessi64_greater_AVLIter_lessi64_greaterAVLIter_lessi64_greater(__ZH_TYPE_AVLIter_lessi64_greater v1028, __ZH_TYPE_AVLIter_lessi64_greater v1029) {{
+  __ZH_TYPE_AVLIterRange_lessi64_greater v1030;
+  (((&(v1030))->begin)=(v1028));
+  (((&(v1030))->end)=(v1029));
+  return (v1030);
+};printf("%s", "reached function end without returning anything lop AVLIterRange<i64> AVLIterRange<i64> AVLIter<i64> begin AVLIter<i64> end\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_AVLTree_lessi64_greater __ZH_LOP_AVLTree_lessi64_greater_() {{
+  __ZH_TYPE_AVLTree_lessi64_greater v1015;
+  (((&(v1015))->root)=((__ZH_TYPE_AVLNode_lessi64_greater*)((i64)0)));
+  return (v1015);
+};printf("%s", "reached function end without returning anything lop AVLTree<i64> AVLTree<i64>\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_AVLIter_lessi64_greater __ZH_BOP__dotcall_dotbegin_AVLTree_lessi64_greaterP(__ZH_TYPE_AVLTree_lessi64_greater* v1023) {{
+  __ZH_TYPE_AVLIter_lessi64_greater v1024;
+  ((v1024)=(__ZH_LOP_AVLIter_lessi64_greater_AVLNode_lessi64_greaterP((((v1023))->root))));
+  if ((__ZH_LOP__exclamation_AVLNode_lessi64_greaterP(((&(v1024))->next)))) {
+    return (v1024);
+  }
+  while ((__ZH_LOP__exclamation_exclamation_AVLNode_lessi64_greaterP(((((&(v1024))->next))->lhs)))) {
+    (((&(v1024))->next)=((((&(v1024))->next))->lhs));
+  }
+  return (v1024);
+};printf("%s", "reached function end without returning anything op AVLIter<i64> .call.begin AVLTree<i64>P slf\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_AVLIter_lessi64_greater __ZH_BOP__dotcall_dotend_AVLTree_lessi64_greaterP(__ZH_TYPE_AVLTree_lessi64_greater* v1025) {{
+  return (__ZH_LOP_AVLIter_lessi64_greater_AVLNode_lessi64_greaterP(((__ZH_TYPE_AVLNode_lessi64_greater*)((i64)0))));
+};printf("%s", "reached function end without returning anything op AVLIter<i64> .call.end AVLTree<i64>P slf\n"); exit(EXIT_FAILURE);}
+__ZH_TYPE_AVLIterRange_lessi64_greater __ZH_LOP_iter_AVLTree_lessi64_greaterR(__ZH_TYPE_AVLTree_lessi64_greater* v1031) {{
+  __ZH_TYPE_AVLIterRange_lessi64_greater v1032;
+  (((&(v1032))->begin)=(__ZH_BOP__dotcall_dotbegin_AVLTree_lessi64_greaterP((&(*v1031)))));
+  (((&(v1032))->end)=(__ZH_BOP__dotcall_dotend_AVLTree_lessi64_greaterP((&(*v1031)))));
+  return (v1032);
+};printf("%s", "reached function end without returning anything lop AVLIterRange<i64> iter AVLTree<i64>R slf\n"); exit(EXIT_FAILURE);}
+void __ZH_BOP__dotcall_dotinsert_AVLTree_lessi64_greaterPi64(__ZH_TYPE_AVLTree_lessi64_greater* v1033, i64 v1034){
+  ((((v1033))->root)=(__ZH_BOP__dotcall_dotinsert_AVLNode_lessi64_greaterPi64R((((v1033))->root), &(v1034))));
 }
-__ZH_TYPE_VecIter_lessMapNode_lessi64_spacei64_greater_greater __ZH_BOP__plus_VecIter_lessMapNode_lessi64_spacei64_greater_greateri64(__ZH_TYPE_VecIter_lessMapNode_lessi64_spacei64_greater_greater v1081, i64 v1082) {{
-  (((&(v1081))->ptr)=((__ZH_TYPE_MapNode_lessi64_spacei64_greater*)((((i64)((&(v1081))->ptr)))+((((v1082))*(((i64)16)))))));
-  return (v1081);
-};printf("%s", "reached function end without returning anything op VecIter<MapNode<i64 i64>> + VecIter<MapNode<i64 i64>> slf i64 i\n"); exit(EXIT_FAILURE);}
-bool __ZH_BOP__exclamation_equal_VecIter_lessMapNode_lessi64_spacei64_greater_greaterVecIter_lessMapNode_lessi64_spacei64_greater_greater(__ZH_TYPE_VecIter_lessMapNode_lessi64_spacei64_greater_greater v1083, __ZH_TYPE_VecIter_lessMapNode_lessi64_spacei64_greater_greater v1084) {{
-  return ((((i64)((&(v1083))->ptr)))!=(((i64)((&(v1084))->ptr))));
-};printf("%s", "reached function end without returning anything op bool != VecIter<MapNode<i64 i64>> a VecIter<MapNode<i64 i64>> b\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_MapNode_lessi64_spacei64_greater* __ZH_LOP__asterisk_VecIter_lessMapNode_lessi64_spacei64_greater_greater(__ZH_TYPE_VecIter_lessMapNode_lessi64_spacei64_greater_greater v1085) {{
-  return &(*((&(v1085))->ptr));
-};printf("%s", "reached function end without returning anything lop MapNode<i64 i64>R * VecIter<MapNode<i64 i64>> slf\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_VecIter_lessMapNode_lessi64_spacei64_greater_greater __ZH_BOP__dotcall_dotbegin_VecIterRange_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_VecIterRange_lessMapNode_lessi64_spacei64_greater_greater* v1088) {{
-  return (((v1088))->begin);
-};printf("%s", "reached function end without returning anything op VecIter<MapNode<i64 i64>> .call.begin VecIterRange<MapNode<i64 i64>>P slf\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_VecIter_lessMapNode_lessi64_spacei64_greater_greater __ZH_BOP__dotcall_dotend_VecIterRange_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_VecIterRange_lessMapNode_lessi64_spacei64_greater_greater* v1089) {{
-  return (((v1089))->end);
-};printf("%s", "reached function end without returning anything op VecIter<MapNode<i64 i64>> .call.end VecIterRange<MapNode<i64 i64>>P slf\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_VecIterRange_lessMapNode_lessi64_spacei64_greater_greater __ZH_LOP_VecIterRange_lessMapNode_lessi64_spacei64_greater_greater_VecIter_lessMapNode_lessi64_spacei64_greater_greaterVecIter_lessMapNode_lessi64_spacei64_greater_greater(__ZH_TYPE_VecIter_lessMapNode_lessi64_spacei64_greater_greater v1090, __ZH_TYPE_VecIter_lessMapNode_lessi64_spacei64_greater_greater v1091) {{
-  __ZH_TYPE_VecIterRange_lessMapNode_lessi64_spacei64_greater_greater v1092;
-  (((&(v1092))->begin)=(v1090));
-  (((&(v1092))->end)=(v1091));
-  return (v1092);
-};printf("%s", "reached function end without returning anything lop VecIterRange<MapNode<i64 i64>> VecIterRange<MapNode<i64 i64>> VecIter<MapNode<i64 i64>> begin VecIter<MapNode<i64 i64>> end\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_MapNode_lessi64_spacei64_greater* __ZH_BOP__dotcall_dotatP_Vec_lessMapNode_lessi64_spacei64_greater_greaterPi64(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1057, i64 v1058) {{
-  return ((__ZH_TYPE_MapNode_lessi64_spacei64_greater*)((__ZH_TYPE_MapNode_lessi64_spacei64_greater*)((((i64)(((v1057))->head)))+((((v1058))*(((i64)16)))))));
-};printf("%s", "reached function end without returning anything op MapNode<i64 i64>P .call.atP Vec<MapNode<i64 i64>>P slf i64 pos\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_MapNode_lessi64_spacei64_greater* __ZH_BOP__dotcall_dotat_Vec_lessMapNode_lessi64_spacei64_greater_greaterPi64(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1059, i64 v1060) {{
-  return &(*(__ZH_BOP__dotcall_dotatP_Vec_lessMapNode_lessi64_spacei64_greater_greaterPi64((v1059), (v1060))));
-};printf("%s", "reached function end without returning anything op MapNode<i64 i64>R .call.at Vec<MapNode<i64 i64>>P slf i64 pos\n"); exit(EXIT_FAILURE);}
-void __ZH_BOP__dotcall_dotprint_Vec_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1061){
-  (printf("%s", ((str)"[")));
+i64* __ZH_BOP__dotcall_dotsub_AVLTree_lessi64_greaterPi64(__ZH_TYPE_AVLTree_lessi64_greater* v1035, i64 v1036) {{
+  return &((&(*(__ZH_BOP__dotcall_dotsub_AVLNode_lessi64_greaterPi64R((((v1035))->root), &(v1036)))))->val);
+};printf("%s", "reached function end without returning anything op i64R .call.sub AVLTree<i64>P slf i64 val\n"); exit(EXIT_FAILURE);}
+void __ZH_BOP__plus_equal_AVLTree_lessi64_greaterRi64(__ZH_TYPE_AVLTree_lessi64_greater* v1037, i64 v1038){
+  (((&(*v1037))->root)=(__ZH_BOP__dotcall_dotinsert_AVLNode_lessi64_greaterPi64R(((&(*v1037))->root), &(v1038))));
+}
+__ZH_TYPE_Vec_lessi64_greater __ZH_BOP__dotcall_dotcall_AVLTree_lessi64_greaterP(__ZH_TYPE_AVLTree_lessi64_greater* v1039) {{
+  __ZH_TYPE_Vec_lessi64_greater v1040;
+  ((v1040)=(__ZH_LOP_Vec_lessi64_greater_()));
   {
-      i64 v1064;
-      i64 v1063;
-      __ZH_TYPE_Range_lessi64_greater v1062;
-      ((v1062)=(__ZH_LOP_iter_Range_lessi64_greater((__ZH_BOP__dot_dot_i64i64(((i64)0), (((v1061))->size))))));
-      ((v1063)=(__ZH_BOP__dotcall_dotend_Range_lessi64_greaterP((&(v1062)))));
-      ((v1064)=(__ZH_BOP__dotcall_dotbegin_Range_lessi64_greaterP((&(v1062)))));
-      while ((((v1064))!=((v1063)))) {
-        if ((!((!((v1064)))))) {
-          (printf("%s", ((str)" ")));
-        }
-        (__ZH_LOP_put_MapNode_lessi64_spacei64_greaterR(&(*(__ZH_BOP__dotcall_dotatP_Vec_lessMapNode_lessi64_spacei64_greater_greaterPi64((v1061), (v1064))))));
-        (*__ZH_LOP__plus_plus_i64R(&(v1064)));
+      __ZH_TYPE_AVLIter_lessi64_greater v1043;
+      __ZH_TYPE_AVLIter_lessi64_greater v1042;
+      __ZH_TYPE_AVLIterRange_lessi64_greater v1041;
+      ((v1041)=(__ZH_LOP_iter_AVLTree_lessi64_greaterR(&(*(v1039)))));
+      ((v1042)=(__ZH_BOP__dotcall_dotend_AVLIterRange_lessi64_greaterP((&(v1041)))));
+      ((v1043)=(__ZH_BOP__dotcall_dotbegin_AVLIterRange_lessi64_greaterP((&(v1041)))));
+      while ((__ZH_BOP__exclamation_equal_AVLIter_lessi64_greaterAVLIter_lessi64_greater((v1043), (v1042)))) {
+        (__ZH_BOP__plus_equal_Vec_lessi64_greaterRi64(&(v1040), (*__ZH_LOP__asterisk_AVLIter_lessi64_greater((v1043)))));
+        (__ZH_LOP__plus_plus_AVLIter_lessi64_greaterR(&(v1043)));
       }
     }
-  (printf("%s", ((str)"]")));
+  return (v1040);
+  (__ZH_BOP__dotcall_dotdtor_Vec_lessi64_greaterP((&(v1040))));
+};printf("%s", "reached function end without returning anything op Vec<i64> .call.call AVLTree<i64>P slf\n"); exit(EXIT_FAILURE);}
+void __ZH_BOP__dotcall_dotshow_AVLTree_lessi64_greaterP(__ZH_TYPE_AVLTree_lessi64_greater* v1044){
+  __ZH_TYPE_Str v1046;
+  (__ZH_BOP__dotcall_dotshow_AVLNode_lessi64_greaterPStrR((((v1044))->root), &(*(((v1046)=(__ZH_LOP_Str_())), (&(v1046))))));
+  (__ZH_BOP__dotcall_dotdtor_StrP((&(v1046))));
 }
-void __ZH_BOP__dotcall_dotprintln_Vec_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1065){
-  {
-      i64 v1068;
-      i64 v1067;
-      __ZH_TYPE_Range_lessi64_greater v1066;
-      ((v1066)=(__ZH_LOP_iter_Range_lessi64_greater((__ZH_BOP__dot_dot_i64i64(((i64)0), (((v1065))->size))))));
-      ((v1067)=(__ZH_BOP__dotcall_dotend_Range_lessi64_greaterP((&(v1066)))));
-      ((v1068)=(__ZH_BOP__dotcall_dotbegin_Range_lessi64_greaterP((&(v1066)))));
-      while ((((v1068))!=((v1067)))) {
-        (__ZH_LOP_out_MapNode_lessi64_spacei64_greaterR(&(*(__ZH_BOP__dotcall_dotatP_Vec_lessMapNode_lessi64_spacei64_greater_greaterPi64((v1065), (v1068))))));
-        (*__ZH_LOP__plus_plus_i64R(&(v1068)));
-      }
-    }
-}
-void __ZH_BOP__dotcall_dotdouble_cap_Vec_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1069){
-  i64 v1070;
-  ((v1070)=(((v1069))->cap));
-  if ((((v1070))==(((i64)0)))) {
-    ((v1070)=((i64)1));
-    ((((v1069))->head)=((__ZH_TYPE_MapNode_lessi64_spacei64_greater*)(alloc(((i64)16)))));
-    ((((v1069))->cap)=(v1070));
-  } else {
-    __ZH_TYPE_MapNode_lessi64_spacei64_greater* v1071;
-    (__ZH_BOP__asterisk_equal_i64Ri64(&(v1070), ((i64)2)));
-    ((v1071)=((__ZH_TYPE_MapNode_lessi64_spacei64_greater*)(alloc((((v1070))*(((i64)16)))))));
-    {
-        i64 v1074;
-        i64 v1073;
-        __ZH_TYPE_Range_lessi64_greater v1072;
-        ((v1072)=(__ZH_LOP_iter_Range_lessi64_greater((__ZH_BOP__dot_dot_i64i64(((i64)0), (((v1069))->size))))));
-        ((v1073)=(__ZH_BOP__dotcall_dotend_Range_lessi64_greaterP((&(v1072)))));
-        ((v1074)=(__ZH_BOP__dotcall_dotbegin_Range_lessi64_greaterP((&(v1072)))));
-        while ((((v1074))!=((v1073)))) {
-          ((*((__ZH_TYPE_MapNode_lessi64_spacei64_greater*)((((i64)(v1071)))+((((v1074))*(((i64)16)))))))=(*__ZH_BOP__dotcall_dotat_Vec_lessMapNode_lessi64_spacei64_greater_greaterPi64((v1069), (v1074))));
-          (*__ZH_LOP__plus_plus_i64R(&(v1074)));
-        }
-      }
-    (free((void*) ((i64)(((v1069))->head))));
-    ((((v1069))->head)=(v1071));
-  }
-  ((((v1069))->cap)=(v1070));
-}
-void __ZH_BOP__dotcall_dotpush_back_Vec_lessMapNode_lessi64_spacei64_greater_greaterPMapNode_lessi64_spacei64_greater(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1075, __ZH_TYPE_MapNode_lessi64_spacei64_greater v1076){
-  if ((((((v1075))->size))==((((v1075))->cap)))) {
-    (__ZH_BOP__dotcall_dotdouble_cap_Vec_lessMapNode_lessi64_spacei64_greater_greaterP((v1075)));
-  }
-  ((*__ZH_BOP__dotcall_dotat_Vec_lessMapNode_lessi64_spacei64_greater_greaterPi64((v1075), (((v1075))->size)))=(v1076));
-  (*__ZH_LOP__plus_plus_i64R(&(((v1075))->size)));
-}
-void __ZH_BOP__dotcall_dotpop_back_Vec_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1077){
-  (*__ZH_LOP__minus_minus_i64R(&(((v1077))->size)));
-}
-__ZH_TYPE_VecIter_lessMapNode_lessi64_spacei64_greater_greater __ZH_BOP__dotcall_dotbegin_Vec_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1086) {{
-  return (__ZH_LOP_VecIter_lessMapNode_lessi64_spacei64_greater_greater_MapNode_lessi64_spacei64_greaterP((((v1086))->head)));
-};printf("%s", "reached function end without returning anything op VecIter<MapNode<i64 i64>> .call.begin Vec<MapNode<i64 i64>>P slf\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_VecIter_lessMapNode_lessi64_spacei64_greater_greater __ZH_BOP__dotcall_dotend_Vec_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1087) {{
-  return (__ZH_LOP_VecIter_lessMapNode_lessi64_spacei64_greater_greater_MapNode_lessi64_spacei64_greaterP((__ZH_BOP__dotcall_dotatP_Vec_lessMapNode_lessi64_spacei64_greater_greaterPi64((v1087), (((v1087))->size)))));
-};printf("%s", "reached function end without returning anything op VecIter<MapNode<i64 i64>> .call.end Vec<MapNode<i64 i64>>P slf\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_VecIterRange_lessMapNode_lessi64_spacei64_greater_greater __ZH_LOP_iter_Vec_lessMapNode_lessi64_spacei64_greater_greaterR(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1093) {{
-  __ZH_TYPE_VecIterRange_lessMapNode_lessi64_spacei64_greater_greater v1094;
-  (((&(v1094))->begin)=(__ZH_BOP__dotcall_dotbegin_Vec_lessMapNode_lessi64_spacei64_greater_greaterP((&(*v1093)))));
-  (((&(v1094))->end)=(__ZH_BOP__dotcall_dotend_Vec_lessMapNode_lessi64_spacei64_greater_greaterP((&(*v1093)))));
-  return (v1094);
-};printf("%s", "reached function end without returning anything lop VecIterRange<MapNode<i64 i64>> iter Vec<MapNode<i64 i64>>R slf\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_MapNode_lessi64_spacei64_greater* __ZH_BOP__dotcall_dotfront_Vec_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1095) {{
-  return &(*(((v1095))->head));
-};printf("%s", "reached function end without returning anything op MapNode<i64 i64>R .call.front Vec<MapNode<i64 i64>>P slf\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_MapNode_lessi64_spacei64_greater* __ZH_BOP__dotcall_dotback_Vec_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1096) {{
-  return &(*(__ZH_BOP__dotcall_dotatP_Vec_lessMapNode_lessi64_spacei64_greater_greaterPi64((v1096), (((((v1096))->size))-(((i64)1))))));
-};printf("%s", "reached function end without returning anything op MapNode<i64 i64>R .call.back Vec<MapNode<i64 i64>>P slf\n"); exit(EXIT_FAILURE);}
-void __ZH_BOP__dotcall_dotdtor_Vec_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1097){
-  if ((!((!(((i64)(((v1097))->head))))))) {
-    (free((void*) ((i64)(((v1097))->head))));
-    ((((v1097))->size)=((i64)0));
-    ((((v1097))->cap)=((i64)0));
-    ((((v1097))->head)=((__ZH_TYPE_MapNode_lessi64_spacei64_greater*)((i64)0)));
-  }
-}
-__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater __ZH_LOP_Vec_lessMapNode_lessi64_spacei64_greater_greater_i64(i64 v1098) {{
-  __ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater v1099;
-  (((&(v1099))->head)=((__ZH_TYPE_MapNode_lessi64_spacei64_greater*)((i64)0)));
-  (((&(v1099))->size)=((i64)0));
-  (((&(v1099))->cap)=((i64)0));
-  while (((((&(v1099))->cap))<((v1098)))) {
-    (__ZH_BOP__dotcall_dotdouble_cap_Vec_lessMapNode_lessi64_spacei64_greater_greaterP((&(v1099))));
-  }
-  (((&(v1099))->size)=(v1098));
-  (((&(v1099))->cap)=(v1098));
-  {
-      i64 v1102;
-      i64 v1101;
-      __ZH_TYPE_Range_lessi64_greater v1100;
-      ((v1100)=(__ZH_LOP_iter_Range_lessi64_greater((__ZH_BOP__dot_dot_i64i64(((i64)0), ((&(v1099))->size))))));
-      ((v1101)=(__ZH_BOP__dotcall_dotend_Range_lessi64_greaterP((&(v1100)))));
-      ((v1102)=(__ZH_BOP__dotcall_dotbegin_Range_lessi64_greaterP((&(v1100)))));
-      while ((((v1102))!=((v1101)))) {
-        ((*__ZH_BOP__dotcall_dotat_Vec_lessMapNode_lessi64_spacei64_greater_greaterPi64((&(v1099)), (v1102)))=(__ZH_LOP_MapNode_lessi64_spacei64_greater_()));
-        (*__ZH_LOP__plus_plus_i64R(&(v1102)));
-      }
-    }
-  return (v1099);
-  (__ZH_BOP__dotcall_dotdtor_Vec_lessMapNode_lessi64_spacei64_greater_greaterP((&(v1099))));
-};printf("%s", "reached function end without returning anything lop Vec<MapNode<i64 i64>> Vec<MapNode<i64 i64>> i64 size\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater __ZH_LOP_Vec_lessMapNode_lessi64_spacei64_greater_greater_i64MapNode_lessi64_spacei64_greater(i64 v1103, __ZH_TYPE_MapNode_lessi64_spacei64_greater v1104) {{
-  __ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater v1105;
-  ((v1105)=(__ZH_LOP_Vec_lessMapNode_lessi64_spacei64_greater_greater_i64((v1103))));
-  {
-      i64 v1108;
-      i64 v1107;
-      __ZH_TYPE_Range_lessi64_greater v1106;
-      ((v1106)=(__ZH_LOP_iter_Range_lessi64_greater((__ZH_BOP__dot_dot_i64i64(((i64)0), ((&(v1105))->size))))));
-      ((v1107)=(__ZH_BOP__dotcall_dotend_Range_lessi64_greaterP((&(v1106)))));
-      ((v1108)=(__ZH_BOP__dotcall_dotbegin_Range_lessi64_greaterP((&(v1106)))));
-      while ((((v1108))!=((v1107)))) {
-        ((*__ZH_BOP__dotcall_dotat_Vec_lessMapNode_lessi64_spacei64_greater_greaterPi64((&(v1105)), (v1108)))=(v1104));
-        (*__ZH_LOP__plus_plus_i64R(&(v1108)));
-      }
-    }
-  return (v1105);
-  (__ZH_BOP__dotcall_dotdtor_Vec_lessMapNode_lessi64_spacei64_greater_greaterP((&(v1105))));
-};printf("%s", "reached function end without returning anything lop Vec<MapNode<i64 i64>> Vec<MapNode<i64 i64>> i64 size MapNode<i64 i64> default\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater __ZH_LOP_Vec_lessMapNode_lessi64_spacei64_greater_greater_() {{
-  return (__ZH_LOP_Vec_lessMapNode_lessi64_spacei64_greater_greater_i64(((i64)0)));
-};printf("%s", "reached function end without returning anything lop Vec<MapNode<i64 i64>> Vec<MapNode<i64 i64>>\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater __ZH_LOP_Vec_lessMapNode_lessi64_spacei64_greater_greater_Vec_lessMapNode_lessi64_spacei64_greater_greaterR(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1109) {{
-  __ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater v1110;
-  ((v1110)=(__ZH_LOP_Vec_lessMapNode_lessi64_spacei64_greater_greater_i64(((&(*v1109))->size))));
-  {
-      i64 v1113;
-      i64 v1112;
-      __ZH_TYPE_Range_lessi64_greater v1111;
-      ((v1111)=(__ZH_LOP_iter_Range_lessi64_greater((__ZH_BOP__dot_dot_i64i64(((i64)0), ((&(*v1109))->size))))));
-      ((v1112)=(__ZH_BOP__dotcall_dotend_Range_lessi64_greaterP((&(v1111)))));
-      ((v1113)=(__ZH_BOP__dotcall_dotbegin_Range_lessi64_greaterP((&(v1111)))));
-      while ((((v1113))!=((v1112)))) {
-        ((*__ZH_BOP__dotcall_dotat_Vec_lessMapNode_lessi64_spacei64_greater_greaterPi64((&(v1110)), (v1113)))=(*__ZH_BOP__dotcall_dotat_Vec_lessMapNode_lessi64_spacei64_greater_greaterPi64((&(*v1109)), (v1113))));
-        (*__ZH_LOP__plus_plus_i64R(&(v1113)));
-      }
-    }
-  return (v1110);
-  (__ZH_BOP__dotcall_dotdtor_Vec_lessMapNode_lessi64_spacei64_greater_greaterP((&(v1110))));
-};printf("%s", "reached function end without returning anything lop Vec<MapNode<i64 i64>> Vec<MapNode<i64 i64>> Vec<MapNode<i64 i64>>R other\n"); exit(EXIT_FAILURE);}
-void __ZH_BOP__plus_equal_Vec_lessMapNode_lessi64_spacei64_greater_greaterRMapNode_lessi64_spacei64_greater(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1114, __ZH_TYPE_MapNode_lessi64_spacei64_greater v1115){
-  (__ZH_BOP__dotcall_dotpush_back_Vec_lessMapNode_lessi64_spacei64_greater_greaterPMapNode_lessi64_spacei64_greater((&(*v1114)), (v1115)));
-}
-void __ZH_BOP__plus_equal_Vec_lessMapNode_lessi64_spacei64_greater_greaterRVec_lessMapNode_lessi64_spacei64_greater_greaterR(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1116, __ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1117){
-  {
-      __ZH_TYPE_VecIter_lessMapNode_lessi64_spacei64_greater_greater v1120;
-      __ZH_TYPE_VecIter_lessMapNode_lessi64_spacei64_greater_greater v1119;
-      __ZH_TYPE_VecIterRange_lessMapNode_lessi64_spacei64_greater_greater v1118;
-      ((v1118)=(__ZH_LOP_iter_Vec_lessMapNode_lessi64_spacei64_greater_greaterR(&(*v1117))));
-      ((v1119)=(__ZH_BOP__dotcall_dotend_VecIterRange_lessMapNode_lessi64_spacei64_greater_greaterP((&(v1118)))));
-      ((v1120)=(__ZH_BOP__dotcall_dotbegin_VecIterRange_lessMapNode_lessi64_spacei64_greater_greaterP((&(v1118)))));
-      while ((__ZH_BOP__exclamation_equal_VecIter_lessMapNode_lessi64_spacei64_greater_greaterVecIter_lessMapNode_lessi64_spacei64_greater_greater((v1120), (v1119)))) {
-        (__ZH_BOP__dotcall_dotpush_back_Vec_lessMapNode_lessi64_spacei64_greater_greaterPMapNode_lessi64_spacei64_greater((&(*v1116)), (*__ZH_LOP__asterisk_VecIter_lessMapNode_lessi64_spacei64_greater_greater((v1120)))));
-        (__ZH_LOP__plus_plus_VecIter_lessMapNode_lessi64_spacei64_greater_greaterR(&(v1120)));
-      }
-    }
-}
-__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater __ZH_BOP__comma_comma_MapNode_lessi64_spacei64_greaterMapNode_lessi64_spacei64_greater(__ZH_TYPE_MapNode_lessi64_spacei64_greater v1121, __ZH_TYPE_MapNode_lessi64_spacei64_greater v1122) {{
-  __ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater v1123;
-  ((v1123)=(__ZH_LOP_Vec_lessMapNode_lessi64_spacei64_greater_greater_()));
-  (__ZH_BOP__plus_equal_Vec_lessMapNode_lessi64_spacei64_greater_greaterRMapNode_lessi64_spacei64_greater(&(v1123), (v1121)));
-  (__ZH_BOP__plus_equal_Vec_lessMapNode_lessi64_spacei64_greater_greaterRMapNode_lessi64_spacei64_greater(&(v1123), (v1122)));
-  return (v1123);
-  (__ZH_BOP__dotcall_dotdtor_Vec_lessMapNode_lessi64_spacei64_greater_greaterP((&(v1123))));
-};printf("%s", "reached function end without returning anything op Vec<MapNode<i64 i64>> ,, MapNode<i64 i64> a MapNode<i64 i64> b\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* __ZH_BOP__comma_comma_Vec_lessMapNode_lessi64_spacei64_greater_greaterRMapNode_lessi64_spacei64_greater(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1124, __ZH_TYPE_MapNode_lessi64_spacei64_greater v1125) {{
-  (__ZH_BOP__plus_equal_Vec_lessMapNode_lessi64_spacei64_greater_greaterRMapNode_lessi64_spacei64_greater(&(*v1124), (v1125)));
-  return &(*v1124);
-};printf("%s", "reached function end without returning anything op Vec<MapNode<i64 i64>>R ,, Vec<MapNode<i64 i64>>R v MapNode<i64 i64> a\n"); exit(EXIT_FAILURE);}
-void __ZH_LOP_put_Vec_lessMapNode_lessi64_spacei64_greater_greaterR(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1126){
-  (__ZH_BOP__dotcall_dotprint_Vec_lessMapNode_lessi64_spacei64_greater_greaterP((&(*v1126))));
-}
-void __ZH_LOP_out_Vec_lessMapNode_lessi64_spacei64_greater_greaterR(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1127){
-  (__ZH_BOP__dotcall_dotprint_Vec_lessMapNode_lessi64_spacei64_greater_greaterP((&(*v1127))));
-  (printf("%s\n", ((str)"")));
-}
-__ZH_TYPE_Out __ZH_ROP__less_Vec_lessMapNode_lessi64_spacei64_greater_greaterR(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1128) {{
-  (__ZH_LOP_out_Vec_lessMapNode_lessi64_spacei64_greater_greaterR(&(*v1128)));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything rop Out < Vec<MapNode<i64 i64>>R i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_LOP__less_Vec_lessMapNode_lessi64_spacei64_greater_greaterR(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1129) {{
-  ((__ZH_LOP_put_Vec_lessMapNode_lessi64_spacei64_greater_greaterR(&(*v1129))), (printf("%s", ((str)" "))));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything lop Out < Vec<MapNode<i64 i64>>R i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_BOP__less_OutVec_lessMapNode_lessi64_spacei64_greater_greaterR(__ZH_TYPE_Out v1130, __ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1131) {{
-  ((__ZH_LOP_put_Vec_lessMapNode_lessi64_spacei64_greater_greaterR(&(*v1131))), (printf("%s", ((str)" "))));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything op Out < Out o Vec<MapNode<i64 i64>>R i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_MapNode_lessi64_spacei64_greater* __ZH_BOP__dotcall_dotsub_Vec_lessMapNode_lessi64_spacei64_greater_greaterPi64(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1132, i64 v1133) {{
-  if ((((v1133))<(((i64)0)))) {
-    (__ZH_BOP__plus_equal_i64Ri64(&(v1133), (((v1132))->size)));
-  }
-  return &(*__ZH_BOP__dotcall_dotat_Vec_lessMapNode_lessi64_spacei64_greater_greaterPi64((v1132), (v1133)));
-};printf("%s", "reached function end without returning anything op MapNode<i64 i64>R .call.sub Vec<MapNode<i64 i64>>P slf i64 id\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater __ZH_BOP__dotcall_dotsub_Vec_lessMapNode_lessi64_spacei64_greater_greaterPi64i64(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1134, i64 v1135, i64 v1136) {{
-  __ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater v1137;
-  ((v1137)=(__ZH_LOP_Vec_lessMapNode_lessi64_spacei64_greater_greater_i64(((i64)0))));
-  {
-      i64 v1140;
-      i64 v1139;
-      __ZH_TYPE_Range_lessi64_greater v1138;
-      ((v1138)=(__ZH_LOP_iter_Range_lessi64_greater((__ZH_BOP__dot_dot_i64i64((v1135), (v1136))))));
-      ((v1139)=(__ZH_BOP__dotcall_dotend_Range_lessi64_greaterP((&(v1138)))));
-      ((v1140)=(__ZH_BOP__dotcall_dotbegin_Range_lessi64_greaterP((&(v1138)))));
-      while ((((v1140))!=((v1139)))) {
-        (__ZH_BOP__dotcall_dotpush_back_Vec_lessMapNode_lessi64_spacei64_greater_greaterPMapNode_lessi64_spacei64_greater((&(v1137)), (*__ZH_BOP__dotcall_dotat_Vec_lessMapNode_lessi64_spacei64_greater_greaterPi64((v1134), (v1140)))));
-        (*__ZH_LOP__plus_plus_i64R(&(v1140)));
-      }
-    }
-  return (v1137);
-  (__ZH_BOP__dotcall_dotdtor_Vec_lessMapNode_lessi64_spacei64_greater_greaterP((&(v1137))));
-};printf("%s", "reached function end without returning anything op Vec<MapNode<i64 i64>> .call.sub Vec<MapNode<i64 i64>>P slf i64 begin i64 end\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater __ZH_BOP__dotcall_dotsub_Vec_lessMapNode_lessi64_spacei64_greater_greaterPRange_lessi64_greater(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1141, __ZH_TYPE_Range_lessi64_greater v1142) {{
-  i64 v1144;
-  i64 v1143;
-  (((v1143)=((&(v1142))->begin)), ((v1144)=((&(v1142))->end)));
-  if ((((v1143))<(((i64)0)))) {
-    (__ZH_BOP__plus_equal_i64Ri64(&(v1143), (((v1141))->size)));
-  }
-  if ((((v1143))<(((i64)0)))) {
-    ((v1143)=((i64)0));
-  }
-  if ((((v1144))<(((i64)0)))) {
-    (__ZH_BOP__plus_equal_i64Ri64(&(v1144), (((v1141))->size)));
-  }
-  if ((((v1144))>((((v1141))->size)))) {
-    ((v1144)=(((v1141))->size));
-  }
-  return (__ZH_BOP__dotcall_dotsub_Vec_lessMapNode_lessi64_spacei64_greater_greaterPi64i64((v1141), (v1143), (v1144)));
-};printf("%s", "reached function end without returning anything op Vec<MapNode<i64 i64>> .call.sub Vec<MapNode<i64 i64>>P slf Range<i64> r\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater __ZH_BOP__dotcall_dotsub_Vec_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1145) {{
-  return (__ZH_BOP__dotcall_dotsub_Vec_lessMapNode_lessi64_spacei64_greater_greaterPi64i64((v1145), ((i64)0), (((v1145))->size)));
-};printf("%s", "reached function end without returning anything op Vec<MapNode<i64 i64>> .call.sub Vec<MapNode<i64 i64>>P slf\n"); exit(EXIT_FAILURE);}
-bool __ZH_BOP__less_Vec_lessMapNode_lessi64_spacei64_greater_greaterRVec_lessMapNode_lessi64_spacei64_greater_greaterR(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1146, __ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1147) {{
-  {
-      i64 v1150;
-      i64 v1149;
-      __ZH_TYPE_Range_lessi64_greater v1148;
-      ((v1148)=(__ZH_LOP_iter_Range_lessi64_greater((__ZH_BOP__dot_dot_i64i64(((i64)0), (__ZH_LOP_min_i64i64(((&(*v1146))->size), ((&(*v1147))->size))))))));
-      ((v1149)=(__ZH_BOP__dotcall_dotend_Range_lessi64_greaterP((&(v1148)))));
-      ((v1150)=(__ZH_BOP__dotcall_dotbegin_Range_lessi64_greaterP((&(v1148)))));
-      while ((((v1150))!=((v1149)))) {
-        if ((__ZH_BOP__less_MapNode_lessi64_spacei64_greaterRMapNode_lessi64_spacei64_greaterR(&(*__ZH_BOP__dotcall_dotsub_Vec_lessMapNode_lessi64_spacei64_greater_greaterPi64((&(*v1146)), (v1150))), &(*__ZH_BOP__dotcall_dotsub_Vec_lessMapNode_lessi64_spacei64_greater_greaterPi64((&(*v1147)), (v1150)))))) {
-          return ((bool)1);
-        }
- else if ((__ZH_BOP__less_MapNode_lessi64_spacei64_greaterRMapNode_lessi64_spacei64_greaterR(&(*__ZH_BOP__dotcall_dotsub_Vec_lessMapNode_lessi64_spacei64_greater_greaterPi64((&(*v1147)), (v1150))), &(*__ZH_BOP__dotcall_dotsub_Vec_lessMapNode_lessi64_spacei64_greater_greaterPi64((&(*v1146)), (v1150)))))) {
-          return ((bool)0);
-        }
-        (*__ZH_LOP__plus_plus_i64R(&(v1150)));
-      }
-    }
-  if (((((&(*v1146))->size))<(((&(*v1147))->size)))) {
-    return ((bool)1);
-  }
- else if (((((&(*v1146))->size))>(((&(*v1147))->size)))) {
-    return ((bool)0);
-  }
-  return ((bool)0);
-};printf("%s", "reached function end without returning anything op bool < Vec<MapNode<i64 i64>>R a Vec<MapNode<i64 i64>>R b\n"); exit(EXIT_FAILURE);}
-void __ZH_LOP_swap_MapNode_lessi64_spacei64_greaterPMapNode_lessi64_spacei64_greaterP(__ZH_TYPE_MapNode_lessi64_spacei64_greater* v1151, __ZH_TYPE_MapNode_lessi64_spacei64_greater* v1152){
-  __ZH_TYPE_MapNode_lessi64_spacei64_greater v1153;
-  ((v1153)=(*(v1151)));
-  ((*(v1151))=(*(v1152)));
-  ((*(v1152))=(v1153));
-}
-__ZH_TYPE_MapNode_lessi64_spacei64_greater* __ZH_LOP_partition_MapNode_lessi64_spacei64_greaterPMapNode_lessi64_spacei64_greaterP(__ZH_TYPE_MapNode_lessi64_spacei64_greater* v1154, __ZH_TYPE_MapNode_lessi64_spacei64_greater* v1155) {{
-  __ZH_TYPE_MapNode_lessi64_spacei64_greater* v1158;
-  __ZH_TYPE_MapNode_lessi64_spacei64_greater* v1157;
-  __ZH_TYPE_MapNode_lessi64_spacei64_greater* v1156;
-  (((v1156)=((__ZH_TYPE_MapNode_lessi64_spacei64_greater*)((((i64)(v1155)))-(((((i64)1))*(((i64)16))))))), ((v1157)=(v1154)), ((v1158)=(v1154)));
-  ((v1158)=(v1154));
-  while (((((i64)(v1158)))!=(((i64)(v1156))))) {
-    if ((__ZH_BOP__less_MapNode_lessi64_spacei64_greaterRMapNode_lessi64_spacei64_greaterR(&(*(v1158)), &(*(v1156))))) {
-      (__ZH_LOP_swap_MapNode_lessi64_spacei64_greaterPMapNode_lessi64_spacei64_greaterP((v1157), (v1158)));
-      ((v1157)=((__ZH_TYPE_MapNode_lessi64_spacei64_greater*)((((i64)(v1157)))+(((((i64)1))*(((i64)16)))))));
-    }
-    ((v1158)=((__ZH_TYPE_MapNode_lessi64_spacei64_greater*)((((i64)(v1158)))+(((((i64)1))*(((i64)16)))))));
-  }
-  (__ZH_LOP_swap_MapNode_lessi64_spacei64_greaterPMapNode_lessi64_spacei64_greaterP((v1157), (v1156)));
-  return (v1157);
-};printf("%s", "reached function end without returning anything lop MapNode<i64 i64>P partition MapNode<i64 i64>P lo MapNode<i64 i64>P hi\n"); exit(EXIT_FAILURE);}
-void __ZH_LOP_qsort_MapNode_lessi64_spacei64_greaterPMapNode_lessi64_spacei64_greaterP(__ZH_TYPE_MapNode_lessi64_spacei64_greater* v1159, __ZH_TYPE_MapNode_lessi64_spacei64_greater* v1160){
-  i64 v1162;
-  i64 v1161;
-  ((v1161)=((((i64)(v1160)))-(((i64)(v1159)))));
-  ((v1162)=((i64)16));
-  if ((((v1161))>((v1162)))) {
-    __ZH_TYPE_MapNode_lessi64_spacei64_greater* v1163;
-    ((v1163)=(__ZH_LOP_partition_MapNode_lessi64_spacei64_greaterPMapNode_lessi64_spacei64_greaterP((v1159), (v1160))));
-    (__ZH_LOP_qsort_MapNode_lessi64_spacei64_greaterPMapNode_lessi64_spacei64_greaterP((v1159), (v1163)));
-    ((v1163)=((__ZH_TYPE_MapNode_lessi64_spacei64_greater*)((((i64)(v1163)))+(((((i64)1))*(((i64)16)))))));
-    (__ZH_LOP_qsort_MapNode_lessi64_spacei64_greaterPMapNode_lessi64_spacei64_greaterP((v1163), (v1160)));
-  }
-}
-void __ZH_BOP__dotcall_dotsort_Vec_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1164){
-  __ZH_TYPE_VecIter_lessMapNode_lessi64_spacei64_greater_greater v1168;
-  __ZH_TYPE_VecIter_lessMapNode_lessi64_spacei64_greater_greater v1166;
-  (__ZH_LOP_qsort_MapNode_lessi64_spacei64_greaterPMapNode_lessi64_spacei64_greaterP(((&(*(((v1166)=(__ZH_BOP__dotcall_dotbegin_Vec_lessMapNode_lessi64_spacei64_greater_greaterP((v1164)))), (&(v1166)))))->ptr), ((&(*(((v1168)=(__ZH_BOP__dotcall_dotend_Vec_lessMapNode_lessi64_spacei64_greater_greaterP((v1164)))), (&(v1168)))))->ptr)));
-}
-void __ZH_LOP_sort_Vec_lessMapNode_lessi64_spacei64_greater_greaterR(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1169){
-  (__ZH_BOP__dotcall_dotsort_Vec_lessMapNode_lessi64_spacei64_greater_greaterP((&(*v1169))));
-}
-__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater __ZH_BOP__dotcall_dotmap_Vec_lessMapNode_lessi64_spacei64_greater_greaterPF_lessMapNode_lessi64_spacei64_greater_spaceMapNode_lessi64_spacei64_greaterR_greater(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1170, __ZH_TYPE_MapNode_lessi64_spacei64_greater(*v1171)(__ZH_TYPE_MapNode_lessi64_spacei64_greater*)) {{
-  __ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater v1172;
-  ((v1172)=(__ZH_LOP_Vec_lessMapNode_lessi64_spacei64_greater_greater_i64((((v1170))->size))));
-  {
-      i64 v1175;
-      i64 v1174;
-      __ZH_TYPE_Range_lessi64_greater v1173;
-      ((v1173)=(__ZH_LOP_iter_Range_lessi64_greater((__ZH_BOP__dot_dot_i64i64(((i64)0), (((v1170))->size))))));
-      ((v1174)=(__ZH_BOP__dotcall_dotend_Range_lessi64_greaterP((&(v1173)))));
-      ((v1175)=(__ZH_BOP__dotcall_dotbegin_Range_lessi64_greaterP((&(v1173)))));
-      while ((((v1175))!=((v1174)))) {
-        ((*__ZH_BOP__dotcall_dotsub_Vec_lessMapNode_lessi64_spacei64_greater_greaterPi64((&(v1172)), (v1175)))=((*(v1171))(&(*__ZH_BOP__dotcall_dotsub_Vec_lessMapNode_lessi64_spacei64_greater_greaterPi64((v1170), (v1175))))));
-        (*__ZH_LOP__plus_plus_i64R(&(v1175)));
-      }
-    }
-  return (v1172);
-  (__ZH_BOP__dotcall_dotdtor_Vec_lessMapNode_lessi64_spacei64_greater_greaterP((&(v1172))));
-};printf("%s", "reached function end without returning anything op Vec<MapNode<i64 i64>> .call.map Vec<MapNode<i64 i64>>P slf F<MapNode<i64 i64> MapNode<i64 i64>R> f\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater __ZH_BOP__dotcall_dotfilter_Vec_lessMapNode_lessi64_spacei64_greater_greaterPF_lessbool_spaceMapNode_lessi64_spacei64_greaterR_greater(__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater* v1176, bool(*v1177)(__ZH_TYPE_MapNode_lessi64_spacei64_greater*)) {{
-  __ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater v1178;
-  ((v1178)=(__ZH_LOP_Vec_lessMapNode_lessi64_spacei64_greater_greater_()));
-  {
-      i64 v1181;
-      i64 v1180;
-      __ZH_TYPE_Range_lessi64_greater v1179;
-      ((v1179)=(__ZH_LOP_iter_Range_lessi64_greater((__ZH_BOP__dot_dot_i64i64(((i64)0), (((v1176))->size))))));
-      ((v1180)=(__ZH_BOP__dotcall_dotend_Range_lessi64_greaterP((&(v1179)))));
-      ((v1181)=(__ZH_BOP__dotcall_dotbegin_Range_lessi64_greaterP((&(v1179)))));
-      while ((((v1181))!=((v1180)))) {
-        if (((*(v1177))(&(*__ZH_BOP__dotcall_dotsub_Vec_lessMapNode_lessi64_spacei64_greater_greaterPi64((v1176), (v1181)))))) {
-          (__ZH_BOP__plus_equal_Vec_lessMapNode_lessi64_spacei64_greater_greaterRMapNode_lessi64_spacei64_greater(&(v1178), (*__ZH_BOP__dotcall_dotsub_Vec_lessMapNode_lessi64_spacei64_greater_greaterPi64((v1176), (v1181)))));
-        }
-        (*__ZH_LOP__plus_plus_i64R(&(v1181)));
-      }
-    }
-  return (v1178);
-  (__ZH_BOP__dotcall_dotdtor_Vec_lessMapNode_lessi64_spacei64_greater_greaterP((&(v1178))));
-};printf("%s", "reached function end without returning anything op Vec<MapNode<i64 i64>> .call.filter Vec<MapNode<i64 i64>>P slf F<bool MapNode<i64 i64>R> f\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_AVLTree_lessMapNode_lessi64_spacei64_greater_greater __ZH_LOP_AVLTree_lessMapNode_lessi64_spacei64_greater_greater_() {{
-  __ZH_TYPE_AVLTree_lessMapNode_lessi64_spacei64_greater_greater v1033;
-  (((&(v1033))->root)=((__ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater*)((i64)0)));
-  return (v1033);
-};printf("%s", "reached function end without returning anything lop AVLTree<MapNode<i64 i64>> AVLTree<MapNode<i64 i64>>\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_AVLIter_lessMapNode_lessi64_spacei64_greater_greater __ZH_BOP__dotcall_dotbegin_AVLTree_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_AVLTree_lessMapNode_lessi64_spacei64_greater_greater* v1041) {{
-  __ZH_TYPE_AVLIter_lessMapNode_lessi64_spacei64_greater_greater v1042;
-  ((v1042)=(__ZH_LOP_AVLIter_lessMapNode_lessi64_spacei64_greater_greater_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP((((v1041))->root))));
-  if ((__ZH_LOP__exclamation_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP(((&(v1042))->next)))) {
-    return (v1042);
-  }
-  while ((__ZH_LOP__exclamation_exclamation_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP(((((&(v1042))->next))->lhs)))) {
-    (((&(v1042))->next)=((((&(v1042))->next))->lhs));
-  }
-  return (v1042);
-};printf("%s", "reached function end without returning anything op AVLIter<MapNode<i64 i64>> .call.begin AVLTree<MapNode<i64 i64>>P slf\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_AVLIter_lessMapNode_lessi64_spacei64_greater_greater __ZH_BOP__dotcall_dotend_AVLTree_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_AVLTree_lessMapNode_lessi64_spacei64_greater_greater* v1043) {{
-  return (__ZH_LOP_AVLIter_lessMapNode_lessi64_spacei64_greater_greater_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterP(((__ZH_TYPE_AVLNode_lessMapNode_lessi64_spacei64_greater_greater*)((i64)0))));
-};printf("%s", "reached function end without returning anything op AVLIter<MapNode<i64 i64>> .call.end AVLTree<MapNode<i64 i64>>P slf\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_AVLIterRange_lessMapNode_lessi64_spacei64_greater_greater __ZH_LOP_iter_AVLTree_lessMapNode_lessi64_spacei64_greater_greaterR(__ZH_TYPE_AVLTree_lessMapNode_lessi64_spacei64_greater_greater* v1049) {{
-  __ZH_TYPE_AVLIterRange_lessMapNode_lessi64_spacei64_greater_greater v1050;
-  (((&(v1050))->begin)=(__ZH_BOP__dotcall_dotbegin_AVLTree_lessMapNode_lessi64_spacei64_greater_greaterP((&(*v1049)))));
-  (((&(v1050))->end)=(__ZH_BOP__dotcall_dotend_AVLTree_lessMapNode_lessi64_spacei64_greater_greaterP((&(*v1049)))));
-  return (v1050);
-};printf("%s", "reached function end without returning anything lop AVLIterRange<MapNode<i64 i64>> iter AVLTree<MapNode<i64 i64>>R slf\n"); exit(EXIT_FAILURE);}
-void __ZH_BOP__dotcall_dotinsert_AVLTree_lessMapNode_lessi64_spacei64_greater_greaterPMapNode_lessi64_spacei64_greater(__ZH_TYPE_AVLTree_lessMapNode_lessi64_spacei64_greater_greater* v1051, __ZH_TYPE_MapNode_lessi64_spacei64_greater v1052){
-  ((((v1051))->root)=(__ZH_BOP__dotcall_dotinsert_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterPMapNode_lessi64_spacei64_greaterR((((v1051))->root), &(v1052))));
-}
-__ZH_TYPE_MapNode_lessi64_spacei64_greater* __ZH_BOP__dotcall_dotsub_AVLTree_lessMapNode_lessi64_spacei64_greater_greaterPMapNode_lessi64_spacei64_greater(__ZH_TYPE_AVLTree_lessMapNode_lessi64_spacei64_greater_greater* v1053, __ZH_TYPE_MapNode_lessi64_spacei64_greater v1054) {{
-  return &((&(*(__ZH_BOP__dotcall_dotsub_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterPMapNode_lessi64_spacei64_greaterR((((v1053))->root), &(v1054)))))->val);
-};printf("%s", "reached function end without returning anything op MapNode<i64 i64>R .call.sub AVLTree<MapNode<i64 i64>>P slf MapNode<i64 i64> val\n"); exit(EXIT_FAILURE);}
-void __ZH_BOP__plus_equal_AVLTree_lessMapNode_lessi64_spacei64_greater_greaterRMapNode_lessi64_spacei64_greater(__ZH_TYPE_AVLTree_lessMapNode_lessi64_spacei64_greater_greater* v1055, __ZH_TYPE_MapNode_lessi64_spacei64_greater v1056){
-  (((&(*v1055))->root)=(__ZH_BOP__dotcall_dotinsert_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterPMapNode_lessi64_spacei64_greaterR(((&(*v1055))->root), &(v1056))));
-}
-__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater __ZH_BOP__dotcall_dotcall_AVLTree_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_AVLTree_lessMapNode_lessi64_spacei64_greater_greater* v1182) {{
-  __ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater v1183;
-  ((v1183)=(__ZH_LOP_Vec_lessMapNode_lessi64_spacei64_greater_greater_()));
-  {
-      __ZH_TYPE_AVLIter_lessMapNode_lessi64_spacei64_greater_greater v1186;
-      __ZH_TYPE_AVLIter_lessMapNode_lessi64_spacei64_greater_greater v1185;
-      __ZH_TYPE_AVLIterRange_lessMapNode_lessi64_spacei64_greater_greater v1184;
-      ((v1184)=(__ZH_LOP_iter_AVLTree_lessMapNode_lessi64_spacei64_greater_greaterR(&(*(v1182)))));
-      ((v1185)=(__ZH_BOP__dotcall_dotend_AVLIterRange_lessMapNode_lessi64_spacei64_greater_greaterP((&(v1184)))));
-      ((v1186)=(__ZH_BOP__dotcall_dotbegin_AVLIterRange_lessMapNode_lessi64_spacei64_greater_greaterP((&(v1184)))));
-      while ((__ZH_BOP__exclamation_equal_AVLIter_lessMapNode_lessi64_spacei64_greater_greaterAVLIter_lessMapNode_lessi64_spacei64_greater_greater((v1186), (v1185)))) {
-        (__ZH_BOP__plus_equal_Vec_lessMapNode_lessi64_spacei64_greater_greaterRMapNode_lessi64_spacei64_greater(&(v1183), (*__ZH_LOP__asterisk_AVLIter_lessMapNode_lessi64_spacei64_greater_greater((v1186)))));
-        (__ZH_LOP__plus_plus_AVLIter_lessMapNode_lessi64_spacei64_greater_greaterR(&(v1186)));
-      }
-    }
-  return (v1183);
-  (__ZH_BOP__dotcall_dotdtor_Vec_lessMapNode_lessi64_spacei64_greater_greaterP((&(v1183))));
-};printf("%s", "reached function end without returning anything op Vec<MapNode<i64 i64>> .call.call AVLTree<MapNode<i64 i64>>P slf\n"); exit(EXIT_FAILURE);}
-void __ZH_BOP__dotcall_dotshow_AVLTree_lessMapNode_lessi64_spacei64_greater_greaterP(__ZH_TYPE_AVLTree_lessMapNode_lessi64_spacei64_greater_greater* v1187){
-  __ZH_TYPE_Str v1189;
-  (__ZH_BOP__dotcall_dotshow_AVLNode_lessMapNode_lessi64_spacei64_greater_greaterPStrR((((v1187))->root), &(*(((v1189)=(__ZH_LOP_Str_())), (&(v1189))))));
-  (__ZH_BOP__dotcall_dotdtor_StrP((&(v1189))));
-}
-__ZH_TYPE_Map_lessi64_spacei64_greater __ZH_LOP_Map_lessi64_spacei64_greater_() {{
-  __ZH_TYPE_Map_lessi64_spacei64_greater v1190;
-  (((&(v1190))->tree)=(__ZH_LOP_AVLTree_lessMapNode_lessi64_spacei64_greater_greater_()));
-  return (v1190);
-};printf("%s", "reached function end without returning anything lop Map<i64 i64> Map<i64 i64>\n"); exit(EXIT_FAILURE);}
-i64* __ZH_BOP__dotcall_dotsub_Map_lessi64_spacei64_greaterPi64R(__ZH_TYPE_Map_lessi64_spacei64_greater* v1191, i64* v1192) {{
-  __ZH_TYPE_MapNode_lessi64_spacei64_greater v1194;
-  i64 v1193;
-  ((v1193)=(__ZH_LOP_i64_()));
-  ((v1194)=(__ZH_LOP_MapNode_lessi64_spacei64_greater_i64Ri64R(&(*v1192), &(v1193))));
-  (__ZH_BOP__dotcall_dotinsert_AVLTree_lessMapNode_lessi64_spacei64_greater_greaterPMapNode_lessi64_spacei64_greater((&(((v1191))->tree)), (v1194)));
-  return &((&(*__ZH_BOP__dotcall_dotsub_AVLTree_lessMapNode_lessi64_spacei64_greater_greaterPMapNode_lessi64_spacei64_greater((&(((v1191))->tree)), (v1194))))->val);
-};printf("%s", "reached function end without returning anything op i64R .call.sub Map<i64 i64>P slf i64R key\n"); exit(EXIT_FAILURE);}
-void __ZH_BOP__dotcall_dotinsert_Map_lessi64_spacei64_greaterPi64Ri64R(__ZH_TYPE_Map_lessi64_spacei64_greater* v1195, i64* v1196, i64* v1197){
-  __ZH_TYPE_MapNode_lessi64_spacei64_greater v1198;
-  ((v1198)=(__ZH_LOP_MapNode_lessi64_spacei64_greater_i64Ri64R(&(*v1196), &(*v1197))));
-  (__ZH_BOP__dotcall_dotinsert_AVLTree_lessMapNode_lessi64_spacei64_greater_greaterPMapNode_lessi64_spacei64_greater((&(((v1195))->tree)), (v1198)));
-}
-__ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater __ZH_BOP__dotcall_dotcall_Map_lessi64_spacei64_greaterP(__ZH_TYPE_Map_lessi64_spacei64_greater* v1199) {{
-  __ZH_TYPE_Vec_lessMapNode_lessi64_spacei64_greater_greater v1200;
-  ((v1200)=(__ZH_BOP__dotcall_dotcall_AVLTree_lessMapNode_lessi64_spacei64_greater_greaterP((&(((v1199))->tree)))));
-  return (v1200);
-  (__ZH_BOP__dotcall_dotdtor_Vec_lessMapNode_lessi64_spacei64_greater_greaterP((&(v1200))));
-};printf("%s", "reached function end without returning anything op Vec<MapNode<i64 i64>> .call.call Map<i64 i64>P slf\n"); exit(EXIT_FAILURE);}
-void __ZH_BOP__dotcall_dotprint_Map_lessi64_spacei64_greaterP(__ZH_TYPE_Map_lessi64_spacei64_greater* v1201){
-  (printf("%s\n", ((str)"{")));
-  {
-      __ZH_TYPE_AVLIter_lessMapNode_lessi64_spacei64_greater_greater v1204;
-      __ZH_TYPE_AVLIter_lessMapNode_lessi64_spacei64_greater_greater v1203;
-      __ZH_TYPE_AVLIterRange_lessMapNode_lessi64_spacei64_greater_greater v1202;
-      ((v1202)=(__ZH_LOP_iter_AVLTree_lessMapNode_lessi64_spacei64_greater_greaterR(&(((v1201))->tree))));
-      ((v1203)=(__ZH_BOP__dotcall_dotend_AVLIterRange_lessMapNode_lessi64_spacei64_greater_greaterP((&(v1202)))));
-      ((v1204)=(__ZH_BOP__dotcall_dotbegin_AVLIterRange_lessMapNode_lessi64_spacei64_greater_greaterP((&(v1202)))));
-      while ((__ZH_BOP__exclamation_equal_AVLIter_lessMapNode_lessi64_spacei64_greater_greaterAVLIter_lessMapNode_lessi64_spacei64_greater_greater((v1204), (v1203)))) {
-        (printf("%s", ((str)"  ")));
-        (printf("%lld", ((&(*__ZH_LOP__asterisk_AVLIter_lessMapNode_lessi64_spacei64_greater_greater((v1204))))->key)));
-        (printf("%s", ((str)": ")));
-        (printf("%lld\n", ((&(*__ZH_LOP__asterisk_AVLIter_lessMapNode_lessi64_spacei64_greater_greater((v1204))))->val)));
-        (__ZH_LOP__plus_plus_AVLIter_lessMapNode_lessi64_spacei64_greater_greaterR(&(v1204)));
-      }
-    }
-  (printf("%s", ((str)"}")));
-}
-void __ZH_LOP_put_Map_lessi64_spacei64_greaterR(__ZH_TYPE_Map_lessi64_spacei64_greater* v1205){
-  (__ZH_BOP__dotcall_dotprint_Map_lessi64_spacei64_greaterP((&(*v1205))));
-}
-void __ZH_LOP_out_Map_lessi64_spacei64_greaterR(__ZH_TYPE_Map_lessi64_spacei64_greater* v1206){
-  (__ZH_BOP__dotcall_dotprint_Map_lessi64_spacei64_greaterP((&(*v1206))));
-  (printf("%s\n", ((str)"")));
-}
-__ZH_TYPE_Out __ZH_ROP__less_Map_lessi64_spacei64_greaterR(__ZH_TYPE_Map_lessi64_spacei64_greater* v1207) {{
-  (__ZH_LOP_out_Map_lessi64_spacei64_greaterR(&(*v1207)));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything rop Out < Map<i64 i64>R i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_LOP__less_Map_lessi64_spacei64_greaterR(__ZH_TYPE_Map_lessi64_spacei64_greater* v1208) {{
-  ((__ZH_LOP_put_Map_lessi64_spacei64_greaterR(&(*v1208))), (printf("%s", ((str)" "))));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything lop Out < Map<i64 i64>R i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_Out __ZH_BOP__less_OutMap_lessi64_spacei64_greaterR(__ZH_TYPE_Out v1209, __ZH_TYPE_Map_lessi64_spacei64_greater* v1210) {{
-  ((__ZH_LOP_put_Map_lessi64_spacei64_greaterR(&(*v1210))), (printf("%s", ((str)" "))));
-  return (__ZH_LOP_Out_());
-};printf("%s", "reached function end without returning anything op Out < Out o Map<i64 i64>R i\n"); exit(EXIT_FAILURE);}
-__ZH_TYPE_AVLIterRange_lessMapNode_lessi64_spacei64_greater_greater __ZH_LOP_iter_Map_lessi64_spacei64_greaterR(__ZH_TYPE_Map_lessi64_spacei64_greater* v1211) {{
-  return (__ZH_LOP_iter_AVLTree_lessMapNode_lessi64_spacei64_greater_greaterR(&((&(*v1211))->tree)));
-};printf("%s", "reached function end without returning anything lop AVLIterRange<MapNode<i64 i64>> iter Map<i64 i64>R m\n"); exit(EXIT_FAILURE);}

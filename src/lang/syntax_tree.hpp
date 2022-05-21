@@ -6,6 +6,7 @@
 #include "ast.hpp"
 #include "expression.hpp"
 #include "scope.hpp"
+#include "lang_tables.hpp"
 #include "module.hpp"
 
 struct STNode {
