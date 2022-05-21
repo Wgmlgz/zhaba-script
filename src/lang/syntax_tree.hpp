@@ -1,5 +1,6 @@
 #pragma once
 #include <list>
+#include <filesystem>
 
 #include "../tree_lib/Tree.hpp"
 #include "ast.hpp"
@@ -74,7 +75,8 @@ struct ZHModule {
   ScopeInfo scope;
 
   TreeNode<std::string> *toGenericTree();
-  ZHModule(ScopeInfo* scope);
+  ZHModule(ScopeInfo *parent_scope, const std::filesystem::path &path);
+  void saveCache();
 };
 
 ZHModule *makeCoreModule();

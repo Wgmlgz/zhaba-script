@@ -76,6 +76,7 @@ class ScopeInfo {
   DynamicContainer<std::unordered_map, int64_t, VarInfo*> vars_id;
 
  public:
+  DynamicContainer<std::unordered_map, std::string, types::Generic*> generics;
   DynamicContainer<std::unordered_map, std::string, types::TYPE> struct_ids;
   DynamicContainer<std::map, std::string, types::Type> typedefs;
   std::unordered_set<std::string> operators;

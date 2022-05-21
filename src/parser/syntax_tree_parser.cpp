@@ -634,7 +634,7 @@ ZHModule* parseAST(std::filesystem::path file_path) {
 
 
   if (!zhdata.core_module) zhdata.core_module = makeCoreModule();
-  ZHModule* res = new ZHModule(&zhdata.core_module->scope);
+  ZHModule* res = new ZHModule(&zhdata.core_module->scope, file_path);
 
   // if (!parent_module) {
   //   /* init with default values*/
@@ -774,9 +774,9 @@ ZHModule* parseAST(std::filesystem::path file_path) {
 
         auto token = (line->begin + 2);
         auto v = token->val;
-        if (zhdata.generics.contains(token->val)) {
+        if (res->scope.generics.contains(token->val)) {
           /** Push generic impl */
-          zhdata.generics[token->val].impl_blocks.push_back(block);
+          res->scope.generics.at(token->val)->impl_blocks.push_back(block);
         } else {
           /** Parce regular implementation */
           types::Type type;
