@@ -10,6 +10,10 @@
 
 struct Function;
 
+namespace types {
+struct Generic;
+}
+
 int64_t genId();
 
 template <template <typename...> class C, typename K, typename V>

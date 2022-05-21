@@ -6,12 +6,14 @@ ScopeInfo::ScopeInfo(const ScopeInfo* new_parent) {
   parents.push_back(new_parent);
   typedefs.addParent(&new_parent->typedefs);
   struct_ids.addParent(&new_parent->struct_ids);
+  generics.addParent(&new_parent->generics);
 }
 void ScopeInfo::addParent(const ScopeInfo* new_parent) {
   if (!new_parent) return;
   parents.push_back(new_parent);
   typedefs.addParent(&new_parent->typedefs);
   struct_ids.addParent(&new_parent->struct_ids);
+  generics.addParent(&new_parent->generics);
 }
 
 int64_t genId() {

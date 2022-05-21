@@ -145,7 +145,6 @@ types::Type Function::getFnType() const {
   auto fn_type = types::Type(types::FT, 0, false, false, types);
   return fn_type;
 }
-ZHModule::ZHModule(ScopeInfo *parent_scope) : scope(parent_scope) {}
 ZHModule* makeCoreModule() {
   auto core_module = new ZHModule(nullptr);
 
@@ -158,4 +157,10 @@ ZHModule* makeCoreModule() {
   core_module->scope.PR_OD_ = tables::PR_OD;
   core_module->scope.operators = tables::operators;
   return core_module;
+}
+ZHModule::ZHModule(ScopeInfo *parent_scope, const std::filesystem::path &path)
+    : scope(parent_scope) {}
+
+void ZHModule::saveCache() {
+  
 }

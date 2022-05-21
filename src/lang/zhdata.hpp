@@ -15,9 +15,6 @@
 #include "types.hpp"
 
 struct ZHDATA {
-  /** Type related */
-  std::map<std::string, types::Generic> generics;
-
   /** main syntax tree */
   ZHModule *sttree;
   ZHModule *core_module = nullptr;

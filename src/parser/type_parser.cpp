@@ -81,7 +81,7 @@ Type parse(tokeniter &token, const ScopeInfo &parent_scope) {
 
   Type res;
   bool is_generic = false;
-  if (zhdata.generics.contains(str)) {
+  if (parent_scope.generics.contains(str)) {
     is_generic = true;
   } else {
     res = parse(str, parent_scope);
@@ -115,32 +115,32 @@ Type parse(tokeniter &token, const ScopeInfo &parent_scope) {
       /** Generate new implementation */
       if (!id) {
         /** Type substitution */
-        if (generic_types.size() != zhdata.generics[str].names.size())
+        if (generic_types.size() != parent_scope.generics.at(str)->names.size())
           throw ParserError(
               begin_token, *token,
               "Number of generic types doesn't match: found " +
                   std::to_string(generic_types.size()) + ", but " +
-                  std::to_string(zhdata.generics[str].names.size()) +
+                  std::to_string(parent_scope.generics.at(str)->names.size()) +
                   " expected");
 
-        ScopeInfo scope(zhdata.generics[str].scope);
+        ScopeInfo scope(parent_scope.generics.at(str)->scope);
         for (int i = 0; i < generic_types.size(); ++i) {
-          scope.typedefs.emplace(zhdata.generics[str].names[i], generic_types[i]);
+          scope.typedefs.emplace(parent_scope.generics.at(str)->names[i], generic_types[i]);
         }
         /** Try generate generic implementation */
-        // for (auto i : zhdata.generics[str].block->nodes) {
+        // for (auto i : parent_scope.generics.at(str)->block->nodes) {
           // if (dynamic_cast<i>)
         // }
-        parsePushStruct(name, zhdata.generics[str].block,
-                        *zhdata.generics[str].scope, scope);
-        for (auto &block : zhdata.generics[str].impl_blocks) {
+        parsePushStruct(name, parent_scope.generics.at(str)->block,
+                        *parent_scope.generics.at(str)->scope, scope);
+        for (auto &block : parent_scope.generics.at(str)->impl_blocks) {
           block->reset();
           auto funcs = parseImpl(
-              block, Type(zhdata.generics[str].scope->struct_ids.at(name)),
-              scope, *zhdata.generics[str].scope);
+              block, Type(parent_scope.generics.at(str)->scope->struct_ids.at(name)),
+              scope, *parent_scope.generics.at(str)->scope);
           for (auto i : funcs) zhdata.functions.push_back(i);
         }
-        id = zhdata.generics[str].scope->struct_ids.at(name);
+        id = parent_scope.generics.at(str)->scope->struct_ids.at(name);
       }
       res.setType(id);
     }

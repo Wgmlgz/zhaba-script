@@ -18,11 +18,12 @@ std::string Generic::toString() {
 void pushGenericType(const std::string &name,
                      const std::vector<std::string> &names,
                      ast::ASTBlock *block, ScopeInfo *scope) {
-  if (zhdata.generics.contains(name))
-    throw std::runtime_error(
-        "Generic type '" + name + "' is already defined. (" + zhdata.generics[name].toString() + ")");
-  zhdata.generics.emplace(
+  if (scope->generics.contains(name))
+    throw std::runtime_error("Generic type '" + name +
+                             "' is already defined. (" +
+                             scope->generics.at(name)->toString() + ")");
+  scope->generics.emplace(
       name,
-      Generic{.name = name, .names = names, .block = block, .scope = scope});
+      new Generic{.name = name, .names = names, .block = block, .scope = scope});
 }
 }
