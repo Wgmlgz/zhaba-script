@@ -73,13 +73,18 @@ const std::unordered_map<std::string, int64_t> bin_operators{
     {"=", 17}, {":=", 17}, {",", 18},
 };
 
-const std::unordered_set<std::string> operators{
-    "!",      ".",      "=",      ":=",      ",",      "*",       "&",
-    "as",     "+",      "/",      "%",       "-",      "!=",      "==",
-    "out",    "put",    "sizeof", "malloc",  "free",   "<",       ">",
-    "<=",     ">=",     "||",     "<<",      ">>",     "^",       "~",
-    "|||",    "&&",     "in_i8",  "in_i16",  "in_i32", "in_i64",  "in_u8",
-    "in_u16", "in_u32", "in_u64", "in_char", "in_str", "in_bool", "->",
+const std::unordered_map<std::string, bool> operators{
+    {"!", true},       {".", true},      {"=", true},       {":=", true},
+    {",", true},       {"*", true},      {"&", true},       {"as", true},
+    {"+", true},       {"/", true},      {"%", true},       {"-", true},
+    {"!=", true},      {"==", true},     {"out", true},     {"put", true},
+    {"sizeof", true},  {"malloc", true}, {"free", true},    {"<", true},
+    {">", true},       {"<=", true},     {">=", true},      {"||", true},
+    {"<<", true},      {">>", true},     {"^", true},       {"~", true},
+    {"|||", true},     {"&&", true},     {"in_i8", true},   {"in_i16", true},
+    {"in_i32", true},  {"in_i64", true}, {"in_u8", true},   {"in_u16", true},
+    {"in_u32", true},  {"in_u64", true}, {"in_char", true}, {"in_str", true},
+    {"in_bool", true}, {"->", true},
 };
 
 const std::unordered_set<std::string> functions{
@@ -164,7 +169,7 @@ const std::unordered_map<types::TYPE, size_t> sizes{
     {types::FT, 4},
 };
 
-const std::map<types::funcHead, Function *> B_OD = {
+const std::map<types::FnHead, Function *> B_OD = {
 #define MAKE_C_BOP(name, lhst, rhst, rt)                                             \
   {                                                                            \
     {#name, {types::Type(types::lhst), types::Type(types::rhst)}}, \
@@ -172,7 +177,7 @@ const std::map<types::funcHead, Function *> B_OD = {
       #name,                                                                   \
       {{"a", types::Type(types::lhst)},                                  \
         {"b", types::Type(types::rhst)}},                                \
-      types::Type(types::rt), Function::OpType::bin, true                \
+      types::Type(types::rt), OpType::bin, true                \
     }                                                                          \
   }
 
@@ -228,18 +233,18 @@ const std::map<types::funcHead, Function *> B_OD = {
     MAKE_C_BOP(||, boolT, boolT, boolT),
 };
 
-const std::map<types::funcHead, Function *> PR_OD{
+const std::map<types::FnHead, Function *> PR_OD{
 #define MAKE_C_FN_0_ARGS(name, rt)                                           \
   {                                                                          \
     {(#name), {}}, new Function {                                            \
-      (#name), {}, types::Type(types::rt), Function::OpType::lhs, true \
+      (#name), {}, types::Type(types::rt), OpType::lhs, true \
     }                                                                        \
   }
 #define MAKE_C_FN_1_ARGS(name, arg1_t, rt)                          \
   {                                                                 \
     {#name, {types::Type(types::arg1_t)}}, new Function {     \
       (#name), {{"a", types::Type(types::arg1_t)}},           \
-          types::Type(types::rt), Function::OpType::lhs, true \
+          types::Type(types::rt), OpType::lhs, true \
     }                                                               \
   }
 

@@ -2,7 +2,7 @@
 
 namespace zhexp {
 
-STExp *callDtor(std::pair<ScopeInfo::VarInfo *, Function *> info) {
+STExp *callDtor(std::pair<Scope::VarInfo *, Function *> info) {
   auto token = Token(TOKEN::id, "tmp", 0, 0, "tmp");
 
   auto exp = new zhexp::BinOperator(
@@ -18,12 +18,12 @@ STExp *callDtor(std::pair<ScopeInfo::VarInfo *, Function *> info) {
   return tmp;
 };
 
-void copyExp(Exp *&exp, ScopeInfo &scope) {
+void copyExp(Exp *&exp, Scope &scope) {
   if (!(exp->type.getLval() || exp->type.getRef()))
     return;
   if (exp->type.getTypeId()->builtin)
     return;
-  if (!scope.containsPrOp({exp->type.nonRefClone().rvalClone().toString(),
+  if (!scope.PR_OP.contains({exp->type.nonRefClone().rvalClone().toString(),
                            {exp->type.nonRefClone().rvalClone()}}))
     return;
   if (auto pr = dynamic_cast<PrefixOperator *>(exp))
@@ -32,7 +32,7 @@ void copyExp(Exp *&exp, ScopeInfo &scope) {
   auto new_exp = new zhexp::PrefixOperator(
       exp->begin, exp->end, exp->type.nonRefClone().rvalClone().toString(),
       exp);
-  new_exp->func = scope.getPrOp({exp->type.nonRefClone().rvalClone().toString(),
+  new_exp->func = scope.PR_OP.at({exp->type.nonRefClone().rvalClone().toString(),
                                  {exp->type.nonRefClone().rvalClone()}});
   new_exp->type = new_exp->func->type;
   exp = new_exp;
@@ -45,14 +45,14 @@ void copyExp(Exp *&exp, ScopeInfo &scope) {
  *
  * @param exp is postprocessed
  */
-Exp* makeLval(Exp*& exp, ScopeInfo& scope) {
+Exp* makeLval(Exp*& exp, Scope& scope) {
   auto type = exp->type;
   auto type_ptr = type;
   type_ptr.setPtr(type_ptr.getPtr() + 1);
 
   auto var_name = "tmp_rval_" + std::to_string(genId());
   scope.setVar(var_name, type);
-  auto id = scope.getVarId(var_name);
+  auto id = scope.vars.at(var_name)->id;
 
   auto var_exp1 = new Variable(exp->begin, exp->end, var_name, type, id);
   var_exp1->type = type;
@@ -78,7 +78,7 @@ Exp* makeLval(Exp*& exp, ScopeInfo& scope) {
 /**
  * @brief Converts expression to expression tree
  */
-Exp *buildExp(ScopeInfo &scope, tokeniter begin, tokeniter end) {
+Exp *buildExp(Scope &scope, tokeniter begin, tokeniter end) {
   /** Flow operator skip */
   if (begin->token == TOKEN::id and tables::flow_ops.count(begin->val)) {
     return new FlowOperator(*begin, *begin, begin->val,
@@ -348,11 +348,11 @@ Exp *buildExp(ScopeInfo &scope, tokeniter begin, tokeniter end) {
       res.emplace_back(iter, type);
     } else if (type == bin_op) {
       auto slf_priority =
-          scope.getBinOpP(dynamic_cast<BinOperator *>(iter)->val);
+          scope.bin_operators.at(dynamic_cast<BinOperator *>(iter)->val);
       while (!stack.empty() &&
              ((stack.back().second == pr_op && 3 <= slf_priority) ||
               (stack.back().second == bin_op &&
-               scope.getBinOpP(
+               scope.bin_operators.at(
                    dynamic_cast<BinOperator *>(stack.back().first)->val) <=
                    slf_priority))) {
         res.emplace_back(stack.back());
@@ -383,7 +383,7 @@ Exp *buildExp(ScopeInfo &scope, tokeniter begin, tokeniter end) {
           exp_stack.push_back(new PrefixOperator(
               b_op->begin, b_op->end, type_l->literal_type.toString(), b_op->rhs));
         } else if (auto id_l = dynamic_cast<IdLiteral*>(b_op->lhs)) {
-          if (scope.containsVar(id_l->val)) {
+          if (scope.vars.contains(id_l->val)) {
             std::string call_name = ".call.call";
             if (val == "[") call_name = ".call.sub";
 
@@ -439,7 +439,7 @@ Exp *buildExp(ScopeInfo &scope, tokeniter begin, tokeniter end) {
   return exp;
 }
 
-Exp *postprocess(Exp *exp, ScopeInfo &scope) {
+Exp *postprocess(Exp *exp, Scope &scope) {
   if (auto op = dynamic_cast<FlowOperator *>(exp)) {
     exp->type = types::Type(types::voidT);
     if (op->operand) op->operand = postprocess(op->operand, scope);
@@ -471,14 +471,14 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
     exp->type = types::Type(types::strT);
     exp->type.setLval(true);
   } else if (auto id = dynamic_cast<IdLiteral *>(exp)) {
-    if (scope.containsVar(id->val)) {
+    if (scope.vars.contains(id->val)) {
       auto tmp =
-          new Variable(id->begin, id->end, id->val, scope.getVarType(id->val),
-                       scope.getVarId(id->val));
-      tmp->type = scope.getVarType(id->val);
+          new Variable(id->begin, id->end, id->val, scope.vars.at(id->val)->type,
+                       scope.vars.at(id->val)->id);
+      tmp->type = scope.vars.at(id->val)->type;
       exp = tmp;
-    } else if (scope.containsFn(id->val)) {
-      auto fn = scope.getFn(id->val);
+    } else if (scope.last_fn.contains(id->val)) {
+      auto fn = scope.last_fn.at(id->val);
       auto tmp = new FnLiteral(id->begin, id->end, fn);
       tmp->type = fn->getFnType();
       exp = tmp;
@@ -539,12 +539,12 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
         } catch (const std::runtime_error &err) {
           throw ParserError(op->begin, op->rhs->end, err.what());
         }
-        scope.getVarType(id_l->val).setLval(true) ;
+        scope.vars.at(id_l->val)->type.setLval(true) ;
 
         auto tmp = new Variable(op->lhs->begin, op->lhs->end, id_l->val,
-                                scope.getVarType(id_l->val),
-                                scope.getVarId(id_l->val));
-        tmp->type = scope.getVarType(id_l->val);
+                                scope.vars.at(id_l->val)->type,
+                                scope.vars.at(id_l->val)->id);
+        tmp->type = scope.vars.at(id_l->val)->type;
         op->lhs = tmp;
         op->val = "=";
         op->type = types::Type(types::voidT);
@@ -612,8 +612,8 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
     } else if (op->val == "->") {
       auto fn_name = "lambda_" + std::to_string(genId());
       auto fn = new Function{fn_name, {}, types::Type()};
-      fn->args_scope = ScopeInfo(&zhdata.sttree->scope);
-      ScopeInfo &args_scope = fn->args_scope;
+      fn->args_scope = new Scope(&zhdata.sttree->scope);
+      Scope &args_scope = *fn->args_scope;
 
       /** Process param list */
       auto args_tuple = castTreeToTuple(op->lhs)->content;
@@ -641,7 +641,7 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
       }
       for (auto &[name, type] : fn->args) {
         args_scope.setVar(name, type);
-        args_scope.getVarType(name).setLval(true);
+        args_scope.vars.at(name)->type.setLval(true);
       }
 
       /** Process body */
@@ -663,7 +663,7 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
 
       /** Finish */
       zhdata.functions.push_back(fn);
-      scope.setFn(fn->getHead(), fn);
+      scope.setPrOp(fn->getHead(), fn);
       auto fn_literal = new FnLiteral(op->begin, op->end, fn);
       fn_literal->type = fn->getFnType();
       return fn_literal;
@@ -703,10 +703,10 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
         auto t = new BinOperator(
             op->begin, op->end, "*", op->rhs, int_literal
         );
-        t->func = scope.getBinOp({"*", {int_type, int_type}});
+        t->func = scope.B_OP.at({"*", {int_type, int_type}});
         t->type = int_type;
         op->rhs = t;
-        op->func = scope.getBinOp({op->val, {int_type, int_type}});
+        op->func = scope.B_OP.at({op->val, {int_type, int_type}});
         op->type = int_type;
         op = new BinOperator(op->begin, op->end, "as", op,
                              new TypeLiteral(op->begin, op->end, orig_type));
@@ -725,7 +725,7 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
             new BinOperator(op->begin, op->end, "as", op->rhs,
                             new TypeLiteral(op->begin, op->end, int_type));
         op->rhs->type = int_type;
-        op->func = scope.getBinOp({op->val, {int_type, int_type}});
+        op->func = scope.B_OP.at({op->val, {int_type, int_type}});
         op->type = bool_type;
       } else {
         /** Member call */
@@ -761,7 +761,7 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
         for (auto &i : types) i.setLval(false);
         for (auto &i : types) i.setRef(false);
 
-        types::funcHead func_head{op->val, types};
+        types::FnHead func_head{op->val, types};
         if (op->val.size() >= 6 && op->val.substr(0, 6) == ".call." &&
             op->lhs->type.isFn()) {
           const auto& args = op->lhs->type.getTypes();
@@ -775,8 +775,8 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
             else if (!(*exps[i])->type.getLval() && !(*exps[i])->type.getRef())
               makeLval(*(exps[i]), scope);
           }
-        } else if (scope.containsBinOp(func_head)) {
-          auto bop = scope.getBinOp(func_head);
+        } else if (scope.B_OP.contains(func_head)) {
+          auto bop = scope.B_OP.at(func_head);
           op->func = bop;
           exp->type = bop->type;
           for (int i = 0; i < bop->args.size(); ++i) {
@@ -823,9 +823,9 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
     for (auto &i : types) i.setLval(false);
     for (auto &i : types) i.setRef(false);
 
-    types::funcHead func_head{op->val, types};
-    if (scope.containsPoOp(func_head)) {
-      auto& poop = scope.getPoOp(func_head);
+    types::FnHead func_head{op->val, types};
+    if (scope.PO_OP.contains(func_head)) {
+      auto& poop = scope.PO_OP.at(func_head);
       op->func = poop;
       exp->type = poop->type;
 
@@ -847,16 +847,16 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
                             "' for types: " + types_str);
     }
   } else if (auto op = dynamic_cast<PrefixOperator *>(exp)) {
-    if (scope.containsVar(op->val)) {
+    if (scope.vars.contains(op->val)) {
       auto pr = (*((&op->begin) + 1)).val;
       std::string call_name = ".call.call";
       if (pr == "[") call_name = ".call.sub";
       
-      auto var = scope.getVarInfo(scope.getVarId(op->val));
+      auto var = scope.vars_id.at(scope.vars.at(op->val)->id);
 
       exp = postprocess(
           new BinOperator(op->begin, op->end, call_name,
-                          new IdLiteral(op->begin, op->end, var->name),
+                          new IdLiteral(op->begin, op->end, op->val),
                           op->child),
           scope);
       return exp;
@@ -898,27 +898,15 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
     for (auto &i : types) i.setLval(false);
     for (auto &i : types) i.setRef(false);
 
-    types::funcHead func_head{op->val, types};
-    if (scope.containsPrOp(func_head)) {
-      auto& prop = scope.getPrOp(func_head);
+    types::FnHead func_head{op->val, types};
+    if (scope.PR_OP.contains(func_head)) {
+      auto& prop = scope.PR_OP.at(func_head);
       op->func = prop;
       exp->type = prop->type;
 
       for (int i = 0; i < prop->args.size(); ++i) {
         /** Call copy ctors */
         if (!prop->args[i].type.getRef()) copyExp(*exps[i], scope);
-        /** Cast to lval if needed */
-        else if (!(*exps[i])->type.getLval() && !(*exps[i])->type.getRef())
-          makeLval(*(exps[i]), scope);
-      }
-    } else if (scope.containsFn(func_head)) {
-      auto &fn = scope.getFn(func_head);
-      op->func = fn;
-      exp->type = fn->type;
-
-      for (int i = 0; i < fn->args.size(); ++i) {
-        /** Call copy ctors */
-        if (!fn->args[i].type.getRef()) copyExp(*exps[i], scope);
         /** Cast to lval if needed */
         else if (!(*exps[i])->type.getLval() && !(*exps[i])->type.getRef())
           makeLval(*(exps[i]), scope);
@@ -947,7 +935,7 @@ Exp *postprocess(Exp *exp, ScopeInfo &scope) {
 }
 
 Exp *parse(std::vector<Token>::iterator begin,
-           std::vector<Token>::iterator end, ScopeInfo &scope_info) {
+           std::vector<Token>::iterator end, Scope &scope_info) {
   Exp *exp = buildExp(scope_info, begin, end);
   if (zhdata.flags["exp_parser_logs"]) zhexp::printExpTree(exp);
   exp = postprocess(exp, scope_info);

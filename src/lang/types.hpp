@@ -8,7 +8,14 @@
 #include <unordered_set>
 #include <vector>
 
+#include "../libs/json.hpp"
+
+using json = nlohmann::json;
+
 struct Function;
+void to_json(json &j, const Function *fn);
+
+enum class OpType { lhs, rhs, bin };
 
 namespace types {
 
@@ -68,6 +75,16 @@ class Type {
 
   friend std::strong_ordering operator<=>(const types::Type &lhs,
                                    const types::Type &rhs);
+
+  friend void to_json(json &j, const Type &type) {
+    j = {
+        {"lval", type.lval_},
+        {"ref", type.ref_},
+        {"ptr", type.ptr_},
+        {"typeid__ptr__", reinterpret_cast<std::uintptr_t>(type.typeid_)},
+        {"types", type.types_},
+    };
+  }
 };
 
 struct TypeInfo {
@@ -77,10 +94,39 @@ struct TypeInfo {
   bool complete = false;
   bool builtin = false;
   size_t order = 0;
+
+  friend void to_json(json &j, const TypeInfo *type_info) {
+    j = {
+        {"__ptr__", reinterpret_cast<std::uintptr_t>(type_info)},
+        {"members", type_info->members},
+        {"name", type_info->name},
+        {"complete", type_info->complete},
+        {"builtin", type_info->builtin},
+        {"order", type_info->order},
+    };
+  }
 };
 
 std::string genericToStr(const std::vector<Type> &generic);
 void pushStruct(const std::string &name, const TypeInfo &info);
 
-typedef std::pair<std::string, std::vector<Type>> funcHead;
+struct FnHead {
+  std::string name;
+  std::vector<Type> types;
+  friend void to_json(json &j, const types::FnHead &generic);
+};
+
+
 };  // namespace types
+
+namespace std {
+template <>
+struct less<types::FnHead> {
+  bool operator()(const types::FnHead &lhs,
+                  const types::FnHead &rhs) const {
+    if (lhs.name != rhs.name) return lhs.name < rhs.name;
+    return lhs.types < rhs.types;
+  }
+};
+}  // namespace std
+

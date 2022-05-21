@@ -8,6 +8,7 @@
 #include <unordered_map>
 #include <unordered_set>
 
+#include "../core/core.hpp"
 #include "generics.hpp"
 #include "lang.hpp"
 #include "lang_tables.hpp"
@@ -17,12 +18,13 @@
 struct ZHDATA {
   /** main syntax tree */
   ZHModule *sttree;
+  /** Can't init before main, because of emscripten bug or something, so init dynamicly */
   ZHModule *core_module = nullptr;
 
-  std::map<std::filesystem::path, ZHModule *> used_modules;
-  std::map<std::string, std::vector<std::string>> files_lines;
-  std::filesystem::path bin_path;
-  std::filesystem::path std_path;
+  Map<Path, ZHModule *> used_modules;
+  Map<Str, Vec<Str>> files_lines;
+  Path bin_path;
+  Path std_path;
 
   std::unordered_map<std::string, bool> flags = tables::flags;
 
@@ -31,6 +33,7 @@ struct ZHDATA {
   /** all collected functions & types, to access them use scope */
   std::list<types::TYPE> structs;
   std::list<Function *> functions;
+  Map<IntPtr, Json> json_storage;
 };
 
 extern ZHDATA zhdata;

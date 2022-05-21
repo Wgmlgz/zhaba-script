@@ -116,3 +116,5 @@ fabric.properties
 
 build
 Testing
+
+*.cache.json

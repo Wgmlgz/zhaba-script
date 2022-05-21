@@ -90,4 +90,12 @@ std::string Type::toString() const {
   // if (lval_) res += "&";
   return res;
 }
+
+void to_json(json &j, const types::FnHead &func_head) {
+  j["name"] = func_head.name;
+  j["args_types"] = func_head.types;
+}
+
 }  // namespace types
+
+

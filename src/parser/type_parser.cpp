@@ -3,10 +3,10 @@
 namespace types {
 
 void parsePushStruct(const std::string &name, ast::ASTBlock *block,
-                     ScopeInfo &write_scope, ScopeInfo &scope) {
+                     Scope &write_scope, Scope &scope) {
   if (!block) throw std::runtime_error("null block passed to parseStruct :(");
   const auto id = static_cast<types::TYPE>(new types::TypeInfo());
-  write_scope.struct_ids.emplace(name, id);
+  write_scope.types.emplace(name, id);
   zhdata.structs.emplace_back(id);
   auto& struct_info = *id;
   struct_info.name = name;
@@ -49,7 +49,7 @@ void parsePushStruct(const std::string &name, ast::ASTBlock *block,
   struct_info.order = zhdata.structs.size();
 }
 
-Type parse(std::string &str, const ScopeInfo &scope) {
+Type parse(std::string &str, const Scope &scope) {
   Type type;
   int ptr_c = 0;
   if (str.back() == 'R') {
@@ -67,15 +67,15 @@ Type parse(std::string &str, const ScopeInfo &scope) {
     type.setPtr(tmp.getPtr() + type.getPtr());
   } else if (tables::prim_types.count(str)) {
     type.setType(tables::prim_types.at(str));
-  } else if (scope.struct_ids.contains(str)) {
-    type.setType(scope.struct_ids.at(str));
+  } else if (scope.types.contains(str)) {
+    type.setType(scope.types.at(str));
   } else {
     throw TypeParsingError();
   }
   return type;
 }
 
-Type parse(tokeniter &token, const ScopeInfo &parent_scope) {
+Type parse(tokeniter &token, const Scope &parent_scope) {
   auto& begin_token = *token;
   std::string str = token->val;
 
@@ -90,8 +90,8 @@ Type parse(tokeniter &token, const ScopeInfo &parent_scope) {
   if (token->val == "<") {
     auto generic_types = parseTemplate(token, parent_scope);
     auto name = str + genericToStr(generic_types);
-    auto id = parent_scope.struct_ids.contains(name)
-                  ? parent_scope.struct_ids.at(name)
+    auto id = parent_scope.types.contains(name)
+                  ? parent_scope.types.at(name)
                   : nullptr;
 
     std::string m_str = token->val;
@@ -123,7 +123,7 @@ Type parse(tokeniter &token, const ScopeInfo &parent_scope) {
                   std::to_string(parent_scope.generics.at(str)->names.size()) +
                   " expected");
 
-        ScopeInfo scope(parent_scope.generics.at(str)->scope);
+        Scope scope(parent_scope.generics.at(str)->scope);
         for (int i = 0; i < generic_types.size(); ++i) {
           scope.typedefs.emplace(parent_scope.generics.at(str)->names[i], generic_types[i]);
         }
@@ -136,11 +136,11 @@ Type parse(tokeniter &token, const ScopeInfo &parent_scope) {
         for (auto &block : parent_scope.generics.at(str)->impl_blocks) {
           block->reset();
           auto funcs = parseImpl(
-              block, Type(parent_scope.generics.at(str)->scope->struct_ids.at(name)),
+              block, Type(parent_scope.generics.at(str)->scope->types.at(name)),
               scope, *parent_scope.generics.at(str)->scope);
           for (auto i : funcs) zhdata.functions.push_back(i);
         }
-        id = parent_scope.generics.at(str)->scope->struct_ids.at(name);
+        id = parent_scope.generics.at(str)->scope->types.at(name);
       }
       res.setType(id);
     }
@@ -157,7 +157,7 @@ Type parse(tokeniter &token, const ScopeInfo &parent_scope) {
   return res;
 }
 
-std::vector<Type> parseTemplate(tokeniter &token, const ScopeInfo &scope) {
+std::vector<Type> parseTemplate(tokeniter &token, const Scope &scope) {
   std::vector<Type> templ;
 
   if (token->val != "<")

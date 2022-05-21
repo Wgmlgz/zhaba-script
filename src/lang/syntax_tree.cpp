@@ -1,13 +1,13 @@
 #include "syntax_tree.hpp"
 
-STBlock::STBlock(ScopeInfo *parent_scope) : scope_info(parent_scope) {}
+STBlock::STBlock(Scope *parent_scope) : scope_info(parent_scope) {}
 STNode::~STNode() = default;
 
 TreeNode<std::string> *STBlock::toGenericTree() {
   auto node = new TreeNode<std::string>;
   node->data = "<block>";
   auto vars = new TreeNode<std::string>("<vars>");
-  for (const auto& [name, info] : scope_info.getVars())
+  for (const auto& [name, info] : scope_info.vars.get())
     vars->branches.push_back(
         new TreeNode<std::string>(
             "name: " + name + " id: " + std::to_string(info->id),
@@ -106,37 +106,21 @@ std::string Function::toUniqueStr() const {
   }
   return str;
 }
-types::funcHead Function::getHead() const {
-  types::funcHead res;
-  res.first = name;
+types::FnHead Function::getHead() const {
+  types::FnHead res;
+  res.name = name;
   for (const auto&[name, type] : args) {
-    res.second.push_back(type);
-    res.second.back().setLval(false);
+    res.types.push_back(type);
+    res.types.back().setLval(false);
   }
   return res;
 };
 
-types::funcHead Function::getHeadNonRefNonLval() const {
-  types::funcHead res = getHead();
-  for (auto &type : res.second)
+types::FnHead Function::getHeadNonRefNonLval() const {
+  types::FnHead res = getHead();
+  for (auto &type : res.types)
     type.setLval(false), type.setRef(false);
   return res;
-};
-
-TreeNode<std::string> *ZHModule::toGenericTree() {
-  auto main_node = new TreeNode<std::string>;
-  main_node->data = "<STree>";
-
-  // auto functions_node = new TreeNode<std::string>;
-  // main_node->branches.push_back(functions_node);
-  // functions_node->data = "<Functions>";
-  // for (auto &func : functions) {
-  //   auto func_node = new TreeNode<std::string>;
-  //   func_node->data = func->headToStr();
-  //   func_node->branches.push_back(func->body->toGenericTree());
-  //   functions_node->branches.push_back(func_node);
-  // }
-  return main_node;
 };
 
 types::Type Function::getFnType() const {
@@ -161,6 +145,11 @@ ZHModule* makeCoreModule() {
 ZHModule::ZHModule(ScopeInfo *parent_scope, const std::filesystem::path &path)
     : scope(parent_scope) {}
 
-void ZHModule::saveCache() {
-  
+void to_json(json &j, const Function *fn) {
+  j["name"] = fn->name;
+  // j["args"] = fn->args;
+  j["type"] = fn->type;
+  j["op_type"] = fn->op_type;
+  j["is_c"] = fn->is_C;
+  j["args_scope"] = *fn->args_scope;
 }

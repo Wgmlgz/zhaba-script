@@ -1,6 +1,6 @@
 #include "syntax_tree_parser.hpp"
 
-STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo& parent_scope, Function* fn) {
+STBlock* parseASTblock(ast::ASTBlock* main_block, Scope& parent_scope, Function* fn) {
   auto res = new STBlock(&parent_scope);
 
   for (auto i = main_block->nodes.begin(); i != main_block->nodes.end(); ++i) {
@@ -34,7 +34,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo& parent_scope, Funct
             } catch (const std::runtime_error& err) {
               throw ParserError(i->begin, i->end, err.what());
             }
-            res->scope_info.getVarType(id->val).setLval(true);
+            res->scope_info.vars.at(id->val)->type.setLval(true);
           } else {
             /* variable with assignment */
             if (auto assign = dynamic_cast<zhexp::BinOperator*>(i)) {
@@ -63,7 +63,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo& parent_scope, Funct
                     throw ParserError(assign->begin, assign->end, err.what());
                   }
                 }
-                res->scope_info.getVarType(id->val).setLval(true);
+                res->scope_info.vars.at(id->val)->type.setLval(true);
 
                 /* push assignment expression */
                 assign->lhs = zhexp::postprocess(assign->lhs, res->scope_info);
@@ -394,10 +394,10 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo& parent_scope, Funct
               }
 
               /** Collect all destruction candidates */
-              std::unordered_map<int64_t, ScopeInfo::VarInfo*> raw_map;
-              res->scope_info.collectVars(&fn->args_scope, raw_map);
+              std::unordered_map<int64_t, Scope::VarInfo*> raw_map;
+              res->scope_info.collectVars(fn->args_scope, raw_map);
 
-              std::vector<std::pair<ScopeInfo::VarInfo*, Function*>> to_destroy;
+              std::vector<std::pair<Scope::VarInfo*, Function*>> to_destroy;
               int64_t ret_id = -666;
               if (auto var = dynamic_cast<zhexp::Variable*>(tmp_ret->exp)) {
                 ret_id = var->getId();
@@ -409,10 +409,10 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo& parent_scope, Funct
                   auto type = var_info->type;
                   type.setPtr(1);
                   type.setLval(false);
-                  if (res->scope_info.containsBinOp({".call.dtor", {type}})) {
+                  if (res->scope_info.B_OP.contains({".call.dtor", {type}})) {
                     to_destroy.push_back(
                         {var_info,
-                         res->scope_info.getBinOp({".call.dtor", {type}})});
+                         res->scope_info.B_OP.at({".call.dtor", {type}})});
                   }
                 }
               }
@@ -441,10 +441,10 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo& parent_scope, Funct
   }
 
   /** Collect all destruction candidates */
-  std::unordered_map<int64_t, ScopeInfo::VarInfo*> raw_map;
+  std::unordered_map<int64_t, Scope::VarInfo*> raw_map;
   res->scope_info.collectVars(&res->scope_info, raw_map);
 
-  std::vector<std::pair<ScopeInfo::VarInfo*, Function*>> to_destroy;
+  std::vector<std::pair<Scope::VarInfo*, Function*>> to_destroy;
 
   for (auto [id, var_info] : raw_map) {
     if (!var_info->type.getPtr() && !var_info->type.getRef() 
@@ -452,10 +452,10 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo& parent_scope, Funct
       auto type = var_info->type;
       type.setPtr(1);
       type.setLval(false);
-      if (res->scope_info.containsBinOp(
+      if (res->scope_info.B_OP.contains(
               {".call.dtor", {type}})) {
         to_destroy.push_back(
-            {var_info, res->scope_info.getBinOp({".call.dtor", {type}})});
+            {var_info, res->scope_info.B_OP.at({".call.dtor", {type}})});
       }
     }
   }
@@ -465,7 +465,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, ScopeInfo& parent_scope, Funct
 }
 
 std::vector<Function*> parseImpl(ast::ASTBlock* block, const types::Type& type,
-                                 ScopeInfo& main_scope, ScopeInfo& push_scope) {
+                                 Scope& main_scope, Scope& push_scope) {
   std::vector<Function*> res;
   for (auto i = block->nodes.begin(); i != block->nodes.end(); ++i) {
     auto line = dynamic_cast<ast::ASTLine*>(*i);
@@ -473,8 +473,8 @@ std::vector<Function*> parseImpl(ast::ASTBlock* block, const types::Type& type,
 
     /** Function scope */
     auto func = parseOpHeader(line->begin, line->end, main_scope);
-    func->args_scope = ScopeInfo(&main_scope);
-    ScopeInfo& scope = func->args_scope;
+    func->args_scope = new Scope(&main_scope);
+    Scope& scope = *func->args_scope;
 
     ++i;
     if (i == block->nodes.end()) throw ParserError("Expected block");
@@ -485,18 +485,18 @@ std::vector<Function*> parseImpl(ast::ASTBlock* block, const types::Type& type,
     if (func->name == "ctor") {
       if (func->type.getTypeId() == types::voidT) func->type = type;
       
-      func->op_type = Function::OpType::lhs;
+      func->op_type = OpType::lhs;
     } else if (func->is_fn) {
       func->args.insert(
           func->args.begin(),
           {"slf", types::Type(type.getTypeId(), type.getPtr() + 1, 1)});
       func->name = ".call." + func->name;
-      func->op_type = Function::OpType::bin;
+      func->op_type = OpType::bin;
     }
     std::vector<types::Type> types;
     for (auto& [name, type] : func->args) {
       scope.setVar(name, type);
-      scope.getVarType(name).setLval(true);
+      scope.vars.at(name)->type.setLval(true);
       types.push_back(type);
       types.back().setLval(false);
       types.back().setRef(false);
@@ -506,43 +506,41 @@ std::vector<Function*> parseImpl(ast::ASTBlock* block, const types::Type& type,
       push_scope.setPrOp({func->name, types}, func);
       /** prefix operator priority */
       int64_t p = 3;
-      if (!push_scope.containsPrOpP(func->name)) 
-        push_scope.setPrOpP(func->name, p);
+      if (!push_scope.prefix_operators.contains(func->name)) 
+        push_scope.prefix_operators.emplace(func->name, p);
     } else if (func->is_fn) {
       push_scope.setBinOp({func->name, types}, func);
       /** '.' priority */
       int64_t p = 2;
-      if (!push_scope.containsBinOpP(func->name)) 
-        push_scope.setBinOpP(func->name, p);
+      if (!push_scope.bin_operators.contains(func->name)) 
+        push_scope.bin_operators.emplace(func->name, p);
     } else {
-      if (func->op_type == Function::OpType::bin) {
+      if (func->op_type == OpType::bin) {
         push_scope.setBinOp({func->name, types}, func);
-        if (!push_scope.containsBinOpP(func->name))
-          push_scope.setBinOpP(func->name, func->priority);
-      } else if (func->op_type == Function::OpType::lhs) {
+        if (!push_scope.bin_operators.contains(func->name))
+          push_scope.bin_operators.emplace(func->name, func->priority);
+      } else if (func->op_type == OpType::lhs) {
         push_scope.setPrOp({func->name, types}, func);
         /** prefix operator priority */
         int64_t p = 3;
-        if (!push_scope.containsPrOpP(func->name))
-            push_scope.setPrOpP(func->name, p);
-        } else {
+        if (!push_scope.prefix_operators.contains(func->name))
+          push_scope.prefix_operators.emplace(func->name, p);
+      } else {
         push_scope.setPoOp({func->name, types}, func);
         /** postfix operator priority */
         int64_t p = 2;
-        if (!push_scope.containsPoOpP(func->name))
-          push_scope.setPoOpP(func->name, p);
+        if (!push_scope.postfix_operators.contains(func->name))
+          push_scope.postfix_operators.emplace(func->name, p);
       }
     }
-    if (!push_scope.containsOp(func->name)) push_scope.setOp(func->name);
 
     func->body = parseASTblock(block, scope, func);
-    func->args_scope = scope;
     res.push_back(func);
   }
   return res;
 }
 
-void parceFn(ZHModule* res, ScopeInfo& push_scope, ast::ASTLine* line, ast::ASTBlock* main_block,
+void parceFn(ZHModule* res, Scope& push_scope, ast::ASTLine* line, ast::ASTBlock* main_block,
              std::vector<ast::ASTNode*>::iterator& cur) {
   /** Parse function header */
   zhdata.functions.push_back(parseOpHeader(line->begin, line->end, push_scope));
@@ -555,46 +553,39 @@ void parceFn(ZHModule* res, ScopeInfo& push_scope, ast::ASTLine* line, ast::ASTB
     types.back().setLval(false);
     types.back().setRef(false);
   }
-  if (func->is_fn) {
-    try {
-      push_scope.setFn({func->name, types}, func);
-    } catch (const std::runtime_error& err) {
-      throw ParserError(*line->begin, *line->end, err.what());
+
+  if (func->op_type == OpType::bin) {
+    push_scope.setBinOp({func->name, types}, func);
+    if (push_scope.bin_operators.contains(func->name)) {
+      if (func->priority != push_scope.bin_operators.at(func->name))
+        throw ParserError(
+            *line->begin, *line->end,
+            "Operator priority doesn't match old one (" +
+                std::to_string(push_scope.bin_operators.at(func->name)) +
+                " <- old vs new -> " + std::to_string(func->priority) + ")");
+    } else {
+      push_scope.bin_operators.emplace(func->name, func->priority);
     }
-  } else {
-    if(!push_scope.containsOp(func->name)) push_scope.setOp(func->name);
-    if (func->op_type == Function::OpType::bin) {
-      push_scope.setBinOp({func->name, types}, func);
-      if (push_scope.containsBinOpP(func->name)) {
-        if (func->priority != push_scope.getBinOpP(func->name))
-          throw ParserError(
-              *line->begin, *line->end,
-              "Operator priority doesn't match old one (" +
-                  std::to_string(push_scope.getBinOpP(func->name)) +
-                  " <- old vs new -> " + std::to_string(func->priority) + ")");
-      } else {
-        push_scope.setBinOpP(func->name, func->priority);
+  } else if (func->op_type == OpType::lhs) {
+    push_scope.setPrOp({func->name, types}, func);
+    if (!func->is_fn)
+      if (!push_scope.prefix_operators.contains(func->name)) {
+        push_scope.prefix_operators.emplace(func->name, func->priority);
       }
-    } else if (func->op_type == Function::OpType::lhs) {
-      push_scope.setPrOp({func->name, types}, func);
-      if (!push_scope.containsPrOpP(func->name)) {
-        push_scope.setPrOpP(func->name, func->priority);
-      }
-    } else if (func->op_type == Function::OpType::rhs) {
-      push_scope.setPoOp({func->name, types}, func);
-      if (!push_scope.containsPoOpP(func->name)) {
-        push_scope.setPoOpP(func->name, func->priority);
-      }
+  } else if (func->op_type == OpType::rhs) {
+    push_scope.setPoOp({func->name, types}, func);
+    if (!push_scope.postfix_operators.contains(func->name)) {
+      push_scope.postfix_operators.emplace(func->name, func->priority);
     }
   }
 
   ++cur;
-  func->args_scope = ScopeInfo(&push_scope);
-  ScopeInfo& scope = func->args_scope;
+  func->args_scope = new Scope(&push_scope);
+  Scope& scope = *func->args_scope;
 
   for (auto& [name, type] : func->args) {
     scope.setVar(name, type);
-    scope.getVarType(name).setLval(true);
+    scope.vars.at(name)->type.setLval(true);
   }
 
   /** And then parse body */
@@ -603,7 +594,6 @@ void parceFn(ZHModule* res, ScopeInfo& push_scope, ast::ASTLine* line, ast::ASTB
   if (auto block = dynamic_cast<ast::ASTBlock*>(*cur)) {
     auto& t = zhdata.functions.back();
     t->body = parseASTblock(block, scope, func);
-    t->args_scope = scope;
   } else {
     throw ParserError(*line->end, "Expected function body");
   }
@@ -611,7 +601,12 @@ void parceFn(ZHModule* res, ScopeInfo& push_scope, ast::ASTLine* line, ast::ASTB
 }
 
 ZHModule* parseAST(std::filesystem::path file_path) {
+  if (!zhdata.core_module) zhdata.core_module = makeCoreModule(); 
+  ZHModule* res = new ZHModule(&zhdata.core_module->scope, file_path);
+
   std::vector<Token>& tokens = *new std::vector<Token>(tokenizeFile(file_path));
+
+  /** load cache */
 
   if (zhdata.flags["show_preprocessed"]) {
     std::cout << "preprocessed:\n";
@@ -619,7 +614,6 @@ ZHModule* parseAST(std::filesystem::path file_path) {
       std::cout << (i.val);
     }
     std::cout << std::endl;
-    // std::cout << programm;
   }
 
   defineFlowTokens(tokens);
@@ -688,13 +682,19 @@ ZHModule* parseAST(std::filesystem::path file_path) {
               }
             };
         if (!hasEnding(path, ".zh")) path += ".zh";
+        if (std::filesystem::path(path).is_relative())
+          path = (file_path.parent_path() / path).string();
+
+        path = resolvePath(path).string();
+        res->dependences.push_back(path);
+
         if (!zhdata.used_modules.contains(path)) {
           zhdata.used_modules.emplace(path, nullptr);
           std::filesystem::path file_path = path;
-          if (file_path.is_relative())
-            file_path = file_path.parent_path() / path;
+
 
           auto parsed_module = parseAST(file_path);
+          res->dependences.push_back(parsed_module->path);
           res->scope.addParent(&parsed_module->scope);
           zhdata.sttree = res;
           zhdata.used_modules[path] = parsed_module;
@@ -719,7 +719,7 @@ ZHModule* parseAST(std::filesystem::path file_path) {
           throw ParserError(*line->end, "Expected identifier token for struct type name");
 
         std::string name = (line->begin + 2)->val;
-        if (res->scope.struct_ids.contains(name)) {
+        if (res->scope.types.contains(name)) {
           throw ParserError(*line->begin, *line->end,
                             "Type '" + name + "'already exist");
         }
@@ -801,5 +801,17 @@ ZHModule* parseAST(std::filesystem::path file_path) {
       throw ParserError("Random error lol (cannot cast ast node)");
     }
   }
+
+  /** save cache */
+  res->saveCache();
   return res;
+}
+
+std::filesystem::path resolvePath(std::filesystem::path file_path) {
+  if (std::filesystem::exists(file_path))
+    return file_path;
+
+  if (std::filesystem::exists(zhdata.std_path / file_path))
+    return zhdata.std_path / file_path;
+  throw ParserError(-1, "Cannot open file '" + file_path.string() + "' ");
 }

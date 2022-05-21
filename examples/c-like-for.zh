@@ -1,6 +1,7 @@
 /** For loop */
 
-use std
+use io
+use operators
 
 fn main
   @ i:=1000 i>=7 i-=7

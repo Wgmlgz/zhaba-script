@@ -1,336 +1,199 @@
 #pragma once
+#include <array>
 #include <iostream>
 #include <map>
 #include <set>
 #include <stdexcept>
 #include <string>
+#include <type_traits>
 #include <unordered_map>
 
+#include "../libs/json.hpp"
 #include "types.hpp"
 
+using json = nlohmann::json;
+
 struct Function;
+void to_json(json& j, const Function* generic);
 
 namespace types {
 struct Generic;
+void to_json(json& j, const types::Generic* generic);
 }
 
 int64_t genId();
 
-template <template <typename...> class C, typename K, typename V>
-class DynamicContainer {
- public:
-  C<K, V>& get() {
-    if (!ptr) ptr = new C<K, V>();
-    return const_cast<C<K, V>&>(*ptr);
-  }
-  const C<K, V>& get() const {
-    return const_cast<const C<K, V>&>(
-        const_cast<DynamicContainer*>(this)->get());
-  }
+class Scope {
+  std::vector<const Scope*> parents;
+  std::array<void*, 12> dynamic_containers_ptrs;
 
-  bool contains(const K& key) const {
-    if (ptr && ptr->contains(key)) return true;
-    for (const auto parent : parents)
-      if (parent && parent->contains(key)) return true;
-    return false;
-  }
+  template <std::size_t ID, template <typename...> class C, typename K,
+            typename V = void>
+  class DynamicContainer {
 
-  const V& at(const K& key) const {
-    if (ptr && ptr->contains(key)) return ptr->at(key);
-    for (const auto parent : parents)
-      if (parent->contains(key)) return parent->at(key);
-    throw std::runtime_error("DynamicContainer error");
-  }
+   public:
+    bool empty() const { return !ptr; }
 
-  V& at(const K& key) {
-    return const_cast<V&>(
-        const_cast<const DynamicContainer<C, K, V>*>(this)->at(key));
-  }
+    C<K, V>& get() {
+      if (!ptr) ptr = new C<K, V>();
+      return const_cast<C<K, V>&>(*ptr);
+    }
+    const C<K, V>& get() const {
+      return const_cast<const C<K, V>&>(
+          const_cast<DynamicContainer*>(this)->get());
+    }
 
-  void emplace(auto&&... args) { get().emplace(args...); }
+    bool contains(const K& key) const {
+      if (ptr && ptr->contains(key)) return true;
+      for (const auto p : scope->parents) {
+        if (static_cast<DynamicContainer*>(p->dynamic_containers_ptrs.at(ID))
+                ->contains(key))
+          return true;
+      }
+      return false;
+    }
 
-  void operator=(const auto& other) { ptr = new C<K, V>(other); }
+    const V& at(const K& key) const {
+      if (ptr && ptr->contains(key)) return ptr->at(key);
+      for (const auto p : scope->parents) {
+        auto parent =
+            static_cast<DynamicContainer*>(p->dynamic_containers_ptrs.at(ID));
+        if (parent->contains(key)) return parent->at(key);
+      }
+      throw std::runtime_error("DynamicContainer error");
+    }
 
-  void addParent(const DynamicContainer* new_parent) {
-    parents.push_back(new_parent);
-  }
+    V& at(const K& key) {
+      return const_cast<V&>(
+          const_cast<const DynamicContainer*>(this)->at(key));
+    }
 
-  DynamicContainer(const std::vector<const DynamicContainer*>& new_parents = {}) : parents(new_parents) {}
- private:
-  const mutable C<K, V>* ptr = nullptr;
-  std::vector<const DynamicContainer*> parents = {};
-};
+    template <typename... Args>
+    void emplace(Args&&... args) {
+      get().emplace(args...);
+    }
 
-class ScopeInfo {
-  std::vector<const ScopeInfo*> parents;
+    void operator=(const auto& other) { ptr = new C<K, V>(other); }
+
+    DynamicContainer(Scope* new_scope) : scope(new_scope) {}
+
+    friend void to_json(json& j, const DynamicContainer& container) {
+      if (container.empty()) {
+        j = nullptr;
+        return;
+      }
+      for (const auto& [key, val] : container.get()) {
+        json t;
+        t["key"] = key;
+        t["val"] = val;
+        j.push_back(t);
+      }
+    }
+
+   private:
+    const mutable C<K, V>* ptr = nullptr;
+    Scope* scope;
+#undef PARENTS
+  };
 
  public:
   struct VarInfo {
     std::string name;
     types::Type type;
     int64_t id;
+
+    friend void to_json(json& j, const VarInfo* var_info) {
+      j = {
+          {"__ptr__", reinterpret_cast<std::uintptr_t>(&var_info)},
+          {"name", var_info->name},
+          {"type", var_info->type},
+          {"id", var_info->id},
+      };
+    }
   };
 
- private:
-  DynamicContainer<std::unordered_map, std::string, VarInfo*> vars_name;
-  DynamicContainer<std::unordered_map, int64_t, VarInfo*> vars_id;
-
  public:
-  DynamicContainer<std::unordered_map, std::string, types::Generic*> generics;
-  DynamicContainer<std::unordered_map, std::string, types::TYPE> struct_ids;
-  DynamicContainer<std::map, std::string, types::Type> typedefs;
-  std::unordered_set<std::string> operators;
-  DynamicContainer<std::unordered_map, std::string, int64_t> bin_operators_;
-  DynamicContainer<std::unordered_map, std::string, int64_t> prefix_operators_;
-  DynamicContainer<std::unordered_map, std::string, int64_t> postfix_operators_;
+  /** Variables, owns `VarInfo*` */
+  DynamicContainer<0, std::unordered_map, std::string, VarInfo*> vars;
+  /** Helper, provides variables access by id,
+   * DON'T owns `VarInfo*`,
+   */
+  DynamicContainer<1, std::unordered_map, int64_t, VarInfo*> vars_id;
 
-  DynamicContainer<std::map, types::funcHead, Function*> B_OD_;
-  DynamicContainer<std::map, types::funcHead, Function*> PR_OD_;
-  DynamicContainer<std::map, types::funcHead, Function*> PO_OD_;
-  DynamicContainer<std::map, types::funcHead, Function*> FN_OD_;
+  /** Defined types owns `types::TYPE` (aka `types::TypeInfo*`) */
+  DynamicContainer<2, std::unordered_map, std::string, types::TYPE> types;
+  /** Typedefs (types aliases)` */
+  DynamicContainer<3, std::unordered_map, std::string, types::Type> typedefs;
+  /** Generic types definitions, owns `types::Generic*` */
+  DynamicContainer<4, std::unordered_map, std::string, types::Generic*> generics;
 
-  DynamicContainer<std::map, std::string, Function*> B_OD_NAME_;
-  DynamicContainer<std::map, std::string, Function*> PR_OD_NAME_;
-  DynamicContainer<std::map, std::string, Function*> PO_OD_NAME_;
-  DynamicContainer<std::map, std::string, Function*> FN_OD_NAME_;
+  /** Binary operators priorities */
+  DynamicContainer<5, std::unordered_map, std::string, int64_t> bin_operators;
+  /** Prefix operators priorities */
+  DynamicContainer<6, std::unordered_map, std::string, int64_t>
+      prefix_operators;
+  /** Postfix operators priorities */
+  DynamicContainer<7, std::unordered_map, std::string, int64_t> postfix_operators;
 
-  ScopeInfo(const ScopeInfo* new_parent);
-  ScopeInfo(const ScopeInfo&) = delete;
-  void addParent(const ScopeInfo* new_parent);
+  /** Binary operators, owns `Function*` */
+  DynamicContainer<8, std::map, types::FnHead, Function*> B_OP;
+  /** Prefix operators, owns `Function*` */
+  DynamicContainer<9, std::map, types::FnHead, Function*> PR_OP;
+  /** Postfix operators, owns `Function*` */
+  DynamicContainer<10, std::map, types::FnHead, Function*> PO_OP;
 
-#define MAKE_SCOPE_ACCESS(property, properties, display, container,     \
-                          return_type, access_type)                     \
-  bool contains##property(const access_type& name) const {              \
-    if (container.contains(name)) return true;                          \
-    for (const auto parent : parents) {                                 \
-      bool f = parent->contains##property(name);                        \
-      if (f) return true;                                               \
-    }                                                                   \
-    return false;                                                       \
-  }                                                                     \
-  const return_type& get##property(const access_type& name) const {     \
-    if (container.contains(name)) return container.at(name);            \
-    for (const auto parent : parents)                                   \
-      if (parent->contains##property(name))                             \
-        return parent->get##property(name);                             \
-    throw std::runtime_error(#display " '" + name + "'" +               \
-                             "is not defined in this scope");           \
-  }                                                                     \
-  return_type& get##property(const access_type& name) {                 \
-    return const_cast<return_type&>(                                    \
-        static_cast<const ScopeInfo&>(*this).get##property(name));      \
-  }                                                                     \
-  void set##property(const access_type& name, const return_type& val) { \
-    if (container.contains(name))                                       \
-      throw std::runtime_error(#display " '" + name + "'" +             \
-                               "is already defined in this scope");     \
-    container.emplace(name, val);                                       \
-  }                                                                     \
-  const auto get##properties() { return &container; }
+  /** Last defined binary operator by name, DON'T owns `Function*` */
+  DynamicContainer<11, std::unordered_map, std::string, Function*> last_fn;
 
-#define MAKE_SCOPE_ACCESS_NOMSG(property, properties, display, container,     \
-                                return_type, access_type)                     \
-  bool contains##property(const access_type& name) const {                    \
-    if (container.contains(name)) return true;                                \
-    for (const auto parent : parents) {                                       \
-      bool f = parent->contains##property(name);                              \
-      if (f) return true;                                                     \
-    }                                                                         \
-    return false;                                                             \
-  }                                                                           \
-  const return_type& get##property(const access_type& name) const {           \
-    if (container.contains(name)) return container.at(name);                  \
-    for (const auto parent : parents)                                         \
-      if (parent->contains##property(name))                                   \
-        return parent->get##property(name);                                   \
-    throw std::runtime_error(#display " '" + name + "'" +                     \
-                             "is not defined in this scope");                 \
-  }                                                                           \
-  return_type& get##property(const access_type& name) {                       \
-    return const_cast<return_type&>(                                          \
-        static_cast<const ScopeInfo&>(*this).get##property(name));            \
-  }                                                                           \
-  void set##property(const access_type& name, return_type& val) {             \
-    if (container.contains(name))                                             \
-      throw std::runtime_error(#display " is already defined in this scope"); \
-    container.emplace(name, val);                                             \
+  Scope(const Scope* new_parent);
+  Scope(const Scope&) = delete;
+  Scope(const Scope&&) = delete;
+  void addParent(const Scope* new_parent);
+
+  bool containsOp(const std::string& op_name) {
+    return bin_operators.contains(op_name) ||
+           prefix_operators.contains(op_name) || postfix_operators.contains(op_name);
   }
 
-#define MAKE_SCOPE_ACCESS_OP(property, properties, display, container)        \
-  bool contains##property(const types::funcHead& name) const {                \
-    if (container.contains(name)) return true;                                \
-    for (const auto parent : parents) {                                       \
-      bool f = parent->contains##property(name);                              \
-      if (f) return true;                                                     \
-    }                                                                         \
-    return false;                                                             \
-  }                                                                           \
-  bool contains##property(const std::string& name) const {                    \
-    if (container##NAME_.contains(name)) return true;                         \
-    for (const auto parent : parents) {                                       \
-      bool f = parent->contains##property(name);                              \
-      if (f) return true;                                                     \
-    }                                                                         \
-    return false;                                                             \
-  }                                                                           \
-  const Function*& get##property(const types::funcHead& name) const {         \
-    if (container.contains(name))                                             \
-      return const_cast<const Function*&>(container.at(name));                \
-    for (const auto parent : parents) {                                       \
-      bool b = parent->contains##property(name);                              \
-      if (b) return parent->get##property(name);                              \
-    }                                                                         \
-    throw std::runtime_error(#display " is not defined in this scope");       \
-  }                                                                           \
-  const Function*& get##property(const std::string& name) const {             \
-    if (container##NAME_.contains(name))                                      \
-      return const_cast<const Function*&>(container##NAME_.at(name));         \
-    for (const auto parent : parents) {                                       \
-      bool b = parent->contains##property(name);                              \
-      if (b) return parent->get##property(name);                              \
-    }                                                                         \
-    throw std::runtime_error(#display " is not defined in this scope");       \
-  }                                                                           \
-  Function*& get##property(const types::funcHead& name) {                     \
-    return const_cast<Function*&>(                                            \
-        static_cast<const ScopeInfo&>(*this).get##property(name));            \
-  }                                                                           \
-  Function*& get##property(const std::string& name) {                         \
-    return const_cast<Function*&>(                                            \
-        static_cast<const ScopeInfo&>(*this).get##property(name));            \
-  }                                                                           \
-  void set##property(const types::funcHead& name, Function*& val) {           \
-    if (container.contains(name))                                             \
-      throw std::runtime_error(#display " is already defined in this scope"); \
-    container.emplace(name, val);                                             \
-    container##NAME_.emplace(name.first, val);                                \
+  void setBinOp(const types::FnHead& name, Function*& val) {
+    if (B_OP.contains(name))
+      throw std::runtime_error(
+          "binary_operator is already defined in this scope");
+    B_OP.emplace(name, val);
+    last_fn.emplace(name.name, val);
   }
-
-#define MAKE_SCOPE_ACCESS_SET(property, properties, display, container,       \
-                              access_type)                                    \
-  bool contains##property(const access_type& name) const {                    \
-    if (container.contains(name)) return true;                                \
-    for (const auto parent : parents) {                                       \
-      bool f = parent->contains##property(name);                              \
-      if (f) return true;                                                     \
-    }                                                                         \
-    return false;                                                             \
-  }                                                                           \
-  void set##property(const access_type& name) {                               \
-    if (container.contains(name))                                             \
-      throw std::runtime_error(#display " is already defined in this scope"); \
-    container.emplace(name);                                                  \
-  }                                                                           \
-  const auto get##properties() { return &container; }
-
-  MAKE_SCOPE_ACCESS_OP(BinOp, BinOps, binary_operator, B_OD_);
-  MAKE_SCOPE_ACCESS_OP(PrOp, PrOps, prefix_operator, PR_OD_);
-  MAKE_SCOPE_ACCESS_OP(PoOp, PoOps, postfix_operator, PO_OD_);
-  MAKE_SCOPE_ACCESS_OP(Fn, Fns, function, FN_OD_);
-
-  MAKE_SCOPE_ACCESS_NOMSG(BinOpP, BinOpsP, binary_operator_priority,
-                          bin_operators_, int64_t, std::string);
-  MAKE_SCOPE_ACCESS_NOMSG(PrOpP, PrOpsP, prefix_operator_priority,
-                          prefix_operators_, int64_t, std::string);
-  MAKE_SCOPE_ACCESS_NOMSG(PoOpP, PoOpsP, postfix_operator_priority,
-                          postfix_operators_, int64_t, std::string);
-  MAKE_SCOPE_ACCESS_SET(Op, Ops, operators, operators, std::string);
-
-  bool containsVar(const std::string& name) const {
-    if (vars_name.contains(name)) return true;
-    for (const auto parent : parents) {
-      bool f = parent->containsVar(name);
-      if (f) return true;
-    }
-    return false;
+  void setPrOp(const types::FnHead& name, Function*& val) {
+    if (PR_OP.contains(name))
+      throw std::runtime_error(
+          "prefix_operator is already defined in this scope");
+    PR_OP.emplace(name, val);
+    last_fn.emplace(name.name, val);
   }
-
-  const types::Type& getVarType(const std::string& name) const {
-    if (vars_name.contains(name)) return vars_name.at(name)->type;
-    for (const auto parent : parents)
-      return const_cast<types::Type&>(parent->getVarType(name));
-    throw std::runtime_error("variable '" + name + "'" +
-                             "is not defined in this scope");
+  void setPoOp(const types::FnHead& name, Function*& val) {
+    if (PO_OP.contains(name))
+      throw std::runtime_error(
+          "postfix_operator is already defined in this scope");
+    PO_OP.emplace(name, val);
+    last_fn.emplace(name.name, val);
   }
-
-  types::Type& getVarType(const std::string& name) {
-    return const_cast<types::Type&>(
-        static_cast<const ScopeInfo&>(*this).getVarType(name));
-  }
-
-  const int64_t& getVarId(const std::string& name) const {
-    if (vars_name.contains(name)) return vars_name.at(name)->id;
-    for (const auto parent : parents) {
-      bool b = parent->containsVar(name);
-      if (b) return const_cast<int64_t&>(parent->getVarId(name));
-    }
-    throw std::runtime_error("variable '" + name + "'" +
-                             "is not defined in this scope");
-  }
-
-  bool containsVar(const int64_t& id) const {
-    if (vars_id.contains(id)) return true;
-    for (const auto parent : parents) {
-      bool b = parent->containsVar(id);
-      if (b) return true;
-    }
-    return false;
-  }
-
-  const std::string& getVarName(int64_t id) const {
-    if (vars_id.contains(id)) return vars_id.at(id)->name;
-    for (const auto parent : parents) {
-      bool b = parent->containsVar(id);
-      if (b) return const_cast<std::string&>(parent->getVarName(id));
-    }
-    throw std::runtime_error("variable '" + std::to_string(id) + "'" +
-                             "is not defined in this scope");
-  }
-
-  const VarInfo* const& getVarInfo(int64_t id) const {
-    if (vars_id.contains(id)) return vars_id.at(id);
-    for (const auto parent : parents) {
-      bool b = parent->containsVar(id);
-      if (b) return parent->getVarInfo(id);
-    }
-    throw std::runtime_error("variable '" + std::to_string(id) + "'" +
-                             "is not defined in this scope");
-  }
-
-
-
-  const types::Type& getVarType(const int64_t& id) const {
-    if (vars_id.contains(id)) return vars_id.at(id)->type;
-    for (const auto parent : parents) {
-      bool b = parent->containsVar(id);
-      if (b) return parent->getVarType(id);
-    }
-    throw std::runtime_error("variable '" + std::to_string(id) + "'" +
-                             "is not defined in this scope");
-  }
-
-  types::Type& getVarType(const int64_t& id) {
-    return const_cast<types::Type&>(static_cast<const ScopeInfo&>(*this).
-                                        getVarType(id));
-  }
-
   void setVar(const std::string& name, const types::Type& val) {
-    if (vars_name.contains(name))
+    if (vars.contains(name))
       throw std::runtime_error("variable '" + name + "'" +
                                "is already defined in this scope");
     auto info = new VarInfo{name, val, genId()};
-    vars_name.emplace(name, info);
+    vars.emplace(name, info);
     vars_id.emplace(info->id, info);
   }
 
-  const auto getVars() { return vars_name.get(); }
-
   /** Collects all variables including `last` scope */
-  void collectVars(ScopeInfo* last,
+  void collectVars(Scope* last,
                    std::unordered_map<int64_t, VarInfo*>& push_map) const {
-    // std::cout << sizeof(ScopeInfo) << std::endl;
+    // std::cout << sizeof(Scope) << std::endl;
     for (const auto i : vars_id.get()) push_map.emplace(i);
     if (this == last) return;
     for (const auto parent : parents) parent->collectVars(last, push_map);
   }
+
 };
+
+void to_json(json& j, const Scope& p);
