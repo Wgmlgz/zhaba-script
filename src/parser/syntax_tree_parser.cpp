@@ -626,21 +626,6 @@ ZHModule* parseAST(std::filesystem::path file_path) {
     printCompact(ast_generic);
   }
 
-
-  if (!zhdata.core_module) zhdata.core_module = makeCoreModule();
-  ZHModule* res = new ZHModule(&zhdata.core_module->scope, file_path);
-
-  // if (!parent_module) {
-  //   /* init with default values*/
-  //   res->scope.bin_operators_ = tables::bin_operators;
-  //   res->scope.prefix_operators_ = tables::prefix_operators;
-  //   res->scope.postfix_operators_ = tables::postfix_operators;
-
-  //   res->scope.B_OD_ = tables::B_OD;
-  //   res->scope.PR_OD_ = tables::PR_OD;
-  //   res->scope.operators = tables::operators;
-  // }
-
   zhdata.sttree = res;
   auto cur = main_block->nodes.begin();
 

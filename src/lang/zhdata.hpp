@@ -34,6 +34,10 @@ struct ZHDATA {
   std::list<types::TYPE> structs;
   std::list<Function *> functions;
   Map<IntPtr, Json> json_storage;
+  
+  /** input/output stream for interpreter */
+  std::istream *in = &std::cin;
+  std::ostream *out = &std::cout;
 };
 
 extern ZHDATA zhdata;

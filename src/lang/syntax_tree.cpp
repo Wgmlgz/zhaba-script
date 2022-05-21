@@ -129,21 +129,6 @@ types::Type Function::getFnType() const {
   auto fn_type = types::Type(types::FT, 0, false, false, types);
   return fn_type;
 }
-ZHModule* makeCoreModule() {
-  auto core_module = new ZHModule(nullptr, std::filesystem::current_path());
-
-  /* init with default values*/
-  core_module->scope.bin_operators_ = tables::bin_operators;
-  core_module->scope.prefix_operators_ = tables::prefix_operators;
-  core_module->scope.postfix_operators_ = tables::postfix_operators;
-
-  core_module->scope.B_OD_ = tables::B_OD;
-  core_module->scope.PR_OD_ = tables::PR_OD;
-  core_module->scope.operators = tables::operators;
-  return core_module;
-}
-ZHModule::ZHModule(ScopeInfo *parent_scope, const std::filesystem::path &path)
-    : scope(parent_scope) {}
 
 void to_json(json &j, const Function *fn) {
   j["name"] = fn->name;

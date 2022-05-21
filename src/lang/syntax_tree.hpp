@@ -68,15 +68,5 @@ struct Function {
   [[nodiscard]] types::FnHead getHead() const;
   [[nodiscard]] types::Type getFnType() const;
 
-  [[nodiscard]] types::funcHead getHeadNonRefNonLval() const;
+  [[nodiscard]] types::FnHead getHeadNonRefNonLval() const;
 };
-
-struct ZHModule {
-  ScopeInfo scope;
-
-  TreeNode<std::string> *toGenericTree();
-  ZHModule(ScopeInfo *parent_scope, const std::filesystem::path &path);
-  void saveCache();
-};
-
-ZHModule *makeCoreModule();
