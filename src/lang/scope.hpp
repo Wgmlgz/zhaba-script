@@ -93,7 +93,6 @@ class Scope {
    private:
     const mutable C<K, V>* ptr = nullptr;
     Scope* scope;
-#undef PARENTS
   };
 
  public:
@@ -188,7 +187,6 @@ class Scope {
   /** Collects all variables including `last` scope */
   void collectVars(Scope* last,
                    std::unordered_map<int64_t, VarInfo*>& push_map) const {
-    // std::cout << sizeof(Scope) << std::endl;
     for (const auto i : vars_id.get()) push_map.emplace(i);
     if (this == last) return;
     for (const auto parent : parents) parent->collectVars(last, push_map);
