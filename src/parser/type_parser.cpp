@@ -115,32 +115,27 @@ Type parse(tokeniter &token, const Scope &parent_scope) {
       /** Generate new implementation */
       if (!id) {
         /** Type substitution */
-        if (generic_types.size() != parent_scope.generics.at(str)->names.size())
+        auto generic = parent_scope.generics.at(str);
+        if (generic_types.size() != generic->names.size())
           throw ParserError(
               begin_token, *token,
               "Number of generic types doesn't match: found " +
                   std::to_string(generic_types.size()) + ", but " +
-                  std::to_string(parent_scope.generics.at(str)->names.size()) +
+                  std::to_string(generic->names.size()) +
                   " expected");
 
-        Scope scope(parent_scope.generics.at(str)->scope);
-        for (int i = 0; i < generic_types.size(); ++i) {
-          scope.typedefs.emplace(parent_scope.generics.at(str)->names[i], generic_types[i]);
-        }
-        /** Try generate generic implementation */
-        // for (auto i : parent_scope.generics.at(str)->block->nodes) {
-          // if (dynamic_cast<i>)
-        // }
-        parsePushStruct(name, parent_scope.generics.at(str)->block,
-                        *parent_scope.generics.at(str)->scope, scope);
-        for (auto &block : parent_scope.generics.at(str)->impl_blocks) {
+        Scope &scope = *(new Scope(generic->scope));
+        for (int i = 0; i < generic_types.size(); ++i) 
+          scope.typedefs.emplace(generic->names[i], generic_types[i]);
+        
+        parsePushStruct(name, generic->block, *generic->scope, scope);
+        for (auto &block : generic->impl_blocks) {
           block->reset();
-          auto funcs = parseImpl(
-              block, Type(parent_scope.generics.at(str)->scope->types.at(name)),
-              scope, *parent_scope.generics.at(str)->scope);
+          auto funcs = parseImpl(block, Type(generic->scope->types.at(name)),
+                                 scope, *generic->scope);
           for (auto i : funcs) zhdata.functions.push_back(i);
         }
-        id = parent_scope.generics.at(str)->scope->types.at(name);
+        id = generic->scope->types.at(name);
       }
       res.setType(id);
     }

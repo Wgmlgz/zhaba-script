@@ -306,7 +306,10 @@ Exp *buildExp(Scope &scope, tokeniter begin, tokeniter end) {
       }
     }
 
-    if ((i + 1)->first.base() == nullptr) continue;
+    // if ((i + 1)->first.base() == nullptr){
+    //   std::cout << "WARNING: IMPOSTOR IS VERY SUS!!!!!!!" << std::endl;  
+    //   continue;
+    // } 
 
     if ((i->second == close_p || i->second == undef)) {
       /** Call operator */
@@ -612,7 +615,8 @@ Exp *postprocess(Exp *exp, Scope &scope) {
     } else if (op->val == "->") {
       auto fn_name = "lambda_" + std::to_string(genId());
       auto fn = new Function{fn_name, {}, types::Type()};
-      fn->args_scope = new Scope(&zhdata.sttree->scope);
+      // use global scope because lambdas aren't clojures yet
+      fn->args_scope = new Scope(zhdata.global);
       Scope &args_scope = *fn->args_scope;
 
       /** Process param list */

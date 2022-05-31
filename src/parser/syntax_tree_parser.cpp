@@ -601,8 +601,8 @@ void parceFn(ZHModule* res, Scope& push_scope, ast::ASTLine* line, ast::ASTBlock
 }
 
 ZHModule* parseAST(std::filesystem::path file_path) {
-  if (!zhdata.core_module) zhdata.core_module = makeCoreModule(); 
-  ZHModule* res = new ZHModule(&zhdata.core_module->scope, file_path);
+  if (!zhdata.global) zhdata.global = makeCore();
+  ZHModule* res = new ZHModule(file_path);
 
   std::vector<Token>& tokens = *new std::vector<Token>(tokenizeFile(file_path));
 
@@ -681,15 +681,16 @@ ZHModule* parseAST(std::filesystem::path file_path) {
 
           auto parsed_module = parseAST(file_path);
           res->dependences.push_back(parsed_module->path);
-          res->scope.addParent(&parsed_module->scope);
+          // res->scope.addParent(&parsed_module->scope);
           zhdata.sttree = res;
           zhdata.used_modules[path] = parsed_module;
         } else {
-          if (zhdata.used_modules[path])
-            res->scope.addParent(&zhdata.used_modules[path]->scope);
-          else
+          if (zhdata.used_modules[path]) {
+            // res->scope.addParent(&zhdata.used_modules[path]->scope);
+          } else {
             throw ParserError(*line->begin, *line->end,
-                              "module `" + path + "` isn't avaliable yet");
+                              "module `" + path + "` isn't available yet");
+          }
         }
 
         ++cur;
@@ -705,7 +706,7 @@ ZHModule* parseAST(std::filesystem::path file_path) {
           throw ParserError(*line->end, "Expected identifier token for struct type name");
 
         std::string name = (line->begin + 2)->val;
-        if (res->scope.types.contains(name)) {
+        if (zhdata.global->types.contains(name)) {
           throw ParserError(*line->begin, *line->end,
                             "Type '" + name + "'already exist");
         }
@@ -736,13 +737,13 @@ ZHModule* parseAST(std::filesystem::path file_path) {
           throw ParserError(*line->end, "Expected type body");
         if (isGeneric) {
           try {
-            types::pushGenericType(name, generic, block, &res->scope);
+            types::pushGenericType(name, generic, block, zhdata.global);
           } catch (std::runtime_error err) {
             throw ParserError(*line->begin, *line->end, err.what());
           }
         } else {
           /** Push declared struct */
-          types::parsePushStruct(name, block, res->scope, res->scope);
+          types::parsePushStruct(name, block, *zhdata.global, *zhdata.global);
         }
         ++cur;
       } else if (id == "impl") {
@@ -760,26 +761,26 @@ ZHModule* parseAST(std::filesystem::path file_path) {
 
         auto token = (line->begin + 2);
         auto v = token->val;
-        if (res->scope.generics.contains(token->val)) {
+        if (zhdata.global->generics.contains(token->val)) {
           /** Push generic impl */
-          res->scope.generics.at(token->val)->impl_blocks.push_back(block);
+          zhdata.global->generics.at(token->val)->impl_blocks.push_back(block);
         } else {
           /** Parce regular implementation */
           types::Type type;
           try {
-            type = types::parse(token, res->scope);
+            type = types::parse(token, *zhdata.global);
           } catch (const types::TypeParsingError& err) {
             throw ParserError(*line->begin, *line->end,
                               "Fail to parse impl type");
           }
 
-          auto funcs = parseImpl(block, type, res->scope, res->scope);
+          auto funcs = parseImpl(block, type, *zhdata.global, *zhdata.global);
           for (auto i : funcs) zhdata.functions.push_back(i);
         }
 
         ++cur;
       } else if (id == "op" or id == "lop" or id == "rop" or id == "fn") {
-        parceFn(res, res->scope, line, main_block, cur);
+        parceFn(res, *zhdata.global, line, main_block, cur);
       } else {
         throw ParserError(*line->begin, "Expected declaration");
       }
