@@ -40,6 +40,7 @@ void parsePushStruct(const std::string &name, ast::ASTBlock *block,
           throw ParserError(*i, "Member '" + member_name + "'already exist");
         }
         struct_info.members[member_name] = cur_type;
+        struct_info.members_in_order.push_back(member_name);
       }
     } else {
       throw ParserError("Unexprected block");

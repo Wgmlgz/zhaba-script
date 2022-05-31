@@ -8,14 +8,14 @@ int getLabel() {
 }
 
 size_t getSize(zhin::ByteCode& bytecode, const types::Type& slf) {
-  return (slf.getPtr() || slf.getRef()) ? 8 : bytecode.sizes[slf.getTypeId()];
+  return (slf.getPtr() || slf.getRef()) ? 8 : bytecode.sizes.at(slf.getTypeId());
 }
-size_t etSizeNonRef(zhin::ByteCode& bytecode, const types::Type& slf) {
-  return (slf.getPtr()) ? 8 : bytecode.sizes[slf.getTypeId()];
+size_t getSizeNonRef(zhin::ByteCode& bytecode, const types::Type& slf) {
+  return (slf.getPtr()) ? 8 : bytecode.sizes.at(slf.getTypeId());
 }
 size_t getSizeNonPtr(zhin::ByteCode& bytecode, const types::Type& slf) {
   return (slf.getPtr() > 1 or slf.getRef()) ? 8
-                                            : bytecode.sizes[slf.getTypeId()];
+                                            : bytecode.sizes.at(slf.getTypeId());
 }
 
 int pushLiteral(zhin::ByteCode& bytecode, const byte* begin, const byte* end,
@@ -110,7 +110,7 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
       bytecode.popBytes(5);
       expToB(bytecode, op->rhs, funcdata);
       bytecode.pushVal(zhin::instr::assign);
-      bytecode.pushVal((int32_t)(etSizeNonRef(bytecode, op->lhs->type)));
+      bytecode.pushVal((int32_t)(getSizeNonRef(bytecode, op->lhs->type)));
     } else if (op->val == ".") {
       expToB(bytecode, op->lhs, funcdata);
 
@@ -128,7 +128,7 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
       bytecode.pushVal((int32_t)(getSize(bytecode, op->type)));
       if (op->type.getRef()) {
         bytecode.pushVal(zhin::instr::deref);
-        bytecode.pushVal((int32_t)(etSizeNonRef(bytecode, op->type)));
+        bytecode.pushVal((int32_t)(getSizeNonRef(bytecode, op->type)));
       }
     } else if (op->val == ".call.call" && op->lhs->type.isFn()) {
       auto rhs_tuple = castToTuple(op->rhs);
@@ -216,7 +216,7 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
         bytecode.pushVal(zhin::instr::call);
         if (op->type.getRef()) {
           bytecode.pushVal(zhin::instr::deref);
-          bytecode.pushVal((int32_t)(etSizeNonRef(bytecode, op->type)));
+          bytecode.pushVal((int32_t)(getSizeNonRef(bytecode, op->type)));
         }
       }
     }
@@ -354,7 +354,7 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
       bytecode.pushVal(zhin::instr::call);
       if (op->type.getRef()) {
         bytecode.pushVal(zhin::instr::deref);
-        bytecode.pushVal((int32_t)(etSizeNonRef(bytecode, op->type)));
+        bytecode.pushVal((int32_t)(getSizeNonRef(bytecode, op->type)));
       }
     }
   } else if (auto var = dynamic_cast<zhexp::Variable*>(exp)) {
@@ -365,7 +365,7 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
       bytecode.pushVal((int32_t)(getSize(bytecode, var->type)));
     }
     bytecode.pushVal(zhin::instr::deref);
-    bytecode.pushVal((int32_t)(etSizeNonRef(bytecode, var->type)));
+    bytecode.pushVal((int32_t)(getSizeNonRef(bytecode, var->type)));
   } else if (auto op = dynamic_cast<zhexp::PostfixOperator*>(exp)) {
     argsToB(bytecode, op->child, op->func->getHead().types, funcdata);
     bytecode.pushVal(zhin::instr::push_32);
@@ -373,7 +373,7 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
     bytecode.pushVal(zhin::instr::call);
     if (op->type.getRef()) {
       bytecode.pushVal(zhin::instr::deref);
-      bytecode.pushVal((int32_t)(etSizeNonRef(bytecode, op->type)));
+      bytecode.pushVal((int32_t)(getSizeNonRef(bytecode, op->type)));
     }
   } else if (auto tuple = dynamic_cast<zhexp::Tuple*>(exp)) {
     for (int i = 0; i < tuple->content.size(); ++i) {
@@ -563,11 +563,22 @@ void funcToB(zhin::ByteCode& bytecode, Function* func) {
 
 void toB(zhin::ByteCode& bytecode, ZHModule* block) {
   /** Structs members offsets calculation */
-  for (const auto& struct_info : zhdata.structs) {
+  std::vector<std::pair<size_t, types::TYPE>> order;
+
+  for (const auto& info : zhdata.structs) {
+    if (info->builtin) continue;
+    order.emplace_back(info->order, info);
+  }
+
+  std::sort(order.begin(), order.end(),
+            [](auto& lhs, auto& rhs) { return lhs.first < rhs.first; });
+
+  for (auto [_, struct_info] : order) {
     if (struct_info->builtin) continue;
     int offset = 0;
     auto& struct_map = bytecode.structs_members_offsets[struct_info];
-    for (const auto& [member_name, member_type]: struct_info->members) {
+    for (const auto& member_name : struct_info->members_in_order) {
+      const auto& member_type = struct_info->members.at(member_name);
       struct_map[member_name] = offset;
       offset += getSize(bytecode, member_type);
     }

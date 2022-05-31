@@ -89,6 +89,7 @@ class Type {
 
 struct TypeInfo {
   std::map<std::string, Type> members;
+  std::vector<std::string> members_in_order;
   std::string name = "undefined_type_name";
 
   bool complete = false;
