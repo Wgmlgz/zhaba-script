@@ -62,23 +62,26 @@ i64 alloc(i64 size) {
   return (i64)ptr;
 }
 
-char *inputString(){
-    size_t size = 10;
-    char *str;
-    int ch;
-    size_t len = 0;
-    str = realloc(NULL, sizeof(*str)*size);
-    if(!str)return str;
-    while(EOF!=(ch=fgetc(stdin)) && ch != '\n'){
-        str[len++]=ch;
-        if(len==size){
-            str = realloc(str, sizeof(*str)*(size+=16));
-            if(!str)return str;
-        }
+char *inputString() {
+  size_t size = 10;
+  char *str;
+  int ch;
+  size_t len = 0;
+  str = realloc(NULL, sizeof(*str)*size);
+  if(!str)return str;
+  while(EOF!=(ch=fgetc(stdin)) && ch != '\n'){
+    str[len++]=ch;
+    if (len==size) {
+      str = realloc(str, sizeof(*str)*(size+=16));
+      if(!str) return str;
     }
-    str[len++]='\0';
-
-    return realloc(str, sizeof(*str)*len);
+  }
+  str[len++]='\0';
+  return realloc(str, sizeof(*str)*len);
+}
+void panic(char* str) {
+  printf("%s", str);
+  exit(EXIT_FAILURE);
 }
 )";
 
@@ -115,8 +118,8 @@ res += "}\n";
     auto id = i;
     res += structHead2C(id);
     res += ";\n";
-    res += "typedef struct __PROT_ZH_TYPE_" + id2C(id->name);
-    res += " __ZH_TYPE_" + id2C(id->name);
+    res += "typedef struct PROT_" + id2C(id->name);
+    res += " " + id2C(id->name);
     res += ";\n";
   }
 
@@ -136,6 +139,7 @@ res += "}\n";
 
   for (auto i : zhdata.functions) {
     res += func2C(i);
+    res += "\n";
   }
   return res;
 }
@@ -158,7 +162,7 @@ std::string type2C(const types::Type& type, std::string name = "") {
   } else if (type.getTypeId()->builtin) {
     res += tables::cpp_type_names.at(type.getTypeId());
   } else {
-    res += id2C("__ZH_TYPE_" + type.getTypeId()->name);
+    res += id2C("" + type.getTypeId()->name);
   }
   res += std::string(type.getPtr(), '*');
   if (type.getRef()) res += "*";
@@ -175,8 +179,8 @@ std::string func2C(const Function& head) {
   return res;
 }
 
-std::string bop2C(const Function& head) { return "__ZH_BOP_" + func2C(head); }
-std::string lop2C(const Function& head) { return "__ZH_LOP_" + func2C(head); }
+std::string bop2C(const Function& head) { return "ZH_BOP_" + func2C(head); }
+std::string lop2C(const Function& head) { return "ZH_LOP_" + func2C(head); }
 std::string rop2C(const Function& head) { return "__ZH_ROP_" + func2C(head); }
 
 std::string bop2C(const Function* head) {
@@ -596,19 +600,19 @@ std::string funcHead2FnPtr(Function* func) {
 std::string func2C(Function* fn) {
   bool is_void = fn->type.getTypeId() == types::voidT;
   std::string res = funcHead2C(fn) + (is_void ? "" : " {") +
-                    block2C(fn->body, fn) + (is_void ? "" : ";");
+                    block2C(fn->body, fn);
   if (!is_void) {
     /** Emergency exit */
-    res += "printf(\"%s\", \"reached function end without returning anything ";
+    res += " panic(\"reached function end without returning anything ";
     res += fn->toUniqueStr();
-    res += "\\n\"); exit(EXIT_FAILURE);}";
+    res += "\\n\");}";
   }
   res += "\n";
   return res;
 }
 
 std::string structHead2C(types::TYPE id) {
-  return "struct __PROT_ZH_TYPE_" + id2C(id->name);
+  return "struct PROT_" + id2C(id->name);
 }
 
 std::string struct2C(types::TYPE id) {
