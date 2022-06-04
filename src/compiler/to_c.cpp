@@ -2,37 +2,13 @@
 
 size_t tab_size = 2;
 
-
 std::string id2C(const std::string& str) {
-  std::string ans;
-  for (auto ch : str) {
-    if (std::isalpha(ch)) ans += ch;
-    else if (std::isdigit(ch)) ans += ch;
-    else if (ch == '_')  ans += ch;
-    else if (ch == '.')  ans += "_dot";
-    else if (ch == '+')  ans += "_plus";
-    else if (ch == '-')  ans += "_minus";
-    else if (ch == '*')  ans += "_asterisk";
-    else if (ch == '\\') ans += "_backslash";
-    else if (ch == '/')  ans += "_slash";
-    else if (ch == '%')  ans += "_percent";
-    else if (ch == '<')  ans += "_less";
-    else if (ch == '>')  ans += "_greater";
-    else if (ch == '=')  ans += "_equal";
-    else if (ch == '^')  ans += "_caret";
-    else if (ch == '&')  ans += "_ampersand";
-    else if (ch == ':')  ans += "_colon";
-    else if (ch == '|')  ans += "_pipe";
-    else if (ch == '!')  ans += "_exclamation";
-    else if (ch == '#')  ans += "_hash";
-    else if (ch == '$')  ans += "_dollar";
-    else if (ch == '@')  ans += "_at";
-    else if (ch == '?')  ans += "_question";
-    else if (ch == '~')  ans += "_tilda";
-    else if (ch == ',')  ans += "_comma";
-    else if (ch == ' ')  ans += "_space";
-    else throw std::runtime_error(std::string("cannot use '") + ch + "'");
-  }
+  static std::unordered_map<std::string, std::string> cache;
+
+  if (cache.contains(str)) return cache.at(str) + "/*" + str + "*/";
+  
+  std::string ans = "id_" + std::to_string(genId());
+  cache.emplace(str, ans);
   return ans;
 }
 
@@ -85,26 +61,26 @@ void panic(char* str) {
 }
 )";
 
-#define MAKE_ABOBA(name, type, mod)  \
-res += #type " " #name"() {\n";                      \
-res +=  "  " #type " tmp;\n"     ;                    \
-res +=  "  scanf(" #mod ", &tmp);\n" ;                 \
-res +=  "  return tmp;\n"          ;               \
-res += "}\n";
+#define MAKE_SCAN(name, type, mod)     \
+  res += #type " " #name "() {\n";     \
+  res += "  " #type " tmp;\n";         \
+  res += "  scanf(" #mod ", &tmp);\n"; \
+  res += "  return tmp;\n";            \
+  res += "}\n";
 
-  MAKE_ABOBA(in_i8, i8, "%i")
-  MAKE_ABOBA(in_i16, i16, "%i")
-  MAKE_ABOBA(in_i32, i32, "%i")
-  MAKE_ABOBA(in_i64, i64, "%i")
-  MAKE_ABOBA(in_u8, u8, "%i")
-  MAKE_ABOBA(in_u16, u16, "%i")
-  MAKE_ABOBA(in_u32, u32, "%i")
-  MAKE_ABOBA(in_u64, u64, "%i")
-  MAKE_ABOBA(in_char, char, "%i")
-  MAKE_ABOBA(in_str, char*, "%s")
-  MAKE_ABOBA(in_bool, bool, "%i")
-  MAKE_ABOBA(in_f32, float, "%f")
-  MAKE_ABOBA(in_f64, double, "%lf")
+  MAKE_SCAN(in_i8, i8, "%i")
+  MAKE_SCAN(in_i16, i16, "%i")
+  MAKE_SCAN(in_i32, i32, "%i")
+  MAKE_SCAN(in_i64, i64, "%i")
+  MAKE_SCAN(in_u8, u8, "%i")
+  MAKE_SCAN(in_u16, u16, "%i")
+  MAKE_SCAN(in_u32, u32, "%i")
+  MAKE_SCAN(in_u64, u64, "%i")
+  MAKE_SCAN(in_char, char, "%i")
+  MAKE_SCAN(in_str, char*, "%s")
+  MAKE_SCAN(in_bool, bool, "%i")
+  MAKE_SCAN(in_f32, float, "%f")
+  MAKE_SCAN(in_f64, double, "%lf")
 
   std::vector<std::pair<size_t, types::TYPE>> order;
   for (const auto& info : zhdata.structs) {
@@ -162,7 +138,7 @@ std::string type2C(const types::Type& type, std::string name = "") {
   } else if (type.getTypeId()->builtin) {
     res += tables::cpp_type_names.at(type.getTypeId());
   } else {
-    res += id2C("" + type.getTypeId()->name);
+    res += id2C(type.getTypeId()->name);
   }
   res += std::string(type.getPtr(), '*');
   if (type.getRef()) res += "*";
@@ -170,18 +146,12 @@ std::string type2C(const types::Type& type, std::string name = "") {
 }
 
 std::string func2C(const Function& head) {
-  std::string res;
-  res += id2C(head.name);
-  res += "_";
-  for (const auto& i : head.args) {
-    res += id2C(i.type.toString());
-  }
-  return res;
+  return id2C(head.toUniqueStr());
 }
 
-std::string bop2C(const Function& head) { return "ZH_BOP_" + func2C(head); }
-std::string lop2C(const Function& head) { return "ZH_LOP_" + func2C(head); }
-std::string rop2C(const Function& head) { return "__ZH_ROP_" + func2C(head); }
+std::string bop2C(const Function& head) { return func2C(head); }
+std::string lop2C(const Function& head) { return func2C(head); }
+std::string rop2C(const Function& head) { return func2C(head); }
 
 std::string bop2C(const Function* head) {
   if (!head) throw std::runtime_error("null head bop");
@@ -274,7 +244,7 @@ std::string exp2C(zhexp::Exp* exp) {
       }
       res += exp2C(op->lhs);
       res += ")->";
-      res += static_cast<zhexp::IdLiteral*>(op->rhs)->val;
+      res += id2C(static_cast<zhexp::IdLiteral*>(op->rhs)->val);
     } else if (op->val == ".call.call" && op->lhs->type.isFn()) {
       res += "(*";
       res += exp2C(op->lhs);
@@ -484,13 +454,14 @@ std::string block2C(STBlock* block, Function* fn, size_t depth) {
     res += std::string((depth+1) * tab_size , ' ');
     if (varInfo->type.isFn()) {
       res += type2C(varInfo->type, "v" + std::to_string(varInfo->id));
-      res += ";\n";
+      res += ";";
     } else {
       res += type2C(varInfo->type);
       res += " ";
       res += "v" + std::to_string(varInfo->id);
-      res += ";\n";
+      res += ";";
     }
+    res += " /*" + name + "*/\n"; 
   }
 
   for (auto& i : block->nodes) {
@@ -544,10 +515,10 @@ std::string node2C(STNode* node, Function* fn, size_t depth) {
 };
 
 std::string funcName2C(Function* func) {
-  return (func->op_type == OpType::bin
+  return func->op_type == OpType::bin
               ? bop2C(func)
               : (func->op_type == OpType::lhs ? lop2C(func)
-                                                        : rop2C(func)));
+                                                        : rop2C(func));
 }
 
 std::string funcHead2C(Function* func) {
