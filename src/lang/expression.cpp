@@ -143,11 +143,11 @@ PostfixOperator::PostfixOperator(const Token &new_begin, const Token &new_end,
     : UnaryOperator(new_begin, new_end, std::move(new_val),
                     new_child) {}
 
-void castTreeToTupleDfs(Exp *exp, Tuple *&tuple) {
+void castTreeToTupleDfs(Exp *exp, Tuple *&tuple, bool ignore) {
   if (auto op = dynamic_cast<BinOperator *>(exp)) {
-    if (op->val == ",") {
-      castTreeToTupleDfs(op->lhs, tuple);
-      castTreeToTupleDfs(op->rhs, tuple);
+    if (op->val == "," && (op->parentheses_tag == '(' || ignore)) {
+      castTreeToTupleDfs(op->lhs, tuple, false);
+      castTreeToTupleDfs(op->rhs, tuple, false);
       return;
     }
   }

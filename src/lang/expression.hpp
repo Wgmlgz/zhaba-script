@@ -123,7 +123,7 @@ struct PostfixOperator : public UnaryOperator {
                   std::string new_val, Exp *new_child);
 };
 
-void castTreeToTupleDfs(Exp *exp, Tuple *&tuple);
+void castTreeToTupleDfs(Exp *exp, Tuple *&tuple, bool ignore = true);
 
 Tuple *castTreeToTuple(Exp *exp);
 

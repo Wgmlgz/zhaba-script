@@ -192,6 +192,7 @@ Exp *buildExp(Scope &scope, tokeniter begin, tokeniter end) {
       auto tag = i->first->val.front();
       if (tag == '}') tag = '{';
       if (tag == ']') tag = '[';
+      if (tag == '(') tag = '(';
 
       parentheses_tags.emplace(preprocessed.size(), tag);
       preprocessed.emplace_back(nullptr, i->second);
@@ -592,12 +593,12 @@ Exp *postprocess(Exp *exp, Scope &scope) {
           for (auto& i : tuple->content) {
             if (auto id_l = dynamic_cast<IdLiteral *>(i)) {
               res_tuple->content.push_back(new BinOperator(
-                  op->begin, op->end,
-                  ":=", new IdLiteral(op->begin, op->end, id_l->val),
+                  i->begin, i->end,
+                  ":=", new IdLiteral(i->begin, i->end, id_l->val),
                   new BinOperator(
-                      op->begin, op->end, ".",
-                      new IdLiteral(op->begin, op->end, tmp_name),
-                      new IdLiteral(op->begin, op->end, id_l->val))));
+                      i->begin, i->end, ".",
+                      new IdLiteral(i->begin, i->end, tmp_name),
+                      new IdLiteral(i->begin, i->end, id_l->val))));
             } else {
               throw ParserError(i->begin, i->end,
                                 "Expected id literal");
@@ -612,17 +613,11 @@ Exp *postprocess(Exp *exp, Scope &scope) {
           size_t id = -1;
           for (auto &i : tuple->content) {
             ++id;
-            if (auto id_l = dynamic_cast<IdLiteral *>(i)) {
-              res_tuple->content.push_back(new BinOperator(
-                  op->begin, op->end,
-                  ":=", new IdLiteral(op->begin, op->end, id_l->val),
-                  new BinOperator(
-                      op->begin, op->end, ".call.at",
-                      new IdLiteral(op->begin, op->end, tmp_name),
-                      new I64Literal(op->begin, op->end, id))));
-            } else {
-              throw ParserError(i->begin, i->end, "Expected id literal");
-            }
+            res_tuple->content.push_back(new BinOperator(
+                op->begin, op->end, ":=", i,
+                new BinOperator(op->begin, op->end, ".call.at",
+                                new IdLiteral(op->begin, op->end, tmp_name),
+                                new I64Literal(op->begin, op->end, id))));
           }
         }
         return postprocess(res_tuple, scope);
