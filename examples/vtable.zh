@@ -28,5 +28,5 @@ fn main
   v[1] = new Child2() as VTableP
 
   @ i v
-    t := (*i).f
+    t := i.f
     t()

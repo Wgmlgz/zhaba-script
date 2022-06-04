@@ -160,7 +160,7 @@ impl AVLTree
 
   fn Vec<T> call
     v := Vec<T>()
-    @ i, *slf: v += *i
+    @ i, *slf: v += i
     <<< v
 
   /** pretty-print */

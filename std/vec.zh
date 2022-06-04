@@ -110,7 +110,7 @@ impl Vec
   /**  Overloaded operators */
   op 17 += Vec<T>R slf T val: slf.push_back(val)
   op 17 += Vec<T>R slf Vec<T>R other
-    @ i other: slf.push_back(*i)
+    @ i 0..other.size: slf.push_back(other.at(i))
 
   op 2 Vec<T> ,, T a T b
     slf := Vec<T>()

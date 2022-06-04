@@ -7,8 +7,32 @@
 use operators
 use util
 
-/** for types only */
 type Range T: T begin end
+
+type RangeIter T: T val
+
+type RangeIterRange T: RangeIter<T> begin end 
+
+impl RangeIter
+  fn ctor T val
+    RangeIter<T> slf
+    slf.val = val
+    <<< slf
+  lop ++ RangeIter<T>R slf
+    ++slf.val
+  lop T * RangeIter<T> slf: <<< slf.val
+  op 10 bool != RangeIter<T> a RangeIter<T> b: <<< a.val != b.val
+
+
+impl RangeIterRange
+  fn RangeIter<T> begin: <<< slf.begin
+  fn RangeIter<T> end: <<< slf.end
+  fn ctor RangeIter<T> begin RangeIter<T> end
+    RangeIterRange<T> slf
+    slf.begin = begin
+    slf.end = end
+    <<< slf
+
 
 impl Range
   fn T begin: <<< slf.begin
@@ -46,7 +70,8 @@ impl Range
     ? r.begin < r.end: <<< r.begin <= i && i < r.end
     \ <<< r.end <= i && i < r.begin
 
-  lop Range<T> iter Range<T> r: <<< r
+  lop RangeIterRange<T> iter Range<T> r
+    <<< RangeIterRange<T>(RangeIter<T>(r.begin) RangeIter<T>(r.end))
 
 fn rangeMaker
   Range<i8> a
@@ -54,3 +79,9 @@ fn rangeMaker
   Range<i32> c
   Range<i64> d
   Range<char> e
+
+  RangeIterRange<i8> a1
+  RangeIterRange<i16> b1
+  RangeIterRange<i32> c1
+  RangeIterRange<i64> d1
+  RangeIterRange<char> e1

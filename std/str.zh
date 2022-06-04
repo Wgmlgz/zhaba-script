@@ -15,7 +15,6 @@ type Str
   Vec<char> data
   int size
 
-
 impl Str
   fn ctor
     Str slf
@@ -110,10 +109,10 @@ op 5 Str * str s int i
 
 lop Str $ str s: <<< Str(s)
 
-lop up StrR s
-  @ i s: ? *i == chr'a'..=chr'z': *i = *i+chr'A'-chr'a'
+// lop up StrR s
+//   @ i s: ? i == chr'a'..=chr'z': i = i+chr'A'-chr'a'
 
-lop low StrR s
-  @ i s: ? *i == chr'A'..=chr'Z': *i = *i-chr'A'+chr'a'
+// lop low StrR s
+//   @ i s: ? i == chr'A'..=chr'Z': i = i-chr'A'+chr'a'
   
 lop VecIterRange<char> iter str s: <<< iter Str(s)

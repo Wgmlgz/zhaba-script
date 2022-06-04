@@ -54,11 +54,11 @@ impl Map
   /** Output overload */
   fn print 
     out '{'
-    @ i slf.tree
+    @ {key val} slf.tree
       put '  '
-      put (*i).key
+      put key
       put ': '
-      out (*i).val
+      out val
     put '}'
   lop put Map<K V>R slf: slf.print()
   lop out Map<K V>R slf: slf.print(); out ''
