@@ -9,7 +9,9 @@ namespace zhexp {
 struct Exp {
   const Token &begin, &end;
   types::Type type;
+  char parentheses_tag = '(';
   Exp(const Token &new_begin, const Token &new_end);
+
   virtual ~Exp();
   virtual std::string toString();
 };

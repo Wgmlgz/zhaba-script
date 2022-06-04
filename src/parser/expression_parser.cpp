@@ -46,6 +46,8 @@ void copyExp(Exp *&exp, Scope &scope) {
  * @param exp is postprocessed
  */
 Exp* makeLval(Exp*& exp, Scope& scope) {
+  // if (exp->type.getLval()) return exp;
+
   auto type = exp->type;
   auto type_ptr = type;
   type_ptr.setPtr(type_ptr.getPtr() + 1);
@@ -168,7 +170,10 @@ Exp *buildExp(Scope &scope, tokeniter begin, tokeniter end) {
 
   /** Create implicit `,` and call operators */
   std::vector<std::pair<Exp *, TOKEN_TYPE>> preprocessed;
+  std::unordered_map<size_t, char> parentheses_tags;
+
   preprocessed.emplace_back(nullptr, open_p);
+
   for (auto i = raw.begin() + 1; i != raw.end() - 1; ++i) {
     if (i->second == pr_op) {
       preprocessed.emplace_back(
@@ -184,17 +189,22 @@ Exp *buildExp(Scope &scope, tokeniter begin, tokeniter end) {
                           nullptr),
           i->second);
     } else if (i->second == open_p || i->second == close_p) {
+      auto tag = i->first->val.front();
+      if (tag == '}') tag = '{';
+      if (tag == ']') tag = '[';
+
+      parentheses_tags.emplace(preprocessed.size(), tag);
       preprocessed.emplace_back(nullptr, i->second);
     } else {
       auto &iter = *i->first;
       bool skip = false;
 
       try {
-        auto tmp_tokeniter = i->first;
+        auto tmp_token_iter = i->first;
         auto pos = iter.pos;
-        auto type = types::parse(tmp_tokeniter, scope);
+        auto type = types::parse(tmp_token_iter, scope);
         preprocessed.emplace_back(new TypeLiteral(iter, iter, type), i->second);
-        while (i != raw.end() - 1 && i->first < tmp_tokeniter) ++i;
+        while (i != raw.end() - 1 && i->first < tmp_token_iter) ++i;
         --i;
         skip = true;
       } catch (const types::TypeParsingError &err) {
@@ -306,11 +316,6 @@ Exp *buildExp(Scope &scope, tokeniter begin, tokeniter end) {
       }
     }
 
-    // if ((i + 1)->first.base() == nullptr){
-    //   std::cout << "WARNING: IMPOSTOR IS VERY SUS!!!!!!!" << std::endl;  
-    //   continue;
-    // } 
-
     if ((i->second == close_p || i->second == undef)) {
       /** Call operator */
       if ((i + 1)->second == open_p)
@@ -333,7 +338,9 @@ Exp *buildExp(Scope &scope, tokeniter begin, tokeniter end) {
   preprocessed.emplace_back(nullptr, close_p);
 
   std::vector<std::pair<Exp*, TOKEN_TYPE>> stack, res;
+  size_t i = -1;
   for (auto &[iter, type] : preprocessed) {
+    ++i;
     if (type == open_p) {
       stack.emplace_back(iter, type);
     } else if (type == close_p) {
@@ -345,6 +352,9 @@ Exp *buildExp(Scope &scope, tokeniter begin, tokeniter end) {
         res.emplace_back(stack.back());
         stack.pop_back();
       }
+
+      if (parentheses_tags.contains(i))
+        res.back().first->parentheses_tag = parentheses_tags.at(i);
     } else if (type == pr_op) {
       stack.emplace_back(iter, type);
     } else if (type == po_op) {
@@ -530,31 +540,92 @@ Exp *postprocess(Exp *exp, Scope &scope) {
       }
       copyExp(op->rhs, scope);
     }
-      /** Variable creation & assingment */
+
+    /** Variable creation & assignment */
     else if (op->val == ":=") {
-      op->rhs = postprocess(op->rhs, scope);
-      if (auto id_l = dynamic_cast<IdLiteral *>(op->lhs)) {
-        if (op->rhs->type.getTypeId() == types::voidT)
-          throw ParserError(op->begin, op->rhs->end, "Variable type cannot be void");
+      auto tag = op->lhs->parentheses_tag;
+      if (tag == '(') {
+        op->rhs = postprocess(op->rhs, scope);
+        if (auto id_l = dynamic_cast<IdLiteral *>(op->lhs)) {
+          if (op->rhs->type.getTypeId() == types::voidT)
+            throw ParserError(op->begin, op->rhs->end,
+                              "Variable type cannot be void");
+          try {
+            scope.setVar(id_l->val, op->rhs->type.nonRefClone());
+          } catch (const std::runtime_error &err) {
+            throw ParserError(op->begin, op->rhs->end, err.what());
+          }
+          scope.vars.at(id_l->val)->type.setLval(true);
 
-        try {
-          scope.setVar(id_l->val, op->rhs->type.nonRefClone());
-        } catch (const std::runtime_error &err) {
-          throw ParserError(op->begin, op->rhs->end, err.what());
+          auto tmp = new Variable(op->lhs->begin, op->lhs->end, id_l->val,
+                                  scope.vars.at(id_l->val)->type,
+                                  scope.vars.at(id_l->val)->id);
+          tmp->type = scope.vars.at(id_l->val)->type;
+          op->lhs = tmp;
+          op->val = "=";
+          op->type = types::Type(types::voidT);
+
+          copyExp(op->rhs, scope);
+        } else {
+          throw ParserError(op->lhs->begin, op->lhs->end,
+                            "Expected id literal");
         }
-        scope.vars.at(id_l->val)->type.setLval(true) ;
-
-        auto tmp = new Variable(op->lhs->begin, op->lhs->end, id_l->val,
-                                scope.vars.at(id_l->val)->type,
-                                scope.vars.at(id_l->val)->id);
-        tmp->type = scope.vars.at(id_l->val)->type;
-        op->lhs = tmp;
-        op->val = "=";
-        op->type = types::Type(types::voidT);
-
-        copyExp(op->rhs, scope);
       } else {
-        throw ParserError(op->lhs->begin, op->lhs->end, "Expected id literal");
+        auto tuple = castTreeToTuple(op->lhs);
+
+        auto res_tuple = new Tuple(op->begin, op->end, {});
+        auto tmp_name = "tmp_destructured_" + std::to_string(genId());
+
+        res_tuple->content.push_back(
+          new BinOperator(
+            op->begin, op->end,
+            ":=", 
+            new IdLiteral(op->begin, op->end, tmp_name),
+            op->rhs
+          )
+        );
+        /** Named destructuring
+         *  {a b c} := t
+         *  (tmp:=t),(a:=tmp.a),(b:=tmp.b),(c:=tmp.c)
+         */
+        if (tag == '{') {
+          for (auto& i : tuple->content) {
+            if (auto id_l = dynamic_cast<IdLiteral *>(i)) {
+              res_tuple->content.push_back(new BinOperator(
+                  op->begin, op->end,
+                  ":=", new IdLiteral(op->begin, op->end, id_l->val),
+                  new BinOperator(
+                      op->begin, op->end, ".",
+                      new IdLiteral(op->begin, op->end, tmp_name),
+                      new IdLiteral(op->begin, op->end, id_l->val))));
+            } else {
+              throw ParserError(i->begin, i->end,
+                                "Expected id literal");
+            }
+          }
+        }
+        /** Destructuring by index
+         *  [a b c] := t
+         *  (tmp:=t),(a:=tmp[0]),(b:=tmp[1]),(c:=tmp[2])
+         */
+        else if (tag == '[') {
+          size_t id = -1;
+          for (auto &i : tuple->content) {
+            ++id;
+            if (auto id_l = dynamic_cast<IdLiteral *>(i)) {
+              res_tuple->content.push_back(new BinOperator(
+                  op->begin, op->end,
+                  ":=", new IdLiteral(op->begin, op->end, id_l->val),
+                  new BinOperator(
+                      op->begin, op->end, ".call.at",
+                      new IdLiteral(op->begin, op->end, tmp_name),
+                      new I64Literal(op->begin, op->end, id))));
+            } else {
+              throw ParserError(i->begin, i->end, "Expected id literal");
+            }
+          }
+        }
+        return postprocess(res_tuple, scope);
       }
     }
     /** Member access */
@@ -869,6 +940,7 @@ Exp *postprocess(Exp *exp, Scope &scope) {
     op->child = postprocess(op->child, scope);
 
     if (op->val == "&") {
+      makeLval(op->child, scope);
       if (!op->child->type.getLval() && !op->child->type.getRef())
         throw ParserError(op->begin, op->end, "Cannot get ptr of rval");
       exp->type = op->child->type;
