@@ -1,0 +1,29 @@
+type Option T
+  bool none
+  T some
+
+type Some T: bool unused
+impl Some
+  fn Option<T> ctor T val
+    Option<T> slf
+    slf.none = fls
+    slf.some = val
+    <<< slf
+
+type None T: bool unused
+impl None
+  fn Option<T> ctor
+    Option<T> slf
+    slf.none = tru
+    <<< slf
+
+impl Option
+  lop put Option<T> slf
+    ? slf.none: put 'None'
+    \ put slf.some
+  lop out Option<T> slf: put slf; out ''
+  fn ctor: <<< None<T>()
+  op 9 bool < Option<T>R a Option<T>R b
+    ? a.none: <<< tru
+    ? b.none: <<< tru
+    <<< a.some < b.some
