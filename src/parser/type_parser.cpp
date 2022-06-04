@@ -7,7 +7,6 @@ void parsePushStruct(const std::string &name, ast::ASTBlock *block,
   if (!block) throw std::runtime_error("null block passed to parseStruct :(");
   const auto id = static_cast<types::TYPE>(new types::TypeInfo());
   write_scope.types.emplace(name, id);
-  zhdata.structs.emplace_back(id);
   auto& struct_info = *id;
   struct_info.name = name;
 
@@ -46,6 +45,7 @@ void parsePushStruct(const std::string &name, ast::ASTBlock *block,
       throw ParserError("Unexprected block");
     }
   }
+  zhdata.structs.emplace_back(id);
   struct_info.complete = true;
   struct_info.order = zhdata.structs.size();
 }
