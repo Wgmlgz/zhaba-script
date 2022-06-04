@@ -6,7 +6,7 @@ std::string id2C(const std::string& str) {
   static std::unordered_map<std::string, std::string> cache;
 
   if (cache.contains(str)) return cache.at(str) + "/*" + str + "*/";
-  
+
   std::string ans = "id_" + std::to_string(genId());
   cache.emplace(str, ans);
   return ans;
@@ -591,7 +591,7 @@ std::string struct2C(types::TYPE id) {
   res += " {\n";
   for (const auto& [name, type] : id->members) {
     res += "  " +
-           (type.isFn() ? type2C(type, name) : type2C(type) + " " + id2C(name)) +
+           (type.isFn() ? type2C(type, id2C(name)) : type2C(type) + " " + id2C(name)) +
            ";\n";
   }
   res += "};\n";
