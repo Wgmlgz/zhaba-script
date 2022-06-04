@@ -50,11 +50,12 @@ Foreach loop executes a for loop over a range and accepts 2 arguments: a variabl
 
 ```zh
 __range := iter(<range-expression>)
-<id> := __range.begin()
+__cur := __range.begin()
 __end := __range.end()
-@ <id> != __end
+@ __cur != __end
+  exp := *__cur
   <body>
-  ++id
+  ++__cur
 ```
 
 ### Examples

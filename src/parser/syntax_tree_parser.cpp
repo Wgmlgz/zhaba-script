@@ -264,11 +264,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, Scope& parent_scope, Function*
               }
               /* foreach loop */
               else {
-                auto id_l = dynamic_cast<zhexp::IdLiteral*>(tuple_->content[0]);
-                if (!id_l)
-                  throw ParserError(tuple_->content[0]->begin,
-                                    tuple_->content[0]->end,
-                                    "Expected id literal");
+                auto range_decl = tuple_->content[0];
 
                 /** begin & end check */
                 auto foreach_block = new STBlock(&res->scope_info);
@@ -304,7 +300,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, Scope& parent_scope, Function*
                     tuple_->content[0]->begin, tuple_->content[1]->end,
                     ":=",
                     new zhexp::IdLiteral(tuple_->content[0]->begin,
-                                         tuple_->content[0]->end, id_l->val),
+                                         tuple_->content[0]->end, "__cur"),
                     new zhexp::BinOperator(
                         tuple_->content[1]->begin, tuple_->content[1]->end,
                         ".call.begin",
@@ -321,24 +317,38 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, Scope& parent_scope, Function*
                     tuple_->content[0]->begin, tuple_->content[1]->end,
                     "!=",
                     new zhexp::IdLiteral(tuple_->content[0]->begin,
-                                         tuple_->content[0]->end, id_l->val),
+                                         tuple_->content[0]->end, "__cur"),
                     new zhexp::IdLiteral(tuple_->content[1]->begin,
                                          tuple_->content[1]->end, "__end"));
+                
                 auto iter = new STExp;
                 iter->exp = new zhexp::PrefixOperator(
                     tuple_->content[1]->begin, tuple_->content[1]->end, "++",
                     new zhexp::IdLiteral(tuple_->content[0]->begin,
-                                         tuple_->content[0]->end, id_l->val));
+                                         tuple_->content[0]->end, "__cur"));
+                
+                auto var_init = new STExp;
+                var_init->exp = new zhexp::BinOperator(
+                    tuple_->content[1]->begin, tuple_->content[1]->end, ":=",
+                    range_decl,
+                    new zhexp::PrefixOperator(
+                        tuple_->content[0]->begin, tuple_->content[0]->end, "*",
+                        new zhexp::IdLiteral(tuple_->content[0]->begin,
+                                             tuple_->content[0]->end,
+                                             "__cur")));
+
                 range_init->exp = zhexp::postprocess(range_init->exp,
                                                      foreach_block->scope_info);
-                end_exp->exp =
-                    zhexp::postprocess(end_exp->exp, foreach_block->scope_info);
                 cur_init->exp = zhexp::postprocess(cur_init->exp,
                                                    foreach_block->scope_info);
+                end_exp->exp =
+                    zhexp::postprocess(end_exp->exp, foreach_block->scope_info);
                 condition =
                     zhexp::postprocess(condition, foreach_block->scope_info);
                 iter->exp =
                     zhexp::postprocess(iter->exp, foreach_block->scope_info);
+                var_init->exp = zhexp::postprocess(var_init->exp,
+                                                   foreach_block->scope_info);
 
                 foreach_block->nodes.push_back(range_init);
                 foreach_block->nodes.push_back(end_exp);
@@ -352,6 +362,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, Scope& parent_scope, Function*
                     if (auto body = dynamic_cast<ast::ASTBlock*>(*(i + 1))) {
                       tmp_while->body =
                           parseASTblock(body, foreach_block->scope_info, fn);
+                      tmp_while->body->nodes.insert(tmp_while->body->nodes.begin(), var_init);
                       tmp_while->body->nodes.push_back(iter);
                       foreach_block->nodes.push_back(tmp_while);
                     } else {
