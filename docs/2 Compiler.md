@@ -9,7 +9,7 @@ You can run zhaba-script programs in 3 ways:
 If you choose first 2 ways you can use `zhaba` binary to do that.
 By default `zhaba` will translate your program to C (to a temporary file `zhaba_tmp.c`) and run it with `gcc`, if you don't want to do that you can set `B` flag and run bytecode directly.
 
-## zhaba binary usage
+## Binary usage
 
 ```console
 zhaba <filename>.zh [flags]

@@ -34,6 +34,7 @@ fn main
 ```
 
 ## Iterators + foreach
+
 Using iterators like that isn't cool, so zhaba-script has [foreach](8%20Loops.md) loop for that:
 
 ```zh
@@ -43,6 +44,5 @@ fn main
   v := iota(0 10)
 
   @ cur v
-    val := *cur
-    out val
+    out cur 
 ```

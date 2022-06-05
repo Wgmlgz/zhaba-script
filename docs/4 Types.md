@@ -40,13 +40,13 @@ Int literals are written in base-10 system by default, but you can also use bina
 For floating point or scalar numbers zhaba-script have `f32` and `f64` types. `f32` is equivalent to `float` in C and `f64` is equivalent to `double`. You can create floating point numbers by putting `.` somewhere in number. You can also use `f`, `f32` or `f64` suffices to specify a type. If you write number without any suffix the type will be `f64` (not `f32` or `float` like in most languages, for example C).
 
 ```zh
-< 0.5 <    // 0.500000
-< 1f <     // 1.000000
-< 1. <     // 1.000000
-< .1 <     // 0.100000
-< 1.1 <    // 1.100000
-< 1.1f64 < // 1.100000
-< 1.1f32 < // 1.100000
+< 0.5 <    // 0.5
+< 1f <     // 1.0
+< 1. <     // 1.0
+< .1 <     // 0.1
+< 1.1 <    // 1.1
+< 1.1f64 < // 1.1
+< 1.1f32 < // 1.1
 ```
 
 ## Other types

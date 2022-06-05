@@ -49,7 +49,7 @@ fn main
   < v < // [0 0 0 4 0]
 ```
 
-## References and lval + rval semantics
+## References and lval & rval semantics
 
 References are referring to some valid variable or object in memory. Because of that they cannot be created from rval expression. Read more about rval/lval TODO [here]().
 

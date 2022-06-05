@@ -1,4 +1,4 @@
-## Standard library
+# Standard library
 
 Some languages like python or javascript declare their functionality in their core, and others like C++ do this in standard library. For example `Map` in javascript is available at any moment without including or importing anything, and in C++ you need to `#include <map>` to use `std::map`. Zhaba-script takes C++ approach, so standard library is very important and contains many of cool zhaba-script features.
 
