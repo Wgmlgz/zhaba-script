@@ -58,7 +58,7 @@ __end := __range.end()
   ++__cur
 ```
 
-### Examples
+## Examples
 
 ```zh
 use 'range.zh'

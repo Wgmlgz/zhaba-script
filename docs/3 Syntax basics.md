@@ -1,10 +1,10 @@
 # Basics
 
-# Identifiers
+## Identifiers
 
 In most languages identifiers (variable names, function names, etc.) are litter followed by letter or number (`_` counted as letter). Zhaba-script identifiers can be, in addition to the usual identifiers, also a sequence of these characters: `~,.+-*\%<>=^&:;|/!#$@?`. Note, that you can choose on or another and cannot't mix them.
 
-# Keywords
+## Keywords
 
 Zhaba-script doesn't have regular keywords. Instead, all keywords are context depended. For example `fn` is used to declare functions and `?` for if statement, but you can use them as variables when them are not in expected context.
 
@@ -14,7 +14,7 @@ fn main
   out(fn + op + ? + @) // 17
 ```
 
-# Code blocks
+## Code blocks
 
 Unlike Rust, JS or C Zhaba-script uses both Python-style indentation to indicate blocks of code.
 A new block of code stats when the indentation is different from previous line, and closes when indentation of current line is less then previous line and matched indentation of some past opened block. In this case that like would go to the matching block. Here is some example of that:
@@ -84,7 +84,7 @@ fn main
   // test(60)   // 1 2 3 4
 ```
 
-# Implicit commas
+## Implicit commas
 
 One of the zhaba-script's interesting features is implicit commas. Implicit commas act like regular commas, but inserted implicitly into expressions between 2 tokens if this condition is met:
 
@@ -101,7 +101,7 @@ a = 2 , b = 3
 // note that there is no implicit `,` between `b` and `=` because `=` is operator
 ```
 
-# Using other files
+## Using other files
 
 To use other files in your programs write `use` followed by `'filename path'`. If you want to use file at the same directory you can remove `''` and `.zh`. If there is no file with that name compiler will search in `std` directory for it.
 
