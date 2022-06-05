@@ -89,5 +89,5 @@ type VecIterRange T: VecIter<T> begin end
 | Functions                                 | Description    |
 | ----------------------------------------- | -------------- |
 | `fn ctor VecIter<T> begin VecIter<T> end` | Constructor    |
-| `fn VecIter<T> begin: <<< slf.begin`      | `begin` getter |
-| `fn VecIter<T> end: <<< slf.end`          | `end` getter   |
+| `fn VecIter<T> begin`                     | `begin` getter |
+| `fn VecIter<T> end`                       | `end` getter   |
