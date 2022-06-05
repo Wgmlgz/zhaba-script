@@ -1002,12 +1002,14 @@
 <li><a href="#flags">Flags</a></li>
 </ul>
 </li>
-<li><a href="#basics">Basics</a></li>
+<li><a href="#basics">Basics</a><ul>
 <li><a href="#identifiers">Identifiers</a></li>
 <li><a href="#keywords">Keywords</a></li>
 <li><a href="#code-blocks">Code blocks</a></li>
 <li><a href="#implicit-commas">Implicit commas</a></li>
 <li><a href="#using-other-files">Using other files</a></li>
+</ul>
+</li>
 <li><a href="#types">Types</a><ul>
 <li><a href="#integer-numbers">Integer numbers</a></li>
 <li><a href="#floating-point-numbers">Floating point numbers</a></li>
@@ -1182,7 +1184,20 @@
 <li><a href="#str-non-member-functions_1">Str non-member functions</a></li>
 </ul>
 </li>
-<li><a href="#option">Option</a></li>
+<li><a href="#avl-tree">Avl Tree</a><ul>
+<li><a href="#definition_2">Definition</a></li>
+<li><a href="#avltreet-member-functions">AVLTree&lt;T&gt; member functions</a></li>
+<li><a href="#iterators_3">Iterators</a></li>
+<li><a href="#avlitert-member-functions">AVLIter&lt;T&gt; member functions</a></li>
+<li><a href="#avliterranget-member-functions">AVLIterRange&lt;T&gt; member functions</a></li>
+</ul>
+</li>
+<li><a href="#map">Map</a><ul>
+<li><a href="#definition_3">Definition</a></li>
+<li><a href="#mapnodek-v-member-functions">MapNode&lt;K V&gt; member functions</a></li>
+<li><a href="#mapk-v-member-functions">Map&lt;K V&gt; member functions</a></li>
+</ul>
+</li>
 </ul>
 </div>
 <div style="page-break-after: always;"></div>
@@ -1446,15 +1461,15 @@ By default <code>zhaba</code> will translate your program to C (to a temporary f
 </table>
 <div style="page-break-after: always;"></div>
 <h1 id="basics">Basics</h1>
-<h1 id="identifiers">Identifiers</h1>
+<h2 id="identifiers">Identifiers</h2>
 <p>In most languages identifiers (variable names, function names, etc.) are litter followed by letter or number (<code>_</code> counted as letter). Zhaba-script identifiers can be, in addition to the usual identifiers, also a sequence of these characters: <code>~,.+-*\%&lt;&gt;=^&amp;:;|/!#$@?</code>. Note, that you can choose on or another and cannot't mix them.</p>
-<h1 id="keywords">Keywords</h1>
+<h2 id="keywords">Keywords</h2>
 <p>Zhaba-script doesn't have regular keywords. Instead, all keywords are context depended. For example <code>fn</code> is used to declare functions and <code>?</code> for if statement, but you can use them as variables when them are not in expected context.</p>
 <pre><code class="language-zh">fn main
   int fn = 5 op = 4 ? = 1 @ = 7
   out(fn + op + ? + @) // 17
 </code></pre>
-<h1 id="code-blocks">Code blocks</h1>
+<h2 id="code-blocks">Code blocks</h2>
 <p>Unlike Rust, JS or C Zhaba-script uses both Python-style indentation to indicate blocks of code.
 A new block of code stats when the indentation is different from previous line, and closes when indentation of current line is less then previous line and matched indentation of some past opened block. In this case that like would go to the matching block. Here is some example of that:</p>
 <pre><code class="language-zh">fn test int mx
@@ -1508,7 +1523,7 @@ fn main
   // test(100)  // 1 2 4
   // test(60)   // 1 2 3 4
 </code></pre>
-<h1 id="implicit-commas">Implicit commas</h1>
+<h2 id="implicit-commas">Implicit commas</h2>
 <p>One of the zhaba-script's interesting features is implicit commas. Implicit commas act like regular commas, but inserted implicitly into expressions between 2 tokens if this condition is met:</p>
 <p>Left token is <code>)</code>, literal (for example string literal or int literal) or identifier.
 Right token is <code>(</code>, literal (for example string literal or int literal) or identifier.</p>
@@ -1519,7 +1534,7 @@ a = 2 , b = 3
 // on left there is `2` and on right there is `b`, so `,` is inserted
 // note that there is no implicit `,` between `b` and `=` because `=` is operator
 </code></pre>
-<h1 id="using-other-files">Using other files</h1>
+<h2 id="using-other-files">Using other files</h2>
 <p>To use other files in your programs write <code>use</code> followed by <code>'filename path'</code>. If you want to use file at the same directory you can remove <code>''</code> and <code>.zh</code>. If there is no file with that name compiler will search in <code>std</code> directory for it.</p>
 <pre><code class="language-zh">use 'path/filename.zh'
 use filename
@@ -1914,7 +1929,7 @@ __end := __range.end()
   &lt;body&gt;
   ++__cur
 </code></pre>
-<h3 id="examples_3">Examples</h3>
+<h2 id="examples_3">Examples</h2>
 <pre><code class="language-zh">use 'range.zh'
 @ i 0..10
   out i
@@ -2867,11 +2882,11 @@ fn main
 <td>Constructor</td>
 </tr>
 <tr>
-<td><code>fn VecIter&lt;T&gt; begin: &lt;&lt;&lt; slf.begin</code></td>
+<td><code>fn VecIter&lt;T&gt; begin</code></td>
 <td><code>begin</code> getter</td>
 </tr>
 <tr>
-<td><code>fn VecIter&lt;T&gt; end: &lt;&lt;&lt; slf.end</code></td>
+<td><code>fn VecIter&lt;T&gt; end</code></td>
 <td><code>end</code> getter</td>
 </tr>
 </tbody>
@@ -3065,9 +3080,241 @@ fn main
 </tbody>
 </table>
 <div style="page-break-after: always;"></div>
+<h1 id="avl-tree">Avl Tree</h1>
+<h2 id="definition_2">Definition</h2>
+<pre><code class="language-zh">type AVLNode T
+  int h
+  T val
+  AVLNode&lt;T&gt;P lhs rhs par
+</code></pre>
+<pre><code class="language-zh">type AVLTree T: AVLNode&lt;T&gt;P root
+</code></pre>
+<p>Avl tree in zhaba-script standard library is an associative container that contains a sorted set of unique objects of type <code>T</code>. Sorting is done using the key comparison operator <code>&lt;</code>. Search, removal, and insertion operations have logarithmic complexity. <code>AVLTree&lt;T&gt;</code> is very similar to <code>std::set</code> in C++.</p>
+<p>Type <code>AVLTree&lt;T&gt;</code> is a wrapper for <code>AVLNode&lt;T&gt;</code> and <code>AVLNode&lt;T&gt;</code> functions aren't presented here, because they are concentered to be private.</p>
+<h2 id="avltreet-member-functions"><code>AVLTree&lt;T&gt;</code> member functions</h2>
+<table>
+<thead>
+<tr>
+<th>Functions</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>fn ctor</code></td>
+<td>Default constructor</td>
+</tr>
+<tr>
+<td><code>fn dtor</code></td>
+<td>Destructor</td>
+</tr>
+<tr>
+<td><code>fn AVLIter&lt;T&gt; begin</code></td>
+<td>Returns an iterator to the beginning</td>
+</tr>
+<tr>
+<td><code>fn AVLIter&lt;T&gt; end</code></td>
+<td>Returns an iterator to the end</td>
+</tr>
+<tr>
+<td><code>lop AVLIterRange&lt;T&gt; iter AVLTree&lt;T&gt;R slf</code></td>
+<td>Returns iterator range</td>
+</tr>
+<tr>
+<td><code>fn insert T val</code></td>
+<td>Inserts element</td>
+</tr>
+<tr>
+<td><code>fn TR sub T val</code></td>
+<td>Access specified element</td>
+</tr>
+<tr>
+<td><code>op 17 += AVLTree&lt;T&gt;R slf T val</code></td>
+<td>Inserts single item</td>
+</tr>
+<tr>
+<td><code>fn Vec&lt;T&gt; call</code></td>
+<td>Converts tree content to vector via inorder traversal</td>
+</tr>
+<tr>
+<td><code>fn show</code></td>
+<td>Pretty prints tree structure</td>
+</tr>
+</tbody>
+</table>
+<h2 id="iterators_3">Iterators</h2>
+<p><code>AVLTree&lt;T&gt;</code> iterators provide inorder access to tree elements and aren't random access, so you can't jump any number of elements, only one at a time.</p>
+<pre><code class="language-zh">type AVLIter T: AVLNode&lt;T&gt;P next
+</code></pre>
+<pre><code class="language-zh">type AVLIterRange T: AVLIter&lt;T&gt; begin end
+</code></pre>
+<h2 id="avlitert-member-functions"><code>AVLIter&lt;T&gt;</code> member functions</h2>
+<table>
+<thead>
+<tr>
+<th>Functions</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>fn ctor AVLNode&lt;T&gt;P root</code></td>
+<td>Constructor</td>
+</tr>
+<tr>
+<td><code>lop AVLNode&lt;T&gt;P ++ AVLIter&lt;T&gt;R slf</code></td>
+<td>Next iterator</td>
+</tr>
+<tr>
+<td><code>op 10 bool != AVLIter&lt;T&gt; a AVLIter&lt;T&gt; b</code></td>
+<td>Check unequal</td>
+</tr>
+<tr>
+<td><code>lop TR * AVLIter&lt;T&gt; it</code></td>
+<td>Dereference</td>
+</tr>
+</tbody>
+</table>
+<h2 id="avliterranget-member-functions"><code>AVLIterRange&lt;T&gt;</code> member functions</h2>
+<table>
+<thead>
+<tr>
+<th>Functions</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>fn ctor AVLIter&lt;T&gt; begin AVLIter&lt;T&gt; end</code></td>
+<td>Constructor</td>
+</tr>
+<tr>
+<td><code>fn AVLIter&lt;T&gt; begin</code></td>
+<td><code>begin</code> getter</td>
+</tr>
+<tr>
+<td><code>fn AVLIter&lt;T&gt; end</code></td>
+<td><code>end</code> getter</td>
+</tr>
+</tbody>
+</table>
 <div style="page-break-after: always;"></div>
-<div style="page-break-after: always;"></div>
-<h1 id="option">Option</h1>
+<h1 id="map">Map</h1>
+<h2 id="definition_3">Definition</h2>
+<pre><code class="language-zh">type MapNode K V
+  K key
+  V val
+</code></pre>
+<pre><code class="language-zh">type Map K V
+  AVLTree&lt;MapNode&lt;K V&gt; &gt; tree
+</code></pre>
+<p><code>Map&lt;K V&gt;</code> is a sorted associative container that contains key-value pairs with unique keys. Keys are sorted by using the comparison operator <code>&lt;</code>. Search, removal, and insertion operations have logarithmic complexity. Maps wraps <code>AVLTree&lt;T&gt;</code> and uses <code>MapNode&lt;K V&gt;</code> for data storage. Map iterators are also <code>AVLTree&lt;MapNode&lt;K V&gt; &gt;</code> iterators.</p>
+<h2 id="mapnodek-v-member-functions"><code>MapNode&lt;K V&gt;</code> member functions</h2>
+<table>
+<thead>
+<tr>
+<th>Functions</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>fn ctor</code></td>
+<td>Default constructor</td>
+</tr>
+<tr>
+<td><code>fn ctor KR key VR val</code></td>
+<td>Constructor</td>
+</tr>
+<tr>
+<td><code>fn dtor</code></td>
+<td>Destructor</td>
+</tr>
+<tr>
+<td><code>op 4 bool &lt; MapNode&lt;K V&gt;R a MapNode&lt;K V&gt;R b</code></td>
+<td>Comparator compares by <code>key</code> value</td>
+</tr>
+<tr>
+<td><code>lop put MapNode&lt;K V&gt;R slf</code></td>
+<td>Outputs content with '\n`</td>
+</tr>
+<tr>
+<td><code>lop out MapNode&lt;K V&gt;R node</code></td>
+<td>Outputs content</td>
+</tr>
+<tr>
+<td><code>rop Out &lt; MapNode&lt;K V&gt;R i</code></td>
+<td>Outputs content</td>
+</tr>
+<tr>
+<td><code>lop Out &lt; MapNode&lt;K V&gt;R i</code></td>
+<td>Outputs content</td>
+</tr>
+<tr>
+<td><code>op 9 Out &lt; Out o MapNode&lt;K V&gt;R i</code></td>
+<td>Outputs content</td>
+</tr>
+</tbody>
+</table>
+<h2 id="mapk-v-member-functions"><code>Map&lt;K V&gt;</code> member functions</h2>
+<table>
+<thead>
+<tr>
+<th>Functions</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>fn ctor</code></td>
+<td>Default constructor</td>
+</tr>
+<tr>
+<td><code>fn dtor</code></td>
+<td>Destructor</td>
+</tr>
+<tr>
+<td><code>fn VR sub KR key</code></td>
+<td>Access specified element by <code>key</code></td>
+</tr>
+<tr>
+<td><code>fn insert KR key VR val</code></td>
+<td>Inserts element</td>
+</tr>
+<tr>
+<td><code>fn Vec&lt;MapNode&lt;K V&gt; &gt; call</code></td>
+<td>Converts content to vector</td>
+</tr>
+<tr>
+<td><code>fn print</code></td>
+<td>Prints content</td>
+</tr>
+<tr>
+<td><code>lop put Map&lt;K V&gt;R slf</code></td>
+<td>Outputs content</td>
+</tr>
+<tr>
+<td><code>lop out Map&lt;K V&gt;R slf</code></td>
+<td>Outputs content</td>
+</tr>
+<tr>
+<td><code>rop Out &lt; Map&lt;K V&gt;R i</code></td>
+<td>Outputs content</td>
+</tr>
+<tr>
+<td><code>lop Out &lt; Map&lt;K V&gt;R i</code></td>
+<td>Outputs content</td>
+</tr>
+<tr>
+<td><code>op 9 Out &lt; Out o Map&lt;K V&gt;R i</code></td>
+<td>Outputs content</td>
+</tr>
+<tr>
+<td><code>lop AVLIterRange&lt;MapNode&lt;K V&gt; &gt; iter Map&lt;K V&gt;R m</code></td>
+<td>Returns iterator range</td>
+</tr>
+</tbody>
+</table>
 <div style="page-break-after: always;"></div>
     </div>
   </body>

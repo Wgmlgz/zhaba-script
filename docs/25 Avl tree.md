@@ -1,5 +1,7 @@
 # Avl Tree
 
+## Definition
+
 ```zh
 type AVLNode T
   int h
