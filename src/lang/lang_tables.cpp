@@ -257,16 +257,6 @@ const std::map<types::FnHead, Function *> PR_OD{
     MAKE_C_FN_1_ARGS(out, type##T, voidT),  \
     MAKE_C_FN_1_ARGS(put, type##T, voidT),  \
     MAKE_C_FN_0_ARGS(in_##type, type##T),   \
-    MAKE_C_FN_1_ARGS(i8, type##T, i8T),     \
-    MAKE_C_FN_1_ARGS(i16, type##T, i16T),   \
-    MAKE_C_FN_1_ARGS(i32, type##T, i32T),   \
-    MAKE_C_FN_1_ARGS(i64, type##T, i64T),   \
-    MAKE_C_FN_1_ARGS(u8, type##T, u8T),     \
-    MAKE_C_FN_1_ARGS(u16, type##T, u16T),   \
-    MAKE_C_FN_1_ARGS(u32, type##T, u32T),   \
-    MAKE_C_FN_1_ARGS(u64, type##T, u64T),   \
-    MAKE_C_FN_1_ARGS(f32, type##T, f32T),   \
-    MAKE_C_FN_1_ARGS(f64, type##T, f64T),   \
     MAKE_C_FN_1_ARGS(bool, type##T, boolT), \
     MAKE_C_FN_1_ARGS(char, type##T, charT),
 

@@ -58,7 +58,7 @@ i64 alloc(i64 size) {
   return (i64)ptr;
 }
 
-char *inputString() {
+char *in_str() {
   size_t size = 10;
   char *str;
   int ch;
@@ -97,7 +97,6 @@ void panic(char* str) {
   MAKE_SCAN(in_u32, u32, "%i")
   MAKE_SCAN(in_u64, u64, "%i")
   MAKE_SCAN(in_char, char, "%i")
-  MAKE_SCAN(in_str, char*, "%s")
   MAKE_SCAN(in_bool, bool, "%i")
   MAKE_SCAN(in_f32, float, "%f")
   MAKE_SCAN(in_f64, double, "%lf")
