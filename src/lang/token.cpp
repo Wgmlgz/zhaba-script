@@ -13,3 +13,11 @@ void Token::reset() { token = orig_token; }
 std::string Token::toString() {
   return filename + ':' + std::to_string(line) + ':' + std::to_string(pos);
 }
+
+void to_json(json& j, const Token& token) {
+  j["token"] = token.token;
+  j["val"] = token.val;
+  j["filename"] = token.filename;
+  j["pos"] = token.pos;
+  j["line"] = token.line;
+}

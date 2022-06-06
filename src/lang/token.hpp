@@ -2,6 +2,9 @@
 
 #include <string>
 #include <vector>
+#include "../libs/json.hpp"
+
+using json = nlohmann::json;
 
 enum class TOKEN {
   comment_block,
@@ -35,5 +38,7 @@ struct Token {
   void reset();
   std::string toString();
 };
+
+void to_json(json& j, const Token& token);
 
 typedef std::vector<Token>::iterator tokeniter;
