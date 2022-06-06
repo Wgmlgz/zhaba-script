@@ -1,4 +1,4 @@
-use sus/aboba.json
+use sus/aboba.c
 
 fn main
   a := sum(2i32 4i32)

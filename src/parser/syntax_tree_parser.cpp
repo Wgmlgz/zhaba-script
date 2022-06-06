@@ -855,6 +855,39 @@ ZHModule* moduleFromJson(json j) {
 }
 
 /**
+ * @brief Parses .c file to module (or any file with c-like comments)
+ */
+ZHModule* parseC(std::filesystem::path file_path) {
+  json j;
+  j["c_path"] = file_path.string();
+  j["functions"] = json::array();
+
+  std::stringstream ss;
+  auto fin = std::ifstream(file_path);
+  ss << fin.rdbuf();
+  Str str = ss.str();
+
+  std::regex r{R"((\/\/.*)|(\/\*[\s\S]*?\*\/))"};
+  for (auto i = std::sregex_iterator(str.begin(), str.end(), r);
+       i != std::sregex_iterator(); ++i) {
+    auto match = *i;
+
+    Str str;
+    if (match[1].length()) str = match[1].str().substr(2);
+    if (match[2].length()) str = match[2].str().substr(2), str.pop_back(), str.pop_back();
+
+    if (std::regex_match(str, std::regex(" *@zh-fn[\\S\\s]+"))) {
+      str = std::regex_replace(str, std::regex(" *@zh-fn([\\S\\s]+)"), "$1");
+      j["functions"].push_back(json::parse(str));
+    }
+  }
+  // auto& tokens = *(new Vec<Token>(lexer::parse(
+  //     lexer_tokens, zh_def, *file_path_str, zhdata.files_lines)));
+
+  return moduleFromJson(j);
+}
+
+/**
  * @brief Parses file into module
  */
 ZHModule* parseJson(std::filesystem::path file_path) {
@@ -877,8 +910,10 @@ ZHModule* parseFile(std::filesystem::path file_path) {
 
   if (file_path.extension() == ".json") {
     return parseJson(file_path);
-  } else {
+  } else if (file_path.extension() == ".zh") {
     return parseZh(file_path);
+  } else {
+    return parseC(file_path);
   }
 }
 
