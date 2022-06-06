@@ -9,3 +9,4 @@
 
 void defineFlowTokens(std::vector<Token> &tokens);
 std::vector<Token> tokenizeFile(std::filesystem::path file_path);
+json jsonFile(std::filesystem::path file_path);

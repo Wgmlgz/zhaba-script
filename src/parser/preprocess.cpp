@@ -27,3 +27,12 @@ std::vector<Token> tokenizeFile(std::filesystem::path file_path) {
   return lexer::parse(tables::lexer_tokens, file_data, file_name, zhdata.files_lines,
                             zhdata.flags["tokens"]);
 }
+
+json jsonFile(std::filesystem::path file_path) {
+  auto fin = std::ifstream(file_path);
+
+  json j;
+  fin >> j;  
+
+  return j;
+}
