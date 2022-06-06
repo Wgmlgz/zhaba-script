@@ -12,7 +12,7 @@
 void compileFile(std::filesystem::path file_path) {
   auto start_time = clock();
 
-  auto stree = parseAST(resolvePath(file_path));
+  auto stree = parseFile(resolvePath(file_path));
 
   if (zhdata.flags["show_st"]) {
     std::cout << "st:\n";
@@ -39,7 +39,7 @@ void compileFile(std::filesystem::path file_path) {
                 << std::to_string((clock() - run_time) * 1.0 / CLOCKS_PER_SEC)
                 << std::endl;
   } else {
-    std::string c_code = toC(stree);
+    std::string c_code = module2C(stree);
     if (zhdata.flags["show_c"]) {
       std::cout << "C:" << std::endl << c_code << std::endl;
     }

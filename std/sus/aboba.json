@@ -1,0 +1,10 @@
+{
+  "c_path": "aboba.c",
+  "functions": [
+    {
+      "zh_def": "fn i32 sum i32 a i32 b",
+      "c_name": "sum"
+    },
+    ["fn i32 mul i32 a i32 b", "mul"]
+  ]
+}

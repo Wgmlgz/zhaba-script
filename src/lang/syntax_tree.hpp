@@ -53,7 +53,12 @@ struct Function {
 
   OpType op_type;
 
-  bool is_C = false;
+  enum class DEFINED {
+    core,
+    zh,
+    extern_c,
+  };
+  DEFINED defined = DEFINED::zh;
 
   STBlock *body = nullptr;
   int64_t priority = -1;
@@ -62,6 +67,10 @@ struct Function {
   Scope* args_scope = nullptr;
 
   Token *begin = nullptr, *end = nullptr;
+
+  bool implemented = false;
+  /** For C translation */
+  std::string extern_name;
 
   [[nodiscard]] std::string headToStr() const;
   [[nodiscard]] std::string toUniqueStr() const;

@@ -1,17 +1,7 @@
-use std
-
-fn Option<f64> divide f64 a f64 b
-  ? b == 0.
-    <<< None<f64>()
-  \ <<< Some<f64>(a / b)
+use sus/aboba.json
 
 fn main
-  v := Vec<Option<f64> >()
-  v += divide(2.0 3.0)
-  v += divide(2.0 0.0)
-
-  @ {none some} v
-    ? !none
-      put 'Result: '
-      out some
-    \ out 'Cannot divide by 0'
+  a := sum(2i32 4i32)
+  b := mul(2i32 4i32)
+  out a
+  out b

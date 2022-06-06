@@ -12,13 +12,34 @@ std::string id2C(const std::string& str) {
   return ans;
 }
 
-std::string toC(ZHModule* block) {
-  std::string res = R"(#include <stdlib.h>
+std::string module2C(ZHModule* block) {
+  std::string includes = R"(#include <stdlib.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <time.h>
+)";
 
+  std::function<void(ZHModule*)> gather_deps;
+  Vec<Path> deps;
+
+  gather_deps = [&](ZHModule* mod) {
+    auto ext = mod->path.extension().string();
+    std::cout << mod->path << std::endl;
+    if (!(ext == ".zh" || ext == ".json")) {
+      deps.push_back(mod->path);
+    }
+    for (auto i : mod->dependencies) gather_deps(i);
+  };
+  gather_deps(block);
+
+  for (const auto& dep : deps) {
+    auto ext = dep.extension().string();
+    includes += "#include \"";
+    includes += dep.string();
+    includes += "\"\n";
+  }
+  std::string res = includes + R"(
 typedef int8_t i8;
 typedef int16_t i16;
 typedef int32_t i32;
@@ -107,15 +128,19 @@ void panic(char* str) {
   }
 
   for (auto i : zhdata.functions) {
-    res += funcHead2C(i);
-    res += ";\n";
+    if (i->defined == Function::DEFINED::zh) {
+      res += funcHead2C(i);
+      res += ";\n";
+    }
   }
 
   res += "\n";
 
   for (auto i : zhdata.functions) {
-    res += func2C(i);
-    res += "\n";
+    if (i->defined == Function::DEFINED::zh) {
+      res += func2C(i);
+      res += "\n";
+    }
   }
   return res;
 }
@@ -143,27 +168,6 @@ std::string type2C(const types::Type& type, std::string name = "") {
   res += std::string(type.getPtr(), '*');
   if (type.getRef()) res += "*";
   return res;
-}
-
-std::string func2C(const Function& head) {
-  return id2C(head.toUniqueStr());
-}
-
-std::string bop2C(const Function& head) { return func2C(head); }
-std::string lop2C(const Function& head) { return func2C(head); }
-std::string rop2C(const Function& head) { return func2C(head); }
-
-std::string bop2C(const Function* head) {
-  if (!head) throw std::runtime_error("null head bop");
-  return bop2C(*head);
-}
-std::string lop2C(const Function* head) {
-  if (!head) throw std::runtime_error("null head lop");
-  return lop2C(*head);
-}
-std::string rop2C(const Function* head) {
-  if (!head) throw std::runtime_error("null head rop");
-  return rop2C(*head);
 }
 
 std::string exp2C(zhexp::Exp* exp) {
@@ -256,7 +260,7 @@ std::string exp2C(zhexp::Exp* exp) {
       res += args2C(rhs_tuple, types);
       res += ")";
     } else {
-      if (op->func && op->func->is_C) {
+      if (op->func && op->func->defined == Function::DEFINED::core) {
         res += "(";
         res += args2C(op->lhs, {types::Type()});
         res += ")";
@@ -270,16 +274,13 @@ std::string exp2C(zhexp::Exp* exp) {
         *lhs_tuple += *rhs_tuple;
 
         if (op->type.getRef()) res += "*";
-        res +=  (
-          op->func->op_type == OpType::bin ? bop2C(op->func) : (
-          op->func->op_type == OpType::lhs ? lop2C(op->func) : rop2C(op->func)
-        )) + "(";
+        res += funcName2C(op->func) + "(";
         res += args2C(lhs_tuple, op->func->getHead().types);
         res += ")";
       }
     }
   } else if (auto op = dynamic_cast<zhexp::PrefixOperator*>(exp)) {
-    if (op->func && op->func->is_C) {
+    if (op->func && op->func->defined == Function::DEFINED::core) {
       if (0) {
       }
 #define MAKE_LOP_C(name, type_, impl_)                          \
@@ -399,11 +400,8 @@ std::string exp2C(zhexp::Exp* exp) {
       res += exp2C(op->child);
     } else {
       if (op->type.getRef()) res += "*";
-      res +=  (
-        op->func->op_type == OpType::bin ? bop2C(op->func) : (
-        op->func->op_type == OpType::lhs ? lop2C(op->func) : rop2C(op->func)
-      )) + "(";
-      res += args2C(op->child, op->func->getHead().types );
+      res += funcName2C(op->func) + "(";
+      res += args2C(op->child, op->func->getHead().types);
       res += ")";
     }
   } else if (auto tp = dynamic_cast<zhexp::TypeLiteral*>(exp)) {
@@ -413,7 +411,7 @@ std::string exp2C(zhexp::Exp* exp) {
     res += "v" + std::to_string(var->getId());
   } else if (auto op = dynamic_cast<zhexp::PostfixOperator*>(exp)) {
     if (op->type.getRef()) res += "*";
-    res += rop2C(op->func) + "(";
+    res += funcHead2C(op->func) + "(";
     res += args2C(op->child, op->func->getHead().types);
     res += ")";
   } else if (auto tuple = dynamic_cast<zhexp::Tuple*>(exp)) {
@@ -515,10 +513,10 @@ std::string node2C(STNode* node, Function* fn, size_t depth) {
 };
 
 std::string funcName2C(Function* func) {
-  return func->op_type == OpType::bin
-              ? bop2C(func)
-              : (func->op_type == OpType::lhs ? lop2C(func)
-                                                        : rop2C(func));
+  if (!func) throw std::runtime_error("null head bop");
+  if (func->defined == Function::DEFINED::extern_c) \
+    return func->extern_name;
+  return id2C(func->toUniqueStr());
 }
 
 std::string funcHead2C(Function* func) {
@@ -551,11 +549,7 @@ std::string funcHead2FnPtr(Function* func) {
     str += "int main(int argc, char *argv[]) ";
   } else {
     str += type2C(func->type) + " ";
-    str += (func->op_type == OpType::bin
-                ? bop2C(func)
-                : (func->op_type == OpType::lhs ? lop2C(func)
-                                                          : rop2C(func))) +
-           "(";
+    str += funcName2C(func) + "(";
     bool start = true;
     for (auto& [name, type] : func->args) {
       if (!start) str += ", ";

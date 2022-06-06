@@ -14,7 +14,7 @@ using json = nlohmann::json;
 
 struct ZHModule {
   std::filesystem::path path;
-  std::vector<std::filesystem::path> dependences;
+  std::vector<ZHModule*> dependencies;
 
   std::vector<Token> tokens;
   ast::ASTBlock* ast;

@@ -79,7 +79,7 @@ STBlock* parseASTblock(ast::ASTBlock* main_block, Scope& parent_scope, Function*
       } else {
         const auto& id = line->begin->val;
         if (id == "op" or id == "lop" or id == "rop" or id == "fn") {
-          parceFn(zhdata.sttree, res->scope_info, line, main_block, i);
+          parseFn(zhdata.sttree, res->scope_info, line, main_block, i);
           --i;
         } else {
           /* not variable declaration so normal parsing */
@@ -551,11 +551,14 @@ std::vector<Function*> parseImpl(ast::ASTBlock* block, const types::Type& type,
   return res;
 }
 
-void parceFn(ZHModule* res, Scope& push_scope, ast::ASTLine* line, ast::ASTBlock* main_block,
-             std::vector<ast::ASTNode*>::iterator& cur) {
+Function* parseFn(ZHModule* res, Scope& push_scope, ast::ASTLine* line,
+                  ast::ASTBlock* main_block,
+                  std::vector<ast::ASTNode*>::iterator& cur,
+                  bool allow_header_only) {
   /** Parse function header */
-  zhdata.functions.push_back(parseOpHeader(line->begin, line->end, push_scope));
-  auto& func = zhdata.functions.back();
+  auto func = parseOpHeader(line->begin, line->end, push_scope);
+
+  zhdata.functions.push_back(func);
 
   /** Regiester function */
   std::vector<types::Type> types;
@@ -590,7 +593,17 @@ void parceFn(ZHModule* res, Scope& push_scope, ast::ASTLine* line, ast::ASTBlock
     }
   }
 
+  /** And then parse body */
   ++cur;
+  if (cur == main_block->nodes.end() || !dynamic_cast<ast::ASTBlock*>(*cur)) {
+    if (allow_header_only) {
+      return func;
+    } else {
+      throw ParserError(*line->end, "Expected function body");
+    }
+  }
+  auto block = dynamic_cast<ast::ASTBlock*>(*cur);
+
   func->args_scope = new Scope(&push_scope);
   Scope& scope = *func->args_scope;
 
@@ -599,25 +612,21 @@ void parceFn(ZHModule* res, Scope& push_scope, ast::ASTLine* line, ast::ASTBlock
     scope.vars.at(name)->type.setLval(true);
   }
 
-  /** And then parse body */
-  if (cur == main_block->nodes.end())
-    throw ParserError(*line->end, "Expected function body");
-  if (auto block = dynamic_cast<ast::ASTBlock*>(*cur)) {
-    auto& t = zhdata.functions.back();
-    t->body = parseASTblock(block, scope, func);
-  } else {
-    throw ParserError(*line->end, "Expected function body");
-  }
+  auto& t = zhdata.functions.back();
+  t->body = parseASTblock(block, scope, func);
+  
   ++cur;
+  func->implemented = true;
+  return func;
 }
 
-ZHModule* parseAST(std::filesystem::path file_path) {
-  if (!zhdata.global) zhdata.global = makeCore();
+/**
+ * @brief Parses .zh file to module
+ */
+ZHModule* parseZh(std::filesystem::path file_path) {
   ZHModule* res = new ZHModule(file_path);
 
   std::vector<Token>& tokens = *new std::vector<Token>(tokenizeFile(file_path));
-
-  /** load cache */
 
   if (zhdata.flags["show_preprocessed"]) {
     std::cout << "preprocessed:\n";
@@ -637,12 +646,11 @@ ZHModule* parseAST(std::filesystem::path file_path) {
     printCompact(ast_generic);
   }
 
-
   zhdata.sttree = res;
   auto cur = main_block->nodes.begin();
 
   bool all_imported = false;
-  
+
   while (cur != main_block->nodes.end()) {
     if (auto line = dynamic_cast<ast::ASTLine*>(*cur)) {
       const auto& id = line->begin->val;
@@ -652,7 +660,6 @@ ZHModule* parseAST(std::filesystem::path file_path) {
                             "`use` only allowed at the top");
         std::string path = "";
 
-
         auto token = line->begin;
         ++token;
         while (token != line->end) {
@@ -661,40 +668,34 @@ ZHModule* parseAST(std::filesystem::path file_path) {
             path_str.erase(path_str.begin());
             path_str.pop_back();
           }
-          path += token->val;
+          path += path_str;
           ++token;
         }
 
         while (!path.empty() && path.back() == ' ') path.pop_back();
         while (!path.empty() && path.front() == ' ') path.erase(path.begin());
 
-        auto hasEnding =
-            [](const std::string& fullString, const std::string& ending) {
-              if (fullString.length() >= ending.length()) {
-                return 0 == fullString.compare(fullString.length() -
-                ending.length(),
-                                               ending.length(), ending);
-              } else {
-                return false;
-              }
-            };
-        if (!hasEnding(path, ".zh")) path += ".zh";
+        if (!std::filesystem::path(path).has_extension()) path += ".zh";
+
         if (std::filesystem::path(path).is_relative())
           path = (file_path.parent_path() / path).string();
 
         path = resolvePath(path).string();
-        res->dependences.push_back(path);
 
         if (!zhdata.used_modules.contains(path)) {
           zhdata.used_modules.emplace(path, nullptr);
           std::filesystem::path file_path = path;
 
+          try {
+            auto parsed_module = parseFile(file_path);
 
-          auto parsed_module = parseAST(file_path);
-          res->dependences.push_back(parsed_module->path);
-          // res->scope.addParent(&parsed_module->scope);
-          zhdata.sttree = res;
-          zhdata.used_modules[path] = parsed_module;
+            res->dependencies.push_back(parsed_module);
+            // res->scope.addParent(&parsed_module->scope);
+            zhdata.sttree = res;
+            zhdata.used_modules[path] = parsed_module;
+          } catch (const json::parse_error& e) {
+            throw ParserError(*line->begin, *line->end, e.what());
+          }
         } else {
           if (zhdata.used_modules[path]) {
             // res->scope.addParent(&zhdata.used_modules[path]->scope);
@@ -713,8 +714,10 @@ ZHModule* parseAST(std::filesystem::path file_path) {
         /** Struct declaration */
         if (line->end - line->begin < 3)
           throw ParserError(*line->end, "Expected type name");
-        if ((line->begin + 1)->token != TOKEN::space or (line->begin + 2)->token != TOKEN::id)
-          throw ParserError(*line->end, "Expected identifier token for struct type name");
+        if ((line->begin + 1)->token != TOKEN::space or
+            (line->begin + 2)->token != TOKEN::id)
+          throw ParserError(*line->end,
+                            "Expected identifier token for struct type name");
 
         std::string name = (line->begin + 2)->val;
         if (zhdata.global->types.contains(name)) {
@@ -727,7 +730,8 @@ ZHModule* parseAST(std::filesystem::path file_path) {
 
         auto token = line->begin + 3;
         while (token != line->end) {
-          if (token->token == TOKEN::space) ++token;
+          if (token->token == TOKEN::space)
+            ++token;
           else if (token->token == TOKEN::id) {
             generic.push_back(token->val);
             ++token;
@@ -744,8 +748,7 @@ ZHModule* parseAST(std::filesystem::path file_path) {
         if (cur == main_block->nodes.end())
           throw ParserError(*line->end, "Expected type body");
         auto block = dynamic_cast<ast::ASTBlock*>(*cur);
-        if (!block)
-          throw ParserError(*line->end, "Expected type body");
+        if (!block) throw ParserError(*line->end, "Expected type body");
         if (isGeneric) {
           try {
             types::pushGenericType(name, generic, block, zhdata.global);
@@ -760,10 +763,13 @@ ZHModule* parseAST(std::filesystem::path file_path) {
       } else if (id == "impl") {
         /** Struct implementation declaration */
         if (line->end - line->begin != 3)
-          throw ParserError(*line->begin, *line->end, "Expected type name and nothing else");
+          throw ParserError(*line->begin, *line->end,
+                            "Expected type name and nothing else");
         if ((line->begin + 1)->token != TOKEN::space or
             (line->begin + 2)->token != TOKEN::id)
-          throw ParserError(*(line->begin + 1), *line->end, "Expected identifier token for type implementation name");
+          throw ParserError(
+              *(line->begin + 1), *line->end,
+              "Expected identifier token for type implementation name");
 
         ++cur;
 
@@ -791,7 +797,7 @@ ZHModule* parseAST(std::filesystem::path file_path) {
 
         ++cur;
       } else if (id == "op" or id == "lop" or id == "rop" or id == "fn") {
-        parceFn(res, *zhdata.global, line, main_block, cur);
+        parseFn(res, *zhdata.global, line, main_block, cur);
       } else {
         throw ParserError(*line->begin, "Expected declaration");
       }
@@ -803,6 +809,77 @@ ZHModule* parseAST(std::filesystem::path file_path) {
   /** save cache */
   res->saveCache();
   return res;
+}
+
+/**
+ * @brief Parses `json` object to module
+ */
+ZHModule* moduleFromJson(json j) {
+  ZHModule* res = new ZHModule(std::filesystem::path(
+      std::filesystem::path(j["c_path"].get<std::string>())));
+
+  /** Store in heap for valid token refs */
+  auto file_path_str = new std::string(res->path.string());
+
+  for (const auto& fn : j["functions"]) {
+    Str zh_def, c_name;
+
+    if (fn.is_array()) {
+      zh_def = fn[0].get<std::string>();
+      c_name = fn[1].get<std::string>();
+    } else if (fn.is_object()) {
+      zh_def = fn["zh_def"].get<std::string>();
+      c_name = fn["c_name"].get<std::string>();
+    }
+
+    auto& tokens = *(new Vec<Token>(lexer::parse(
+        tables::lexer_tokens, zh_def, *file_path_str, zhdata.files_lines)));
+
+    if (zhdata.flags["tokens"]) {
+      json j;
+      j["tokens"] = tokens;
+      std::cout << j.dump(2) << std::endl;
+    }
+
+    auto ast = ast::parse(tokens.begin(), tokens.end());
+    auto ast_iter = ast->nodes.begin();
+    auto header = parseFn(res, *zhdata.global,
+                          dynamic_cast<ast::ASTLine*>(ast->nodes.front()), ast,
+                          ast_iter, true);
+
+    header->defined = Function::DEFINED::extern_c;
+    header->extern_name = c_name;
+    zhdata.functions.push_back(header);
+  }
+  return res;
+}
+
+/**
+ * @brief Parses file into module
+ */
+ZHModule* parseJson(std::filesystem::path file_path) {
+  json j = jsonFile(file_path);
+
+  /** Normalize path */ 
+  auto c_path = std::filesystem::path(j["c_path"].get<std::string>());
+  if (std::filesystem::path(c_path).is_relative())
+    c_path = file_path.parent_path() / c_path;
+  j["c_path"] = c_path.string();
+
+  return moduleFromJson(j);
+}
+
+/**
+ * @brief Parses any into module (switches by file type)
+ */
+ZHModule* parseFile(std::filesystem::path file_path) {
+  if (!zhdata.global) zhdata.global = makeCore();
+
+  if (file_path.extension() == ".json") {
+    return parseJson(file_path);
+  } else {
+    return parseZh(file_path);
+  }
 }
 
 std::filesystem::path resolvePath(std::filesystem::path file_path) {

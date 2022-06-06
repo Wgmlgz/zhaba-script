@@ -12,10 +12,11 @@ STBlock *parseASTBlock(ast::ASTBlock *main_block, Scope cur_scope,
 std::vector<Function *> parseImpl(ast::ASTBlock *block, const types::Type &type,
                                   Scope &main_scope);
 
-ZHModule *parseAST(std::filesystem::path file_path);
+ZHModule *parseFile(std::filesystem::path file_path);
 
-void parceFn(ZHModule *res, Scope &push_scope, ast::ASTLine *line,
-             ast::ASTBlock *main_block,
-             std::vector<ast::ASTNode *>::iterator &cur);
+Function *parseFn(ZHModule *res, Scope &push_scope, ast::ASTLine *line,
+                  ast::ASTBlock *main_block,
+                  std::vector<ast::ASTNode *>::iterator &cur,
+                  bool allow_header_only = false);
 
 std::filesystem::path resolvePath(std::filesystem::path file_path);

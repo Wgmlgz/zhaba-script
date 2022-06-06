@@ -135,6 +135,6 @@ void to_json(json &j, const Function *fn) {
   // j["args"] = fn->args;
   j["type"] = fn->type;
   j["op_type"] = fn->op_type;
-  j["is_c"] = fn->is_C;
+  j["is_c"] = fn->defined;
   j["args_scope"] = *fn->args_scope;
 }

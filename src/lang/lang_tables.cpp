@@ -170,14 +170,14 @@ const std::unordered_map<types::TYPE, size_t> sizes{
 };
 
 const std::map<types::FnHead, Function *> B_OD = {
-#define MAKE_C_BOP(name, lhst, rhst, rt)                                             \
+#define MAKE_C_BOP(name, lhst, rhst, rt)                                       \
   {                                                                            \
-    {#name, {types::Type(types::lhst), types::Type(types::rhst)}}, \
+    {#name, {types::Type(types::lhst), types::Type(types::rhst)}},             \
     new Function {                                                             \
       #name,                                                                   \
-      {{"a", types::Type(types::lhst)},                                  \
-        {"b", types::Type(types::rhst)}},                                \
-      types::Type(types::rt), OpType::bin, true                \
+      {{"a", types::Type(types::lhst)},                                        \
+        {"b", types::Type(types::rhst)}},                                      \
+      types::Type(types::rt), OpType::bin, Function::DEFINED::core             \
     }                                                                          \
   }
 
@@ -234,18 +234,19 @@ const std::map<types::FnHead, Function *> B_OD = {
 };
 
 const std::map<types::FnHead, Function *> PR_OD{
-#define MAKE_C_FN_0_ARGS(name, rt)                                           \
-  {                                                                          \
-    {(#name), {}}, new Function {                                            \
-      (#name), {}, types::Type(types::rt), OpType::lhs, true \
-    }                                                                        \
+#define MAKE_C_FN_0_ARGS(name, rt)                      \
+  {                                                     \
+    {(#name), {}}, new Function {                       \
+      (#name), {}, types::Type(types::rt), OpType::lhs, \
+          Function::DEFINED::core                       \
+    }                                                   \
   }
-#define MAKE_C_FN_1_ARGS(name, arg1_t, rt)                          \
-  {                                                                 \
-    {#name, {types::Type(types::arg1_t)}}, new Function {     \
-      (#name), {{"a", types::Type(types::arg1_t)}},           \
-          types::Type(types::rt), OpType::lhs, true \
-    }                                                               \
+#define MAKE_C_FN_1_ARGS(name, arg1_t, rt)                                  \
+  {                                                                         \
+    {#name, {types::Type(types::arg1_t)}}, new Function {                   \
+      (#name), {{"a", types::Type(types::arg1_t)}}, types::Type(types::rt), \
+          OpType::lhs, Function::DEFINED::core                              \
+    }                                                                       \
   }
 
 #define MAKE_C_FN_INT(type)                 \

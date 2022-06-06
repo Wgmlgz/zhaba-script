@@ -17,7 +17,6 @@ void ZHModule::saveCache() {
 void to_json(json& j, const ZHModule& module) {
   j = {
       {"path", module.path.string()},
-      {"dependences", module.dependences},
   };
 }
 

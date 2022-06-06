@@ -139,7 +139,7 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
       bytecode.pushVal(zhin::instr::call);
     } else {
       /** C operators */
-      if (op->func && op->func->is_C) {
+      if (op->func && op->func->defined == Function::DEFINED::core) {
         // auto lhs_tuple = castToTuple(op->lhs);
         // auto rhs_tuple = castToTuple(op->rhs);
         // *lhs_tuple += *rhs_tuple;
@@ -223,7 +223,7 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
   } else if (auto op = dynamic_cast<zhexp::PrefixOperator*>(exp)) {
     /** C operators */
 
-    if (op->func && op->func->is_C) {
+    if (op->func && op->func->defined == Function::DEFINED::core) {
       expToB(bytecode, op->child, funcdata);
       if (0) {
       }
