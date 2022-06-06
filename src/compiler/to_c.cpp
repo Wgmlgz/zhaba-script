@@ -25,7 +25,6 @@ std::string module2C(ZHModule* block) {
 
   gather_deps = [&](ZHModule* mod) {
     auto ext = mod->path.extension().string();
-    std::cout << mod->path << std::endl;
     if (!(ext == ".zh" || ext == ".json")) {
       deps.push_back(mod->path);
     }
