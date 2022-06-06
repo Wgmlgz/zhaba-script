@@ -599,7 +599,13 @@ void toB(zhin::ByteCode& bytecode, ZHModule* block) {
   bytecode.pushVal(zhin::instr::jmp);
   bytecode.pushVal((int32_t)(END_LABEL));
 
-  for (auto& i : zhdata.functions) funcToB(bytecode, i);
+  for (auto& i : zhdata.functions) {
+    if (i->defined == Function::DEFINED::zh) {
+      funcToB(bytecode, i);
+    } else if (i->defined == Function::DEFINED::extern_c) {
+      throw ParserError(-1, "Only zhaba-script functions allowed");
+    }
+  }
 
   for (auto& [id, data] : bytecode.literals_data) {
     bytecode.pushVal(zhin::instr::label_data);
