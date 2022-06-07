@@ -139,7 +139,7 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
       bytecode.pushVal(zhin::instr::call);
     } else {
       /** C operators */
-      if (op->func && op->func->defined == Function::DEFINED::core) {
+      if (op->func && op->func->defined == DEFINED::core) {
         // auto lhs_tuple = castToTuple(op->lhs);
         // auto rhs_tuple = castToTuple(op->rhs);
         // *lhs_tuple += *rhs_tuple;
@@ -223,7 +223,7 @@ void expToB(zhin::ByteCode& bytecode, zhexp::Exp* exp, FuncData& funcdata) {
   } else if (auto op = dynamic_cast<zhexp::PrefixOperator*>(exp)) {
     /** C operators */
 
-    if (op->func && op->func->defined == Function::DEFINED::core) {
+    if (op->func && op->func->defined == DEFINED::core) {
       expToB(bytecode, op->child, funcdata);
       if (0) {
       }
@@ -566,7 +566,7 @@ void toB(zhin::ByteCode& bytecode, ZHModule* block) {
   std::vector<std::pair<size_t, types::TYPE>> order;
 
   for (const auto& info : zhdata.structs) {
-    if (info->builtin) continue;
+    if (info->defined == DEFINED::core) continue;
     order.emplace_back(info->order, info);
   }
 
@@ -574,7 +574,7 @@ void toB(zhin::ByteCode& bytecode, ZHModule* block) {
             [](auto& lhs, auto& rhs) { return lhs.first < rhs.first; });
 
   for (auto [_, struct_info] : order) {
-    if (struct_info->builtin) continue;
+    if (struct_info->defined == DEFINED::core) continue;
     int offset = 0;
     auto& struct_map = bytecode.structs_members_offsets[struct_info];
     for (const auto& member_name : struct_info->members_in_order) {
@@ -600,9 +600,9 @@ void toB(zhin::ByteCode& bytecode, ZHModule* block) {
   bytecode.pushVal((int32_t)(END_LABEL));
 
   for (auto& i : zhdata.functions) {
-    if (i->defined == Function::DEFINED::zh) {
+    if (i->defined == DEFINED::zh) {
       funcToB(bytecode, i);
-    } else if (i->defined == Function::DEFINED::extern_c) {
+    } else if (i->defined == DEFINED::extern_c) {
       throw ParserError(-1, "Only zhaba-script functions allowed");
     }
   }

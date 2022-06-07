@@ -53,11 +53,6 @@ struct Function {
 
   OpType op_type;
 
-  enum class DEFINED {
-    core,
-    zh,
-    extern_c,
-  };
   DEFINED defined = DEFINED::zh;
 
   STBlock *body = nullptr;

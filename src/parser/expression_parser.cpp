@@ -21,7 +21,7 @@ STExp *callDtor(std::pair<Scope::VarInfo *, Function *> info) {
 void copyExp(Exp *&exp, Scope &scope) {
   if (!(exp->type.getLval() || exp->type.getRef()))
     return;
-  if (exp->type.getTypeId()->builtin)
+  if (exp->type.getTypeId()->defined == DEFINED::core)
     return;
   if (!scope.PR_OP.contains({exp->type.nonRefClone().rvalClone().toString(),
                            {exp->type.nonRefClone().rvalClone()}}))
@@ -634,7 +634,7 @@ Exp *postprocess(Exp *exp, Scope &scope) {
         //         "Expression must be lval or reference to use `.`"
         //     );
       if (auto id = dynamic_cast<IdLiteral *>(op->rhs)) {
-        if (!op->lhs->type.getTypeId()->builtin) {
+        if (!(op->lhs->type.getTypeId()->defined == DEFINED::core)) {
           if (op->lhs->type.getTypeId()->members.count(
               id->val)) {
             if (op->lhs->type.getPtr() > 1) {

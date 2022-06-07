@@ -35,6 +35,9 @@ int main(int argc, char **argv) {
                "shows resulted bytecode, if build target is bytecode");
   app.add_flag("--pure", zhdata.flags["pure"], "doesn't print logs");
 
+  app.add_option("--compiler, -c", zhdata.options["compiler"],
+               "compiler, used to compile file, if target isn't bytecode")->default_val("gcc");
+
   CLI11_PARSE(app, argc, argv);
 
   zhdata.bin_path.remove_filename();

@@ -27,6 +27,7 @@ struct ZHDATA {
   Path std_path;
 
   std::unordered_map<std::string, bool> flags = tables::flags;
+  std::unordered_map<Str, Str> options = tables::options;
 
   std::mt19937 rng = std::mt19937(std::random_device()());
 

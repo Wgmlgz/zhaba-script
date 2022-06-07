@@ -53,7 +53,10 @@ void compileFile(std::filesystem::path file_path) {
               << std::endl;
 
     auto c_comptime = clock();
-    system("gcc zhaba_tmp.c -o zhaba_tmp -O3 -w");
+
+    auto cmd =
+        (zhdata.options["compiler"] + " zhaba_tmp.c -o zhaba_tmp -O3 -w");
+    system(cmd.c_str());
 
     std::cout << "[INFO] C compiling complete in "
               << std::to_string((clock() - c_comptime) * 1.0 / CLOCKS_PER_SEC)

@@ -17,6 +17,12 @@ void to_json(json &j, const Function *fn);
 
 enum class OpType { lhs, rhs, bin };
 
+enum class DEFINED {
+  core,
+  zh,
+  extern_c,
+};
+
 namespace types {
 
 struct TypeInfo;
@@ -93,8 +99,10 @@ struct TypeInfo {
   std::string name = "undefined_type_name";
 
   bool complete = false;
-  bool builtin = false;
   size_t order = 0;
+  
+  DEFINED defined = DEFINED::zh;
+  std::string extern_name;
 
   friend void to_json(json &j, const TypeInfo *type_info) {
     j = {
@@ -102,7 +110,7 @@ struct TypeInfo {
         {"members", type_info->members},
         {"name", type_info->name},
         {"complete", type_info->complete},
-        {"builtin", type_info->builtin},
+        {"defined", type_info->defined},
         {"order", type_info->order},
     };
   }

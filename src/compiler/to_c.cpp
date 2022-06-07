@@ -63,17 +63,17 @@ char *in_str() {
   char *str;
   int ch;
   size_t len = 0;
-  str = realloc(NULL, sizeof(*str)*size);
+  str = (char*)realloc(NULL, sizeof(*str)*size);
   if(!str)return str;
   while(EOF!=(ch=fgetc(stdin)) && ch != '\n'){
     str[len++]=ch;
     if (len==size) {
-      str = realloc(str, sizeof(*str)*(size+=16));
+      str = (char*)realloc(str, sizeof(*str)*(size+=16));
       if(!str) return str;
     }
   }
   str[len++]='\0';
-  return realloc(str, sizeof(*str)*len);
+  return (char*)realloc(str, sizeof(*str)*len);
 }
 void panic(char* str) {
   printf("%s", str);
@@ -103,30 +103,34 @@ void panic(char* str) {
 
   std::vector<std::pair<size_t, types::TYPE>> order;
   for (const auto& info : zhdata.structs) {
-    if (info->builtin) continue;
+    if (info->defined == DEFINED::core) continue;
     order.emplace_back(info->order, info);
   }
   std::sort(order.begin(), order.end(),
             [](auto& lhs, auto& rhs) { return lhs.first < rhs.first; });
 
   for (auto [_, i] : order) {
-    auto id = i;
-    res += structHead2C(id);
-    res += ";\n";
-    res += "typedef struct PROT_" + id2C(id->name);
-    res += " " + id2C(id->name);
-    res += ";\n";
+    if (i->defined == DEFINED::zh) {
+      auto id = i;
+      res += structHead2C(id);
+      res += ";\n";
+      res += "typedef struct PROT_" + id2C(id->name);
+      res += " " + id2C(id->name);
+      res += ";\n";
+    }
   }
 
   res += "\n";
 
   for (auto [_, i] : order) {
-    auto id = i;
-    res += struct2C(id);
+    if (i->defined == DEFINED::zh) {
+      auto id = i;
+      res += struct2C(id);
+    }
   }
 
   for (auto i : zhdata.functions) {
-    if (i->defined == Function::DEFINED::zh) {
+    if (i->defined == DEFINED::zh) {
       res += funcHead2C(i);
       res += ";\n";
     }
@@ -135,7 +139,7 @@ void panic(char* str) {
   res += "\n";
 
   for (auto i : zhdata.functions) {
-    if (i->defined == Function::DEFINED::zh) {
+    if (i->defined == DEFINED::zh) {
       res += func2C(i);
       res += "\n";
     }
@@ -158,7 +162,9 @@ std::string type2C(const types::Type& type, std::string name = "") {
       start = false;
     }
     res += ")";
-  } else if (type.getTypeId()->builtin) {
+  } else if (type.getTypeId()->defined == DEFINED::extern_c) {
+    res += type.getTypeId()->extern_name;
+  } else if (type.getTypeId()->defined == DEFINED::core) {
     res += tables::cpp_type_names.at(type.getTypeId());
   } else {
     res += id2C(type.getTypeId()->name);
@@ -223,8 +229,8 @@ std::string exp2C(zhexp::Exp* exp) {
       auto type_a = op->lhs->type;
       auto type_b = static_cast<zhexp::TypeLiteral*>(op->rhs)->literal_type;
 
-      if (!(type_b.getPtr() || type_b.getRef() || type_b.getTypeId()->builtin)||
-          !(type_a.getPtr() || type_a.getRef() || type_a.getTypeId()->builtin))
+      if (!(type_b.getPtr() || type_b.getRef() || type_b.getTypeId()->defined == DEFINED::core)||
+          !(type_a.getPtr() || type_a.getRef() || type_a.getTypeId()->defined == DEFINED::core))
         throw ParserError(
             op->begin, op->end,
             "C doesn't allow conversion to non-scalar type `" + type_b.toString() + "`");
@@ -258,7 +264,7 @@ std::string exp2C(zhexp::Exp* exp) {
       res += args2C(rhs_tuple, types);
       res += ")";
     } else {
-      if (op->func && op->func->defined == Function::DEFINED::core) {
+      if (op->func && op->func->defined == DEFINED::core) {
         res += "(";
         res += args2C(op->lhs, {types::Type()});
         res += ")";
@@ -278,7 +284,7 @@ std::string exp2C(zhexp::Exp* exp) {
       }
     }
   } else if (auto op = dynamic_cast<zhexp::PrefixOperator*>(exp)) {
-    if (op->func && op->func->defined == Function::DEFINED::core) {
+    if (op->func && op->func->defined == DEFINED::core) {
       if (0) {
       }
 #define MAKE_LOP_C(name, type_, impl_)                          \
@@ -512,7 +518,7 @@ std::string node2C(STNode* node, Function* fn, size_t depth) {
 
 std::string funcName2C(Function* func) {
   if (!func) throw std::runtime_error("null head bop");
-  if (func->defined == Function::DEFINED::extern_c) \
+  if (func->defined == DEFINED::extern_c) \
     return func->extern_name;
   return id2C(func->toUniqueStr());
 }

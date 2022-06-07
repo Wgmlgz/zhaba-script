@@ -2,32 +2,32 @@
 
 namespace types {
 const TYPE voidT =
-    new TypeInfo{.name = "void", .complete = true, .builtin = true};
+    new TypeInfo{.name = "void", .complete = true, .defined = DEFINED::core};
 const TYPE charT =
-    new TypeInfo{.name = "char", .complete = true, .builtin = true};
+    new TypeInfo{.name = "char", .complete = true, .defined = DEFINED::core};
 const TYPE strT =
-    new TypeInfo{.name = "str", .complete = true, .builtin = true};
+    new TypeInfo{.name = "str", .complete = true, .defined = DEFINED::core};
 const TYPE boolT =
-    new TypeInfo{.name = "bool", .complete = true, .builtin = true};
-const TYPE i8T = new TypeInfo{.name = "i8", .complete = true, .builtin = true};
+    new TypeInfo{.name = "bool", .complete = true, .defined = DEFINED::core};
+const TYPE i8T = new TypeInfo{.name = "i8", .complete = true, .defined = DEFINED::core};
 const TYPE i16T =
-    new TypeInfo{.name = "i16", .complete = true, .builtin = true};
+    new TypeInfo{.name = "i16", .complete = true, .defined = DEFINED::core};
 const TYPE i32T =
-    new TypeInfo{.name = "i32", .complete = true, .builtin = true};
+    new TypeInfo{.name = "i32", .complete = true, .defined = DEFINED::core};
 const TYPE i64T =
-    new TypeInfo{.name = "i64", .complete = true, .builtin = true};
-const TYPE u8T = new TypeInfo{.name = "u8", .complete = true, .builtin = true};
+    new TypeInfo{.name = "i64", .complete = true, .defined = DEFINED::core};
+const TYPE u8T = new TypeInfo{.name = "u8", .complete = true, .defined = DEFINED::core};
 const TYPE u16T =
-    new TypeInfo{.name = "u16", .complete = true, .builtin = true};
+    new TypeInfo{.name = "u16", .complete = true, .defined = DEFINED::core};
 const TYPE u32T =
-    new TypeInfo{.name = "u32", .complete = true, .builtin = true};
+    new TypeInfo{.name = "u32", .complete = true, .defined = DEFINED::core};
 const TYPE u64T =
-    new TypeInfo{.name = "u64", .complete = true, .builtin = true};
+    new TypeInfo{.name = "u64", .complete = true, .defined = DEFINED::core};
 const TYPE f32T =
-    new TypeInfo{.name = "f32", .complete = true, .builtin = true};
+    new TypeInfo{.name = "f32", .complete = true, .defined = DEFINED::core};
 const TYPE f64T =
-    new TypeInfo{.name = "f64", .complete = true, .builtin = true};
-const TYPE FT = new TypeInfo{.name = "F", .complete = true, .builtin = true};
+    new TypeInfo{.name = "f64", .complete = true, .defined = DEFINED::core};
+const TYPE FT = new TypeInfo{.name = "F", .complete = true, .defined = DEFINED::core};
 }
 namespace tables {
 
@@ -42,6 +42,9 @@ const std::unordered_map<std::string, bool> flags{
     {"stack_trace", false},
     {"show_bytecode", false},
     {"pure", false},
+};
+const std::unordered_map<Str, Str> options{
+    {"compiler", "gcc"},
 };
 
 const std::vector<std::pair<TOKEN, std::string>> lexer_tokens{
@@ -175,7 +178,7 @@ const std::map<types::FnHead, Function *> B_OD = {
       #name,                                                                   \
       {{"a", types::Type(types::lhst)},                                        \
         {"b", types::Type(types::rhst)}},                                      \
-      types::Type(types::rt), OpType::bin, Function::DEFINED::core             \
+      types::Type(types::rt), OpType::bin, DEFINED::core             \
     }                                                                          \
   }
 
@@ -236,14 +239,14 @@ const std::map<types::FnHead, Function *> PR_OD{
   {                                                     \
     {(#name), {}}, new Function {                       \
       (#name), {}, types::Type(types::rt), OpType::lhs, \
-          Function::DEFINED::core                       \
+          DEFINED::core                       \
     }                                                   \
   }
 #define MAKE_C_FN_1_ARGS(name, arg1_t, rt)                                  \
   {                                                                         \
     {#name, {types::Type(types::arg1_t)}}, new Function {                   \
       (#name), {{"a", types::Type(types::arg1_t)}}, types::Type(types::rt), \
-          OpType::lhs, Function::DEFINED::core                              \
+          OpType::lhs, DEFINED::core                              \
     }                                                                       \
   }
 

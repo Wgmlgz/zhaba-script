@@ -12,6 +12,7 @@
 namespace tables {
 
 extern const std::unordered_map<std::string, bool> flags;
+extern const std::unordered_map<Str, Str> options;
 extern const std::vector<std::pair<TOKEN, std::string>> lexer_tokens;
 extern const std::unordered_set<std::string> banned_ids;
 extern const std::unordered_set<std::string> flow_ops;

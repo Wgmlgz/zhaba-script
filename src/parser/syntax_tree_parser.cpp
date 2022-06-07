@@ -695,6 +695,10 @@ ZHModule* parseZh(Path file_path) {
             zhdata.used_modules[path] = parsed_module;
           } catch (const json::parse_error& e) {
             throw ParserError(*line->begin, *line->end, e.what());
+          } catch (const json::type_error& e) {
+            throw ParserError(*line->begin, *line->end, e.what());
+          } catch (const json::other_error& e) {
+            throw ParserError(*line->begin, *line->end, e.what());
           }
         } else {
           if (zhdata.used_modules[path]) {
@@ -821,15 +825,18 @@ ZHModule* moduleFromJson(json j) {
   /** Store in heap for valid token refs */
   auto file_path_str = new Str(res->path.string());
 
-  for (const auto& fn : j["functions"]) {
-    Str zh_def, c_name;
+  for (const auto& type : j["types"]) {
+    Str zh_def, c_name, zh_name;
 
-    if (fn.is_array()) {
-      zh_def = fn[0].get<Str>();
-      c_name = fn[1].get<Str>();
-    } else if (fn.is_object()) {
-      zh_def = fn["zh_def"].get<Str>();
-      c_name = fn["c_name"].get<Str>();
+    if (type.is_array()) {
+      zh_def = type.at(0).get<Str>();
+      c_name = type.at(1).get<Str>();
+      zh_name = type.size() >= 3 ? type.at(2).get<Str>() : c_name;
+    } else if (type.is_object()) {
+      zh_def = type.at("zh_def").get<Str>();
+      c_name = type.at("c_name").get<Str>();
+      zh_name =
+          type.contains("zh_name") ? type.at("zh_name").get<Str>() : c_name;
     }
 
     auto& tokens = *(new Vec<Token>(lexer::parse(
@@ -843,14 +850,44 @@ ZHModule* moduleFromJson(json j) {
 
     auto ast = ast::parse(tokens.begin(), tokens.end());
     auto ast_iter = ast->nodes.begin();
+
+    types::parsePushStruct(zh_name, ast, *zhdata.global, *zhdata.global);
+    zhdata.global->types.at(zh_name)->defined = DEFINED::extern_c;
+    zhdata.global->types.at(zh_name)->extern_name = c_name;
+  }
+
+  for (const auto& fn : j["functions"]) {
+    Str zh_def, c_name;
+
+    if (fn.is_array()) {
+      zh_def = fn.at(0).get<Str>();
+      c_name = fn.at(1).get<Str>();
+    } else if (fn.is_object()) {
+      zh_def = fn.at("zh_def").get<Str>();
+      c_name = fn.at("c_name").get<Str>();
+    }
+
+    auto& tokens = *(new Vec<Token>(lexer::parse(
+        tables::lexer_tokens, zh_def, *file_path_str, zhdata.files_lines)));
+
+    if (zhdata.flags["tokens"]) {
+      json j;
+      j["tokens"] = tokens;
+      std::cout << j.dump(2) << std::endl;
+    }
+
+    auto ast = ast::parse(tokens.begin(), tokens.end());
+    auto ast_iter = ast->nodes.begin();
+
     auto header = parseFn(res, *zhdata.global,
                           dynamic_cast<ast::ASTLine*>(ast->nodes.front()), ast,
                           ast_iter, true);
 
-    header->defined = Function::DEFINED::extern_c;
+    header->defined = DEFINED::extern_c;
     header->extern_name = c_name;
     zhdata.functions.push_back(header);
   }
+  
   return res;
 }
 
@@ -861,6 +898,7 @@ ZHModule* parseC(Path file_path) {
   json j;
   j["c_path"] = file_path.string();
   j["functions"] = json::array();
+  j["types"] = json::array();
 
   std::stringstream ss;
   auto fin = std::ifstream(file_path);
@@ -880,9 +918,11 @@ ZHModule* parseC(Path file_path) {
       str = std::regex_replace(str, std::regex(" *@zh-fn([\\S\\s]+)"), "$1");
       j["functions"].push_back(json::parse(str));
     }
+    if (std::regex_match(str, std::regex(" *@zh-type[\\S\\s]+"))) {
+      str = std::regex_replace(str, std::regex(" *@zh-type([\\S\\s]+)"), "$1");
+      j["types"].push_back(json::parse(str));
+    }
   }
-  // auto& tokens = *(new Vec<Token>(lexer::parse(
-  //     lexer_tokens, zh_def, *file_path_str, zhdata.files_lines)));
 
   return moduleFromJson(j);
 }
