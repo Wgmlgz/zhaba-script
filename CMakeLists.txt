@@ -66,7 +66,6 @@ set(lib
   src/tree_lib/Tree.hpp
   src/tree_lib/TreePrinterASCII.hpp
   src/tree_lib/TreeLib.hpp
-  src/zhaba/CmdOptios.hpp
   src/lang/expression.cpp
   src/lang/types.cpp
   src/lang/ast.cpp
