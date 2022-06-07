@@ -623,7 +623,7 @@ Function* parseFn(ZHModule* res, Scope& push_scope, ast::ASTLine* line,
 /**
  * @brief Parses .zh file to module
  */
-ZHModule* parseZh(std::filesystem::path file_path) {
+ZHModule* parseZh(Path file_path) {
   ZHModule* res = new ZHModule(file_path);
 
   std::vector<Token>& tokens = *new std::vector<Token>(tokenizeFile(file_path));
@@ -658,7 +658,7 @@ ZHModule* parseZh(std::filesystem::path file_path) {
         if (all_imported)
           throw ParserError(*line->begin, *line->end,
                             "`use` only allowed at the top");
-        std::string path = "";
+        Str path = "";
 
         auto token = line->begin;
         ++token;
@@ -675,16 +675,16 @@ ZHModule* parseZh(std::filesystem::path file_path) {
         while (!path.empty() && path.back() == ' ') path.pop_back();
         while (!path.empty() && path.front() == ' ') path.erase(path.begin());
 
-        if (!std::filesystem::path(path).has_extension()) path += ".zh";
+        if (!Path(path).has_extension()) path += ".zh";
 
-        if (std::filesystem::path(path).is_relative())
+        if (Path(path).is_relative())
           path = (file_path.parent_path() / path).string();
 
         path = resolvePath(path).string();
 
         if (!zhdata.used_modules.contains(path)) {
           zhdata.used_modules.emplace(path, nullptr);
-          std::filesystem::path file_path = path;
+          Path file_path = path;
 
           try {
             auto parsed_module = parseFile(file_path);
@@ -719,14 +719,14 @@ ZHModule* parseZh(std::filesystem::path file_path) {
           throw ParserError(*line->end,
                             "Expected identifier token for struct type name");
 
-        std::string name = (line->begin + 2)->val;
+        Str name = (line->begin + 2)->val;
         if (zhdata.global->types.contains(name)) {
           throw ParserError(*line->begin, *line->end,
                             "Type '" + name + "'already exist");
         }
 
         bool isGeneric = false;
-        std::vector<std::string> generic;
+        std::vector<Str> generic;
 
         auto token = line->begin + 3;
         while (token != line->end) {
@@ -815,21 +815,21 @@ ZHModule* parseZh(std::filesystem::path file_path) {
  * @brief Parses `json` object to module
  */
 ZHModule* moduleFromJson(json j) {
-  ZHModule* res = new ZHModule(std::filesystem::path(
-      std::filesystem::path(j["c_path"].get<std::string>())));
+  ZHModule* res = new ZHModule(Path(
+      Path(j["c_path"].get<Str>())));
 
   /** Store in heap for valid token refs */
-  auto file_path_str = new std::string(res->path.string());
+  auto file_path_str = new Str(res->path.string());
 
   for (const auto& fn : j["functions"]) {
     Str zh_def, c_name;
 
     if (fn.is_array()) {
-      zh_def = fn[0].get<std::string>();
-      c_name = fn[1].get<std::string>();
+      zh_def = fn[0].get<Str>();
+      c_name = fn[1].get<Str>();
     } else if (fn.is_object()) {
-      zh_def = fn["zh_def"].get<std::string>();
-      c_name = fn["c_name"].get<std::string>();
+      zh_def = fn["zh_def"].get<Str>();
+      c_name = fn["c_name"].get<Str>();
     }
 
     auto& tokens = *(new Vec<Token>(lexer::parse(
@@ -857,7 +857,7 @@ ZHModule* moduleFromJson(json j) {
 /**
  * @brief Parses .c file to module (or any file with c-like comments)
  */
-ZHModule* parseC(std::filesystem::path file_path) {
+ZHModule* parseC(Path file_path) {
   json j;
   j["c_path"] = file_path.string();
   j["functions"] = json::array();
@@ -890,12 +890,12 @@ ZHModule* parseC(std::filesystem::path file_path) {
 /**
  * @brief Parses file into module
  */
-ZHModule* parseJson(std::filesystem::path file_path) {
+ZHModule* parseJson(Path file_path) {
   json j = jsonFile(file_path);
 
   /** Normalize path */ 
-  auto c_path = std::filesystem::path(j["c_path"].get<std::string>());
-  if (std::filesystem::path(c_path).is_relative())
+  auto c_path = Path(j["c_path"].get<Str>());
+  if (Path(c_path).is_relative())
     c_path = file_path.parent_path() / c_path;
   j["c_path"] = c_path.string();
 
@@ -905,7 +905,7 @@ ZHModule* parseJson(std::filesystem::path file_path) {
 /**
  * @brief Parses any into module (switches by file type)
  */
-ZHModule* parseFile(std::filesystem::path file_path) {
+ZHModule* parseFile(Path file_path) {
   if (!zhdata.global) zhdata.global = makeCore();
 
   if (file_path.extension() == ".json") {
@@ -917,7 +917,7 @@ ZHModule* parseFile(std::filesystem::path file_path) {
   }
 }
 
-std::filesystem::path resolvePath(std::filesystem::path file_path) {
+Path resolvePath(Path file_path) {
   if (std::filesystem::exists(file_path))
     return file_path;
 
