@@ -4,7 +4,7 @@
 #include <unordered_set>
 #include <vector>
 
-#include "../libs/json.hpp"
+#include "../core/core.hpp"
 #include "syntax_tree.hpp"
 
 using json = nlohmann::json;

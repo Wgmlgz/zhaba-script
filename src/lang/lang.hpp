@@ -1,5 +1,5 @@
 #pragma once
-#include "../libs/json.hpp"
+#include "../core/core.hpp"
 #include "ast.hpp"
 #include "expression.hpp"
 #include "generics.hpp"

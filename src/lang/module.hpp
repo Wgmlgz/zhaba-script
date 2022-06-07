@@ -3,7 +3,7 @@
 #include <fstream>
 #include <list>
 
-#include "../libs/json.hpp"
+#include "../core/core.hpp"
 #include "../tree_lib/Tree.hpp"
 #include "ast.hpp"
 #include "expression.hpp"

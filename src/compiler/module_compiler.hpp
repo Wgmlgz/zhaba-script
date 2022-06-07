@@ -5,7 +5,7 @@
 
 #include "../interpreter/to_bytecode.hpp"
 #include "../interpreter/zhvm.hpp"
-#include "../libs/json.hpp"
+#include "../core/core.hpp"
 #include "../parser/parser.hpp"
 #include "./to_c.hpp"
 

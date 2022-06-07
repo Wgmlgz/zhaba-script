@@ -8,7 +8,7 @@
 #include <type_traits>
 #include <unordered_map>
 
-#include "../libs/json.hpp"
+#include "../core/core.hpp"
 #include "types.hpp"
 
 using json = nlohmann::json;

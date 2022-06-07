@@ -3,6 +3,19 @@ project(zhaba)
 
 set(CMAKE_CXX_STANDARD 20)
 
+include(FetchContent)
+
+FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download/v3.10.5/json.tar.xz)
+FetchContent_MakeAvailable(json)
+
+FetchContent_Declare(
+  cli11
+  GIT_REPOSITORY https://github.com/CLIUtils/CLI11
+  GIT_TAG        v2.2.0
+)
+FetchContent_MakeAvailable(cli11)
+
+
 include_directories(src/compiler)
 include_directories(src/interpreter)
 include_directories(src/lang)
@@ -13,8 +26,8 @@ include_directories(src/zhaba)
 include_directories(tests)
 
 
+
 set(lib          
-  src/libs/json.hpp
   src/compiler/compiler.hpp
   src/compiler/tables.hpp
   src/compiler/module_compiler.hpp
@@ -77,6 +90,8 @@ set(lib
   src/interpreter/stack.cpp)
 
 add_executable(zhaba ${lib} src/zhaba/zhaba.cpp)
+
+target_link_libraries(zhaba PRIVATE nlohmann_json::nlohmann_json)
 
 install(TARGETS zhaba)
 
