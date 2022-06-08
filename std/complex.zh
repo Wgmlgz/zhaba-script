@@ -2,7 +2,7 @@ use range
 use operators
 use io
 
-fn f64 sqrt f64 x
+fn f64 zh_sqrt f64 x
   z := 1.
   @ i 0..10: z -= (z*z - x) / (2.0*z)
   <<< z
@@ -28,7 +28,7 @@ op 5 V2 * V2 a V2 b
   <<< res
 
 fn f64 abs V2 a
-  <<< sqrt(a.x * a.x + a.y * a.y)
+  <<< zh_sqrt(a.x * a.x + a.y * a.y)
 
 fn put V2 a
   put a.x
