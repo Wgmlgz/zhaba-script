@@ -415,7 +415,7 @@ std::string exp2C(zhexp::Exp* exp) {
     res += "v" + std::to_string(var->getId());
   } else if (auto op = dynamic_cast<zhexp::PostfixOperator*>(exp)) {
     if (op->type.getRef()) res += "*";
-    res += funcHead2C(op->func) + "(";
+    res += funcName2C(op->func) + "(";
     res += args2C(op->child, op->func->getHead().types);
     res += ")";
   } else if (auto tuple = dynamic_cast<zhexp::Tuple*>(exp)) {
