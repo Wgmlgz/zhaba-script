@@ -100,6 +100,10 @@ op 9 bool < StrR a StrR b
   | a.size > b.size: <<< fls
   <<< fls
 
+op 9 bool in char c StrR s
+  @ i s: ? i == c: <<< tru
+  <<< fls
+
 op 5 Str * str s int i
   slf := Str()
   t := Str(s)
