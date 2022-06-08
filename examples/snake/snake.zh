@@ -1,0 +1,57 @@
+/** Import Zhaba-script standart library */
+use std
+/** Import C standart library */
+use c/std
+
+fn main
+  /** Initialize game data */
+  sx := 20 sy := 40 tick := 100
+  screen := Vec<Str>(sx ' ' * sy)
+  head := Pair<int int>(10 20)
+  snake := Vec<Pair<int int> >(1 head)
+  rng := Rng()
+
+  /** Lambda function to put x in range 0..mx */
+  mod := (int x int mx) -> (x % mx + mx) % mx
+
+  /** Place 2 random items */
+  screen[mod(rng() sx)][mod(rng() sy)] = chr('@')
+  screen[mod(rng() sx)][mod(rng() sy)] = chr('@')
+
+  ch := chr('d')
+  @ ch != chr('x')
+    /** Delay and input */
+    start := clock()
+    @ dif(clock() start) < tick
+      ? ! !kbhit()
+        t := getch()
+        ? t in $'wasdx': ch = t
+
+    /** Clear screen */
+    clrscr()
+    /** Move head */
+    ?? ch
+      'w': head.a = mod(head.a - 1 sx)
+      'a': head.b = mod(head.b - 1 sy)
+      's': head.a = mod(head.a + 1 sx)
+      'd': head.b = mod(head.b + 1 sy)
+
+    ?? screen[head.a][head.b]
+      /** Collide with self */
+      'o':
+        ? ch == chr('x'): out 'Exit'
+        \ out 'Game over('
+        ch = chr('x')
+      /** Just go */
+      ' ':
+        {a b} := snake[0]
+        screen[a][b] = chr(' ')
+        snake.erase(0)
+      /** Eat item */
+      '@': screen[mod(rng() sx)][mod(rng() sy)] = chr('@')
+    
+    /** Add new head position to snake */
+    snake += head
+    screen[head.a][head.b] = chr('o')
+
+    screen.println()
