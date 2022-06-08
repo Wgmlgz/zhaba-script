@@ -1,0 +1,34 @@
+type Pair A B
+  A a
+  B b
+
+impl Pair
+  fn ctor AR a BR b
+    Pair<A B> slf
+    slf.a = a
+    slf.b = b
+    <<< slf
+  fn ctor: <<< Pair<A B>(A() B())
+    
+  op 4 bool < Pair<A B>R a  Pair<A B>R b
+    t := a.a < b.a
+    ? t: <<< t
+    t = b.a < b.a
+    ? t: <<< t
+    <<< a.b < b.b
+
+  lop put Pair<A B>R slf
+    put '{'
+    put slf.a
+    put ' '
+    put slf.b
+    put '}'
+  lop out Pair<A B>R node
+    put node
+    out ''
+  rop Out < Pair<A B>R i: out i
+    <<< Out()
+  lop Out < Pair<A B>R i: put i, put ' '
+    <<< Out()
+  op 9 Out < Out o Pair<A B>R i: put i, put ' '
+    <<< Out() 
