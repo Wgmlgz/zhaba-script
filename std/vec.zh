@@ -60,9 +60,14 @@ impl Vec
     ? slf.size == slf.cap: slf.double_cap()
     slf.at(slf.size) = val
     ++slf.size
-    
+
   fn pop_back: --slf.size
-  
+
+  fn erase int pos
+    @ i, (pos + 1)..slf.size
+      slf.at(i-1) = slf.at(i)
+    slf.pop_back()
+
   /** Iterators */
   fn VecIter<T> begin: <<< VecIter<T>(slf.head) 
   fn VecIter<T> end: <<< VecIter<T>(slf.atP(slf.size))
