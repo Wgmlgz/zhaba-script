@@ -277,10 +277,12 @@ std::string exp2C(zhexp::Exp* exp) {
         auto rhs_tuple = castToTuple(op->rhs);
         *lhs_tuple += *rhs_tuple;
 
+        std::string res;
         if (op->type.getRef()) res += "*";
         res += funcName2C(op->func) + "(";
         res += args2C(lhs_tuple, op->func->getHead().types);
         res += ")";
+        return res;
       }
     }
   } else if (auto op = dynamic_cast<zhexp::PrefixOperator*>(exp)) {
@@ -403,10 +405,12 @@ std::string exp2C(zhexp::Exp* exp) {
       res += "*";
       res += exp2C(op->child);
     } else {
+      std::string res;
       if (op->type.getRef()) res += "*";
       res += funcName2C(op->func) + "(";
       res += args2C(op->child, op->func->getHead().types);
       res += ")";
+      return res;
     }
   } else if (auto tp = dynamic_cast<zhexp::TypeLiteral*>(exp)) {
     res += type2C(tp->literal_type);
@@ -414,10 +418,12 @@ std::string exp2C(zhexp::Exp* exp) {
     if (var->getType().getRef()) res += "*";
     res += "v" + std::to_string(var->getId());
   } else if (auto op = dynamic_cast<zhexp::PostfixOperator*>(exp)) {
+    std::string res;
     if (op->type.getRef()) res += "*";
     res += funcName2C(op->func) + "(";
     res += args2C(op->child, op->func->getHead().types);
     res += ")";
+    return res;
   } else if (auto tuple = dynamic_cast<zhexp::Tuple*>(exp)) {
     for (size_t i = 0; i < tuple->content.size(); ++i) {
       if (i) res += ", ";
