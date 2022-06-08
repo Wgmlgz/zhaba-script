@@ -1,5 +1,7 @@
+use valist.c
 use keyboard.c
 use math.c
 use screen.c
 use stdio.c
 use time.c
+use stdlib.c
