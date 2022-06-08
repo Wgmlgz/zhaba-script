@@ -361,6 +361,8 @@ Exp *buildExp(Scope &scope, tokeniter begin, tokeniter end) {
     } else if (type == po_op) {
       res.emplace_back(iter, type);
     } else if (type == bin_op) {
+      if (!scope.bin_operators.contains(dynamic_cast<BinOperator *>(iter)->val))
+        throw ParserError(iter->begin, iter->end, "operator can't be binary operator");
       auto slf_priority =
           scope.bin_operators.at(dynamic_cast<BinOperator *>(iter)->val);
       while (!stack.empty() &&
