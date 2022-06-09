@@ -1,0 +1,11 @@
+use str
+
+type Err: Str val
+
+impl Err
+  fn ctor Str s
+    Err slf
+    slf.val = s
+    <<< slf
+
+  fn str what: <<< slf.val.cstr()
