@@ -31,22 +31,6 @@ const TYPE FT = new TypeInfo{.name = "F", .complete = true, .defined = DEFINED::
 }
 namespace tables {
 
-const std::unordered_map<std::string, bool> flags{
-    {"tokens", false},
-    {"exp_parser_logs", false},
-    {"show_ast", false},
-    {"show_st", false},
-    {"show_c", false},
-    {"show_original", false},
-    {"B", false},
-    {"stack_trace", false},
-    {"show_bytecode", false},
-    {"pure", false},
-};
-const std::unordered_map<Str, Str> options{
-    {"compiler", "gcc"},
-};
-
 const std::vector<std::pair<TOKEN, std::string>> lexer_tokens{
     {TOKEN::str_literal, R"(('(\\.|[^'\\])*'|`(?:\\`|[^`])*`))"},
     {TOKEN::id,

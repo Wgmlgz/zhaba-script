@@ -19,9 +19,6 @@ int main(int argc, char **argv) {
 
   app.add_option("file", file_path, "input file to compile")->required();
 
-  zhdata.flags = std::unordered_map<std::string, bool>();
-  zhdata.options = std::unordered_map<Str, Str>();
-  
   app.add_flag(
       "--B,-b", zhdata.flags["B"],
       "sets build target to bytecode, doesn't depend on external compiler");
