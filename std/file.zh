@@ -1,0 +1,29 @@
+use err
+use result
+use c/valist.c
+use c/stdio.c
+
+type File: FILEP f
+impl File
+  fn ctor FILEP f
+    File slf
+    slf.f = f
+    <<< slf
+  fn Str read
+    s := Str()
+    fseek(slf.f, 0, SEEK_END()) 
+    size := ftell(slf.f);
+    fseek(slf.f, 0, SEEK_SET())
+    @ i 0..size
+      s += fgetc(slf.f)
+    <<< s
+    
+fn Result<File Err> open Str s Str mode
+  f := fopen(s.cstr() mode.cstr())
+  ? f != (0 as FILEP): <<< Result<File Err>(File(f))
+  <<< Result<File Err>(Err('canno\'t open ' + s))
+
+fn Result<File Err> open Str s str mode: <<< open(s Str(mode))
+fn Result<File Err> open Str s: <<< open(Str(s) 'r')
+fn Result<File Err> open str s: <<< open(Str(s))
+fn Result<File Err> open str s str mode: <<< open(Str(s) Str(mode))
