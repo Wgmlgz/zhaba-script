@@ -21,7 +21,7 @@ impl File
 fn Result<File Err> open Str s Str mode
   f := fopen(s.cstr() mode.cstr())
   ? f != (0 as FILEP): <<< Result<File Err>(File(f))
-  <<< Result<File Err>(Err('canno\'t open ' + s))
+  <<< Result<File Err>(Err('can\'t open ' + s))
 
 fn Result<File Err> open Str s str mode: <<< open(s Str(mode))
 fn Result<File Err> open Str s: <<< open(Str(s) 'r')
