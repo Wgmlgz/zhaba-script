@@ -75,7 +75,7 @@ char *in_str() {
   str[len++]='\0';
   return (char*)realloc(str, sizeof(*str)*len);
 }
-void panic(char* str) {
+void panic(const char* str) {
   printf("%s", str);
   exit(EXIT_FAILURE);
 }
