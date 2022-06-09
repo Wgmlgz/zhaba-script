@@ -1,0 +1,27 @@
+use std
+use c/std
+use c/preprocessor.c
+
+type Result T E
+  bool is_err
+  T val
+  E err
+
+impl Result
+  fn ctor T val
+    Result<T E> slf
+    slf.is_err = fls
+    slf.val = val
+    <<< slf    
+
+  fn ctor E err
+    Result<T E> slf
+    slf.is_err = tru
+    slf.err = err
+    <<< slf
+
+  fn T unwrap
+    ? slf.is_err
+      out slf.err.what()
+      exit(EXIT_FAILURE())
+    <<< slf.val
