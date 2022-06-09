@@ -123,3 +123,20 @@ lop Str $ str s: <<< Str(s)
 //   @ i s: ? i == chr'A'..=chr'Z': i = i-chr'A'+chr'a'
   
 lop VecIterRange<char> iter str s: <<< iter Str(s)
+
+fn bool starts_with StrR a StrR b
+  ? a.size < b.size: <<< fls
+
+  @ i 0..b.size
+    ? a[i] != b[i]: <<< fls
+
+  <<< tru
+
+fn bool ends_with StrR a StrR b
+  size := a.size - b.size
+  ? a.size < size: <<< fls
+
+  @ i 0..b.size
+    ? a[i + size] != b[i]: <<< fls
+
+  <<< tru
