@@ -81,11 +81,12 @@ impl Vec
   fn TR back: <<< *slf.atP(slf.size-1)
 
   fn dtor
-    ? ! !(slf.head as int)
-      free(slf.head as int)
-      slf.size = 0
-      slf.cap = 0
-      slf.head = 0 as TP
+    0
+    // ? ! !(slf.head as int)
+    //   free(slf.head as int)
+    //   slf.size = 0
+    //   slf.cap = 0
+    //   slf.head = 0 as TP
 
   /** Constructors */
   fn ctor int size

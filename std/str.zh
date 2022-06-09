@@ -22,7 +22,7 @@ impl Str
     slf.data.push_back(0u8 as char)
     slf.size = 0
     <<< slf
-  fn dtor: slf.data.dtor()
+  // fn dtor: slf.data.dtor()
   fn str cstr: it := slf.data.begin(); <<< it.ptr as str
   lop VecIterRange<char> iter StrR s
     <<< VecIterRange<char>(s.data.begin() s.data.begin() + s.size)
