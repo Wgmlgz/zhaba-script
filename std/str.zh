@@ -148,3 +148,23 @@ fn Str reverse StrR a
     r.push_back(a[i - 1])
 
   <<< r
+
+fn int find StrR a StrR b
+  @ i 0..a.size
+    j := 0
+
+    ? a[i] == b[j]:
+      temp := i
+
+      @ a[i] == b[j]
+        i += 1
+        j += 1
+      
+      ? j == b.size: <<< temp
+      \ i = temp
+        temp = 0
+
+  <<< -1
+
+fn bool contains StrR a StrR b
+  <<< find(a, b) != -1
