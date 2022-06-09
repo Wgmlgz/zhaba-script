@@ -140,3 +140,11 @@ fn bool ends_with StrR a StrR b
     ? a[i + size] != b[i]: <<< fls
 
   <<< tru
+
+fn Str reverse StrR a
+  r := Str();
+
+  @ i:=a.size i > 0 i -= 1
+    r.push_back(a[i - 1])
+
+  <<< r
