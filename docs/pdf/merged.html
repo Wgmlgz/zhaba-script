@@ -977,7 +977,7 @@
 <div style="page-break-after: always;"></div>
 
 <div class="toc"><span class="toctitle">Contents</span><ul>
-<li><a href="#zhaba-script-programming-language">Zhaba script programming language🐸</a></li>
+<li><a href="#1-introduction">1 Introduction</a><ul>
 <li><a href="#useful-links">Useful links 🔗</a><ul>
 <li><a href="#try-it-now">Try it now!</a></li>
 <li><a href="#docs">Docs 📑</a></li>
@@ -997,6 +997,8 @@
 <li><a href="#setup">Setup ⚙️</a></li>
 <li><a href="#some-demonstration-examples">Some demonstration examples</a></li>
 <li><a href="#the-end">The end!</a></li>
+</ul>
+</li>
 <li><a href="#compiler">Compiler</a><ul>
 <li><a href="#binary-usage">Binary usage</a></li>
 <li><a href="#flags">Flags</a></li>
@@ -1198,27 +1200,34 @@
 <li><a href="#mapk-v-member-functions">Map&lt;K V&gt; member functions</a></li>
 </ul>
 </li>
+<li><a href="#error-handling">Error handling</a><ul>
+<li><a href="#recoverable-errors-with-resultt-e">Recoverable errors with Result&lt;T E&gt;</a></li>
+<li><a href="#simple-errors-with-err-type">Simple errors with Err type</a></li>
+<li><a href="#unrecoverable-errors-with-panic">Unrecoverable errors with panic</a></li>
+</ul>
+</li>
+<li><a href="#interacting-with-c">Interacting with C</a></li>
 </ul>
 </div>
 <div style="page-break-after: always;"></div>
-<h1 id="zhaba-script-programming-language">Zhaba script programming language🐸</h1>
+<h1 id="1-introduction">1 Introduction</h1>
 <p>Zhaba script (Russian: ˈʐabə, жаба(frog)) - is a multi-paradigm, high-level, statically typed, interpreted or source to source compiled language, which focuses at minimizing programs size and maximizing development speed and comfort.</p>
 <p>Inspired by JS, Rust, C++, and Python🐍</p>
 <p><img alt="frog_img" src="https://raw.githubusercontent.com/Wgmlgz/zhaba-script/main/img/frog.jpg" /></p>
-<h1 id="useful-links">Useful links 🔗</h1>
-<h2 id="try-it-now">Try it now!</h2>
+<h2 id="useful-links">Useful links 🔗</h2>
+<h3 id="try-it-now">Try it now!</h3>
 <p>I created this web playground, so you can play with examples right now! -&gt; https://wgmlgz.github.io/zhaba/</p>
-<h2 id="docs">Docs 📑</h2>
+<h3 id="docs">Docs 📑</h3>
 <p>Here is a zhaba-script docs website with syntax highlighting -&gt; https://wgmlgz.github.io/zhaba/?page=docs</p>
-<h2 id="vs-code-support">VS Code support</h2>
+<h3 id="vs-code-support">VS Code support</h3>
 <p>You can code in your's favorite frog programming language in your favorite IDE -&gt; https://marketplace.visualstudio.com/items?itemName=wgmlgz.zhaba-script</p>
-<h1 id="hello-world">Hello world! 👋</h1>
+<h2 id="hello-world">Hello world! 👋</h2>
 <pre><code class="language-zh">use std
 
 fn main
   &lt; 'hi world!' &lt;
 </code></pre>
-<h1 id="list-of-features">List of features</h1>
+<h2 id="list-of-features">List of features</h2>
 <p>Complier &amp; dev environment:</p>
 <ul>
 <li>Interpretation (throw bytecode)</li>
@@ -1270,18 +1279,18 @@ fn main
 <li><code>operators.zh</code> - more advanced operators like %%</li>
 <li><code>brainfuck.zh</code> - brainfuck interpreter</li>
 </ul>
-<h1 id="why">Why? 🤔</h1>
-<h2 id="motivation">Motivation</h2>
+<h2 id="why">Why? 🤔</h2>
+<h3 id="motivation">Motivation</h3>
 <p>C++ is one of my favorite languages because of it's power and performance, but at the same time it is very old and doest't have lots of amazing features of modern programming languages. For example to simply loop over int range you have to use something like this: <code>for (int i = 0; i &lt; n; ++i)</code>. Can we do better? In python you can use <code>for i in range(0, n)</code>, this is already a huge improvement, but can we do even better? Of course! Zhaba-script solution to this task looks like this: <code>@ i 0..n</code>. This example can show how some of the syntax elements are not necessary and can be reduced. To be fair in C++20 we can do <code>for (auto i : std::ranges::iota_view(0, 10))</code> or with reduced namespaces <code>for (auto i : iota_view(0, 10))</code>, this is definitely good, but still longer then python.</p>
-<h2 id="goal">Goal</h2>
+<h3 id="goal">Goal</h3>
 <p>So, the main goal of zhaba-script is to make your programs smaller while also maintain readability and performance. To do this, zhaba-script is using C++ low level semantic concepts and bringing them with short python-like syntax.</p>
-<h2 id="syntax">Syntax</h2>
+<h3 id="syntax">Syntax</h3>
 <p>The zhaba-script syntax is the most different and interesting part from other programming languages and mostly resembles python, which does't use <code>{}</code> to declare blocks of code. But zhaba-script takes a step forward by removing almost all unnecessary syntax elements like <code>,</code> in some places. For example in this expression: <code>print(1, 2, 4)</code> it is obvious where commas should be so you don't need to explicitly write them. Other syntax elements like <code>;</code> or <code>:</code> are not required, but their use is put to make your code even shorter. Also most common keywords such as <code>if</code> or <code>return</code> are reduced to simple symbols, to make code shorter and even more readable. Other very big feature is ability to overload any operator and even create your onw new ones. You can read more about all the syntax elements TODO <a href="https://wgmlgz.github.io/zhaba/?page=docs&amp;chapter=2">here</a>.</p>
-<h2 id="memory-model">Memory model</h2>
+<h3 id="memory-model">Memory model</h3>
 <p>Zhaba-script memory model is similar to the C memory model, which consists of stack, heap and pointers to manage it.</p>
-<h1 id="compatibility">Compatibility</h1>
+<h2 id="compatibility">Compatibility</h2>
 <p>Zhaba-script currently requires zero external dependencies in interpretation mode and C compiler like GCC if you want to translate programs to C. Also You will need a C++20 compiler with Cmake to build it. Zhaba-script has been successfully tested on Linux, MacOS and Windows.</p>
-<h1 id="setup">Setup ⚙️</h1>
+<h2 id="setup">Setup ⚙️</h2>
 <p>If you want to run/develop zhaba-script on your own machine here is instruction for you</p>
 <ul>
 <li>Set environment variable <code>zhstd</code> to <code>repo_path/std</code></li>
@@ -1296,7 +1305,7 @@ fn main
 <li>To use zhaba-script</li>
 <li>Download the latest binary from <a href="https://github.com/Wgmlgz/zhaba-script/releases">releases</a> / or use <a href="https://wgmlgz.github.io/zhaba/">web IDE</a></li>
 </ul>
-<h1 id="some-demonstration-examples">Some demonstration examples</h1>
+<h2 id="some-demonstration-examples">Some demonstration examples</h2>
 <p>Classic FizzBuzz:</p>
 <pre><code class="language-zh">use std
 
@@ -1381,7 +1390,7 @@ fn main
             |/U\
 */
 </code></pre>
-<h1 id="the-end">The end!</h1>
+<h2 id="the-end">The end!</h2>
 <p>So now I welcome you to can play with zhaba-script in this web IDE -&gt; https://wgmlgz.github.io/zhaba</p>
 <p>Love frogs and frogs will love you 🐸💖.</p>
 <p>⭐ this repo if you liked it!</p>
@@ -3315,6 +3324,45 @@ fn main
 </tr>
 </tbody>
 </table>
+<div style="page-break-after: always;"></div>
+<h1 id="error-handling">Error handling</h1>
+<p>Errors are a fact of life in software, so Zhaba-script has a number of features for handling situations in which something goes wrong. Zhaba-script takes similar approach to Rust is this topic.</p>
+<p>Zhaba-script groups errors into two major categories: recoverable and unrecoverable errors. For a recoverable error, such as a file not found error, we most likely just want to report the problem to the user and retry the operation. Unrecoverable errors are always symptoms of bugs, and so we want to immediately stop the program.</p>
+<p>Most languages don’t distinguish between these two kinds of errors and handle both in the same way, using mechanisms such as exceptions. Zhaba-script doesn’t have exceptions. Instead, it has the type <code>Result&lt;T E&gt;</code> for recoverable errors and the <code>panic</code> function that stops execution when the program encounters an unrecoverable error. Note, that you can can't use this in bytecode, because of dependence to stdlib.h. To use <code>panic</code> import <code>c/std</code> or <code>c/stdlib.c</code> (more about C api in next chapter) and to use <code>Result</code> import <code>result</code>.</p>
+<h2 id="recoverable-errors-with-resultt-e">Recoverable errors with <code>Result&lt;T E&gt;</code></h2>
+<pre><code class="language-zh">type Result T E
+  bool is_err
+  T val
+  E err
+</code></pre>
+<p>Essentially this type allows you to combine 2 types: <em>good</em> type <code>T</code>, in which case all went OK, and <em>bad</em> type <code>E</code>, in which you might want to put some info about your error. <code>Result</code> is most handy for function return value. Here is an example from zhaba-script standard library (more about <code>Err</code> type later):</p>
+<pre><code class="language-zh">fn Result&lt;File Err&gt; open Str s Str mode
+  f := fopen(s.cstr() mode.cstr())
+  ? f != (0 as FILEP): &lt;&lt;&lt; Result&lt;File Err&gt;(File(f))
+  &lt;&lt;&lt; Result&lt;File Err&gt;(Err('canno\'t open ' + s))
+</code></pre>
+<p>This function tries to open file using C api. If C function <code>fopen</code> returned valid pointer, we return <code>Result&lt;File Err&gt;(File(f))</code>, but if pointer is null, we return <code>Result&lt;File Err&gt;(Err('canno\'t open ' + s))</code>.</p>
+<p>And then, to use file you can do look at <code>is_err</code> value:</p>
+<pre><code class="language-zh">f := open('file.txt')
+? f.is_err: out 'everything is bad'
+\ out f.val.read()
+</code></pre>
+<p>Another way to process recoverable errors is with <code>unwrap</code> function:</p>
+<pre><code class="language-zh">f := open('file.txt').unwrap()
+out f.read()
+</code></pre>
+<p>This function will return <em>good</em> value, and otherwise will raise unrecoverable error.</p>
+<h2 id="simple-errors-with-err-type">Simple errors with <code>Err</code> type</h2>
+<pre><code class="language-zh">type Err: Str val
+</code></pre>
+<p>In most cases, when error is accrued, you don't need to have some fancy information about the error itself and for that purposes zhaba-script has <code>Err</code> type, which simply wraps <code>Str</code>.</p>
+<h2 id="unrecoverable-errors-with-panic">Unrecoverable errors with <code>panic</code></h2>
+<p>Sometimes, when something very bad happened or when you unwrap <code>Result</code> value, you may want to immediately exit program execution. To do that zhaba-script has <code>panic</code> function which will print what went wrong end then stop program execution:</p>
+<pre><code class="language-zh">Program panic at zhaba_tmp.c:3782:
+can't open some-invalid-file.txt
+</code></pre>
+<div style="page-break-after: always;"></div>
+<h1 id="interacting-with-c">Interacting with C</h1>
 <div style="page-break-after: always;"></div>
     </div>
   </body>
