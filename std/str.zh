@@ -83,7 +83,10 @@ op 6 Str + StrR a StrR b
   s := a
   s += b
   <<< s
+
 op 6 Str + str a str b: <<< Str(a) + Str(b)
+op 6 Str + StrR a str b: <<< a + Str(b)
+op 6 Str + str a StrR b: <<< Str(a) + b
 
 rop Out < StrR i: out i
   <<< Out()
