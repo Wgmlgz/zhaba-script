@@ -12,7 +12,11 @@ If you want to use all standard library at once, write `use std` at the top of y
 | ---------------- | ------------------------------------------------- |
 | std/avl.zh       | `AVLTree<T>`: avl binary search tree              |
 | std/complex.zh   | `V2`: complex numbers                             |
+| std/err.zh       | `Err`: `Str` error wrapper                        |
+| std/file.zh      | filesystem                                        |
 | std/frog.zh      | cool frog image                                   |
+| std/pair.zh      | `Pair<A B>`: pair container                       |
+| std/result.zh    | `Result<T E>`: recoverable errors container type  |
 | std/map.zh       | `Map<K V>`: wrapper for avl tree                  |
 | std/operators.zh | some advanced operators like `%%` or `+=`         |
 | std/io.zh        | overloaded `<` and `>` operators for input/output |
