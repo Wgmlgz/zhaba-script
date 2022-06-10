@@ -15,17 +15,7 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(cli11)
 
-
-include_directories(src/compiler)
-include_directories(src/interpreter)
-include_directories(src/lang)
-include_directories(src/libs)
-include_directories(src/parser)
-include_directories(src/tree_lib)
-include_directories(src/zhaba)
-include_directories(tests)
-
-
+include_directories(src)
 
 set(lib          
   src/compiler/compiler.hpp

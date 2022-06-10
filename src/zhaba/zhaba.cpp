@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 
-#include "compiler.hpp"
+#include "../compiler/compiler.hpp"
 
 void printUsage() {
   std::cout << usage << "\nFlags:\n";

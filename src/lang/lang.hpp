@@ -8,3 +8,4 @@
 #include "syntax_tree.hpp"
 #include "types.hpp"
 #include "zhdata.hpp"
+#include "parser_error.hpp"

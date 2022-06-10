@@ -1,7 +1,6 @@
 #pragma once
 #include "bytecode.hpp"
-#include "lang.hpp"
-#include "parser_error.hpp"
+#include "../lang/lang.hpp"
 
 namespace zhin {
 struct FuncData {
