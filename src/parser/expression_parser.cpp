@@ -83,8 +83,9 @@ Exp* makeLval(Exp*& exp, Scope& scope) {
 Exp *buildExp(Scope &scope, tokeniter begin, tokeniter end) {
   /** Flow operator skip */
   if (begin->token == TOKEN::id and tables::flow_ops.count(begin->val)) {
-    return new FlowOperator(*begin, *begin, begin->val,
-                            buildExp(scope, ++begin, end));
+    auto new_val = begin->val;
+    auto new_op = buildExp(scope, ++begin, end);
+    return new FlowOperator(*begin, *begin, new_val, new_op);
   }
 
   enum TOKEN_TYPE {
