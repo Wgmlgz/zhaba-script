@@ -678,7 +678,7 @@ ZHModule* parseZh(Path file_path) {
         if (!Path(path).has_extension()) path += ".zh";
 
         if (Path(path).is_relative())
-          path = (file_path.parent_path() / path).string();
+          path.insert(0, zhdata.std_path);
 
         path = resolvePath(path).string();
 
