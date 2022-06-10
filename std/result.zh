@@ -1,6 +1,5 @@
 use std
 use c/std
-use c/preprocessor.c
 
 type Result T E
   bool is_err
@@ -21,7 +20,5 @@ impl Result
     <<< slf
 
   fn T unwrap
-    ? slf.is_err
-      out slf.err.what()
-      exit(EXIT_FAILURE())
+    ? slf.is_err: panic(slf.err.what())
     <<< slf.val
