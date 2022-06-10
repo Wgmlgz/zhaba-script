@@ -1,0 +1,4 @@
+use c/std
+
+fn main
+  printf('number: %d, string: %s\n', va 55 va 'frog')
