@@ -23,8 +23,8 @@ std::vector<Token> tokenizeFile(std::filesystem::path file_path) {
   file_data = "\n" + file_data + "\n";
   fin.close();
 
-  auto file_name = new std::string(file_path.string());
-  return lexer::parse(tables::lexer_tokens, file_data, *file_name, zhdata.files_lines,
+  auto file_name = std::string(file_path.string());
+  return lexer::parse(tables::lexer_tokens, file_data, file_name, zhdata.files_lines,
                             zhdata.flags["tokens"]);
 }
 
