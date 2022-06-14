@@ -1,43 +1,29 @@
-# Zhaba script programming language🐸
-
-Zhaba script (Russian: ˈʐabə, жаба(frog)) - is a multi-paradigm, high-level, statically typed, interpreted or source to source compiled language, which focuses at minimizing programs size and maximizing development speed and comfort.
-
-Inspired by JS, Rust, C++, and Python🐍
-
 ![frog_img](https://raw.githubusercontent.com/Wgmlgz/zhaba-script/main/img/frog.jpg)
 
-# Useful links 🔗
+# Introduction
 
-## Try it now!
+Zhaba-script (Russian: ˈʐabə, жаба(toad)) - is a multi-paradigm, high-level, statically typed, interpreted or source to source compiled language, designed to be as performant as C, but as beautiful as Python.
 
-I created this web playground, so you can play with examples right now! -> https://wgmlgz.github.io/zhaba/
+## Motivation
 
-## Docs 📑
+C is one of my favorite languages because of it's power and performance, but at the same time it's syntax is over 50 years old and doest't have lots of amazing features of modern programming languages. For example to simply loop over int range you have to use something like this: `for (int i = 0; i < n; ++i)`. Can we do better? In python you can use `for i in range(0, n)`, this is already a huge improvement, but can we do even better? Of course! Zhaba-script solution to this task looks like this: `@ i 0..n`. Another example is function pointers: the C syntax for them is very unintuitive: `int (*foo) (int, int)`. It puts variable name inside of type definition, which can be very confusing. Zhaba-script function pointer looks like this: `F<int int int> foo`. This is relatively simple examples, but them can show what zhaba-script is tries to achieve.
 
-Here is a zhaba-script docs website with syntax highlighting -> https://wgmlgz.github.io/zhaba/?page=docs
+So, the main goal of zhaba-script is to make your programs smaller while also maintain readability and performance. To do this, zhaba-script is using C and C++ semantic concepts and bringing them with short python-like syntax.
 
-## VS Code support
+## Syntax
 
-You can code in your's favorite frog programming language in your favorite IDE -> https://marketplace.visualstudio.com/items?itemName=wgmlgz.zhaba-script
+The zhaba-script syntax is the most different and interesting part from other programming languages and mostly resembles python, which does't use `{}` to declare blocks of code. But zhaba-script takes a step forward by removing almost all unnecessary syntax elements like `,` in some places. For example in this expression: `print(1, 2, 4)` it is obvious where commas should be so you don't need to explicitly write them. Other syntax elements like `;` or `:` are not required, but their use is put to make your code even shorter. Also most common keywords such as `if` or `return` are reduced to simple symbols, to make code shorter and even more readable. Other very big feature is ability to overload any operator and even create your onw new ones.
 
-# Hello world! 👋
-
-```zh
-use std
-
-fn main
-  < 'hi world!' <
-```
-
-# List of features
+## List of Zhaba-script features
 
 Complier & dev environment:
 
-- Interpretation (throw bytecode)
+- Interpretation throw bytecode
 - Interpretation in web environment
+- Syntax highlighter VSCode extension
 - Web code editor
 - Docs website
-- Translation to C
+- C api
 
 Basics:
 
@@ -59,68 +45,37 @@ More advanced features:
 - Any operator overloading
 - Subscript `[]` and call `()` overload
 - New operators creation
-- Local (relative to scope) functions and operators definition
+- Local functions and operators definition
 - Pointers
-- References (pass, return and store)
-
-Objects:
-
+- Function pointers
+- References
+- Object & array destructuring
 - Custom types (classes/structs)
 - Member functions
 - Constructors
 - Copy constructors (and implicit calls)
 - Destructors (and implicit calls)
-- Generic types like `Vec<T>`
+- Generic types
 
-Standard library
+Standard library:
 
-- `Vec<T>` - generic dynamic array
-- `Str` - String class
-- Easy input/output throw `<` and `>` overloaded operators
-- `Range` - int range, can be created with `..` operator, used in loops or `Vec` slicing
-- `frog.zh` - file with cool ASCII image of 🐸
-- `operators.zh` - more advanced operators like %%
-- `brainfuck.zh` - brainfuck interpreter
+- `Vec<T>`, `Str`, `Map<K V>`, `Pair<A B>` `Option` - most common data containers
+- `Result<T E>` and `panic` - for error handling
+- `Rng`, `V2`, `Out`, `File` and more for other different use cases
+- `c/std` - most necessary parts of C library is also ported
+- And many other features!
 
-# Why? 🤔
+## Examples
 
-## Motivation
+Here is some of zhaba-script code examples:
 
-C++ is one of my favorite languages because of it's power and performance, but at the same time it is very old and doest't have lots of amazing features of modern programming languages. For example to simply loop over int range you have to use something like this: `for (int i = 0; i < n; ++i)`. Can we do better? In python you can use `for i in range(0, n)`, this is already a huge improvement, but can we do even better? Of course! Zhaba-script solution to this task looks like this: `@ i 0..n`. This example can show how some of the syntax elements are not necessary and can be reduced. To be fair in C++20 we can do `for (auto i : std::ranges::iota_view(0, 10))` or with reduced namespaces `for (auto i : iota_view(0, 10))`, this is definitely good, but still longer then python.
+## Hello world
 
-## Goal
+```zh
+fn main: out 'Hi world'
+```
 
-So, the main goal of zhaba-script is to make your programs smaller while also maintain readability and performance. To do this, zhaba-script is using C++ low level semantic concepts and bringing them with short python-like syntax.
-
-## Syntax
-
-The zhaba-script syntax is the most different and interesting part from other programming languages and mostly resembles python, which does't use `{}` to declare blocks of code. But zhaba-script takes a step forward by removing almost all unnecessary syntax elements like `,` in some places. For example in this expression: `print(1, 2, 4)` it is obvious where commas should be so you don't need to explicitly write them. Other syntax elements like `;` or `:` are not required, but their use is put to make your code even shorter. Also most common keywords such as `if` or `return` are reduced to simple symbols, to make code shorter and even more readable. Other very big feature is ability to overload any operator and even create your onw new ones. You can read more about all the syntax elements TODO [here](https://wgmlgz.github.io/zhaba/?page=docs&chapter=2).
-
-## Memory model
-
-Zhaba-script memory model is similar to the C memory model, which consists of stack, heap and pointers to manage it.
-
-# Compatibility
-
-Zhaba-script currently requires zero external dependencies in interpretation mode and C compiler like GCC if you want to translate programs to C. Also You will need a C++20 compiler with Cmake to build it. Zhaba-script has been successfully tested on Linux, MacOS and Windows.
-
-# Setup ⚙️
-
-If you want to run/develop zhaba-script on your own machine here is instruction for you
-
-- Set environment variable `zhstd` to `repo_path/std`
-- If you are using VSCode you can install [this](https://marketplace.visualstudio.com/items?itemName=wgmlgz.zhaba-script) extension for syntax highlighting
-- To develop
-  - This is a CMake project, so you need to check how to set up it in your IDE
-    - VSCode: I am using vscode with CMake extension, so to set up project run command `CMake: Configure`, and to add run arguments add `"cmake.debugConfig": { "args": [ your args here ] }` to settings.json
-    - CLion: You probably can just open it with none or some minimal configuration
-  - use compiled binary to run your `.zh` files with `./zhaba <filename.zh>`
-- To use zhaba-script
-  - Download the latest binary from [releases](https://github.com/Wgmlgz/zhaba-script/releases) / or use [web IDE](https://wgmlgz.github.io/zhaba/)
-
-# Some demonstration examples
-
-Classic FizzBuzz:
+## FizzBuzz
 
 ```zh
 use std
@@ -135,93 +90,101 @@ fn fizz_buzz int mx
 fn main: fizz_buzz(20)
 ```
 
-Brainfuck 🤯 interpreter:
-
-```zh
-fn brainfuck str s
-  p := malloc(3000) as u8P
-  b := 0
-  @ i 0..len(s)
-    v := *p
-    c := s^i
-    ?? c
-      '>': p = p + 1
-      '<': p = p - 1
-      '+': ++(*p)
-      '-': --(*p)
-      '.': put (v as char)
-      ',': >(*p)
-      '[': ? !v:
-            ++b
-            @ ! !b
-              ++i
-              ? s^i == '[': ++b
-              ? s^i == ']': --b
-      ']': ? ! !v:
-            ? c == ']': ++b
-            @ ! !b
-              --i
-              ?s^i=='[': --b
-              ?s^i==']': ++b
-            --i
-
-/** Hello world! */
-fn main: brainfuck(`
-  ++++++++[>++++[>++>+++>+++>+<<<<-]>+>->+>>
-  +[<]<-]>>.>>---.+++++++..+++.>.<<-.>.+++.-
-  -----.--------.>+.>++.
-  `)
+## File reading
 
 ```
+use file
+use c/std
 
-Here is my favorite demonstration of zhaba-script standard library. There is `Vec`, slicing, `Range` and also rval to lval conversion. And all of this is make throw zhaba-script code, so that means that you can also replicate this in your own code, ore even do more crazy stuff!
+/** Read file in pure C */
+fn fileReadC
+  name := 'file-reader.zh'
+  f := fopen(name 'r')
 
-```zh
-use vec
+  ? f == (0 as FILEP)
+    out 'File read error'
+    exit(EXIT_FAILURE())
+
+  ch := fgetc(f)
+  @ ch != -1 as char
+    printf('%c', va ch)
+    ch = fgetc(f)
+
+/** Read file in Zhaba-script (single line!) */
+fn fileReadZH
+  out open('file-reader.zh').unwrap().read()
 
 fn main
-  v := iota(0 10)
-
-  out v  
-  out v[2] 
-  out v[-1]  
-  out v[2..4]    
-  out v[..3]     
-  out v[3..]  
-  out v[] 
-  out v[-4..-2]     
-  out v[-4..] 
-  out v[..-2]
+  // fileReadC()
+  fileReadZH()
 ```
 
-And of course zhaba-script is shipped with frog by default 🐸!
+## Snake game:
 
 ```zh
+/** Import Zhaba-script standart library */
 use std
+/** Import C standart library */
+use c/std
 
 fn main
-  out frog()
+  /** Initialize game data */
+  sx := 20 sy := 40 tick := 100
+  screen := Vec<Str>(sx ' ' * sy)
+  head := Pair<int int>(10 20)
+  snake := Vec<Pair<int int> >(1 head)
+  rng := Rng()
 
-/**
-        _____
-       /       \__
-     /             \
-   /   ^    ^        |
-  |     ..            |
-  /|        _/       /
- / .\_____/         /
-/U\|    \___|   |__/
-            /  /
-            |/U\
-*/
+  /** Lambda function to put x in range 0..mx */
+  mod := (int x int mx) -> (x % mx + mx) % mx
+
+  /** Place 2 random items */
+  screen[mod(rng() sx)][mod(rng() sy)] = chr('@')
+  screen[mod(rng() sx)][mod(rng() sy)] = chr('@')
+
+  ch := chr('d')
+  @ ch != chr('x')
+    /** Delay and input */
+    start := clock()
+    @ dif(clock() start) < tick
+      ? ! !kbhit()
+        t := getch()
+        ? t in $'wasdx': ch = t
+
+    /** Clear screen */
+    clrscr()
+    /** Move head */
+    ?? ch
+      'w': head.a = mod(head.a - 1 sx)
+      'a': head.b = mod(head.b - 1 sy)
+      's': head.a = mod(head.a + 1 sx)
+      'd': head.b = mod(head.b + 1 sy)
+
+    ?? screen[head.a][head.b]
+      /** Collide with self */
+      'o':
+        ? ch == chr('x'): out 'Exit'
+        \ out 'Game over('
+        ch = chr('x')
+      /** Just go */
+      ' ':
+        {a b} := snake[0]
+        screen[a][b] = chr(' ')
+        snake.erase(0)
+      /** Eat item */
+      '@': screen[mod(rng() sx)][mod(rng() sy)] = chr('@')
+
+    /** Add new head position to snake */
+    snake += head
+    screen[head.a][head.b] = chr('o')
+
+    screen.println()
 ```
 
-# The end!
+## Links
 
-So now I welcome you to can play with zhaba-script in this web IDE -> https://wgmlgz.github.io/zhaba
+The best way to feel zhaba-script is to use this playground, to play with examples right now! -> https://wgmlgz.github.io/zhaba/
 
-Love frogs and frogs will love you 🐸💖.
+Also there are docs with syntax highlighting -> https://wgmlgz.github.io/zhaba/?page=docs
 
-⭐ this repo if you liked it!
-
-![frog_img](https://raw.githubusercontent.com/Wgmlgz/zhaba-script/main/img/cute-frog.jpg)
+Code in your's favorite frog programming language in your favorite IDE -> https://marketplace.visualstudio.com/items?itemName=wgmlgz.zhaba-script
