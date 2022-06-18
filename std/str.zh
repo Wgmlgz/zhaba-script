@@ -29,11 +29,20 @@ impl Str
   fn charR at int pos: <<< slf.data.at(pos)
   fn charR sub int pos: <<< slf.data.at(pos)
   fn charP atP int pos: <<< slf.data.atP(pos)
+
+  fn Str sub int begin int end
+    Str res
+    res.data = slf.data.sub(begin end)
+    res.size = res.data.size
+    res.data.push_back(0u8 as char)
+    <<< res
+
   fn push_back char ch
     slf.data.pop_back()
     slf.data.push_back(ch)
     slf.data.push_back(0u8 as char)
     ++slf.size
+
   fn pop_back
     slf.data.pop_back()
     slf.data.pop_back()
@@ -142,29 +151,37 @@ fn bool ends_with StrR a StrR b
   <<< tru
 
 fn Str reverse StrR a
-  r := Str();
-
-  @ i:=a.size i > 0 i -= 1
-    r.push_back(a[i - 1])
-
+  r := Str()
+  @ i := a.size i > 0 i -= 1: r += a[i - 1]
   <<< r
 
-fn int find StrR a StrR b
-  @ i 0..a.size
+fn int find StrR a StrR b int begin
+  ? begin > a.size: <<< -1
+  @ i begin..a.size
     j := 0
-
-    ? a[i] == b[j]:
+    ? a[i] == b[j]
       temp := i
-
-      @ a[i] == b[j]
-        i += 1
-        j += 1
-      
+      @ a[i] == b[j]: i += 1, j += 1
       ? j == b.size: <<< temp
-      \ i = temp
-        temp = 0
-
+      \ i = temp, temp = 0
   <<< -1
+
+fn int find StrR a StrR b
+  <<< find(a b 0)
 
 fn bool contains StrR a StrR b
   <<< find(a, b) != -1
+
+impl Str
+  fn Vec<Str> split StrR p
+    v := Vec<Str>()
+    t := 0
+    l := find(*slf p)
+    @ l != -1
+      v += slf.sub(t l)
+      t = l + p.size
+      l = find(*slf p t)
+    v += slf.sub(t slf.size)
+    <<< v
+  fn Vec<Str> split str p
+    <<< slf.split(Str(p))
