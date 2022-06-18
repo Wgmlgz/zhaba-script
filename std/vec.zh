@@ -37,7 +37,7 @@ impl Vec
   fn print
     put '['
     @ i 0..slf.size
-      ? ! !i: put ' '
+      ? ! !i: put ', '
       put (*slf.atP(i))
     put ']'
 
@@ -157,7 +157,7 @@ impl Vec
 
   fn Vec<T> sub: <<< slf[0 slf.size]
 
-  /** Sorting */
+  /** Comparising and relative operators */
   op 9 bool < Vec<T>R a Vec<T>R b
     @ i 0..min(a.size b.size)
       ? a[i] < b[i]: <<< tru
@@ -186,6 +186,16 @@ impl Vec
   
   fn sort: qsort(slf.begin().ptr slf.end().ptr)
   lop sort Vec<T>R slf: slf.sort()
+
+  fn T max
+    tmp := slf.at(0)
+    @ i, *slf: ? tmp < i: tmp = i
+    <<< tmp
+
+  fn T min
+    tmp := slf.at(0)
+    @ i, *slf: ? tmp < i: tmp = i
+    <<< tmp
 
   /** Functional features */
   fn Vec<T> map F<T TR> f
@@ -216,3 +226,12 @@ impl mp
     r := Vec<O>(v.size)
     @ i 0..v.size: r[i] = f(v[i])
     <<< r
+
+/** bool operations */
+fn bool all Vec<bool>R v
+  @ i v: ? !i: <<< fls
+  <<< tru
+
+fn bool any Vec<bool>R v
+  @ i v: ? i: <<< tru
+  <<< fls
