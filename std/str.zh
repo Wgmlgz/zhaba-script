@@ -161,7 +161,7 @@ fn int find StrR a StrR b int begin
     j := 0
     ? a[i] == b[j]
       temp := i
-      @ a[i] == b[j]: i += 1, j += 1
+      @ a[i] == b[j] && i < a.size && j < b.size: i += 1, j += 1
       ? j == b.size: <<< temp
       \ i = temp, temp = 0
   <<< -1
@@ -178,10 +178,24 @@ impl Str
     t := 0
     l := find(*slf p)
     @ l != -1
-      v += slf.sub(t l)
+      ? t != l: v += slf.sub(t l)
       t = l + p.size
       l = find(*slf p t)
-    v += slf.sub(t slf.size)
+    ? t != slf.size: v += slf.sub(t slf.size)
     <<< v
   fn Vec<Str> split str p
     <<< slf.split(Str(p))
+
+
+impl int
+  fn ctor StrR s
+    val := 0
+    sign := 1
+    begin := 0
+    ? s[0] == chr('-'):
+      sign = -1, begin = 1
+    @ i begin..s.size
+      ch := s[i] - chr('0')
+      val = 10 * val + (ch as int) // C translation only!!!
+    val *= sign
+    <<< val
