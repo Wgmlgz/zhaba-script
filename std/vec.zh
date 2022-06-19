@@ -194,7 +194,7 @@ impl Vec
 
   fn T min
     tmp := slf.at(0)
-    @ i, *slf: ? tmp < i: tmp = i
+    @ i, *slf: ? i < tmp: tmp = i
     <<< tmp
 
   /** Functional features */
@@ -235,3 +235,8 @@ fn bool all Vec<bool>R v
 fn bool any Vec<bool>R v
   @ i v: ? i: <<< tru
   <<< fls
+
+fn int sum Vec<int>R v
+  t := 0
+  @ i v: t += i
+  <<< t
