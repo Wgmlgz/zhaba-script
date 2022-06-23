@@ -5,45 +5,43 @@
 
 use std
 
-fn brainfuck str s
+fn brainfuck Str s
+  m := Vec<int>(s.size 0)
+  stack := Vec<int>()
+
+  @ i:=0, i<s.size, ++i
+    ?? s[i]:
+      '[': stack += i
+      ']':
+        t := stack.pop()
+        m[i] = t
+        m[t] = i
+
   p := malloc(3000) as u8P
-  b := 0
-  @ i 0..len(s)
-    v := *p
-    c := s[i]
-    ?? c
-      '>': p = p + 1
-      '<': p = p - 1
-      '+': (*p) += 1u8
-      '-': (*p) -= 1u8
-      '.': put (v as char)
-      ',': >(*p)
-      '[': ? !v:
-            ++b
-            @ ! !b
-              ++i
-              ? s[i] == '[': ++b
-              ? s[i] == ']': --b
-      ']': ? ! !v:
-            ? c == ']': ++b
-            @ ! !b
-              --i
-              ? s[i] =='[': --b
-              ? s[i] ==']': ++b
-            --i
+  
+  @ i=0 i<s.size, ++i: ?? s[i]:
+    '>': p = p + 1
+    '<': p = p - 1
+    '+': (*p) += 1u8
+    '-': (*p) -= 1u8
+    '.': put (*p as char)
+    ',': > *(p as charP)
+    '[': ? *p == 0u8: i = m[i]
+    ']': ? *p != 0u8: i = m[i] - 1
 
 /** Hello world! */
 fn main
-  brainfuck(`
+  brainfuck($`
   ++++++++[>++++[>++>+++>+++>+<<<<-]>+>->+>>
   +[<]<-]>>.>>---.+++++++..+++.>.<<-.>.+++.-
   -----.--------.>+.>++.
   `)
   /** Quite slow but what is here???? */
   /*
-  brainfuck(`
+  brainfuck($`
   ++++++++[>+>++++<<-]>++>>+<[-[>>+<<-]+>>]>+[-
   <<<[->[+[-]+>++>>>-<<]<[<]>>++++++[<<+++++>>-
   ]+<<++.[-]<<]>.>+[>>]>+]
   `)
   */
+  
