@@ -679,8 +679,7 @@ ZHModule* parseZh(Path file_path) {
 
         if (std::filesystem::exists(zhdata.std_path / Path(path)))
           path = (zhdata.std_path / Path(path)).string();
-          
-        if (Path(path).is_relative())
+        else if (Path(path).is_relative())
           path = (file_path.parent_path() / path).string();
 
         path = resolvePath(path).string();
