@@ -561,6 +561,10 @@ void funcToB(zhin::ByteCode& bytecode, Function* func) {
   }
 }
 
+void externFuncToB(zhin::ByteCode& bytecode, Function* func) {
+  throw ParserError(-1, "Only zhaba-script functions allowed");
+}
+
 void toB(zhin::ByteCode& bytecode, ZHModule* block) {
   /** Structs members offsets calculation */
   std::vector<std::pair<size_t, types::TYPE>> order;
@@ -603,7 +607,7 @@ void toB(zhin::ByteCode& bytecode, ZHModule* block) {
     if (i->defined == DEFINED::zh) {
       funcToB(bytecode, i);
     } else if (i->defined == DEFINED::extern_c) {
-      throw ParserError(-1, "Only zhaba-script functions allowed");
+      externFuncToB(bytecode , i);
     }
   }
 
