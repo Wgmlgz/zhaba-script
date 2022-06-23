@@ -23,7 +23,7 @@ void compileFile(std::filesystem::path file_path) {
 
   if (zhdata.flags["B"]) {
     if (!zhdata.flags["pure"])
-      std::cout << "[INFO] compiling complete in "
+      std::cerr << "[INFO] compiling complete in "
                 << std::to_string((clock() - start_time) * 1.0 / CLOCKS_PER_SEC)
                 << std::endl;
     zhin::ByteCode bytecode;
@@ -35,7 +35,7 @@ void compileFile(std::filesystem::path file_path) {
     }
 
     if (!zhdata.flags["pure"])
-      std::cout << "[INFO] run complete in "
+      std::cerr << "[INFO] run complete in "
                 << std::to_string((clock() - run_time) * 1.0 / CLOCKS_PER_SEC)
                 << std::endl;
   } else {
@@ -48,7 +48,7 @@ void compileFile(std::filesystem::path file_path) {
     tmp_file << c_code;
     tmp_file.close();
 
-    std::cout << "[INFO] compiling complete in "
+    std::cerr << "[INFO] compiling complete in "
               << std::to_string((clock() - start_time) * 1.0 / CLOCKS_PER_SEC)
               << std::endl;
 
@@ -58,7 +58,7 @@ void compileFile(std::filesystem::path file_path) {
         (zhdata.options["compiler"] + " zhaba_tmp.c -o zhaba_tmp -O3 -w");
     system(cmd.c_str());
 
-    std::cout << "[INFO] C compiling complete in "
+    std::cerr << "[INFO] C compiling complete in "
               << std::to_string((clock() - c_comptime) * 1.0 / CLOCKS_PER_SEC)
               << std::endl;
 
@@ -67,7 +67,7 @@ void compileFile(std::filesystem::path file_path) {
     system(".\\zhaba_tmp.exe");
 
     if (!zhdata.flags["pure"])
-      std::cout << "[INFO] run complete in "
+      std::cerr << "[INFO] run complete in "
                 << std::to_string((clock() - run_time) * 1.0 / CLOCKS_PER_SEC)
                 << std::endl;
   }
