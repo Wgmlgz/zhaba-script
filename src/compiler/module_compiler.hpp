@@ -64,7 +64,7 @@ void compileFile(std::filesystem::path file_path) {
 
     auto run_time = clock();
 
-    system(".\\zhaba_tmp.exe");
+    system(".\\zhaba_tmp");
 
     if (!zhdata.flags["pure"])
       std::cerr << "[INFO] run complete in "
