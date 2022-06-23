@@ -30,9 +30,6 @@ std::string runB(std::string file_name) {
   return output;
 }
 
-TEST(GCC, Brainfuck) {
-  EXPECT_EQ("Hello World!\n", run("../examples/brainfuck.zh"));
-}
 
 TEST(Bytecode, Brainfuck) {
   EXPECT_EQ("Hello World!\n", runB("../examples/brainfuck.zh"));
