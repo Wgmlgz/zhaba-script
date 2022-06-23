@@ -76,7 +76,9 @@ set(lib
   src/interpreter/to_bytecode.cpp
   src/interpreter/bytecode.cpp
   src/interpreter/heap.cpp
-  src/interpreter/stack.cpp)
+  src/interpreter/stack.cpp
+  src/zhaba/zhaba.hpp
+  )
 
 add_executable(zhaba ${lib} src/zhaba/zhaba.cpp)
 
@@ -86,25 +88,17 @@ install(TARGETS zhaba)
 
 # ------------------- TESTS -------------------
 
-# include(FetchContent)
-# FetchContent_Declare(
-#   googletest
-#   URL https://github.com/google/googletest/archive/609281088cfefc76f9d0ce82e1ff6c30cc3591e5.zip
-# )
-# # For Windows: Prevent overriding the parent project's compiler/linker settings
-# set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-# FetchContent_MakeAvailable(googletest)
+FetchContent_Declare(
+  googletest
+  URL https://github.com/google/googletest/archive/609281088cfefc76f9d0ce82e1ff6c30cc3591e5.zip
+)
 
-# enable_testing()
+FetchContent_MakeAvailable(googletest)
 
-# add_executable(
-#   zhaba_test
-#    ${lib} tests/misc.cpp
-# )
-# target_link_libraries(
-#   zhaba_test
-#   gtest_main
-# )
+enable_testing()
 
-# include(GoogleTest)
-# gtest_discover_tests(zhaba_test)
+add_executable(zhaba_test ${lib} tests/test.cpp)
+target_link_libraries(zhaba_test PRIVATE nlohmann_json::nlohmann_json gtest_main)
+
+include(GoogleTest)
+gtest_discover_tests(zhaba_test)
