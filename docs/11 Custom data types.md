@@ -59,7 +59,7 @@ impl VecInt // implementation block for VecInt
   fn intP end
     <<< slf.atP(slf.size)
 
-  fn push_back int val
+  fn push int val
     ? slf.size == slf.capacity: slf.double_capacity()
     *slf.atP(slf.size) = val
     &slf.size += 1

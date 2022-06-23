@@ -13,6 +13,7 @@ type VecIter T: TP ptr
 impl VecIter
   fn ctor TP ptr: VecIter<T> slf; slf.ptr = ptr; <<< slf
   lop ++ VecIter<T>R slf: slf.ptr = slf.ptr + 1
+  lop -- VecIter<T>R slf: slf.ptr = slf.ptr - 1
   op 6 VecIter<T> + VecIter<T> slf int i
     slf.ptr = slf.ptr + i
     <<< slf 
@@ -56,17 +57,20 @@ impl Vec
       slf.head = new_head
     slf.cap = ncap
 
-  fn push_back T val
+  fn push T val
     ? slf.size == slf.cap: slf.double_cap()
     slf.at(slf.size) = val
     ++slf.size
 
-  fn pop_back: --slf.size
+  fn T pop
+    --slf.size
+    tmp := slf.at(slf.size)
+    <<< tmp
 
   fn erase int pos
     @ i, (pos + 1)..slf.size
       slf.at(i-1) = slf.at(i)
-    slf.pop_back()
+    slf.pop()
 
   /** Iterators */
   fn VecIter<T> begin: <<< VecIter<T>(slf.head) 
@@ -114,9 +118,9 @@ impl Vec
     <<< slf
 
   /**  Overloaded operators */
-  op 17 += Vec<T>R slf T val: slf.push_back(val)
+  op 17 += Vec<T>R slf T val: slf.push(val)
   op 17 += Vec<T>R slf Vec<T>R other
-    @ i 0..other.size: slf.push_back(other.at(i))
+    @ i 0..other.size: slf.push(other.at(i))
 
   op 2 Vec<T> ,, T a T b
     slf := Vec<T>()
@@ -144,7 +148,7 @@ impl Vec
 
   fn Vec<T> sub int begin int end
     res := Vec<T>(0)
-    @ i begin..end: res.push_back(slf.at(i))
+    @ i begin..end: res.push(slf.at(i))
     <<< res
 
   fn Vec<T> sub Range<int> r

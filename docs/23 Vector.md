@@ -27,8 +27,8 @@ The storage of the vector is handled automatically, being expanded and contracte
 | `fn print`                             | Prints vector content in this form: `[0 1 3 4]`                                                 |
 | `fn println`                           | Prints every vector element from new line, doesn't print `[]`                                   |
 | `fn double_cap`                        | Doubles vector's capacity                                                                       |
-| `fn push_back T val`                   | Adds an element to the end                                                                      |
-| `fn pop_back`                          | Removes the last element                                                                        |
+| `fn push T val`                   | Adds an element to the end                                                                      |
+| `fn T pop`                               | Removes the last element and returns it                                                         |
 | `fn VecIter<T> begin`                  | Returns an iterator to the beginning                                                            |
 | `fn VecIter<T> end`                    | Returns an iterator to the end                                                                  |
 | `lop VecIterRange<T> iter Vec<T>R slf` | Returns iterator range                                                                          |
@@ -64,7 +64,7 @@ The storage of the vector is handled automatically, being expanded and contracte
 
 ## Iterators
 
-Vector also has iterators, which can be used as random access iterators. After `push_back` iterators may be invalid.
+Vector also has iterators, which can be used as random access iterators. After `push` iterators may be invalid.
 
 ```zh
 type VecIter T: TP ptr

@@ -61,22 +61,22 @@ Binary operator is an operator that accepts 2 arguments from different sides:
 But binary operators can also accept more or less than 2 arguments. In this case, they have 1 argument on the left side and others on the right size. At first, it may seem useless, but in fact all member function calls are implicitly converted to binary operators:
 
 ```zh
-// .push_back acts like binary operator
+// .push acts like binary operator
 
-//   .push_back
+//   .push
 //     /  \
 //   vec   1
-vec.push_back(1)
+vec.push(1)
 
-//   .push_back
+//   .reverse
 //     /  \
 //   vec  (1 2)
 vec.reverse(1 2)
 
-//   .pop_back
+//   .pop
 //     /  \
 //   vec  ()
-vec.pop_back()
+vec.pop()
 
 ```
 

@@ -35,20 +35,20 @@ Note that this class handles bytes independently of the encoding used: If used t
 
 ## `Str` member functions
 
-| Functions                            | Description                        |
-| ------------------------------------ | ---------------------------------- |
-| `fn ctor`                            | Default constructor                |
-| `fn ctor str s`                      | Constructor from `str`             |
-| `fn ctor StrR s`                     | Copy constructor                   |
-| `fn dtor`                            | Destructor                         |
-| `fn str cstr`                        | Returns `str`                      |
-| `lop VecIterRange<char> iter StrR s` | Returns iterator range             |
-| `fn charR at int pos`                | Get character in string            |
-| `fn charR sub int pos`               | Get character in string            |
-| `fn charP atP int pos`               | Get pointer to character in string |
-| `fn push_back char ch`               | Append character to string         |
-| `fn pop_back`                        | Delete last character              |
-| `fn sort`                            | Sorts string                       |
+| Functions                            | Description                         |
+| ------------------------------------ | ----------------------------------- |
+| `fn ctor`                            | Default constructor                 |
+| `fn ctor str s`                      | Constructor from `str`              |
+| `fn ctor StrR s`                     | Copy constructor                    |
+| `fn dtor`                            | Destructor                          |
+| `fn str cstr`                        | Returns `str`                       |
+| `lop VecIterRange<char> iter StrR s` | Returns iterator range              |
+| `fn charR at int pos`                | Get character in string             |
+| `fn charR sub int pos`               | Get character in string             |
+| `fn charP atP int pos`               | Get pointer to character in string  |
+| `fn push_back char ch`               | Append character to string          |
+| `fn char pop`                        | Delete last character and return it |
+| `fn sort`                            | Sorts string                        |
 
 ## `Str` non-member functions
 
