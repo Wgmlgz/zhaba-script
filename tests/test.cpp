@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include <stdlib.h>
 
 #include <filesystem>
 
@@ -7,6 +8,8 @@
 using namespace std::string_literals;
 
 std::string run(std::string file_name) {
+  putenv("zhstd=../std/");
+  
   int argc = 2;
   char* tmp[2] = {(char*)"test", (char*)file_name.c_str()};
   char** argv = tmp;
@@ -18,6 +21,8 @@ std::string run(std::string file_name) {
 }
 
 std::string runB(std::string file_name) {
+  putenv("zhstd=../std/");
+
   int argc = 3;
   char* tmp[3] = {(char*)"test", (char*)file_name.c_str(), (char*)"--B"};
   char** argv = tmp;
