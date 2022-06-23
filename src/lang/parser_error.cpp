@@ -47,7 +47,7 @@ const char *ParserError::what() {
      *    | Error message
      */
     std::string source = "cannot show source code";
-    std::cout << filename << " " << line << std::endl;
+    std::cerr << filename << " " << line << std::endl;
     if (line != -1) source = zhdata.files_lines.at(filename)[line];
     auto line_str = std::to_string(line);
     auto pos_str = std::to_string(pos);
@@ -70,9 +70,9 @@ const char *ParserError::what() {
 }
 void ParserError::print() {
   if (pos < 0) {
-    std::cout << "Err:\n";
-    std::cout << message;
-    std::cout << "\n";
+    std::cerr << "Err:\n";
+    std::cerr << message;
+    std::cerr << "\n";
   } else {
     /**
      * error :( -> /file/name.zh:42:6
@@ -84,24 +84,24 @@ void ParserError::print() {
     if (line != -1) source = zhdata.files_lines.at(filename)[line];
     auto line_str = std::to_string(line);
     auto pos_str = std::to_string(pos);
-    std::cout << termcolor::red << "error " << termcolor::reset << ":("
+    std::cerr << termcolor::red << "error " << termcolor::reset << ":("
               << termcolor::blue << " -> " << termcolor::reset
               << filename + ':' + line_str + ':' + pos_str + '\n';
-    std::cout << termcolor::blue << line_str + " | " << termcolor::bright_white
+    std::cerr << termcolor::blue << line_str + " | " << termcolor::bright_white
               << source << termcolor::reset << '\n';
     auto head_line = std::string(line_str.size(), ' ') + " | ";
-    std::cout << termcolor::blue << head_line << termcolor::reset
+    std::cerr << termcolor::blue << head_line << termcolor::reset
               << std::string(pos, ' ') << termcolor::grey
               << std::string(std::max<int>(len, 1), '^') << termcolor::reset
               << "\n"
               << termcolor::blue << head_line;
     for (auto i : message) {
       if (i == '\n') {
-        std::cout << termcolor::blue << "\n" << head_line;
+        std::cerr << termcolor::blue << "\n" << head_line;
       } else {
-        std::cout << termcolor::red << i;
+        std::cerr << termcolor::red << i;
       }
     }
-    std::cout << termcolor::reset << "\n";
+    std::cerr << termcolor::reset << "\n";
   }
 }
