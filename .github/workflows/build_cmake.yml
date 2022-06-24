@@ -156,15 +156,10 @@ jobs:
             message(FATAL_ERROR "Build failed")
           endif()
       - name: Install Strip
-        shell: bash
-        run: cmake --install . --strip
-
+        run: cmake --install build --prefix instdir --strip
       - name: Pack
-        shell: bash
         working-directory: instdir
-        run: |
-          ls -laR
-          ${{ matrix.config.archiver }} ../${{ matrix.config.artifact }} .
+        run: cmake -E tar cfv ../${{ matrix.config.artifact }} --format=7zip .
       - name: Upload
         uses: actions/upload-artifact@v1
         with:
