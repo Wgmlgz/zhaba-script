@@ -176,9 +176,48 @@ jobs:
             message(FATAL_ERROR "Bad exit status")
           endif()
       - name: Build
-        shell: bash
-        run: cmake --build . --config ${{ matrix.config.build_type }}
-
+        shell: cmake -P {0}
+        run: |
+          set(ENV{NINJA_STATUS} "[%f/%t %o/sec] ")
+          if ("${{ runner.os }}" STREQUAL "Windows" AND NOT "x${{ matrix.config.environment_script }}" STREQUAL "x")
+            file(STRINGS environment_script_output.txt output_lines)
+            foreach(line IN LISTS output_lines)
+              if (line MATCHES "^([a-zA-Z0-9_-]+)=(.*)$")
+                set(ENV{${CMAKE_MATCH_1}} "${CMAKE_MATCH_2}")
+              endif()
+            endforeach()
+          endif()
+          file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}" ccache_basedir)
+          set(ENV{CCACHE_BASEDIR} "${ccache_basedir}")
+          set(ENV{CCACHE_DIR} "${ccache_basedir}/.ccache")
+          set(ENV{CCACHE_COMPRESS} "true")
+          set(ENV{CCACHE_COMPRESSLEVEL} "6")
+          set(ENV{CCACHE_MAXSIZE} "400M")
+          if ("${{ matrix.config.cxx }}" STREQUAL "cl")
+            set(ENV{CCACHE_MAXSIZE} "600M")
+          endif()
+          execute_process(COMMAND ccache -p)
+          execute_process(COMMAND ccache -z)
+          execute_process(
+            COMMAND cmake --build build
+            RESULT_VARIABLE result
+            OUTPUT_VARIABLE output
+            ERROR_VARIABLE output
+            ECHO_OUTPUT_VARIABLE ECHO_ERROR_VARIABLE
+          )
+          if (NOT result EQUAL 0)
+            string(REGEX MATCH "FAILED:.*$" error_message "${output}")
+            string(REPLACE "\n" "%0A" error_message "${error_message}")
+            message("::error::${error_message}")
+            message(FATAL_ERROR "Build failed")
+          endif()
+      - name: ccache statistics
+        shell: cmake -P {0}
+        run: |
+          file(TO_CMAKE_PATH "$ENV{GITHUB_WORKSPACE}" ccache_basedir)
+          set(ENV{CCACHE_BASEDIR} "${ccache_basedir}")
+          set(ENV{CCACHE_DIR} "${ccache_basedir}/.ccache")
+          execute_process(COMMAND ccache -s)
       - name: Install Strip
         shell: bash
         run: cmake --install . --strip
