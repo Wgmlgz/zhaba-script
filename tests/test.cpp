@@ -1,8 +1,8 @@
-#include <gtest/gtest.h>
 #include <stdlib.h>
 
 #include <filesystem>
 
+#include "../build/_deps/googletest-src/googletest/include/gtest/gtest.h"
 #include "zhaba/zhaba.hpp"
 
 using namespace std::string_literals;
@@ -29,7 +29,6 @@ std::string runB(std::string file_name) {
   std::string output = testing::internal::GetCapturedStdout();
   return output;
 }
-
 
 TEST(Bytecode, Brainfuck) {
   EXPECT_EQ("Hello World!\n", runB("../examples/brainfuck.zh"));
