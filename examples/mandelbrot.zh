@@ -11,19 +11,13 @@ fn mandelbrot int steps f64 ox f64 oy f64 scale
   @ y:=oy-1.0*scale y<oy+1.0*scale y+= .1 *scale
     s := Str()
     @ x:=ox-1.0*scale x<ox+1.0*scale x+= .05 *scale
-      z := V2(0. 0.) c := V2(x y) 
-      f := tru
-      @ i:=0 i<steps&&f i+=1
-        z = z * z + c
-        ? abs(z) > 2.0: f=fls
-      ? f: s += '*'
+      z := V2(0. 0.)
+      @ i 0..steps: z = z * z + V2(x y) 
+      ? abs(z) < 2.0: s += '*'
       \ s += ' '
     v += s
   v.println()
 
 fn main
   < 'Mandelbrot set:' <
-  mandelbrot(50, -0.75 0.0 1.3)
-  < 'Zooming [-1.39, 0.0]:' <
-  @ scale:=2.0 scale>0.05 scale*=0.5
-    mandelbrot(50, -1.39, 0.0, scale)
+  mandelbrot(15, -1. 0. 1.5)
