@@ -30,6 +30,7 @@ html = f"""<!DOCTYPE html>
   </body>
 </html>
 """
+open(dir + '/aboba.html', 'w', encoding='utf-8').write(html)
 open(dir + '/../zhaba-script.pdf', 'wb').write(HTML(string=html).write_pdf())
 
 # Generate README.MD

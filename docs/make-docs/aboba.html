@@ -1,0 +1,3525 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+      <meta charset="utf-8">
+      <style>.markdown-body {
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  margin: 0;
+  color: #24292f;
+  background-color: #ffffff;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial,
+    sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+  font-size: 18px;
+  line-height: 1.5;
+  word-wrap: break-word;
+}
+
+.markdown-body .octicon {
+  display: inline-block;
+  fill: currentColor;
+  vertical-align: text-bottom;
+}
+
+.markdown-body .toctitle {
+  font-size: 30px;
+}
+.markdown-body .book-title {
+  font-size: 40px;
+}
+.markdown-body h1:hover .anchor .octicon-link:before,
+.markdown-body h2:hover .anchor .octicon-link:before,
+.markdown-body h3:hover .anchor .octicon-link:before,
+.markdown-body h4:hover .anchor .octicon-link:before,
+.markdown-body h5:hover .anchor .octicon-link:before,
+.markdown-body h6:hover .anchor .octicon-link:before {
+  width: 18px;
+  height: 18px;
+  content: ' ';
+  display: inline-block;
+  background-color: currentColor;
+  -webkit-mask-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' version='1.1' aria-hidden='true'><path fill-rule='evenodd' d='M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z'></path></svg>");
+  mask-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' version='1.1' aria-hidden='true'><path fill-rule='evenodd' d='M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z'></path></svg>");
+}
+
+.markdown-body details,
+.markdown-body figcaption,
+.markdown-body figure {
+  display: block;
+}
+
+.markdown-body summary {
+  display: list-item;
+}
+
+.markdown-body [hidden] {
+  display: none !important;
+}
+
+.markdown-body a {
+  background-color: transparent;
+  color: #0969da;
+  text-decoration: none;
+}
+
+.markdown-body a:active,
+.markdown-body a:hover {
+  outline-width: 0;
+}
+
+.markdown-body abbr[title] {
+  border-bottom: none;
+  text-decoration: underline dotted;
+}
+
+.markdown-body b,
+.markdown-body strong {
+  font-weight: 600;
+}
+
+.markdown-body dfn {
+  font-style: italic;
+}
+
+.markdown-body h1 {
+  margin: 0.67em 0;
+  font-weight: 600;
+  padding-bottom: 0.3em;
+  font-size: 2em;
+  border-bottom: 1px solid hsla(210, 18%, 87%, 1);
+}
+
+.markdown-body mark {
+  background-color: #fff8c5;
+  color: #24292f;
+}
+
+.markdown-body small {
+  font-size: 90%;
+}
+
+.markdown-body sub,
+.markdown-body sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+.markdown-body sub {
+  bottom: -0.25em;
+}
+
+.markdown-body sup {
+  top: -0.5em;
+}
+
+.markdown-body img {
+  border-style: none;
+  max-width: 100%;
+  box-sizing: content-box;
+  background-color: #ffffff;
+}
+
+.markdown-body code,
+.markdown-body kbd,
+.markdown-body pre,
+.markdown-body samp {
+  font-family: monospace, monospace;
+  font-size: 1em;
+}
+
+.markdown-body figure {
+  margin: 1em 40px;
+}
+
+.markdown-body hr {
+  box-sizing: content-box;
+  overflow: hidden;
+  background: transparent;
+  border-bottom: 1px solid hsla(210, 18%, 87%, 1);
+  height: 0.25em;
+  padding: 0;
+  margin: 24px 0;
+  background-color: #d0d7de;
+  border: 0;
+}
+
+.markdown-body input {
+  font: inherit;
+  margin: 0;
+  overflow: visible;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.markdown-body [type='button'],
+.markdown-body [type='reset'],
+.markdown-body [type='submit'] {
+  -webkit-appearance: button;
+}
+
+.markdown-body [type='button']::-moz-focus-inner,
+.markdown-body [type='reset']::-moz-focus-inner,
+.markdown-body [type='submit']::-moz-focus-inner {
+  border-style: none;
+  padding: 0;
+}
+
+.markdown-body [type='button']:-moz-focusring,
+.markdown-body [type='reset']:-moz-focusring,
+.markdown-body [type='submit']:-moz-focusring {
+  outline: 1px dotted ButtonText;
+}
+
+.markdown-body [type='checkbox'],
+.markdown-body [type='radio'] {
+  box-sizing: border-box;
+  padding: 0;
+}
+
+.markdown-body [type='number']::-webkit-inner-spin-button,
+.markdown-body [type='number']::-webkit-outer-spin-button {
+  height: auto;
+}
+
+.markdown-body [type='search'] {
+  -webkit-appearance: textfield;
+  outline-offset: -2px;
+}
+
+.markdown-body [type='search']::-webkit-search-cancel-button,
+.markdown-body [type='search']::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+.markdown-body ::-webkit-input-placeholder {
+  color: inherit;
+  opacity: 0.54;
+}
+
+.markdown-body ::-webkit-file-upload-button {
+  -webkit-appearance: button;
+  font: inherit;
+}
+
+.markdown-body a:hover {
+  text-decoration: underline;
+}
+
+.markdown-body hr::before {
+  display: table;
+  content: '';
+}
+
+.markdown-body hr::after {
+  display: table;
+  clear: both;
+  content: '';
+}
+
+.markdown-body table {
+  border-spacing: 0;
+  border-collapse: collapse;
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  overflow: auto;
+}
+
+.markdown-body td,
+.markdown-body th {
+  padding: 0;
+}
+
+.markdown-body details summary {
+  cursor: pointer;
+}
+
+.markdown-body details:not([open]) > *:not(summary) {
+  display: none !important;
+}
+
+.markdown-body kbd {
+  display: inline-block;
+  padding: 3px 5px;
+  font: 11px ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas,
+    Liberation Mono, monospace;
+  line-height: 10px;
+  color: #24292f;
+  vertical-align: middle;
+  background-color: #f6f8fa;
+  border: solid 1px rgba(175, 184, 193, 0.2);
+  border-bottom-color: rgba(175, 184, 193, 0.2);
+  border-radius: 6px;
+  box-shadow: inset 0 -1px 0 rgba(175, 184, 193, 0.2);
+}
+
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+  margin-top: 24px;
+  margin-bottom: 16px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.markdown-body h2 {
+  font-weight: 600;
+  padding-bottom: 0.3em;
+  font-size: 1.5em;
+  border-bottom: 1px solid hsla(210, 18%, 87%, 1);
+}
+
+.markdown-body h3 {
+  font-weight: 600;
+  font-size: 1.25em;
+}
+
+.markdown-body h4 {
+  font-weight: 600;
+  font-size: 1em;
+}
+
+.markdown-body h5 {
+  font-weight: 600;
+  font-size: 0.875em;
+}
+
+.markdown-body h6 {
+  font-weight: 600;
+  font-size: 0.85em;
+  color: #57606a;
+}
+
+.markdown-body p {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.markdown-body blockquote {
+  margin: 0;
+  padding: 0 1em;
+  color: #57606a;
+  border-left: 0.25em solid #d0d7de;
+}
+
+.markdown-body ul,
+.markdown-body ol {
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-left: 2em;
+}
+
+.markdown-body ol ol,
+.markdown-body ul ol {
+  list-style-type: lower-roman;
+}
+
+.markdown-body ul ul ol,
+.markdown-body ul ol ol,
+.markdown-body ol ul ol,
+.markdown-body ol ol ol {
+  list-style-type: lower-alpha;
+}
+
+.markdown-body dd {
+  margin-left: 0;
+}
+
+.markdown-body tt,
+.markdown-body code {
+  font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas,
+    Liberation Mono, monospace;
+  font-size: 12px;
+}
+
+.markdown-body pre {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas,
+    Liberation Mono, monospace;
+  font-size: 12px;
+  word-wrap: normal;
+}
+
+.markdown-body .octicon {
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-body ::placeholder {
+  color: #6e7781;
+  opacity: 1;
+}
+
+.markdown-body input::-webkit-outer-spin-button,
+.markdown-body input::-webkit-inner-spin-button {
+  margin: 0;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.markdown-body .pl-c {
+  color: #6e7781;
+}
+
+.markdown-body .pl-c1,
+.markdown-body .pl-s .pl-v {
+  color: #0550ae;
+}
+
+.markdown-body .pl-e,
+.markdown-body .pl-en {
+  color: #8250df;
+}
+
+.markdown-body .pl-smi,
+.markdown-body .pl-s .pl-s1 {
+  color: #24292f;
+}
+
+.markdown-body .pl-ent {
+  color: #116329;
+}
+
+.markdown-body .pl-k {
+  color: #cf222e;
+}
+
+.markdown-body .pl-s,
+.markdown-body .pl-pds,
+.markdown-body .pl-s .pl-pse .pl-s1,
+.markdown-body .pl-sr,
+.markdown-body .pl-sr .pl-cce,
+.markdown-body .pl-sr .pl-sre,
+.markdown-body .pl-sr .pl-sra {
+  color: #0a3069;
+}
+
+.markdown-body .pl-v,
+.markdown-body .pl-smw {
+  color: #953800;
+}
+
+.markdown-body .pl-bu {
+  color: #82071e;
+}
+
+.markdown-body .pl-ii {
+  color: #f6f8fa;
+  background-color: #82071e;
+}
+
+.markdown-body .pl-c2 {
+  color: #f6f8fa;
+  background-color: #cf222e;
+}
+
+.markdown-body .pl-sr .pl-cce {
+  font-weight: bold;
+  color: #116329;
+}
+
+.markdown-body .pl-ml {
+  color: #3b2300;
+}
+
+.markdown-body .pl-mh,
+.markdown-body .pl-mh .pl-en,
+.markdown-body .pl-ms {
+  font-weight: bold;
+  color: #0550ae;
+}
+
+.markdown-body .pl-mi {
+  font-style: italic;
+  color: #24292f;
+}
+
+.markdown-body .pl-mb {
+  font-weight: bold;
+  color: #24292f;
+}
+
+.markdown-body .pl-md {
+  color: #82071e;
+  background-color: #ffebe9;
+}
+
+.markdown-body .pl-mi1 {
+  color: #116329;
+  background-color: #dafbe1;
+}
+
+.markdown-body .pl-mc {
+  color: #953800;
+  background-color: #ffd8b5;
+}
+
+.markdown-body .pl-mi2 {
+  color: #eaeef2;
+  background-color: #0550ae;
+}
+
+.markdown-body .pl-mdr {
+  font-weight: bold;
+  color: #8250df;
+}
+
+.markdown-body .pl-ba {
+  color: #57606a;
+}
+
+.markdown-body .pl-sg {
+  color: #8c959f;
+}
+
+.markdown-body .pl-corl {
+  text-decoration: underline;
+  color: #0a3069;
+}
+
+.markdown-body [data-catalyst] {
+  display: block;
+}
+
+.markdown-body g-emoji {
+  font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  font-size: 1em;
+  font-style: normal !important;
+  font-weight: 400;
+  line-height: 1;
+  vertical-align: -0.075em;
+}
+
+.markdown-body g-emoji img {
+  width: 1em;
+  height: 1em;
+}
+
+.markdown-body::before {
+  display: table;
+  content: '';
+}
+
+.markdown-body::after {
+  display: table;
+  clear: both;
+  content: '';
+}
+
+.markdown-body > *:first-child {
+  margin-top: 0 !important;
+}
+
+.markdown-body > *:last-child {
+  margin-bottom: 0 !important;
+}
+
+.markdown-body a:not([href]) {
+  color: inherit;
+  text-decoration: none;
+}
+
+.markdown-body .absent {
+  color: #cf222e;
+}
+
+.markdown-body .anchor {
+  float: left;
+  padding-right: 4px;
+  margin-left: -20px;
+  line-height: 1;
+}
+
+.markdown-body .anchor:focus {
+  outline: none;
+}
+
+.markdown-body p,
+.markdown-body blockquote,
+.markdown-body ul,
+.markdown-body ol,
+.markdown-body dl,
+.markdown-body table,
+.markdown-body pre,
+.markdown-body details {
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+.markdown-body blockquote > :first-child {
+  margin-top: 0;
+}
+
+.markdown-body blockquote > :last-child {
+  margin-bottom: 0;
+}
+
+.markdown-body sup > a::before {
+  content: '[';
+}
+
+.markdown-body sup > a::after {
+  content: ']';
+}
+
+.markdown-body h1 .octicon-link,
+.markdown-body h2 .octicon-link,
+.markdown-body h3 .octicon-link,
+.markdown-body h4 .octicon-link,
+.markdown-body h5 .octicon-link,
+.markdown-body h6 .octicon-link {
+  color: #24292f;
+  vertical-align: middle;
+  visibility: hidden;
+}
+
+.markdown-body h1:hover .anchor,
+.markdown-body h2:hover .anchor,
+.markdown-body h3:hover .anchor,
+.markdown-body h4:hover .anchor,
+.markdown-body h5:hover .anchor,
+.markdown-body h6:hover .anchor {
+  text-decoration: none;
+}
+
+.markdown-body h1:hover .anchor .octicon-link,
+.markdown-body h2:hover .anchor .octicon-link,
+.markdown-body h3:hover .anchor .octicon-link,
+.markdown-body h4:hover .anchor .octicon-link,
+.markdown-body h5:hover .anchor .octicon-link,
+.markdown-body h6:hover .anchor .octicon-link {
+  visibility: visible;
+}
+
+.markdown-body h1 tt,
+.markdown-body h1 code,
+.markdown-body h2 tt,
+.markdown-body h2 code,
+.markdown-body h3 tt,
+.markdown-body h3 code,
+.markdown-body h4 tt,
+.markdown-body h4 code,
+.markdown-body h5 tt,
+.markdown-body h5 code,
+.markdown-body h6 tt,
+.markdown-body h6 code {
+  padding: 0 0.2em;
+  font-size: inherit;
+}
+
+.markdown-body ul.no-list,
+.markdown-body ol.no-list {
+  padding: 0;
+  list-style-type: none;
+}
+
+.markdown-body ol[type='1'] {
+  list-style-type: decimal;
+}
+
+.markdown-body ol[type='a'] {
+  list-style-type: lower-alpha;
+}
+
+.markdown-body ol[type='i'] {
+  list-style-type: lower-roman;
+}
+
+.markdown-body div > ol:not([type]) {
+  list-style-type: decimal;
+}
+
+.markdown-body ul ul,
+.markdown-body ul ol,
+.markdown-body ol ol,
+.markdown-body ol ul {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.markdown-body li > p {
+  margin-top: 16px;
+}
+
+.markdown-body li + li {
+  margin-top: 0.25em;
+}
+
+.markdown-body dl {
+  padding: 0;
+}
+
+.markdown-body dl dt {
+  padding: 0;
+  margin-top: 16px;
+  font-size: 1em;
+  font-style: italic;
+  font-weight: 600;
+}
+
+.markdown-body dl dd {
+  padding: 0 16px;
+  margin-bottom: 16px;
+}
+
+.markdown-body table th {
+  font-weight: 600;
+}
+
+.markdown-body table th,
+.markdown-body table td {
+  padding: 6px 13px;
+  border: 1px solid #d0d7de;
+}
+
+.markdown-body table tr {
+  background-color: #ffffff;
+  border-top: 1px solid hsla(210, 18%, 87%, 1);
+}
+
+.markdown-body table tr:nth-child(2n) {
+  background-color: #f6f8fa;
+}
+
+.markdown-body table img {
+  background-color: transparent;
+}
+
+.markdown-body img[align='right'] {
+  padding-left: 20px;
+}
+
+.markdown-body img[align='left'] {
+  padding-right: 20px;
+}
+
+.markdown-body .emoji {
+  max-width: none;
+  vertical-align: text-top;
+  background-color: transparent;
+}
+
+.markdown-body span.frame {
+  display: block;
+  overflow: hidden;
+}
+
+.markdown-body span.frame > span {
+  display: block;
+  float: left;
+  width: auto;
+  padding: 7px;
+  margin: 13px 0 0;
+  overflow: hidden;
+  border: 1px solid #d0d7de;
+}
+
+.markdown-body span.frame span img {
+  display: block;
+  float: left;
+}
+
+.markdown-body span.frame span span {
+  display: block;
+  padding: 5px 0 0;
+  clear: both;
+  color: #24292f;
+}
+
+.markdown-body span.align-center {
+  display: block;
+  overflow: hidden;
+  clear: both;
+}
+
+.markdown-body span.align-center > span {
+  display: block;
+  margin: 13px auto 0;
+  overflow: hidden;
+  text-align: center;
+}
+
+.markdown-body span.align-center span img {
+  margin: 0 auto;
+  text-align: center;
+}
+
+.markdown-body span.align-right {
+  display: block;
+  overflow: hidden;
+  clear: both;
+}
+
+.markdown-body span.align-right > span {
+  display: block;
+  margin: 13px 0 0;
+  overflow: hidden;
+  text-align: right;
+}
+
+.markdown-body span.align-right span img {
+  margin: 0;
+  text-align: right;
+}
+
+.markdown-body span.float-left {
+  display: block;
+  float: left;
+  margin-right: 13px;
+  overflow: hidden;
+}
+
+.markdown-body span.float-left span {
+  margin: 13px 0 0;
+}
+
+.markdown-body span.float-right {
+  display: block;
+  float: right;
+  margin-left: 13px;
+  overflow: hidden;
+}
+
+.markdown-body span.float-right > span {
+  display: block;
+  margin: 13px auto 0;
+  overflow: hidden;
+  text-align: right;
+}
+
+.markdown-body code,
+.markdown-body tt {
+  padding: 0.2em 0.4em;
+  margin: 0;
+  font-size: 85%;
+  background-color: rgba(175, 184, 193, 0.2);
+  border-radius: 6px;
+}
+
+.markdown-body code br,
+.markdown-body tt br {
+  display: none;
+}
+
+.markdown-body del code {
+  text-decoration: inherit;
+}
+
+.markdown-body pre code {
+  font-size: 100%;
+}
+
+.markdown-body pre > code {
+  padding: 0;
+  margin: 0;
+  word-break: normal;
+  white-space: pre;
+  background: transparent;
+  border: 0;
+}
+
+.markdown-body .highlight {
+  margin-bottom: 16px;
+}
+
+.markdown-body .highlight pre {
+  margin-bottom: 0;
+  word-break: normal;
+}
+
+.markdown-body .highlight pre,
+.markdown-body pre {
+  padding: 16px;
+  overflow: auto;
+  font-size: 85%;
+  line-height: 1.45;
+  background-color: #f6f8fa;
+  border-radius: 6px;
+}
+
+.markdown-body pre code,
+.markdown-body pre tt {
+  display: inline;
+  max-width: auto;
+  padding: 0;
+  margin: 0;
+  overflow: visible;
+  line-height: inherit;
+  word-wrap: normal;
+  background-color: transparent;
+  border: 0;
+}
+
+.markdown-body .csv-data td,
+.markdown-body .csv-data th {
+  padding: 5px;
+  overflow: hidden;
+  font-size: 12px;
+  line-height: 1;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.markdown-body .csv-data .blob-num {
+  padding: 10px 8px 9px;
+  text-align: right;
+  background: #ffffff;
+  border: 0;
+}
+
+.markdown-body .csv-data tr {
+  border-top: 0;
+}
+
+.markdown-body .csv-data th {
+  font-weight: 600;
+  background: #f6f8fa;
+  border-top: 0;
+}
+
+.markdown-body .footnotes {
+  font-size: 12px;
+  color: #57606a;
+  border-top: 1px solid #d0d7de;
+}
+
+.markdown-body .footnotes ol {
+  padding-left: 16px;
+}
+
+.markdown-body .footnotes li {
+  position: relative;
+}
+
+.markdown-body .footnotes li:target::before {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  bottom: -8px;
+  left: -24px;
+  pointer-events: none;
+  content: '';
+  border: 2px solid #0969da;
+  border-radius: 6px;
+}
+
+.markdown-body .footnotes li:target {
+  color: #24292f;
+}
+
+.markdown-body .footnotes .data-footnote-backref g-emoji {
+  font-family: monospace;
+}
+
+.markdown-body .task-list-item {
+  list-style-type: none;
+}
+
+.markdown-body .task-list-item label {
+  font-weight: 400;
+}
+
+.markdown-body .task-list-item.enabled label {
+  cursor: pointer;
+}
+
+.markdown-body .task-list-item + .task-list-item {
+  margin-top: 3px;
+}
+
+.markdown-body .task-list-item .handle {
+  display: none;
+}
+
+.markdown-body .task-list-item-checkbox {
+  margin: 0 0.2em 0.25em -1.6em;
+  vertical-align: middle;
+}
+
+.markdown-body .contains-task-list:dir(rtl) .task-list-item-checkbox {
+  margin: 0 -1.6em 0.25em 0.2em;
+}
+
+.markdown-body ::-webkit-calendar-picker-indicator {
+  filter: invert(50%);
+}
+</style>
+    </head>
+  <body>
+    <div class="markdown-body">
+      <p><br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/></p>
+<p><center></p>
+<div class="book-title"> Zhaba-script documentation </div>
+<p>Владимир Мацюк
+<br/>
+2022</p>
+<p></center></p>
+<div style="page-break-after: always;"></div>
+
+<div class="toc"><span class="toctitle">Contents</span><ul>
+<li><a href="#introduction">Introduction</a><ul>
+<li><a href="#list-of-zhaba-script-features">List of Zhaba-script features</a></li>
+<li><a href="#examples">Examples</a></li>
+<li><a href="#hello-world">Hello world</a></li>
+<li><a href="#file-reading">File reading</a></li>
+<li><a href="#snake-game">Snake game:</a></li>
+<li><a href="#brainfuck-interpreter">Brainfuck interpreter</a></li>
+<li><a href="#links">Links</a></li>
+</ul>
+</li>
+<li><a href="#zhaba-script-project">Zhaba-script project</a><ul>
+<li><a href="#project">Project</a></li>
+<li><a href="#setup">Setup</a></li>
+<li><a href="#compiling-zhaba-script-code">Compiling zhaba-script code</a></li>
+</ul>
+</li>
+<li><a href="#basics">Basics</a><ul>
+<li><a href="#identifiers">Identifiers</a></li>
+<li><a href="#keywords">Keywords</a></li>
+<li><a href="#code-blocks">Code blocks</a></li>
+<li><a href="#implicit-commas">Implicit commas</a></li>
+<li><a href="#using-other-files">Using other files</a></li>
+</ul>
+</li>
+<li><a href="#types">Types</a><ul>
+<li><a href="#integer-numbers">Integer numbers</a></li>
+<li><a href="#floating-point-numbers">Floating point numbers</a></li>
+<li><a href="#other-types">Other types</a></li>
+<li><a href="#custom-types">Custom types</a></li>
+<li><a href="#lval-rval-semantics">Lval &amp; rval semantics</a></li>
+<li><a href="#rval-to-lval-conversion">Rval to lval conversion</a></li>
+<li><a href="#type-casting">Type casting</a></li>
+</ul>
+</li>
+<li><a href="#expressions">Expressions</a><ul>
+<li><a href="#inline-tuples">Inline tuples</a></li>
+<li><a href="#binary-infix-operators">Binary (infix) operators</a></li>
+<li><a href="#operator-precedence">Operator precedence</a></li>
+</ul>
+</li>
+<li><a href="#variables">Variables</a><ul>
+<li><a href="#object-and-array-destructuring">Object and array destructuring</a></li>
+</ul>
+</li>
+<li><a href="#if-else-elif-statements">if, else, elif statements</a><ul>
+<li><a href="#syntax">Syntax</a></li>
+<li><a href="#examples_1">Examples:</a></li>
+</ul>
+</li>
+<li><a href="#loops">Loops</a><ul>
+<li><a href="#syntax_1">Syntax</a></li>
+</ul>
+</li>
+<li><a href="#while">While</a><ul>
+<li><a href="#examples_2">Examples</a></li>
+</ul>
+</li>
+<li><a href="#for">For</a><ul>
+<li><a href="#examples_3">Examples</a></li>
+</ul>
+</li>
+<li><a href="#foreach">Foreach</a><ul>
+<li><a href="#examples_4">Examples</a></li>
+</ul>
+</li>
+<li><a href="#functions">Functions</a><ul>
+<li><a href="#syntax_2">Syntax</a></li>
+<li><a href="#examples_5">Examples</a></li>
+<li><a href="#return-emergency-exit">Return emergency exit</a></li>
+</ul>
+</li>
+<li><a href="#pointers">Pointers</a><ul>
+<li><a href="#declaring-pointers">Declaring pointers</a></li>
+<li><a href="#address-of-operator">Address-of operator &amp;</a></li>
+<li><a href="#dereference-operator">Dereference operator *</a></li>
+</ul>
+</li>
+<li><a href="#heap">Heap</a><ul>
+<li><a href="#malloc">malloc</a></li>
+<li><a href="#declaration">Declaration:</a></li>
+<li><a href="#description">Description:</a></li>
+</ul>
+</li>
+<li><a href="#free">free</a><ul>
+<li><a href="#declaration_1">Declaration:</a></li>
+<li><a href="#description_1">Description:</a></li>
+<li><a href="#heap-in-interpreter">Heap in interpreter</a></li>
+<li><a href="#pointer-arithmetics">Pointer arithmetics</a></li>
+<li><a href="#example">Example:</a></li>
+</ul>
+</li>
+<li><a href="#custom-data-types">Custom data types</a><ul>
+<li><a href="#syntax_3">Syntax</a></li>
+</ul>
+</li>
+<li><a href="#examples_6">Examples</a></li>
+<li><a href="#code-style">Code style</a></li>
+<li><a href="#member-functions">Member functions</a><ul>
+<li><a href="#syntax_4">Syntax</a></li>
+</ul>
+</li>
+<li><a href="#incomplete-types">Incomplete types</a></li>
+<li><a href="#generic-types">Generic types</a><ul>
+<li><a href="#syntax_5">Syntax:</a></li>
+<li><a href="#examples_7">Examples:</a></li>
+<li><a href="#examples_8">Examples:</a></li>
+<li><a href="#note">Note</a></li>
+</ul>
+</li>
+<li><a href="#generic-types-and-member-functions">Generic types and member functions</a><ul>
+<li><a href="#syntax_6">Syntax:</a></li>
+<li><a href="#examples_9">Examples:</a></li>
+</ul>
+</li>
+<li><a href="#generic-types-and-operators-overloading">Generic types and operators overloading</a></li>
+<li><a href="#references">References</a><ul>
+<li><a href="#creating-references-in-zhaba-script">Creating References in zhaba-script</a></li>
+<li><a href="#syntax_7">Syntax</a></li>
+<li><a href="#passing-references-as-arguments">Passing references as arguments</a></li>
+<li><a href="#returning-references">Returning references</a></li>
+<li><a href="#references-and-lval-rval-semantics">References and lval &amp; rval semantics</a></li>
+</ul>
+</li>
+<li><a href="#objects-lifetime">Objects lifetime</a><ul>
+<li><a href="#example_1">Example</a></li>
+</ul>
+</li>
+<li><a href="#constructor">Constructor</a></li>
+<li><a href="#copy-constructor">Copy constructor</a><ul>
+<li><a href="#example_2">Example</a></li>
+<li><a href="#when-copy-constructor-is-called">When copy constructor is called?</a></li>
+</ul>
+</li>
+<li><a href="#destructor">Destructor</a><ul>
+<li><a href="#when-destructor-is-called">When destructor is called?</a></li>
+</ul>
+</li>
+<li><a href="#return-and-destruction">Return and destruction</a></li>
+<li><a href="#operators-overloading">Operators overloading</a><ul>
+<li><a href="#syntax_8">Syntax</a></li>
+</ul>
+</li>
+<li><a href="#advanced-overloading">Advanced overloading</a><ul>
+<li><a href="#syntax_9">Syntax</a></li>
+<li><a href="#examples_10">Examples:</a></li>
+</ul>
+</li>
+<li><a href="#pattern-matching">Pattern matching</a><ul>
+<li><a href="#syntax_10">Syntax</a></li>
+<li><a href="#example_3">Example</a></li>
+<li><a href="#how-it-works">How it works?</a></li>
+</ul>
+</li>
+<li><a href="#advanced-functions">Advanced functions</a><ul>
+<li><a href="#functions-type">Functions type</a></li>
+<li><a href="#referencing-function">Referencing function</a></li>
+</ul>
+</li>
+<li><a href="#lambda-function-expressions">Lambda function expressions</a><ul>
+<li><a href="#syntax_11">Syntax</a></li>
+<li><a href="#examples_11">Examples</a></li>
+</ul>
+</li>
+<li><a href="#standard-library">Standard library</a><ul>
+<li><a href="#using-standard-library">Using standard library</a></li>
+<li><a href="#standard-library-content">Standard library content</a></li>
+</ul>
+</li>
+<li><a href="#range">Range</a><ul>
+<li><a href="#creating-range">Creating range</a></li>
+<li><a href="#usage">Usage</a></li>
+<li><a href="#ps">P.S</a></li>
+</ul>
+</li>
+<li><a href="#input-and-output">Input and output</a></li>
+<li><a href="#iterators">Iterators</a><ul>
+<li><a href="#using-iterators">Using iterators</a></li>
+<li><a href="#iterators-foreach">Iterators + foreach</a></li>
+</ul>
+</li>
+<li><a href="#vect-type">Vec&lt;T&gt; type</a><ul>
+<li><a href="#definition">Definition</a></li>
+<li><a href="#vec-member-functions">Vec member functions</a></li>
+<li><a href="#vec-non-member-functions">Vec non-member functions</a></li>
+<li><a href="#iterators_1">Iterators</a></li>
+<li><a href="#vecitert-member-functions">VecIter&lt;T&gt; member functions</a></li>
+<li><a href="#veciterranget-member-functions">VecIterRange&lt;T&gt; member functions</a></li>
+</ul>
+</li>
+<li><a href="#str-type">Str type</a><ul>
+<li><a href="#definition_1">Definition</a></li>
+<li><a href="#iterators_2">Iterators</a></li>
+<li><a href="#str-member-functions">str member functions</a></li>
+<li><a href="#str-non-member-functions">str non-member functions</a></li>
+<li><a href="#str-member-functions_1">Str member functions</a></li>
+<li><a href="#str-non-member-functions_1">Str non-member functions</a></li>
+</ul>
+</li>
+<li><a href="#avl-tree">Avl Tree</a><ul>
+<li><a href="#definition_2">Definition</a></li>
+<li><a href="#avltreet-member-functions">AVLTree&lt;T&gt; member functions</a></li>
+<li><a href="#iterators_3">Iterators</a></li>
+<li><a href="#avlitert-member-functions">AVLIter&lt;T&gt; member functions</a></li>
+<li><a href="#avliterranget-member-functions">AVLIterRange&lt;T&gt; member functions</a></li>
+</ul>
+</li>
+<li><a href="#map">Map</a><ul>
+<li><a href="#definition_3">Definition</a></li>
+<li><a href="#mapnodek-v-member-functions">MapNode&lt;K V&gt; member functions</a></li>
+<li><a href="#mapk-v-member-functions">Map&lt;K V&gt; member functions</a></li>
+</ul>
+</li>
+<li><a href="#error-handling">Error handling</a><ul>
+<li><a href="#recoverable-errors-with-resultt-e">Recoverable errors with Result&lt;T E&gt;</a></li>
+<li><a href="#simple-errors-with-err-type">Simple errors with Err type</a></li>
+<li><a href="#unrecoverable-errors-with-panic">Unrecoverable errors with panic</a></li>
+</ul>
+</li>
+<li><a href="#interacting-with-c">Interacting with C</a><ul>
+<li><a href="#using-json-to-import-c">Using json to import C</a></li>
+<li><a href="#importing-c-code-directly">Importing C code directly</a></li>
+</ul>
+</li>
+<li><a href="#advanced-c-api">Advanced C api</a><ul>
+<li><a href="#macros">Macros</a></li>
+<li><a href="#constants">Constants</a></li>
+<li><a href="#cross-platform-definitions">Cross platform definitions</a></li>
+<li><a href="#variadic-functions">Variadic functions</a></li>
+<li><a href="#c">C++</a></li>
+</ul>
+</li>
+<li><a href="#zhaba-script-c-library">Zhaba-script C library</a><ul>
+<li><a href="#using-c-standard-library">Using C standard library</a></li>
+<li><a href="#c-standard-library-content">C Standard library content</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div style="page-break-after: always;"></div>
+<p><img alt="frog_img" src="https://raw.githubusercontent.com/Wgmlgz/zhaba-script/main/img/frog.jpg" /></p>
+<h1 id="introduction">Introduction</h1>
+<p>Zhaba-script (Russian: ˈʐabə, жаба(toad)) - is a multi-paradigm, high-level, statically typed, interpreted or source to source compiled language, designed to be as performant as C, but as beautiful as Python.</p>
+<p>The syntax of zhaba-script is the most interesting and different feature from other programming languages. It basically resembles python, which uses indents instead of curly brackets to declare code blocks. But zhaba-script takes a step forward by making many syntactic elements, such as commas, optional. For example, in the expression: <code>print(1, 2, 4)</code> it is obvious where the commas should be, and zhaba-script makes them optional in some places. Other syntactic elements, such as colons or semicolons, are also optional. In addition, the most common keywords in other languages, such as <code>if</code> or <code>while</code>, are reduced to simple characters, for example <code>?</code> or <code>@</code> to make the code shorter and more readable. Another very important syntactic feature is the ability to overload any operations and even create new ones.</p>
+<p>Semantically, the language is similar to such system languages as C, C++ or Rust. Like C, zhaba-script provides low-level memory control and combines it with so-called zero-cost abstractions. For example, among them are references, function overloading, template types, constructors and destructors.</p>
+<p>Combining its syntactic and semantic properties, zhaba-script strives to provide the developer with a language that is as fast and convenient as possible.</p>
+<p>Zhaba-script was conceived as translatable in C, which allows you to achieve a theoretical maximum of performance and use its already existing ecosystem to create real applications right now. The compiler provides an easy way to import C code. The main part of the C standard library has also been ported. However, programs can also be executed directly by compiling them into bytecode, which makes the language free from C and allows it to be used without runtime dependencies, which allows, for example, to run programs in an online compiler, on the client side.</p>
+<p>Also an important part of the language is the standard library, which complements and allows you to use it to solve real problems. In its relation, the C++ approach is used, which brings many basic elements of the language into it, for example, dynamic arrays, and does not include them in the “core” of the language, such as python. So, the standard library adds the ability to work with files, complex and random numbers, exceptions, contains containers such as a dynamic array (<code>Vec&lt;T&gt;</code>), sorted associative container (<code>Map&lt;K V&gt;</code>) or dynamic strings and adds many other objects and methods for solving various tasks.</p>
+<p>Here is an example of a program written in zhaba-script:</p>
+<pre><code class="language-zh">use std
+
+fn fizz_buzz int mx
+  @ i 1..=mx
+    ? i %% 15: &lt; 'FizzBuzz' &lt;
+    | i %% 3: &lt; 'Fizz' &lt;
+    | i %% 5: &lt; 'Buzz' &lt;
+    \ &lt; i &lt;
+fn main: fizz_buzz(20)
+</code></pre>
+<p>So, the main goal of zhaba-script is to make your programs smaller while also maintain readability and performance. To do this, zhaba-script is using C and C++ semantic concepts and bringing them with short python-like syntax.</p>
+<p>The project itself, in addition to the language compiler, includes a web application with an online compiler and documentation. It also includes an extension for Visual Studio Code that adds syntax highlighting.</p>
+<h2 id="list-of-zhaba-script-features">List of Zhaba-script features</h2>
+<p>Complier &amp; dev environment:</p>
+<ul>
+<li>Interpretation throw bytecode</li>
+<li>Interpretation in web environment</li>
+<li>Syntax highlighter VSCode extension</li>
+<li>Web code editor</li>
+<li>Docs website</li>
+<li>C api</li>
+</ul>
+<p>Basics:</p>
+<ul>
+<li>Basic types like int, bool or char</li>
+<li>Variables (and local redefinition)</li>
+<li>All C operators like (+ - * %)</li>
+<li>If, else, elif</li>
+<li>While loop</li>
+<li>C-style for loop</li>
+<li>Single and multi-line comments</li>
+<li>Functions</li>
+<li>Other files usage</li>
+</ul>
+<p>More advanced features:</p>
+<ul>
+<li>Foreach loop</li>
+<li>Patten matching</li>
+<li>Functions overloading</li>
+<li>Any operator overloading</li>
+<li>Subscript <code>[]</code> and call <code>()</code> overload</li>
+<li>New operators creation</li>
+<li>Local functions and operators definition</li>
+<li>Pointers</li>
+<li>Function pointers</li>
+<li>References</li>
+<li>Object &amp; array destructuring</li>
+<li>Custom types (classes/structs)</li>
+<li>Member functions</li>
+<li>Constructors</li>
+<li>Copy constructors (and implicit calls)</li>
+<li>Destructors (and implicit calls)</li>
+<li>Generic types</li>
+</ul>
+<p>Standard library:</p>
+<ul>
+<li><code>Vec&lt;T&gt;</code>, <code>Str</code>, <code>Map&lt;K V&gt;</code>, <code>Pair&lt;A B&gt;</code> <code>Option</code> - most common data containers</li>
+<li><code>Result&lt;T E&gt;</code> and <code>panic</code> - for error handling</li>
+<li><code>Rng</code>, <code>V2</code>, <code>Out</code>, <code>File</code> and more for other different use cases</li>
+<li><code>c/std</code> - most necessary parts of C library is also ported</li>
+<li>And many other features!</li>
+</ul>
+<h2 id="examples">Examples</h2>
+<p>Here is some of zhaba-script code examples:</p>
+<h2 id="hello-world">Hello world</h2>
+<pre><code class="language-zh">fn main: out 'Hi world'
+</code></pre>
+<h2 id="file-reading">File reading</h2>
+<pre><code>use file
+use c/std
+
+/** Read file in pure C */
+fn fileReadC
+  name := 'file-reader.zh'
+  f := fopen(name 'r')
+
+  ? f == (0 as FILEP)
+    out 'File read error'
+    exit(EXIT_FAILURE())
+
+  ch := fgetc(f)
+  @ ch != -1 as char
+    printf('%c', va ch)
+    ch = fgetc(f)
+
+/** Read file in Zhaba-script (single line!) */
+fn fileReadZH
+  out open('file-reader.zh').unwrap().read()
+
+fn main
+  // fileReadC()
+  fileReadZH()
+</code></pre>
+<h2 id="snake-game">Snake game:</h2>
+<pre><code class="language-zh">/** Import Zhaba-script standart library */
+use std
+/** Import C standart library */
+use c/std
+
+fn main
+  /** Initialize game data */
+  sx := 20 sy := 40 tick := 100
+  screen := Vec&lt;Str&gt;(sx ' ' * sy)
+  head := Pair&lt;int int&gt;(10 20)
+  snake := Vec&lt;Pair&lt;int int&gt; &gt;(1 head)
+  rng := Rng()
+
+  /** Lambda function to put x in range 0..mx */
+  mod := (int x int mx) -&gt; (x % mx + mx) % mx
+
+  /** Place 2 random items */
+  screen[mod(rng() sx)][mod(rng() sy)] = chr('@')
+  screen[mod(rng() sx)][mod(rng() sy)] = chr('@')
+
+  ch := chr('d')
+  @ ch != chr('x')
+    /** Delay and input */
+    start := clock()
+    @ dif(clock() start) &lt; tick
+      ? ! !kbhit()
+        t := getch()
+        ? t in $'wasdx': ch = t
+
+    /** Clear screen */
+    clrscr()
+    /** Move head */
+    ?? ch
+      'w': head.a = mod(head.a - 1 sx)
+      'a': head.b = mod(head.b - 1 sy)
+      's': head.a = mod(head.a + 1 sx)
+      'd': head.b = mod(head.b + 1 sy)
+
+    ?? screen[head.a][head.b]
+      /** Collide with self */
+      'o':
+        ? ch == chr('x'): out 'Exit'
+        \ out 'Game over('
+        ch = chr('x')
+      /** Just go */
+      ' ':
+        {a b} := snake[0]
+        screen[a][b] = chr(' ')
+        snake.erase(0)
+      /** Eat item */
+      '@': screen[mod(rng() sx)][mod(rng() sy)] = chr('@')
+
+    /** Add new head position to snake */
+    snake += head
+    screen[head.a][head.b] = chr('o')
+
+    screen.println()
+</code></pre>
+<h2 id="brainfuck-interpreter">Brainfuck interpreter</h2>
+<pre><code class="language-zh">use std
+
+fn brainfuck Str s
+  m := Vec&lt;int&gt;(s.size 0)
+  stack := Vec&lt;int&gt;()
+
+  @ i:=0, i&lt;s.size, ++i
+    ?? s[i]:
+      '[': stack += i
+      ']':
+        t := stack.pop()
+        m[i] = t
+        m[t] = i
+
+  p := malloc(3000) as u8P
+
+  @ i=0 i&lt;s.size, ++i: ?? s[i]:
+    '&gt;': p = p + 1
+    '&lt;': p = p - 1
+    '+': (*p) += 1u8
+    '-': (*p) -= 1u8
+    '.': put (*p as char)
+    ',': &gt; *(p as charP)
+    '[': ? *p == 0u8: i = m[i]
+    ']': ? *p != 0u8: i = m[i] - 1
+
+</code></pre>
+<h2 id="links">Links</h2>
+<p>The best way to feel zhaba-script is to use this playground, to play with examples right now! -&gt; https://wgmlgz.github.io/zhaba/</p>
+<p>Also there are docs with syntax highlighting -&gt; https://wgmlgz.github.io/zhaba/?page=docs</p>
+<p>Code in your's favorite frog programming language in your favorite IDE -&gt; https://marketplace.visualstudio.com/items?itemName=wgmlgz.zhaba-script</p>
+<div style="page-break-after: always;"></div>
+<h1 id="zhaba-script-project">Zhaba-script project</h1>
+<p>This chapter is about zhaba-script as a project and tools, which was used to build it.</p>
+<h2 id="project">Project</h2>
+<p>Zhaba-script compiler is a C++ project, which uses CMake. Is also depends on <a href="https://github.com/nlohmann/json">nlohmann/json</a> for json processing and parsing and <a href="https://github.com/CLIUtils/CLI11">CLIUtils/CLI11</a> for cli arguments parsing.</p>
+<h2 id="setup">Setup</h2>
+<p>If you want to run/develop zhaba-script on your own machine here is instruction for you:</p>
+<ul>
+<li>Set environment variable <code>zhstd</code> to <code>repo_path/std</code></li>
+<li>If you are using VSCode you can install <a href="https://marketplace.visualstudio.com/items?itemName=wgmlgz.zhaba-script">this</a> extension for syntax highlighting</li>
+<li>To develop</li>
+<li>This is a CMake project, so you need to check how to set up it in your IDE<ul>
+<li>VSCode: I am using vscode with CMake extension, so to set up project run command <code>CMake: Configure</code>, and to add run arguments add <code>"cmake.debugConfig": { "args": [ your args here ] }</code> to settings.json</li>
+<li>CLion: You probably can just open it with none or some minimal configuration</li>
+</ul>
+</li>
+<li>use compiled binary to run your <code>.zh</code> files with <code>./zhaba &lt;filename.zh&gt;</code></li>
+<li>To use zhaba-script</li>
+<li>Download the latest binary from <a href="https://github.com/Wgmlgz/zhaba-script/releases">releases</a> / or use <a href="https://wgmlgz.github.io/zhaba/">web IDE</a></li>
+</ul>
+<h2 id="compiling-zhaba-script-code">Compiling zhaba-script code</h2>
+<p>You can run zhaba-script programs in 3 ways:</p>
+<ol>
+<li>Translate to C and run C program.</li>
+<li>Run program directly throw bytecode.</li>
+<li>Use <a href="https://wgmlgz.github.io/zhaba/">online complier</a> without any installation and setup.</li>
+</ol>
+<p>If you choose first 2 ways you can use <code>zhaba</code> binary to do that.
+By default <code>zhaba</code> will translate your program to C (to a temporary file <code>zhaba_tmp.c</code>) and run it with <code>gcc</code>, you can change compiler with <code>-c</code> option, if you don't want to do that you can set <code>-b</code> flag and run bytecode directly.</p>
+<p>You can show help information with <code>-h</code> flag:</p>
+<pre><code>Zhaba-script compiler
+Usage: zhaba.exe [OPTIONS] file
+
+Positionals:
+  file TEXT REQUIRED          input file to compile
+
+Options:
+  -h,--help                   Print this help message and exit
+  -b,--B                      sets build target to bytecode, doesn't depend on external compiler
+  --exp_parser_logs           shows logs from expression parser
+  --show_ast                  shows ast
+  --show_st                   shows syntax tree
+  --show_c                    shows resulted C code
+  --orig                      shows original source code
+  --stack_trace               traces stack, if build target is bytecode
+  --show_bytecode             shows resulted bytecode, if build target is bytecode
+  --pure                      doesn't print logs
+  -c,--compiler TEXT [gcc]    compiler, used to compile file, if target isn't bytecode
+
+</code></pre>
+<div style="page-break-after: always;"></div>
+<h1 id="basics">Basics</h1>
+<h2 id="identifiers">Identifiers</h2>
+<p>In most languages identifiers (variable names, function names, etc.) are litter followed by letter or number (<code>_</code> counted as letter). Zhaba-script identifiers can be, in addition to the usual identifiers, also a sequence of these characters: <code>~,.+-*\%&lt;&gt;=^&amp;:;|/!#$@?</code>. Note, that you can choose on or another and cannot't mix them.</p>
+<h2 id="keywords">Keywords</h2>
+<p>Zhaba-script doesn't have regular keywords. Instead, all keywords are context depended. For example <code>fn</code> is used to declare functions and <code>?</code> for if statement, but you can use them as variables when them are not in expected context.</p>
+<pre><code class="language-zh">fn main
+  int fn = 5 op = 4 ? = 1 @ = 7
+  out(fn + op + ? + @) // 17
+</code></pre>
+<h2 id="code-blocks">Code blocks</h2>
+<p>Unlike Rust, JS or C Zhaba-script uses both Python-style indentation to indicate blocks of code.
+A new block of code stats when the indentation is different from previous line, and closes when indentation of current line is less then previous line and matched indentation of some past opened block. In this case that like would go to the matching block. Here is some example of that:</p>
+<pre><code class="language-zh">fn test int mx
+  ? mx &gt; 50     // block 1 starts
+    out 1       // block 2 starts
+    out 2
+    ? mx &lt; 100  // block 3 starts
+      out 3     // block 3 ends
+    out 4
+    ? mx &gt; 100  // block 4 starts
+      out 5     // block 4 ends
+      out 6     // block 1, 2 and 4 ends
+</code></pre>
+<p>But also you can start new block with <code>:</code>. In this case content after will go to the next block. If the next line has same indentation as this line block will start and end at the same line.</p>
+<pre><code class="language-zh">fn test int mx
+  ? mx &gt; 50: out 1
+    out 2
+    ? mx &lt; 100: out 3
+    out 4
+    ? mx &gt; 100
+      out 5
+      out 6
+</code></pre>
+<p>If you want write multiple expressions at the same line you can use <code>;</code> to separate them.</p>
+<pre><code class="language-zh">fn test int mx
+  ? mx &gt; 50
+    out 1
+    out 2
+    ? mx &lt; 100: out 3
+    out 4
+    ? mx &gt; 100: out 5; out 6
+</code></pre>
+<p>You can also use <code>;;</code> to close block for very short, but unreadable code.</p>
+<pre><code class="language-zh">fn test int mx: ?mx &gt; 50:out 1;out 2; ?mx &lt; 100:out 3;;out 4; ?mx&gt;100:out 5; out 6
+</code></pre>
+<p>Here is some code to test examples from above:</p>
+<pre><code class="language-zh">fn test int mx
+  ? mx &gt; 50     // block 1 starts
+    out 1       // block 2 starts
+    out 2
+    ? mx &lt; 100  // block 3 starts
+      out 3     // block 3 ends
+    out 4
+    ? mx &gt; 100  // block 4 starts
+      out 5     // block 4 ends
+      out 6     // block 1, 2 and 4 ends
+
+fn main
+  // test(0)    // nothing
+  test(200)  // 1 2 4 5 6
+  // test(100)  // 1 2 4
+  // test(60)   // 1 2 3 4
+</code></pre>
+<h2 id="implicit-commas">Implicit commas</h2>
+<p>One of the zhaba-script's interesting features is implicit commas. Implicit commas act like regular commas, but inserted implicitly into expressions between 2 tokens if this condition is met:</p>
+<p>Left token is <code>)</code>, literal (for example string literal or int literal) or identifier.
+Right token is <code>(</code>, literal (for example string literal or int literal) or identifier.</p>
+<p>Some examples:</p>
+<pre><code class="language-zh">a = 2   b = 3
+a = 2 , b = 3
+//    ^
+// on left there is `2` and on right there is `b`, so `,` is inserted
+// note that there is no implicit `,` between `b` and `=` because `=` is operator
+</code></pre>
+<h2 id="using-other-files">Using other files</h2>
+<p>To use other files in your programs write <code>use</code> followed by <code>'filename path'</code>. If you want to use file at the same directory you can remove <code>''</code> and <code>.zh</code>. If there is no file with that name compiler will search in <code>std</code> directory for it.</p>
+<pre><code class="language-zh">use 'path/filename.zh'
+use filename
+</code></pre>
+<p>Examples:</p>
+<pre><code class="language-zh">use std
+use 'std.zh'
+use 'da/da'
+use 'da/da.zh'
+</code></pre>
+<div style="page-break-after: always;"></div>
+<h1 id="types">Types</h1>
+<p>The concept of type is very important in zhaba-script. Every variable, function argument, and function return value must have a type in order to be compiled. Also, every expression (including literal values) is implicitly given a type by the compiler before it is evaluated. Some examples of types include <code>int</code> to store integer values, <code>f64</code> to store floating-point values (also known as scalar data types). You can also create your own types. The type specifies the amount of memory that will be allocated for the variable (or expression result), the kinds of values that may be stored in that variable, how those values (as bit patterns) are interpreted, and the operations that can be performed on it.</p>
+<h2 id="integer-numbers">Integer numbers</h2>
+<p>For signed integers there are <code>i8</code>, <code>i16</code>, <code>i32</code> and <code>i64</code>. The number at the end of <code>i</code> represents the amount of bits allocated to one integer. Integers can also be unsigned, <code>u8</code>, <code>u16</code>, <code>u32</code> and <code>u64</code> are used for that. There is also <code>int</code> type which is alias for <code>i64</code>. To create <code>int</code>, write sequence of numbers, and if you want to specify it type, you can use <code>i</code>, <code>i8</code>, <code>i16</code>, <code>i32</code>, <code>i64</code>, <code>u</code>, <code>u8</code>, <code>u16</code>, <code>u32</code> or <code>u64</code> suffix. If you write number without any suffix the type will be <code>i64</code> (not <code>i32</code> like in most languages, for example C).</p>
+<pre><code class="language-zh">_u8 = 0u8 - 1u8
+_u16 = 0u16 - 1u16
+_u32 = 0u32 - 1u32
+_u64 = 0u64 - 1u64
+
+_i8 = 0i8 - 1i8
+_i16 = 0i16 - 1i16
+_i32 = 0i32 - 1i32
+_i64 = 0i64 - 1i64
+
+&lt; 'Unsinged -1:' &lt; &lt; _u8 &lt; _u16 &lt; _u32 &lt; _u64 &lt;
+&lt; 'Singed -1:' &lt; &lt; _i8 &lt; _i16 &lt; _i32 &lt; _i64 &lt;
+/**
+ * Unsinged -1:
+ * 255 65535 4294967295 18446744073709551615
+ * Singed -1:
+ * -1 -1 -1 -1
+ */
+</code></pre>
+<p>Int literals are written in base-10 system by default, but you can also use binary or hexadecimal systems. To use them use <code>0x</code> or <code>0b</code> prefix for hexadecimal and binary systems respectively.</p>
+<pre><code class="language-zh">&lt; 100 &lt; // 100
+&lt; 0xff &lt; // 255
+&lt; 0b101 &lt; // 5
+</code></pre>
+<h2 id="floating-point-numbers">Floating point numbers</h2>
+<p>For floating point or scalar numbers zhaba-script have <code>f32</code> and <code>f64</code> types. <code>f32</code> is equivalent to <code>float</code> in C and <code>f64</code> is equivalent to <code>double</code>. You can create floating point numbers by putting <code>.</code> somewhere in number. You can also use <code>f</code>, <code>f32</code> or <code>f64</code> suffices to specify a type. If you write number without any suffix the type will be <code>f64</code> (not <code>f32</code> or <code>float</code> like in most languages, for example C).</p>
+<pre><code class="language-zh">&lt; 0.5 &lt;    // 0.5
+&lt; 1f &lt;     // 1.0
+&lt; 1. &lt;     // 1.0
+&lt; .1 &lt;     // 0.1
+&lt; 1.1 &lt;    // 1.1
+&lt; 1.1f64 &lt; // 1.1
+&lt; 1.1f32 &lt; // 1.1
+</code></pre>
+<h2 id="other-types">Other types</h2>
+<p>Zhaba-script string literals have <code>str</code> (<code>Str</code> from std is a different type) type which is equivalent to <code>char*</code>.
+For single characters we have <code>char</code> (wow).
+There is also <code>bool</code> type with <code>true</code> and <code>false</code> literals. But zhaba-script have more short <code>tru</code> and <code>fls</code> versions.</p>
+<h2 id="custom-types">Custom types</h2>
+<p>You can also create your own types with custom logic. More information is here <a href="">TODO</a>.</p>
+<h2 id="lval-rval-semantics">Lval &amp; rval semantics</h2>
+<p>Like C++ zhaba-script have <em><strong>lvalue</strong></em> (lval) and <em><strong>rvalue</strong></em>(rval) concept. The difference is that you can use address-of (<code>&amp;</code>) operator and assign value to it <code>a = b</code> with lval and cannot with rval.</p>
+<p>These expressions are concentered lval:</p>
+<ul>
+<li>Variables</li>
+<li>Object members <code>a.b</code></li>
+<li>Dereferenced expressions <code>*a</code></li>
+<li>References</li>
+</ul>
+<p>All the others expressions are considered to be rval.</p>
+<h2 id="rval-to-lval-conversion">Rval to lval conversion</h2>
+<p>Zhaba-script can convert rval to lvar if you pass parameter which requires reference and is not lval. This conversion is also made if you try to access member of rval object.</p>
+<pre><code class="language-zh">fn testRef intR a
+  a += 2
+
+fn main
+  a := 3
+  testRef(a)
+  testRef(5)
+  out a
+</code></pre>
+<p>Read more about rval and lval in C++ to understand this concept more <a href="https://en.cppreference.com/w/cpp/language/value_category">here</a>.</p>
+<h2 id="type-casting">Type casting</h2>
+<p>To cast one type to another use <code>as</code> operator and you can only cast types with the same size.</p>
+<pre><code class="language-zh">exp as TypeName
+</code></pre>
+<div style="page-break-after: always;"></div>
+<h1 id="expressions">Expressions</h1>
+<p>Expressions in Zhaba-script are very different from expressions in most other languages. They consist of operators and literals. Brackets <code>()</code> are used only to manipulate the operator's priorities and detect function calls. Here is some basic expression example:</p>
+<pre><code class="language-zh">// In this expression out is prefix operator and 'Hi frogs' is a str literal.
+out 'Hi frogs'
+</code></pre>
+<h2 id="inline-tuples">Inline tuples</h2>
+<p>Any operator in Zhaba-script accepts <strong><em>inline tuple</em></strong> which in fact just a collection of other expressions separated by <code>,</code>. So this expression</p>
+<pre><code class="language-zh">//  sum
+//    \
+//  (1, 2)
+sum(1, 2)
+</code></pre>
+<p>is in fact a prefix operator that actepts <strong><em>inline tuple</em></strong> of 1 and 2.
+But the main goal of Zhaba-script is minimizing code size so in most cases <code>,</code> are optional. And because of that, it is possible to write expression above like that:</p>
+<pre><code class="language-zh">sum(1 2)
+</code></pre>
+<p><strong><em>Inline tuples</em></strong> can also be empty, and to create one of those just use <code>()</code>:</p>
+<pre><code class="language-zh">// In this case `begin` is a prefix operator that accepts empty inline tuple
+//   begin
+//      \
+//      ()
+begin()
+</code></pre>
+<h2 id="binary-infix-operators">Binary (infix) operators</h2>
+<p>Binary operator is an operator that accepts 2 arguments from different sides:</p>
+<pre><code class="language-zh">//     +
+//    / \
+//   2   2
+2 + 2
+
+//     ..
+//    / \
+//   0  10
+0..10
+
+//       *
+//      / \
+//     +   3
+//    / \
+//   1   2
+1 + 2 * 3
+</code></pre>
+<p>But binary operators can also accept more or less than 2 arguments. In this case, they have 1 argument on the left side and others on the right size. At first, it may seem useless, but in fact all member function calls are implicitly converted to binary operators:</p>
+<pre><code class="language-zh">// .push_back acts like binary operator
+
+//   .push_back
+//     /  \
+//   vec   1
+vec.push_back(1)
+
+//   .push_back
+//     /  \
+//   vec  (1 2)
+vec.reverse(1 2)
+
+//   .pop_back
+//     /  \
+//   vec  ()
+vec.pop_back()
+
+</code></pre>
+<h2 id="operator-precedence">Operator precedence</h2>
+<p>Zhaba-script built-in operator precedence table:</p>
+<table>
+<thead>
+<tr>
+<th>Precedence</th>
+<th>Operator</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2</td>
+<td><code>a.b</code></td>
+<td>Member access</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>*a</code></td>
+<td>Dereference</td>
+</tr>
+<tr>
+<td></td>
+<td><code>&amp;a</code></td>
+<td>Address-of</td>
+</tr>
+<tr>
+<td></td>
+<td><code>-a</code></td>
+<td>Unary minus</td>
+</tr>
+<tr>
+<td></td>
+<td><code>+a</code></td>
+<td>Unary plus</td>
+</tr>
+<tr>
+<td></td>
+<td><code>!a</code></td>
+<td>Logical NOT</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>a as T</code></td>
+<td>type cast</td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>a*b</code> <code>a/b</code> <code>a%b</code></td>
+<td>Multiplication, division, and remainder</td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>a+b</code> <code>a-b</code></td>
+<td>Addition and subtraction</td>
+</tr>
+<tr>
+<td>9</td>
+<td><code>&lt;</code> <code>&lt;=</code> <code>&gt;</code> <code>&gt;=</code></td>
+<td>For relational operators &lt; and ≤ and &gt; and ≥ respectively</td>
+</tr>
+<tr>
+<td>10</td>
+<td><code>==</code> <code>!=</code></td>
+<td>For equality operators = and ≠ respectively</td>
+</tr>
+<tr>
+<td>14</td>
+<td><code>&amp;&amp;</code></td>
+<td>Logical AND</td>
+</tr>
+<tr>
+<td>15</td>
+<td><code>\|\|</code></td>
+<td>Logical OR</td>
+</tr>
+<tr>
+<td>16</td>
+<td><code>=</code></td>
+<td>Assignment</td>
+</tr>
+<tr>
+<td>17</td>
+<td><code>,</code> <code></code></td>
+<td>Inline tuple comma, Implicit inline tuple comma</td>
+</tr>
+</tbody>
+</table>
+<p>Zhaba-script std operator precedence table:</p>
+<table>
+<thead>
+<tr>
+<th>Precedence</th>
+<th>Operator</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5</td>
+<td><code>a%%b</code></td>
+<td>Is b an a divisor</td>
+</tr>
+<tr>
+<td>9</td>
+<td><code>a..b</code></td>
+<td>range creation</td>
+</tr>
+<tr>
+<td>16</td>
+<td><code>+=</code> <code>-=</code></td>
+<td>Compound assignment by sum and difference</td>
+</tr>
+<tr>
+<td></td>
+<td><code>*=</code> <code>/=</code> <code>%=</code></td>
+<td>Compound assignment by product, quotient, and remainder</td>
+</tr>
+</tbody>
+</table>
+<div style="page-break-after: always;"></div>
+<h1 id="variables">Variables</h1>
+<p>Variables are essential part of most of programming languages and zhaba-script is not an exception! They allow to access memory by variable name. All variables in zhaba-script are mutable.</p>
+<p>Zhaba-script has multiple ways to declare a variable, but the preferred one is using <code>:=</code> operator:</p>
+<pre><code class="language-zh">name := exp
+</code></pre>
+<p>This syntax is inspired by Go and variable type is inferred from <code>exp</code> type. But there are other ways for variable declaration which are more <em>C-like</em>:</p>
+<pre><code class="language-zh">TypeName name1[ = exp] [name2[ = exp] [...name3[ = exp]]]
+</code></pre>
+<p>If exp type is different you will get compile error:</p>
+<pre><code class="language-zh">int c = 37 d = 5i8
+
+// 5 |   int c = 37 d = 5i8
+//   |                ^
+//   | Types (i64 i8) for '='(init) are different
+</code></pre>
+<p>You can also infer type automatically with <code>auto</code>:</p>
+<pre><code class="language-zh">auto name1 = exp [name2 = exp [...name3 = exp]]
+</code></pre>
+<p>Types can be different:</p>
+<pre><code class="language-zh">auto e = 6i8 f = 'aboba'
+</code></pre>
+<p>Note, that this syntax doesn't call any constructors, so use <code>:=</code> when it's possible, but when you just need to get memory (for example in constructor definition), this is 100% valid way to do this.</p>
+<pre><code class="language-zh">valid := Vec&lt;int&gt;()
+out(valid.size) // 0
+
+Vec&lt;int&gt; wrong
+out(wrong.size) // undefined (can be any value)
+</code></pre>
+<h2 id="object-and-array-destructuring">Object and array destructuring</h2>
+<p>You can also declare variables with destructuring using <code>:=</code> operator. Zhaba-script provides 2 ways of destructuring: by names and by indexes.</p>
+<p>To destructure value by names wrap variable names with <code>{}</code> like so:</p>
+<pre><code class="language-zh">{a b} := exp
+</code></pre>
+<p>This syntax is equivalent to this:</p>
+<pre><code class="language-zh">tmp := exp // `tmp` isn't public name and can be different
+a := tmp.a
+b := tmp.b
+</code></pre>
+<p>But when dealing with arrays destructuring by indexes might be more useful. To do that use <code>[]</code>.</p>
+<pre><code class="language-zh">[a1 a2 a3] := exp
+</code></pre>
+<p>This syntax is equivalent to this:</p>
+<pre><code class="language-zh">tmp := exp // `tmp` isn't public name and can be different
+a1 := tmp[0]
+a2 := tmp[1]
+a3 := tmp[2]
+</code></pre>
+<p>Note that with <code>{}</code> you must use valid variables identificators, but <code>[]</code> allows to put any expression inside them, so you can nest <code>{}</code> and <code>[]</code> inside <code>[]</code>:</p>
+<pre><code class="language-zh">[a {b c} d] := exp
+</code></pre>
+<div style="page-break-after: always;"></div>
+<h1 id="if-else-elif-statements">if, else, elif statements</h1>
+<p>In zhaba-script you can use <code>?</code> to create <em>if</em> statements, <code>|</code> for elif(else if) and <code>\</code> for else.</p>
+<h2 id="syntax">Syntax</h2>
+<pre><code class="language-zh">         ? &lt;condition&gt; &lt;if block&gt;
+optional | &lt;condition&gt; &lt;else if block&gt;
+optional | &lt;condition&gt; &lt;else if block&gt;
+         | ...
+optional \ &lt;else block&gt;
+</code></pre>
+<h2 id="examples_1">Examples:</h2>
+<p>Regular style:</p>
+<pre><code class="language-zh">? 2 + 2 == 4
+  out 'Seems'
+  out 'legit'
+</code></pre>
+<p>One liner:</p>
+<pre><code class="language-zh">? 666 &gt; 2: out '666 is greater then 2'
+</code></pre>
+<p>Nested also works:</p>
+<pre><code class="language-zh">? 1 &lt; 2
+  ? 2 &gt; 1
+    out 'Double check'
+</code></pre>
+<p>if else</p>
+<pre><code class="language-zh">? 2 + 2 == 4: out 'cool!'
+\ out 'how?'
+</code></pre>
+<p>if elseif elseif else</p>
+<pre><code class="language-zh">? i %% 15: out 'FizzBuzz'
+| i %% 3: out 'Fizz'
+| i %% 5: out 'Buzz'
+\ out i
+</code></pre>
+<p>other variant</p>
+<pre><code class="language-zh">? i %% 15
+  out 'FizzBuzz'
+| i %% 3
+  out 'Fizz'
+| i %% 5
+  out 'Buzz'
+\ out i
+</code></pre>
+<div style="page-break-after: always;"></div>
+<h1 id="loops">Loops</h1>
+<p>Zhaba-script has 3 types of loops: while, for and foreach. To create a loop, use the <code>@</code> symbol and after that write your loop expression. Loop type is defined by a number of arguments, that have been passed to the loop: 1-while, 2-foreach, 3-for.</p>
+<h2 id="syntax_1">Syntax</h2>
+<pre><code class="language-zh">@ &lt;exp&gt;
+ &lt;body&gt;
+</code></pre>
+<h1 id="while">While</h1>
+<p>While loop accepts 1 argument and runs <em>while</em> its body while the condition is still true.</p>
+<h2 id="examples_2">Examples</h2>
+<pre><code class="language-zh">@ i &lt; 5: out 'infinite loop!!!'
+</code></pre>
+<pre><code class="language-zh">@ i &lt; 5
+  out 'hi'
+</code></pre>
+<h1 id="for">For</h1>
+<p>For loop is similar to the C for loop and accepts 3 argument: init, condition and loop expression.</p>
+<h2 id="examples_3">Examples</h2>
+<pre><code class="language-zh">@ i:=0 i&lt;100 i+=1
+  out i
+</code></pre>
+<p>The above syntax produces code equivalent to:</p>
+<pre><code class="language-zh">i:=0
+@ i&lt;100
+  out i
+  i+=1
+</code></pre>
+<h1 id="foreach">Foreach</h1>
+<p>Foreach loop executes a for loop over a range and accepts 2 arguments: a variable name and range expression. Variable name must be identifier and range expression must have defined <code>iter</code> prefix operator, which produced expression that must have <code>.begin()</code> and <code>.end()</code> methods. Value provided by <code>.begin()</code> must be able to be compared with <code>.end()</code> value by <code>!=</code> operator and also must be able to be incremented by prefix <code>++</code> operator. Produced code is equivalent to this:</p>
+<pre><code class="language-zh">__range := iter(&lt;range-expression&gt;)
+__cur := __range.begin()
+__end := __range.end()
+@ __cur != __end
+  exp := *__cur
+  &lt;body&gt;
+  ++__cur
+</code></pre>
+<h2 id="examples_4">Examples</h2>
+<pre><code class="language-zh">use 'range.zh'
+@ i 0..10
+  out i
+</code></pre>
+<pre><code class="language-zh">@ i some_vector
+  out *i
+</code></pre>
+<div style="page-break-after: always;"></div>
+<h1 id="functions">Functions</h1>
+<p>Functions are the core of programming in zhaba-script. To define your function use the <code>fn</code> keyword followed by return type (don't write it if the function doesn't anything), then function_name and finally set of arguments which are pairs of type and name. Functions can be declared at the global level, but also in local scope (like variables).
+To return something from a function use <code>&lt;&lt;&lt;</code> and to call if write its name followed by <code>()</code>.</p>
+<h2 id="syntax_2">Syntax</h2>
+<p>Declaration:</p>
+<pre><code class="language-zh">fn [return-type(optional)] function-name [type name [type name [...type name]]]
+  code-block
+</code></pre>
+<p>Call with args:</p>
+<pre><code> function_name(args)
+</code></pre>
+<p>Call without args:</p>
+<pre><code> function_name()
+</code></pre>
+<h2 id="examples_5">Examples</h2>
+<pre><code class="language-zh">/** int return type 2 args */
+fn int plus int a int b
+  &lt;&lt;&lt; a + b // to return use &lt;&lt;&lt;
+
+/** char return type 1 argument */
+fn char aschar str s: &lt;&lt;&lt; *(s as charP) // body at the same line
+
+/** No return type 1 argument */
+fn fizz_buzz int mx
+  auto r = 0..mx
+  @ r.nxt()
+    auto i = r.cur
+    ? i %% 3 &amp;&amp; i %% 5: out 'FizzBuzz'
+    | i %% 3: out 'Fizz'
+    | i %% 5: out 'Buzz'
+    \ out i
+
+/** No return type 1 argument */
+fn func1 int mx
+  fn func2: &lt;&lt;&lt; 5
+  &lt; (func2()  + func2()) &lt;
+
+/** No return type and no args */
+fn main
+  fizz_buzz(50) // call example
+</code></pre>
+<h2 id="return-emergency-exit">Return emergency exit</h2>
+<p>If your function has return type, but it reached it's end without returning anything zhaba-script will print <code>reached function end without returning anything &lt;function name&gt;</code> and then exit. This will happen not only in interpretation mode but in C translated program too.</p>
+<pre><code class="language-zh">fn int da
+  res := 1 + 4
+  // &lt;&lt;&lt; res
+fn main
+  da() // reached function end without returning anything
+</code></pre>
+<div style="page-break-after: always;"></div>
+<h1 id="pointers">Pointers</h1>
+<p>While Zhaba-script is designed for fast development, but the other goal is to do this without sacrificing the performance. Unlike JS or python there is no garbage collector, and you need to manually manage memory like in C or C++. A pointer is a variable whose value is the address of another variable, i.e., direct address of the memory location. Under the hood pointer is just a 64-bit integer or <code>i64</code> in zhaba-script.</p>
+<h2 id="declaring-pointers">Declaring pointers</h2>
+<p>Unlike C, in zhaba-script you can append <code>P</code> to the type to declare a pointer.</p>
+<pre><code class="language-zh">int var
+intP ptr
+</code></pre>
+<p>In this example var is variable and ptr is a pointer.</p>
+<h2 id="address-of-operator">Address-of operator <code>&amp;</code></h2>
+<p>The address of a variable can be obtained by preceding the name of a variable with an ampersand sign '&amp;', known as address-of operator. You can use address-of operator only with lval expression, because getting address of rval expression can result in undefined behavior. Read more about rval/lval TODO <a href="">here</a>. For example:</p>
+<pre><code class="language-zh">ptr = &amp;var;
+</code></pre>
+<p>This would assign the address of variable <code>var</code> to <code>ptr</code>; by preceding the name of the variable <code>var</code> with the address-of operator <code>&amp;</code>, we are no longer assigning the content of the variable itself to foo, but its address.</p>
+<h2 id="dereference-operator">Dereference operator <code>*</code></h2>
+<p>As just seen, a variable which stores the address of another variable is called a pointer. Pointers are said to "point to" the variable whose address they store.</p>
+<p>An interesting property of pointers is that they can be used to access the variable they point to directly. This is done by preceding the pointer name with the dereference operator <code>*</code>. The operator itself can be read as "value pointed to by".</p>
+<p>Therefore, following with the values of the previous example, the following statement:</p>
+<pre><code class="language-zh">baz = *ptr;
+</code></pre>
+<p>This could be read as: "<code>baz</code> equal to value pointed to by <code>ptr</code>".</p>
+<h1 id="heap">Heap</h1>
+<p>The heap is a large pool of memory that can be used dynamically. This is memory that is not automatically managed – you have to explicitly allocate (using malloc), and deallocate (e.g. free) the memory.</p>
+<h2 id="malloc"><code>malloc</code></h2>
+<h2 id="declaration">Declaration:</h2>
+<pre><code class="language-zh">lop malloc int size
+</code></pre>
+<h2 id="description">Description:</h2>
+<p><code>malloc</code> is a built in operator that allocates the requested memory and returns a pointer to it.</p>
+<h1 id="free"><code>free</code></h1>
+<h2 id="declaration_1">Declaration:</h2>
+<pre><code class="language-zh">lop free int ptr
+</code></pre>
+<h2 id="description_1">Description:</h2>
+<p><code>free</code> is a built in operator that deallocates the space previously allocated by <code>malloc</code>.</p>
+<h2 id="heap-in-interpreter">Heap in interpreter</h2>
+<p>Zhaba-script virtual machine tries to make work with pointers as safe as possible, and to achieve that it does some slow checks.</p>
+<h2 id="pointer-arithmetics">Pointer arithmetics</h2>
+<p>When dealing with continuos memory like array or string you can shift pointer forward and backward with <code>+</code> and <code>-</code>. Using this operators will shift pointer at the size of the underlying type multiplied by shift size.</p>
+<h2 id="example">Example:</h2>
+<pre><code class="language-zh">size := 10
+p := malloc(sizeof(int) * size) as intP
+out 'ptr + x'
+@ i 0..size: *(p + i) = i
+@ i 0..size: out(*(p + i))
+
+out 'x + ptr'
+@ i 0..size: *(i + p) = i
+@ i 0..size: out(*(i + p))
+
+out 'ptr - x'
+t := p + 5
+t = t - 2
+out(*t)
+</code></pre>
+<div style="page-break-after: always;"></div>
+<h1 id="custom-data-types">Custom data types</h1>
+<p>Zhaba-script custom data types are similar to rust structs. To define a data type, enter the keyword <code>type</code> and name the entire data type. Then, inside the next block, define the type and names of the pieces of data, which are called members. To access member use <code>.</code> operator.</p>
+<h2 id="syntax_3">Syntax</h2>
+<pre><code class="language-zh">type TypeName
+  MemberType1 name [name[ name[ ...name]]]
+  MemberType2 name [name[ name[ ...name]]]
+  MemberType3 name [name[ name[ ...name]]]
+  ...
+</code></pre>
+<h1 id="examples_6">Examples</h1>
+<p>This is an example of Vector data structure.</p>
+<pre><code class="language-zh">type VecInt
+  int size
+  int capacity
+  intP head
+
+fn main
+  VecInt v
+  &lt; v.size &lt;
+</code></pre>
+<h1 id="code-style">Code style</h1>
+<p>In zhaba-script code style, you should name your custom types in <code>PascalCase</code> and members in <code>snake_case</code>.</p>
+<h1 id="member-functions">Member functions</h1>
+<p>Zhaba-script support member functions call. To define some of these functions you can use the keyword <code>impl</code> and then enter the type for which you are writing implementation. Note that this type can be any type, even primitive (like <code>int</code>). Inside this block just write regular functions. To call member function write <code>object.function_name(args)</code></p>
+<h2 id="syntax_4">Syntax</h2>
+<pre><code class="language-zh">impl TypeName
+  fn func-header
+    func-body
+  fn func-header
+    func-body
+  fn func-header
+    func-body
+  ...
+</code></pre>
+<p>To access the object for which you are writing implementation you can use <code>slf</code> who is the first argument that is provided implicitly to your function. <code>slf</code> has the type of a pointer to a type written after <code>impl</code>.
+Continuing the example about the Vector, this is some example of <code>impl</code> and <code>slf</code> usage.</p>
+<pre><code class="language-zh">impl VecInt // implementation block for VecInt
+  fn intP begin
+    &lt;&lt;&lt; slf.head
+
+  fn intP end
+    &lt;&lt;&lt; slf.atP(slf.size)
+
+  fn push_back int val
+    ? slf.size == slf.capacity: slf.double_capacity()
+    *slf.atP(slf.size) = val
+    &amp;slf.size += 1
+</code></pre>
+<h1 id="incomplete-types">Incomplete types</h1>
+<p>When declaring type you sometimes need to reference itself in his body (in structures like trees for example). However it is not possible because this would mean that type need to include infinitely many copies of it.</p>
+<pre><code>.-type---------------------.
+| .--type------------.     |
+| | .-type-----.     |     |
+| | |  ...type |     |     |
+`--------------------------'
+</code></pre>
+<p>To solve this problem you can use pointer or reference to type itself, because it's size is known and fixed.</p>
+<pre><code>.--------type--------.
+| | ptr |            |
+`--------------------'
+</code></pre>
+<p>So, if you try to reference a type in it self, you will get <code>Incomplete type error</code>, but referencing pointer or reference is perfectly fine.</p>
+<pre><code class="language-zh">type Node
+  NodeP lhs // Ok
+  Node rhs /** error :( -&gt; test.zh:5:2
+            *  5 |   Node rhs
+            *    |   ^^^^^
+            *    | Incomplete type is not allowed here (you probably need to make it ref of ptr)
+            */
+</code></pre>
+<div style="page-break-after: always;"></div>
+<h1 id="generic-types">Generic types</h1>
+<p>Zhaba-script supports generic types. Generics is the idea to allow type (int, str, … etc and user-defined types) to be a parameter to types. For example <code>Vec&lt;T&gt;</code> allows to store dynamic array of any type without need to make new implementations every time. Note, that you don't have to name your type as <code>T</code>. Generics are implemented by replacing types, so, for example if you try so sort types for which comparison operator is not defined, compiler will give you an error.</p>
+<h2 id="syntax_5">Syntax:</h2>
+<pre><code class="language-zh">type TypeName [TypeName1 [TypeName2 [TypeName3]]]
+  MemberType1 [name1 [name2 [...name3]]]
+  MemberType2 [name1 [name2 [...name3]]]
+  MemberType3 [name1 [name2 [...name3]]]
+  ...
+</code></pre>
+<h2 id="examples_7">Examples:</h2>
+<pre><code class="language-zh">type Vec T
+  int size
+  int capacity
+  TP head
+</code></pre>
+<pre><code class="language-zh">type Tp3 T1 T2 T3
+  T1 v1
+  T2 v2
+  T3 v3
+</code></pre>
+<p>To use generic types use following syntax:</p>
+<pre><code class="language-zh">TypeName&lt;T1[ T2[ ...T3]]&gt;
+</code></pre>
+<h2 id="examples_8">Examples:</h2>
+<pre><code class="language-zh">Vec&lt;char&gt; data
+
+Tp3&lt;char i32 bool&gt; data
+</code></pre>
+<h2 id="note">Note</h2>
+<p>When you are using generic type inside another generic type you need to separate closing <code>&gt;</code>.</p>
+<pre><code class="language-zh">Vec&lt;Vec&lt;char&gt;&gt; data // wrong
+Vec&lt;Vec&lt;char&gt; &gt; data // correct
+</code></pre>
+<h1 id="generic-types-and-member-functions">Generic types and member functions</h1>
+<p>Like a normal types, generic types can also have member functions. To define them create <code>impl</code> block followed by the type name, but without generic parameters.</p>
+<h2 id="syntax_6">Syntax:</h2>
+<pre><code class="language-zh">impl TypeName
+  fn func-header
+    func-body
+  fn func-header
+    func-body
+  fn func-header
+    func-body
+  ...
+</code></pre>
+<h2 id="examples_9">Examples:</h2>
+<pre><code class="language-zh">impl Vec
+  fn free_mem
+    ? ! !(slf.head as int): free(slf.head as int)
+    slf.size = 0
+    slf.capacity = 0
+    slf.head = 0 as TP
+</code></pre>
+<h1 id="generic-types-and-operators-overloading">Generic types and operators overloading</h1>
+<p>Generic <code>impl</code> block allows you not only to create member function, but also to overload prefix, postfix or binary operators. They would behave like other overloaded operators and would not have implicit <code>slf</code> argument. The main difference and benefit is that you can use generic parameters in them.</p>
+<pre><code class="language-zh">impl Vec
+  op 17 += Vec&lt;T&gt;R slf T val: slf.push_back(val)
+
+  op 17 += Vec&lt;T&gt;R slf Vec&lt;T&gt; other
+    @ i other: slf.push_back(*i)
+
+  lop put Vec&lt;T&gt;R slf: slf.print()
+  lop out Vec&lt;T&gt;R slf: slf.print(); out ''
+
+  ...
+</code></pre>
+<div style="page-break-after: always;"></div>
+<h1 id="references">References</h1>
+<p>A reference variable is an alias, that is, another name for an already existing variable. Once a reference is initialized with a variable, either the variable name or the reference name may be used to refer to the variable. Internally references are converted to pointers with <code>&amp;</code> and <code>*</code> operators when needed.</p>
+<h2 id="creating-references-in-zhaba-script">Creating References in zhaba-script</h2>
+<p>Think of a variable name as a label attached to the variable's location in memory. You can then think of a reference as a second label attached to that memory location. Therefore, you can access the contents of the variable through either the original variable name or the reference. But zhaba-script doesn't allows to store them directly, only returning them or using them as function arguments. To create reference use <code>R</code> at the end of variable name.</p>
+<h2 id="syntax_7">Syntax</h2>
+<pre><code class="language-zh">TypeNameR
+</code></pre>
+<h2 id="passing-references-as-arguments">Passing references as arguments</h2>
+<p>References are mostly used when you want to use some variable without copping it. Here is example of this:</p>
+<pre><code class="language-zh">use std
+
+fn add_copy int a
+  ++a
+fn add_ref intR a
+  ++a
+
+fn main
+  t := 5
+  &lt; t &lt; // 5
+  add_ref(t)
+  &lt; t &lt; // 6
+  add_copy(t)
+  &lt; t &lt; // 6
+</code></pre>
+<h2 id="returning-references">Returning references</h2>
+<p>You can also return reference and then modify it's content. For example <code>Vec&lt;T&gt;</code> returns a reference when you call <code>[]</code> or <code>.at()</code>.</p>
+<pre><code class="language-zh">/** From std/vec.zh */
+impl Vec
+  fn TP atP int pos: &lt;&lt;&lt; (slf.head + pos) as TP
+  fn TR at int pos: &lt;&lt;&lt; *slf.atP(pos)
+
+fn main
+  v := Vec&lt;int&gt;(5)
+  v[3] = 4
+  &lt; v &lt; // [0 0 0 4 0]
+</code></pre>
+<h2 id="references-and-lval-rval-semantics">References and lval &amp; rval semantics</h2>
+<p>References are referring to some valid variable or object in memory. Because of that they cannot be created from rval expression. Read more about rval/lval TODO <a href="">here</a>.</p>
+<pre><code class="language-zh">use std
+
+fn add_ref intR a
+  ++a
+
+fn main
+  a := 5
+  add_ref(a) // Ok
+  add_ref(5 + 5)
+  /**
+   *  error :( -&gt; test.zh:9:12
+   *  9 |   add_ref(5 + 5)
+   *    |             ^
+   *    | Expression must be lval to be able pass by reference
+   */
+</code></pre>
+<div style="page-break-after: always;"></div>
+<h1 id="objects-lifetime">Objects lifetime</h1>
+<p>A lifetime is a construct the compiler uses to ensure create and destroy object. Specifically, a variable's lifetime begins when it is created and ends when it is destroyed. Later, more specific mechanisms and the time of creation and destruction of objects will be described.</p>
+<h2 id="example_1">Example</h2>
+<pre><code class="language-zh">fn main
+  i := 0  // lifetime for `v` starts. ------.
+  &gt; i                                   //  |
+                                        //  |
+  ? i == 4:                             //  |
+    a := 7  // `a` lifetime starts. -------.|
+    &lt; (a + i) &lt;                         // │|
+    // `a` lifetime ends. -----------------'|
+                                        //  |
+  // `i` lifetime ends. --------------------'
+</code></pre>
+<h1 id="constructor">Constructor</h1>
+<p>By default, newly created object is just contains uninitialized space for it's members, but you can initialize it with special function called <code>ctor</code> (constructor). Constructor is just a function with any args that returns 1 object of it's constructed type. To create constructor use <code>impl</code> block. To call constructor use type name as function and call it</p>
+<pre><code class="language-zh">impl Vec
+  fn ctor int size // constructor for `Vec` that takes `int size` as argument
+    Vec&lt;T&gt; slf
+    slf.head = 0 as TP
+    slf.size = 0
+    slf.capacity = 0
+    @ slf.capacity &lt; size: slf.double_capacity()
+    slf.size = size
+    slf.capacity = size
+    &lt;&lt;&lt; slf // don't forget to return!
+
+fn main
+  v := Vec&lt;int&gt;(4) // calling `Vec&lt;int&gt;` constructor with `int size` = 4
+  &lt; v &lt;
+</code></pre>
+<p>Note, that constructors does't have implicit <code>slf</code> argument so, for example you can use them like this:</p>
+<pre><code class="language-zh">impl Vec
+  fn ctor: &lt;&lt;&lt; Vec&lt;T&gt;(0)
+</code></pre>
+<h1 id="copy-constructor">Copy constructor</h1>
+<p>Copy constructor is a special constructor that used when compiler needs a copy of some other object, but you can use them by yourself. Copy constructors must have only 1 argument of reference to returning type.</p>
+<h2 id="example_2">Example</h2>
+<pre><code class="language-zh">impl Vec
+  fn ctor Vec&lt;T&gt;R other
+    out 'copy!'
+    slf := Vec&lt;T&gt;(other.size)
+    @ i 0..other.size: slf.at(i) = other.at(i)
+    &lt;&lt;&lt; slf
+</code></pre>
+<h2 id="when-copy-constructor-is-called">When copy constructor is called?</h2>
+<ul>
+<li>Variable declaration with <code>:=</code></li>
+<li>Assignment with <code>=</code></li>
+<li>Passing arguments fo functions without <code>P</code> or <code>R</code> (by copy)</li>
+</ul>
+<h1 id="destructor">Destructor</h1>
+<p>A <code>dtor</code> (destructor) is a special member function that is called when the lifetime of an object ends. The purpose of the destructor is to free the resources that the object may have acquired during its lifetime</p>
+<pre><code class="language-zh">impl Vec
+  fn dtor
+    ? ! !(slf.head as int): free(slf.head as int)
+    slf.size = 0
+    slf.capacity = 0
+    slf.head = 0 as TP
+</code></pre>
+<h2 id="when-destructor-is-called">When destructor is called?</h2>
+<ul>
+<li>Local scope variables at scope end</li>
+<li>All accessible local variables and function args when function returns except return value</li>
+<li>When expression return value is not used</li>
+</ul>
+<h1 id="return-and-destruction">Return and destruction</h1>
+<p>As follows from the description above local object is not destructed and not copied when it is used as function return value, but it can be reallocated in stack memory. So it is important to not store references or pointers to it's members or itself, but pointers to heap are 100% valid.</p>
+<div style="page-break-after: always;"></div>
+<h1 id="operators-overloading">Operators overloading</h1>
+<p>Zhaba-script allows you to overload any prefix, postfix or infix operator. Remember about correct <a href="https://wgmlgz.github.io/zhaba/?page=docs&amp;chapter=2">identifiers</a>. You can read more about operators and expressions <a href="https://wgmlgz.github.io/zhaba/?page=docs&amp;chapter=3">here</a>. And <a href="https://en.cppreference.com/w/cpp/language/operator_precedence">here</a> - C++ operators precedence table for reference.</p>
+<h2 id="syntax_8">Syntax</h2>
+<p>Declaration:</p>
+<pre><code class="language-zh">// Infix (binary operators):
+// put operator precedence instead of 5
+op 5 [return-type(optional)] operator-name [type name [type name [...type name]]]
+  code-block
+
+// Prefix operators:
+lop [return-type(optional)] operator-name [type name [type name [...type name]]]
+  code-block
+
+// Suffix operators:
+rop [return-type(optional)] operator-name [type name [type name [...type name]]]
+  code-block
+</code></pre>
+<p>Examples:</p>
+<pre><code class="language-zh">/** From operators.zh */
+op 5  bool %% int a int b: &lt;&lt;&lt; !(a % b);
+
+op 17 += intR a int b: a = a + b
+op 17 -= intR a int b: a = a - b
+op 17 /= intR a int b: a = a / b
+op 17 %= intR a int b: a = a % b
+op 17 *= intR a int b: a = a * b
+
+lop ++ intR val: val += 1
+lop -- intR val: val -= 1
+lop ++ u8R val: val = val + 1u8
+lop -- u8R val: val = val - 1u8
+
+
+/** From range.zh */
+op 9 Range .. int begin int end
+  Range slf
+  slf.begin = begin
+  slf.end = end
+  &lt;&lt;&lt; slf
+
+rop Range .. int begin: &lt;&lt;&lt; begin..9223372036854775807
+
+lop Range .. int end: &lt;&lt;&lt; -9223372036854775807..end
+
+op 10 bool == int i Range r
+  ? r.begin &lt; r.end: &lt;&lt;&lt; r.begin &lt;= i &amp;&amp; i &lt; r.end
+  \ &lt;&lt;&lt; r.end &lt;= i &amp;&amp; i &lt; r.begin
+</code></pre>
+<h1 id="advanced-overloading">Advanced overloading</h1>
+<p>Zhaba-script also allows you to overload <em>Function call</em> <code>()</code> and <em>Subscript</em> <code>[]</code> operators. To do that you need to define member functions named <code>call</code> and <code>sub</code> respectively.</p>
+<p>Note, that you can pass any number of arguments, even zero.</p>
+<h2 id="syntax_9">Syntax</h2>
+<pre><code class="language-zh">impl &lt;Type&gt;
+  fn &lt;ReturnType&gt; sub &lt;args&gt;
+    &lt;code_block&gt;
+  fn &lt;ReturnType&gt; call &lt;args&gt;
+    &lt;code_block&gt;
+</code></pre>
+<h2 id="examples_10">Examples:</h2>
+<pre><code class="language-zh">/** From vec.zh */
+
+/** Vector subscript - v[id] */
+impl Vec
+  fn TR sub int id
+    ? id &lt; 0: id += slf.size
+    &lt;&lt;&lt; slf.at(id)
+
+/** Generate array from Range */
+impl Range
+  fn Vec&lt;int&gt; call
+    res := Vec&lt;int&gt;()
+    @ i, *slf: res += i
+    &lt;&lt;&lt; res
+</code></pre>
+<div style="page-break-after: always;"></div>
+<h1 id="pattern-matching">Pattern matching</h1>
+<p>Zhaba-script has pattern matching feature which allows to compare some value with a number of different values and it is something between C <code>switch-case</code> and rust <code>match</code>. If you want to match any expression, use <code>_</code>, this branch will allays be matched.</p>
+<h2 id="syntax_10">Syntax</h2>
+<pre><code class="language-zh">?? &lt;test-exp&gt;
+  &lt;match1&gt;
+    &lt;block&gt;
+  &lt;match2&gt;
+    &lt;block&gt;
+  &lt;match3&gt;
+    &lt;block&gt;
+</code></pre>
+<h2 id="example_3">Example</h2>
+<pre><code class="language-zh">use std
+
+fn main
+  a := 4
+
+  ?? a
+    2: &lt; '2' &lt;
+    0..2: &lt; '0..2' &lt;
+    6..8: &lt; '6..8' &lt;
+    -1..5: &lt; '-1..5' &lt;
+    _: &lt; '_' &lt;
+</code></pre>
+<h2 id="how-it-works">How it works?</h2>
+<p>Pattern matching statement converted to if statement like so:</p>
+<pre><code class="language-zh">switch := &lt;test-exp&gt;
+
+? switch == &lt;match1&gt;
+  &lt;block1&gt;
+| switch == &lt;match2&gt;
+  &lt;block2&gt;
+| switch == &lt;match3&gt;
+  &lt;block3&gt;
+</code></pre>
+<p>Because pattern matching uses <code>==</code> operator, you can overload it to match your custom types. For example you can match <code>Range</code> with <code>int</code> (declared at std/range):</p>
+<pre><code class="language-zh">/** int in range */
+op 10 bool == int i Range r
+  ? r.begin &lt; r.end: &lt;&lt;&lt; r.begin &lt;= i &amp;&amp; i &lt; r.end
+  \ &lt;&lt;&lt; r.end &lt;= i &amp;&amp; i &lt; r.begin
+</code></pre>
+<div style="page-break-after: always;"></div>
+<h1 id="advanced-functions">Advanced functions</h1>
+<p>Zhaba-script support first-class functions, and that means that you can pass functions as arguments to other functions, returning them as the values from other functions, and assigning them to variables or storing them in data structures. Zhaba-script has anonymous functions (function literals) as well.</p>
+<h2 id="functions-type">Functions type</h2>
+<p>All functions have type of <code>F&lt;...&gt;</code>, inside <code>&lt; &gt;</code> there is return type and types of function arguments.</p>
+<pre><code class="language-zh">F&lt;ReturnType [Arg1Type [Arg2Type [...]]]&gt;
+</code></pre>
+<h2 id="referencing-function">Referencing function</h2>
+<p>To do something with your functions you need to reference it. Just write function name like it is a variable. In function is overloaded, the last overload will be referenced.</p>
+<p>Storing function:</p>
+<pre><code class="language-zh">fn int test int a int b: &lt;&lt;&lt; a + b
+
+fn main
+  f := test
+  out f(2 4)
+</code></pre>
+<p>Passing function as argument:</p>
+<pre><code class="language-zh">fn int test F&lt;int int int&gt; f
+  &lt;&lt;&lt; f(1 6)
+
+fn int sum int a int b
+  &lt;&lt;&lt; a + b
+
+fn main
+  out test(sum)
+</code></pre>
+<div style="page-break-after: always;"></div>
+<h1 id="lambda-function-expressions">Lambda function expressions</h1>
+<p>An lambda function expression is a compact alternative to a traditional function expression, but is limited and can't be used in all situations.</p>
+<p>There are differences between lambda functions and traditional functions, as well as some limitations:</p>
+<p>Lambda function return type is automatically inferred and cannot be explicitly set.
+Lambda function body can only be an expression, so, for example, ifs or loops cannot be inside lambda function body.</p>
+<h2 id="syntax_11">Syntax</h2>
+<p>To create lambda function write arguments list wrapped in parentheses followed by <code>-&gt;</code> and expression.</p>
+<pre><code class="language-zh">(Type1 arg1[, Type2 arg2[, ...]]) -&gt; expression
+</code></pre>
+<h2 id="examples_11">Examples</h2>
+<pre><code class="language-zh">/** Storing lambda */
+f := (intR i) -&gt; i*i // f type is `F&lt;int intR&gt;`
+
+out iota(0 10).filter((intR i) -&gt; i %% 2).map(f)
+/**   Inline lambda   ^^^^^^^^^^^^^^^^^^  */
+
+sum := (int a int b) -&gt; a + b
+out sum(1 5)
+</code></pre>
+<div style="page-break-after: always;"></div>
+<h1 id="standard-library">Standard library</h1>
+<p>Some languages like python or javascript declare their functionality in their core, and others like C++ do this in standard library. For example <code>Map</code> in javascript is available at any moment without including or importing anything, and in C++ you need to <code>#include &lt;map&gt;</code> to use <code>std::map</code>. Zhaba-script takes C++ approach, so standard library is very important and contains many of cool zhaba-script features.</p>
+<h2 id="using-standard-library">Using standard library</h2>
+<p>If you want to use all standard library at once, write <code>use std</code> at the top of your file, but if you only need one or two of it's features, it is good idea to use only needed modules, like <code>use map</code> or <code>use vec</code>.</p>
+<h2 id="standard-library-content">Standard library content</h2>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>std/avl.zh</td>
+<td><code>AVLTree&lt;T&gt;</code>: avl binary search tree</td>
+</tr>
+<tr>
+<td>std/complex.zh</td>
+<td><code>V2</code>: complex numbers</td>
+</tr>
+<tr>
+<td>std/err.zh</td>
+<td><code>Err</code>: <code>Str</code> error wrapper</td>
+</tr>
+<tr>
+<td>std/file.zh</td>
+<td>filesystem</td>
+</tr>
+<tr>
+<td>std/frog.zh</td>
+<td>cool frog image</td>
+</tr>
+<tr>
+<td>std/pair.zh</td>
+<td><code>Pair&lt;A B&gt;</code>: pair container</td>
+</tr>
+<tr>
+<td>std/result.zh</td>
+<td><code>Result&lt;T E&gt;</code>: recoverable errors container type</td>
+</tr>
+<tr>
+<td>std/map.zh</td>
+<td><code>Map&lt;K V&gt;</code>: wrapper for avl tree</td>
+</tr>
+<tr>
+<td>std/operators.zh</td>
+<td>some advanced operators like <code>%%</code> or <code>+=</code></td>
+</tr>
+<tr>
+<td>std/io.zh</td>
+<td>overloaded <code>&lt;</code> and <code>&gt;</code> operators for input/output</td>
+</tr>
+<tr>
+<td>std/range.zh</td>
+<td><code>Range</code>: int range</td>
+</tr>
+<tr>
+<td>std/rng.zh</td>
+<td><code>Rng</code>: random number generator</td>
+</tr>
+<tr>
+<td>std/str.zh</td>
+<td><code>Str</code>: dynamic string</td>
+</tr>
+<tr>
+<td>std/util.zh</td>
+<td>utilities functions</td>
+</tr>
+<tr>
+<td>std/vec.zh</td>
+<td><code>Vec&lt;T&gt;</code>: dynamic generic array</td>
+</tr>
+<tr>
+<td>std/std.zh</td>
+<td>Includes all standard library</td>
+</tr>
+</tbody>
+</table>
+<div style="page-break-after: always;"></div>
+<h1 id="range">Range</h1>
+<pre><code class="language-zh">type Range: int begin end
+</code></pre>
+<p>A (half-open) range bounded inclusively below and exclusively above [start..end).</p>
+<p>The range <code>start..end</code> contains all values with <code>start &lt;= x &lt; end</code>. It is empty if <code>start &gt;= end</code>. To create range which includes <code>end</code> you can use <code>..=</code> operator.</p>
+<h2 id="creating-range">Creating range</h2>
+<p>Range can be created using <code>..</code> or <code>..=</code> operator with it's prefix, postfix or infix overloads. Prefix and postfix operators create infinite (limited by i64 min/max values) ranges:</p>
+<pre><code class="language-zh">
+10..  // 10..9223372036854775807
+..40  // -9223372036854775807..40
+3..10 // 3..10
+3..=10 // 3..11
+
+</code></pre>
+<h2 id="usage">Usage</h2>
+<p>Range can be used in foreach loops:</p>
+<pre><code class="language-zh">@ i 5..10 : &lt; i
+// 5 6 7 8 9
+</code></pre>
+<p>Range can be used in patter matching:</p>
+<pre><code class="language-zh">t := 5
+?? t
+  10.. : out '10..'
+  15.. : out '15..'
+  ..3: out '..3'
+  3..10: out '3..10'
+  0..2: out '0..2'
+  5: out 5
+  _: out 'any'
+
+// 3..10
+</code></pre>
+<p>Range can be also used to index array, more about that at <a href="https://wgmlgz.github.io/zhaba/?page=docs&amp;chapter=15">next chapter</a>.</p>
+<h2 id="ps">P.S</h2>
+<p>Inspired by Rust and Python!</p>
+<div style="page-break-after: always;"></div>
+<h1 id="input-and-output">Input and output</h1>
+<p>By default zhaba-script input system has <code>out</code> and <code>put</code> prefix operators for basic types. <code>out</code> will print your expression followed by newline character and <code>put</code> will just print without newline.</p>
+<pre><code class="language-zh">out 'hi'
+out 2
+put(5 - 2)
+</code></pre>
+<p>For input there are several functions, when called they will return inputted type:</p>
+<pre><code class="language-zh">in_i8()
+in_i16()
+in_i32()
+in_i64()
+in_u8()
+in_u16()
+in_u32()
+out_u64()
+in_u64()
+in_str()
+in_char()
+in_bool()
+in_f32()
+in_f64()
+</code></pre>
+<p>However zhaba-script has different, more handy way for input and output. To achieve this there are overloaded <code>&lt;</code> and <code>&gt;</code> operators. To use them write <code>use std</code> at the top of your file.</p>
+<p>Here is usage example:</p>
+<pre><code class="language-zh">&lt; 1 // outputs ' ' at end
+&lt; 1
+&lt; 1 &lt; 2 &lt; 3 &lt; 4 &lt;  // you can chain `&lt;`, last `&lt;` will print newline character
+
+v := 0
+&gt; v // user typed '54' for example
+&lt; v &lt; // input items must be lval or ref
+
+/** output:
+
+1 1 1 2 3 4
+54
+
+*/
+</code></pre>
+<div style="page-break-after: always;"></div>
+<h1 id="iterators">Iterators</h1>
+<p>An Iterator is an object that can be used to loop through collections, like <code>Vec&lt;T&gt;</code> or <code>Map&lt;K V&gt;</code>. It is called an "iterator" because "iterating" is the technical term for looping.</p>
+<p>Iterators isn't a part of zhaba-script, but they are rather implemented throw standard library.</p>
+<h2 id="using-iterators">Using iterators</h2>
+<p>When using iterators we have <em><strong>begin</strong></em> and <em><strong>end</strong></em>, begin is included in collection and end isn't.</p>
+<p>Zhaba-script iterators has this convention:</p>
+<p>First, get iterator range with <code>iter()</code> function.
+Then, get begin and end iterators from it.
+And finally increment iterator using prefix <code>++</code> operator, while you didn't reach the end. You can check if iterator reached end using <code>!=</code> binary operator.
+To get content of iterator use overloaded prefix operator <code>*</code>.</p>
+<p>Here is example if doing that:</p>
+<pre><code class="language-zh">use std
+
+fn main
+  v := iota(0 10)
+
+  iters := iter(v)
+  begin := iters.begin()
+  end := iters.end()
+  cur := begin
+  @ cur != end
+    val := *cur
+    out val
+    ++cur
+</code></pre>
+<h2 id="iterators-foreach">Iterators + foreach</h2>
+<p>Using iterators like that isn't cool, so zhaba-script has <a href="8%20Loops.md">foreach</a> loop for that:</p>
+<pre><code class="language-zh">use std
+
+fn main
+  v := iota(0 10)
+
+  @ cur v
+    out cur 
+</code></pre>
+<div style="page-break-after: always;"></div>
+<h1 id="vect-type"><code>Vec&lt;T&gt;</code> type</h1>
+<h2 id="definition">Definition</h2>
+<pre><code class="language-zh">type Vec T
+  int size
+  int cap
+  TP head
+</code></pre>
+<p>The elements are stored contiguously, which means that elements can be accessed not only through iterators, but also using offsets to regular pointers to elements. This means that a pointer to an element of a vector may be passed to any function that expects a pointer to an element of an array.</p>
+<p>The storage of the vector is handled automatically, being expanded and contracted as needed. Vectors usually occupy more space than static arrays, because more memory is allocated to handle future growth. This way a vector does not need to reallocate each time an element is inserted, but only when the additional memory is exhausted.</p>
+<h2 id="vec-member-functions"><code>Vec</code> member functions</h2>
+<table>
+<thead>
+<tr>
+<th>Functions</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>fn ctor int size</code></td>
+<td>Constructor, creates vector with given size</td>
+</tr>
+<tr>
+<td><code>fn ctor int size T default</code></td>
+<td>Constructor, creates vector with given size initialized with given value</td>
+</tr>
+<tr>
+<td><code>fn ctor</code></td>
+<td>Constructor, creates empty vector</td>
+</tr>
+<tr>
+<td><code>fn ctor Vec&lt;T&gt;R other</code></td>
+<td>Copy constructor</td>
+</tr>
+<tr>
+<td><code>fn dtor</code></td>
+<td>Destructor</td>
+</tr>
+<tr>
+<td><code>fn TP atP int pos</code></td>
+<td>Access pointer to specified element</td>
+</tr>
+<tr>
+<td><code>fn TR at int pos</code></td>
+<td>Access specified element</td>
+</tr>
+<tr>
+<td><code>fn print</code></td>
+<td>Prints vector content in this form: <code>[0 1 3 4]</code></td>
+</tr>
+<tr>
+<td><code>fn println</code></td>
+<td>Prints every vector element from new line, doesn't print <code>[]</code></td>
+</tr>
+<tr>
+<td><code>fn double_cap</code></td>
+<td>Doubles vector's capacity</td>
+</tr>
+<tr>
+<td><code>fn push_back T val</code></td>
+<td>Adds an element to the end</td>
+</tr>
+<tr>
+<td><code>fn pop_back</code></td>
+<td>Removes the last element</td>
+</tr>
+<tr>
+<td><code>fn VecIter&lt;T&gt; begin</code></td>
+<td>Returns an iterator to the beginning</td>
+</tr>
+<tr>
+<td><code>fn VecIter&lt;T&gt; end</code></td>
+<td>Returns an iterator to the end</td>
+</tr>
+<tr>
+<td><code>lop VecIterRange&lt;T&gt; iter Vec&lt;T&gt;R slf</code></td>
+<td>Returns iterator range</td>
+</tr>
+<tr>
+<td><code>fn TR front</code></td>
+<td>Access the first element</td>
+</tr>
+<tr>
+<td><code>fn TR back</code></td>
+<td>Access the last element</td>
+</tr>
+<tr>
+<td><code>op 17 += Vec&lt;T&gt;R slf T val</code></td>
+<td>Append single item to vector</td>
+</tr>
+<tr>
+<td><code>op 17 += Vec&lt;T&gt;R slf Vec&lt;T&gt;R other</code></td>
+<td>Append other vector item to given vector</td>
+</tr>
+<tr>
+<td><code>op 2 Vec&lt;T&gt; ,, T a T b</code></td>
+<td>Short syntax for creating vector from multiple items: <code>0,,1,,2,,3</code></td>
+</tr>
+<tr>
+<td><code>op 2 Vec&lt;T&gt;R ,, Vec&lt;T&gt;R v T a</code></td>
+<td>Short syntax for creating vector from multiple items: <code>0,,1,,2,,3</code></td>
+</tr>
+<tr>
+<td><code>lop out Vec&lt;T&gt;R slf</code></td>
+<td>Outputs vector with '\n'</td>
+</tr>
+<tr>
+<td><code>lop put Vec&lt;T&gt;R slf</code></td>
+<td>Outputs vector</td>
+</tr>
+<tr>
+<td><code>rop Out &lt; Vec&lt;T&gt;R i</code></td>
+<td>Outputs vector</td>
+</tr>
+<tr>
+<td><code>lop Out &lt; Vec&lt;T&gt;R i</code></td>
+<td>Outputs vector</td>
+</tr>
+<tr>
+<td><code>op 9 Out &lt; Out o Vec&lt;T&gt;R i</code></td>
+<td>Outputs vector</td>
+</tr>
+<tr>
+<td><code>fn TR sub int id</code></td>
+<td>Access specified element</td>
+</tr>
+<tr>
+<td><code>fn Vec&lt;T&gt; sub int begin int end</code></td>
+<td>Get subvector from indexes [begin, end)</td>
+</tr>
+<tr>
+<td><code>fn Vec&lt;T&gt; sub Range&lt;int&gt; r</code></td>
+<td>Get subvector from indexes [begin, end), from range</td>
+</tr>
+<tr>
+<td><code>fn Vec&lt;T&gt; sub</code></td>
+<td>Get subvector from 0..size</td>
+</tr>
+<tr>
+<td><code>op 9 bool &lt; Vec&lt;T&gt;R a Vec&lt;T&gt;R b</code></td>
+<td>Lexicographically compares the values in the vector</td>
+</tr>
+<tr>
+<td><code>lop TP partition TP lo TP hi</code></td>
+<td>Partitions vector</td>
+</tr>
+<tr>
+<td><code>lop qsort TP lhs TP rhs</code></td>
+<td>Qsort algorithm</td>
+</tr>
+<tr>
+<td><code>fn sort</code></td>
+<td>Sort vector's content</td>
+</tr>
+<tr>
+<td><code>lop sort Vec&lt;T&gt;R slf</code></td>
+<td>Sort vector's content</td>
+</tr>
+<tr>
+<td><code>fn Vec&lt;T&gt; map F&lt;T TR&gt; f</code></td>
+<td>Creates a new vector with all elements that pass the provided function</td>
+</tr>
+<tr>
+<td><code>fn Vec&lt;T&gt; filter F&lt;bool TR&gt; f</code></td>
+<td>Creates a new vector populated with the results of calling a provided function on every element</td>
+</tr>
+</tbody>
+</table>
+<h2 id="vec-non-member-functions"><code>Vec</code> non-member functions</h2>
+<table>
+<thead>
+<tr>
+<th>Functions</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>fn Vec&lt;int&gt; iota int begin int end</code></td>
+<td>Fills the range [begin end) with sequentially increasing values</td>
+</tr>
+<tr>
+<td><code>fn&lt;T O&gt; Vec&lt;O&gt; mp Vec&lt;T&gt;R v F&lt;O TR&gt; f</code></td>
+<td>Pseudo-generic function, same as <code>map</code> call:<code>mp&lt;T O&gt;(vec fn)</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="iterators_1">Iterators</h2>
+<p>Vector also has iterators, which can be used as random access iterators. After <code>push_back</code> iterators may be invalid.</p>
+<pre><code class="language-zh">type VecIter T: TP ptr
+</code></pre>
+<pre><code class="language-zh">type VecIterRange T: VecIter&lt;T&gt; begin end
+</code></pre>
+<h2 id="vecitert-member-functions"><code>VecIter&lt;T&gt;</code> member functions</h2>
+<table>
+<thead>
+<tr>
+<th>Functions</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>fn ctor TP ptr:</code></td>
+<td>Constructor</td>
+</tr>
+<tr>
+<td><code>lop ++ VecIter&lt;T&gt;R slf</code></td>
+<td>Next iterator</td>
+</tr>
+<tr>
+<td><code>op 6 VecIter&lt;T&gt; + VecIter&lt;T&gt; slf int i</code></td>
+<td>Sum 2 pointers</td>
+</tr>
+<tr>
+<td><code>op 10 bool != VecIter&lt;T&gt; a VecIter&lt;T&gt; b</code></td>
+<td>Check unequal</td>
+</tr>
+<tr>
+<td><code>lop TR * VecIter&lt;T&gt; slf</code></td>
+<td>Dereference</td>
+</tr>
+</tbody>
+</table>
+<h2 id="veciterranget-member-functions"><code>VecIterRange&lt;T&gt;</code> member functions</h2>
+<table>
+<thead>
+<tr>
+<th>Functions</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>fn ctor VecIter&lt;T&gt; begin VecIter&lt;T&gt; end</code></td>
+<td>Constructor</td>
+</tr>
+<tr>
+<td><code>fn VecIter&lt;T&gt; begin</code></td>
+<td><code>begin</code> getter</td>
+</tr>
+<tr>
+<td><code>fn VecIter&lt;T&gt; end</code></td>
+<td><code>end</code> getter</td>
+</tr>
+</tbody>
+</table>
+<div style="page-break-after: always;"></div>
+<h1 id="str-type"><code>Str</code> type</h1>
+<h2 id="definition_1">Definition</h2>
+<pre><code class="language-zh">type Str
+  Vec&lt;char&gt; data
+  int size
+</code></pre>
+<p>Strings are objects that represent sequences of characters ending with null ('\0').</p>
+<p>The standard string provides support for such objects with an interface similar to <code>Vec&lt;T&gt;</code>, but adding features specifically designed to operate with strings of single-byte characters.</p>
+<p>Note that this class handles bytes independently of the encoding used: If used to handle sequences of multi-byte or variable-length characters (such as UTF-8), all members of this class (such as length or size), as well as its iterators, will still operate in terms of bytes (not actual encoded characters).</p>
+<h2 id="iterators_2">Iterators</h2>
+<p><code>Str</code> rely on <code>Vec&lt;T&gt;</code>, so it uses it's iterators.</p>
+<h2 id="str-member-functions"><code>str</code> member functions</h2>
+<table>
+<thead>
+<tr>
+<th>Functions</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>fn char sub int pos</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>fn ctor</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="str-non-member-functions"><code>str</code> non-member functions</h2>
+<table>
+<thead>
+<tr>
+<th>Functions</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>op 10 bool == char ch str s</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>lop char chr str s</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>fn int len str s</code></td>
+<td>Return s</td>
+</tr>
+</tbody>
+</table>
+<h2 id="str-member-functions_1"><code>Str</code> member functions</h2>
+<table>
+<thead>
+<tr>
+<th>Functions</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>fn ctor</code></td>
+<td>Default constructor</td>
+</tr>
+<tr>
+<td><code>fn ctor str s</code></td>
+<td>Constructor from <code>str</code></td>
+</tr>
+<tr>
+<td><code>fn ctor StrR s</code></td>
+<td>Copy constructor</td>
+</tr>
+<tr>
+<td><code>fn dtor</code></td>
+<td>Destructor</td>
+</tr>
+<tr>
+<td><code>fn str cstr</code></td>
+<td>Returns <code>str</code></td>
+</tr>
+<tr>
+<td><code>lop VecIterRange&lt;char&gt; iter StrR s</code></td>
+<td>Returns iterator range</td>
+</tr>
+<tr>
+<td><code>fn charR at int pos</code></td>
+<td>Get character in string</td>
+</tr>
+<tr>
+<td><code>fn charR sub int pos</code></td>
+<td>Get character in string</td>
+</tr>
+<tr>
+<td><code>fn charP atP int pos</code></td>
+<td>Get pointer to character in string</td>
+</tr>
+<tr>
+<td><code>fn push_back char ch</code></td>
+<td>Append character to string</td>
+</tr>
+<tr>
+<td><code>fn pop_back</code></td>
+<td>Delete last character</td>
+</tr>
+<tr>
+<td><code>fn sort</code></td>
+<td>Sorts string</td>
+</tr>
+</tbody>
+</table>
+<h2 id="str-non-member-functions_1"><code>Str</code> non-member functions</h2>
+<table>
+<thead>
+<tr>
+<th>Functions</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>lop out StrR s</code></td>
+<td>Outputs string with '\n'</td>
+</tr>
+<tr>
+<td><code>lop put StrR s</code></td>
+<td>Outputs string</td>
+</tr>
+<tr>
+<td><code>op 17 += StrR a char ch</code></td>
+<td>Append to string</td>
+</tr>
+<tr>
+<td><code>op 17 += StrR a StrR b</code></td>
+<td>Append to string</td>
+</tr>
+<tr>
+<td><code>op 17 += StrR a str b</code></td>
+<td>Append to string</td>
+</tr>
+<tr>
+<td><code>op 6 Str + StrR a StrR b</code></td>
+<td>Concatenate strings</td>
+</tr>
+<tr>
+<td><code>op 6 Str + str a str b</code></td>
+<td>Concatenate strings</td>
+</tr>
+<tr>
+<td><code>rop Out &lt; StrR i</code></td>
+<td>Outputs string</td>
+</tr>
+<tr>
+<td><code>lop Out &lt; StrR i</code></td>
+<td>Outputs string</td>
+</tr>
+<tr>
+<td><code>op 9 Out &lt; Out o StrR i</code></td>
+<td>Outputs string</td>
+</tr>
+<tr>
+<td><code>op 9 bool &lt; StrR a StrR b</code></td>
+<td>Compare strings</td>
+</tr>
+<tr>
+<td><code>op 5 Str * str s int i</code></td>
+<td>Python-like string multiplication</td>
+</tr>
+<tr>
+<td><code>lop Str $ str s</code></td>
+<td>Short syntax for <code>str</code> to <code>Str</code> conversion</td>
+</tr>
+<tr>
+<td><code>lop up StrR s</code></td>
+<td>Converts string to uppercase</td>
+</tr>
+<tr>
+<td><code>lop low StrR s</code></td>
+<td>Converts string to lowercase</td>
+</tr>
+<tr>
+<td><code>lop VecIterRange&lt;char&gt; iter str s</code></td>
+<td>Returns iterator range</td>
+</tr>
+</tbody>
+</table>
+<div style="page-break-after: always;"></div>
+<h1 id="avl-tree">Avl Tree</h1>
+<h2 id="definition_2">Definition</h2>
+<pre><code class="language-zh">type AVLNode T
+  int h
+  T val
+  AVLNode&lt;T&gt;P lhs rhs par
+</code></pre>
+<pre><code class="language-zh">type AVLTree T: AVLNode&lt;T&gt;P root
+</code></pre>
+<p>Avl tree in zhaba-script standard library is an associative container that contains a sorted set of unique objects of type <code>T</code>. Sorting is done using the key comparison operator <code>&lt;</code>. Search, removal, and insertion operations have logarithmic complexity. <code>AVLTree&lt;T&gt;</code> is very similar to <code>std::set</code> in C++.</p>
+<p>Type <code>AVLTree&lt;T&gt;</code> is a wrapper for <code>AVLNode&lt;T&gt;</code> and <code>AVLNode&lt;T&gt;</code> functions aren't presented here, because they are concentered to be private.</p>
+<h2 id="avltreet-member-functions"><code>AVLTree&lt;T&gt;</code> member functions</h2>
+<table>
+<thead>
+<tr>
+<th>Functions</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>fn ctor</code></td>
+<td>Default constructor</td>
+</tr>
+<tr>
+<td><code>fn dtor</code></td>
+<td>Destructor</td>
+</tr>
+<tr>
+<td><code>fn AVLIter&lt;T&gt; begin</code></td>
+<td>Returns an iterator to the beginning</td>
+</tr>
+<tr>
+<td><code>fn AVLIter&lt;T&gt; end</code></td>
+<td>Returns an iterator to the end</td>
+</tr>
+<tr>
+<td><code>lop AVLIterRange&lt;T&gt; iter AVLTree&lt;T&gt;R slf</code></td>
+<td>Returns iterator range</td>
+</tr>
+<tr>
+<td><code>fn insert T val</code></td>
+<td>Inserts element</td>
+</tr>
+<tr>
+<td><code>fn TR sub T val</code></td>
+<td>Access specified element</td>
+</tr>
+<tr>
+<td><code>op 17 += AVLTree&lt;T&gt;R slf T val</code></td>
+<td>Inserts single item</td>
+</tr>
+<tr>
+<td><code>fn Vec&lt;T&gt; call</code></td>
+<td>Converts tree content to vector via inorder traversal</td>
+</tr>
+<tr>
+<td><code>fn show</code></td>
+<td>Pretty prints tree structure</td>
+</tr>
+</tbody>
+</table>
+<h2 id="iterators_3">Iterators</h2>
+<p><code>AVLTree&lt;T&gt;</code> iterators provide inorder access to tree elements and aren't random access, so you can't jump any number of elements, only one at a time.</p>
+<pre><code class="language-zh">type AVLIter T: AVLNode&lt;T&gt;P next
+</code></pre>
+<pre><code class="language-zh">type AVLIterRange T: AVLIter&lt;T&gt; begin end
+</code></pre>
+<h2 id="avlitert-member-functions"><code>AVLIter&lt;T&gt;</code> member functions</h2>
+<table>
+<thead>
+<tr>
+<th>Functions</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>fn ctor AVLNode&lt;T&gt;P root</code></td>
+<td>Constructor</td>
+</tr>
+<tr>
+<td><code>lop AVLNode&lt;T&gt;P ++ AVLIter&lt;T&gt;R slf</code></td>
+<td>Next iterator</td>
+</tr>
+<tr>
+<td><code>op 10 bool != AVLIter&lt;T&gt; a AVLIter&lt;T&gt; b</code></td>
+<td>Check unequal</td>
+</tr>
+<tr>
+<td><code>lop TR * AVLIter&lt;T&gt; it</code></td>
+<td>Dereference</td>
+</tr>
+</tbody>
+</table>
+<h2 id="avliterranget-member-functions"><code>AVLIterRange&lt;T&gt;</code> member functions</h2>
+<table>
+<thead>
+<tr>
+<th>Functions</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>fn ctor AVLIter&lt;T&gt; begin AVLIter&lt;T&gt; end</code></td>
+<td>Constructor</td>
+</tr>
+<tr>
+<td><code>fn AVLIter&lt;T&gt; begin</code></td>
+<td><code>begin</code> getter</td>
+</tr>
+<tr>
+<td><code>fn AVLIter&lt;T&gt; end</code></td>
+<td><code>end</code> getter</td>
+</tr>
+</tbody>
+</table>
+<div style="page-break-after: always;"></div>
+<h1 id="map">Map</h1>
+<h2 id="definition_3">Definition</h2>
+<pre><code class="language-zh">type MapNode K V
+  K key
+  V val
+</code></pre>
+<pre><code class="language-zh">type Map K V
+  AVLTree&lt;MapNode&lt;K V&gt; &gt; tree
+</code></pre>
+<p><code>Map&lt;K V&gt;</code> is a sorted associative container that contains key-value pairs with unique keys. Keys are sorted by using the comparison operator <code>&lt;</code>. Search, removal, and insertion operations have logarithmic complexity. Maps wraps <code>AVLTree&lt;T&gt;</code> and uses <code>MapNode&lt;K V&gt;</code> for data storage. Map iterators are also <code>AVLTree&lt;MapNode&lt;K V&gt; &gt;</code> iterators.</p>
+<h2 id="mapnodek-v-member-functions"><code>MapNode&lt;K V&gt;</code> member functions</h2>
+<table>
+<thead>
+<tr>
+<th>Functions</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>fn ctor</code></td>
+<td>Default constructor</td>
+</tr>
+<tr>
+<td><code>fn ctor KR key VR val</code></td>
+<td>Constructor</td>
+</tr>
+<tr>
+<td><code>fn dtor</code></td>
+<td>Destructor</td>
+</tr>
+<tr>
+<td><code>op 4 bool &lt; MapNode&lt;K V&gt;R a MapNode&lt;K V&gt;R b</code></td>
+<td>Comparator compares by <code>key</code> value</td>
+</tr>
+<tr>
+<td><code>lop put MapNode&lt;K V&gt;R slf</code></td>
+<td>Outputs content with '\n`</td>
+</tr>
+<tr>
+<td><code>lop out MapNode&lt;K V&gt;R node</code></td>
+<td>Outputs content</td>
+</tr>
+<tr>
+<td><code>rop Out &lt; MapNode&lt;K V&gt;R i</code></td>
+<td>Outputs content</td>
+</tr>
+<tr>
+<td><code>lop Out &lt; MapNode&lt;K V&gt;R i</code></td>
+<td>Outputs content</td>
+</tr>
+<tr>
+<td><code>op 9 Out &lt; Out o MapNode&lt;K V&gt;R i</code></td>
+<td>Outputs content</td>
+</tr>
+</tbody>
+</table>
+<h2 id="mapk-v-member-functions"><code>Map&lt;K V&gt;</code> member functions</h2>
+<table>
+<thead>
+<tr>
+<th>Functions</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>fn ctor</code></td>
+<td>Default constructor</td>
+</tr>
+<tr>
+<td><code>fn dtor</code></td>
+<td>Destructor</td>
+</tr>
+<tr>
+<td><code>fn VR sub KR key</code></td>
+<td>Access specified element by <code>key</code></td>
+</tr>
+<tr>
+<td><code>fn insert KR key VR val</code></td>
+<td>Inserts element</td>
+</tr>
+<tr>
+<td><code>fn Vec&lt;MapNode&lt;K V&gt; &gt; call</code></td>
+<td>Converts content to vector</td>
+</tr>
+<tr>
+<td><code>fn print</code></td>
+<td>Prints content</td>
+</tr>
+<tr>
+<td><code>lop put Map&lt;K V&gt;R slf</code></td>
+<td>Outputs content</td>
+</tr>
+<tr>
+<td><code>lop out Map&lt;K V&gt;R slf</code></td>
+<td>Outputs content</td>
+</tr>
+<tr>
+<td><code>rop Out &lt; Map&lt;K V&gt;R i</code></td>
+<td>Outputs content</td>
+</tr>
+<tr>
+<td><code>lop Out &lt; Map&lt;K V&gt;R i</code></td>
+<td>Outputs content</td>
+</tr>
+<tr>
+<td><code>op 9 Out &lt; Out o Map&lt;K V&gt;R i</code></td>
+<td>Outputs content</td>
+</tr>
+<tr>
+<td><code>lop AVLIterRange&lt;MapNode&lt;K V&gt; &gt; iter Map&lt;K V&gt;R m</code></td>
+<td>Returns iterator range</td>
+</tr>
+</tbody>
+</table>
+<div style="page-break-after: always;"></div>
+<h1 id="error-handling">Error handling</h1>
+<p>Errors are a fact of life in software, so Zhaba-script has a number of features for handling situations in which something goes wrong. Zhaba-script takes similar approach to Rust is this topic.</p>
+<p>Zhaba-script groups errors into two major categories: recoverable and unrecoverable errors. For a recoverable error, such as a file not found error, we most likely just want to report the problem to the user and retry the operation. Unrecoverable errors are always symptoms of bugs, and so we want to immediately stop the program.</p>
+<p>Most languages don’t distinguish between these two kinds of errors and handle both in the same way, using mechanisms such as exceptions. Zhaba-script doesn’t have exceptions. Instead, it has the type <code>Result&lt;T E&gt;</code> for recoverable errors and the <code>panic</code> function that stops execution when the program encounters an unrecoverable error. Note, that you can can't use this in bytecode, because of dependence to stdlib.h. To use <code>panic</code> import <code>c/std</code> or <code>c/stdlib.c</code> (more about C api in next chapter) and to use <code>Result</code> import <code>result</code>.</p>
+<h2 id="recoverable-errors-with-resultt-e">Recoverable errors with <code>Result&lt;T E&gt;</code></h2>
+<pre><code class="language-zh">type Result T E
+  bool is_err
+  T val
+  E err
+</code></pre>
+<p>Essentially this type allows you to combine 2 types: <em>good</em> type <code>T</code>, in which case all went OK, and <em>bad</em> type <code>E</code>, in which you might want to put some info about your error. <code>Result</code> is most handy for function return value. Here is an example from zhaba-script standard library (more about <code>Err</code> type later):</p>
+<pre><code class="language-zh">fn Result&lt;File Err&gt; open Str s Str mode
+  f := fopen(s.cstr() mode.cstr())
+  ? f != (0 as FILEP): &lt;&lt;&lt; Result&lt;File Err&gt;(File(f))
+  &lt;&lt;&lt; Result&lt;File Err&gt;(Err('canno\'t open ' + s))
+</code></pre>
+<p>This function tries to open file using C api. If C function <code>fopen</code> returned valid pointer, we return <code>Result&lt;File Err&gt;(File(f))</code>, but if pointer is null, we return <code>Result&lt;File Err&gt;(Err('canno\'t open ' + s))</code>.</p>
+<p>And then, to use file you can do look at <code>is_err</code> value:</p>
+<pre><code class="language-zh">f := open('file.txt')
+? f.is_err: out 'everything is bad'
+\ out f.val.read()
+</code></pre>
+<p>Another way to process recoverable errors is with <code>unwrap</code> function:</p>
+<pre><code class="language-zh">f := open('file.txt').unwrap()
+out f.read()
+</code></pre>
+<p>This function will return <em>good</em> value, and otherwise will raise unrecoverable error.</p>
+<h2 id="simple-errors-with-err-type">Simple errors with <code>Err</code> type</h2>
+<pre><code class="language-zh">type Err: Str val
+</code></pre>
+<p>In most cases, when error is accrued, you don't need to have some fancy information about the error itself and for that purposes zhaba-script has <code>Err</code> type, which simply wraps <code>Str</code>.</p>
+<h2 id="unrecoverable-errors-with-panic">Unrecoverable errors with <code>panic</code></h2>
+<p>Sometimes, when something very bad happened or when you unwrap <code>Result</code> value, you may want to immediately exit program execution. To do that zhaba-script has <code>panic</code> function which will print what went wrong end then stop program execution:</p>
+<pre><code class="language-zh">Program panic at zhaba_tmp.c:3782:
+can't open some-invalid-file.txt
+</code></pre>
+<div style="page-break-after: always;"></div>
+<h1 id="interacting-with-c">Interacting with C</h1>
+<p>Zhaba-script is a new language, and what if somebody want to write web server in it? How can that person do that? Of course, it is not possible to put everything in the language itself or it's standard library. To achieve this goal zhaba-script use the power and simplicity of C to be able to do anything. It means that almost everything you can do in C, you can do in zhaba-script.</p>
+<h2 id="using-json-to-import-c">Using json to import C</h2>
+<p>Zhaba-script uses json as universal bridge to C, however you can embed json into C directly, more about that later. To use this json file you can just <code>use file.json</code> to import it. Here is it's shape, written as typescript type:</p>
+<pre><code class="language-ts">type extern_c_def = {
+  c_path: String
+  types: ({ zh_def: String; c_name: String } | [String, String])[]
+  functions: ({ zh_def: String; c_name: String } | [String, String])[]
+}
+</code></pre>
+<ul>
+<li><code>c_path</code> is a path to C file, what will be imported</li>
+<li><code>types</code> imported array of C types (structs), <code>zh_def</code> is type definition, written in zhaba-script without <code>type TypeName</code> and <code>c_name</code> is a name of a type from C.</li>
+<li><code>functions</code> imported array of C functions, <code>zh_def</code> is function definition (or even operator), written in zhaba-script and <code>c_name</code> is a name of a C function.</li>
+</ul>
+<p>Alternatively, you can express types and functions not like an object, but like a tuple array, where <code>zh_def</code> is a first element, and <code>c_name</code> is second element.</p>
+<p>Here is an example that json file (suppose we want to import <code>stdio.h</code>):</p>
+<pre><code class="language-json">{
+  &quot;c_path&quot;: &quot;stdio.h&quot;,
+  &quot;types&quot;: [
+    {
+      &quot;zh_def&quot;: &quot;bool _&quot;, // In C standard File implementations is't defined,
+      &quot;c_name&quot;: &quot;FILE&quot; // so we can leave some useless value here
+    }
+  ],
+  &quot;functions&quot;: [
+    {
+      &quot;zh_def&quot;: &quot;fn FILEP fopen str filename str mode&quot;,
+      &quot;c_name&quot;: &quot;fopen&quot;
+    },
+    [&quot;fn i32 fclose FILEP f&quot;, &quot;fclose&quot;] // Alternative array syntax
+  ]
+}
+</code></pre>
+<h2 id="importing-c-code-directly">Importing C code directly</h2>
+<p>Writing this huge json files isn't cool, and zhaba-script is also about minimalism, so we can import C files directly! Comments are used to do that. Begin your comment with <code>@zh-type</code> or <code>@zh-fn</code> and follow it with type or  function definition respectively. When importing files this way, you can think of imaginary json object with <code>c_path</code> equal to file path, and every time <code>@zh-...</code> found, content after that appended to <code>types</code> and <code>functions</code> arrays. <code>//</code> or <code>/* */</code> can be used for comments, but each comment can be used for only one definition. Any file extension like <code>.c</code>, <code>.h</code>, <code>.cpp</code>, <code>.cxx</code> is valid (other from <code>.zh</code> and <code>.json</code>). Here is the same example as above, but with this syntax:</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+
+// @zh-type [&quot;bool _&quot;, &quot;FILE&quot;]
+
+// @zh-fn [&quot;fn FILEP fopen str filename str mode&quot;, &quot;fopen&quot;]
+// @zh-fn [&quot;fn i32 fclose FILEP f&quot;, &quot;fclose&quot;]
+</code></pre>
+<div style="page-break-after: always;"></div>
+<h1 id="advanced-c-api">Advanced C api</h1>
+<h2 id="macros">Macros</h2>
+<p>Zhaba-script doesn't support macros, but it is possible to trick compiler into thinking that macro is a function and use it:</p>
+<pre><code class="language-c">/** `panic` definition */
+
+// @zh-fn [&quot;fn panic str s&quot;, &quot;panic_macro&quot;]
+
+#define panic_macro(s) panic_c(s, __FILE__, __LINE__)
+
+void panic_c(const char* s, const char* file, int line) {
+  fprintf(stderr, &quot;Program panic at %s:%d:\n%s\n&quot;, file, line, s);
+  exit(EXIT_FAILURE);
+}
+</code></pre>
+<h2 id="constants">Constants</h2>
+<p>Another similar approach can be taking with global objects and constants, by defining getter-like macro, that expands to desirable value:</p>
+<pre><code class="language-c">// @zh-fn [&quot;fn EXIT_CODE EXIT_SUCCESS&quot;, &quot;GET_EXIT_SUCCESS&quot;]
+#define GET_EXIT_SUCCESS() EXIT_SUCCESS
+// @zh-fn [&quot;fn EXIT_CODE EXIT_FAILURE &quot;, &quot;GET_EXIT_FAILURE &quot;]
+#define GET_EXIT_FAILURE() EXIT_FAILURE
+</code></pre>
+<h2 id="cross-platform-definitions">Cross platform definitions</h2>
+<p>Another ability is to make cross platform definitions, because for zhaba-script compiler only the shape of function or type matters:</p>
+<pre><code class="language-c">/** From `c/screen.c` */
+
+// @zh-fn [&quot;fn clrscr&quot;, &quot;clrscr&quot;]
+void clrscr() {
+#ifdef _WIN32
+  HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+  COORD coord = {0, 0};
+  DWORD count;
+  CONSOLE_SCREEN_BUFFER_INFO csbi;
+  GetConsoleScreenBufferInfo(hStdOut, &amp;csbi);
+  FillConsoleOutputCharacter(hStdOut, ' ', csbi.dwSize.X * csbi.dwSize.Y, coord,
+                             &amp;count);
+  SetConsoleCursorPosition(hStdOut, coord);
+#else
+  printf(&quot;\033[2J\033[1; 1H&quot;);
+#endif
+}
+</code></pre>
+<h2 id="variadic-functions">Variadic functions</h2>
+<p>Many C functions like <code>printf</code> are variadic, but zhaba-script doesn't support them, but we <code>c/valist.c</code> provides <code>va</code> operators, that acts like <code>Vec&lt;T&gt;</code>'s operator <code>,,</code> but you need to put <code>va</code> in front of sequence too:</p>
+<pre><code class="language-zh">use c/std
+
+fn main
+  printf('number: %d, string: %s\n', va 55 va 'frog')
+</code></pre>
+<p>Note, that because <code>va</code> is operator, you need to put <code>,</code> in front of it.</p>
+<h2 id="c">C++</h2>
+<p>Zhaba-script isn't designed to target C++, but you can do that by changing C compiler to the C++ one with <code>-c</code> flag. You will probably also need to create some kind of wrappers for you C++ code.</p>
+<div style="page-break-after: always;"></div>
+<h1 id="zhaba-script-c-library">Zhaba-script C library</h1>
+<p>Zhaba-script standard library defines most of necessary C functions and type like <code>FILE</code> or <code>printf</code>, in <code>c/std</code> module, and also has other cross-platform defined functions like <code>clrscr</code>.</p>
+<h2 id="using-c-standard-library">Using C standard library</h2>
+<p>The best way to use C standard library is to import <code>c/std</code> module, but you can also import only needed modules, but some of them are depend on others, so it is recommended to simply use <code>c/std</code> module.</p>
+<h2 id="c-standard-library-content">C Standard library content</h2>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>std/c/keyboard.c</td>
+<td>Cross platform keyboard functions</td>
+</tr>
+<tr>
+<td>std/c/math.c</td>
+<td>Defines <code>&lt;math.h&gt;</code> for <code>f64</code></td>
+</tr>
+<tr>
+<td>std/c/preprocessor.c</td>
+<td>Common preprocessor macros like <code>__FILE__</code> or <code>__LINE__</code></td>
+</tr>
+<tr>
+<td>std/c/screen.c</td>
+<td>Cross platform terminal functions</td>
+</tr>
+<tr>
+<td>std/c/stdio.c</td>
+<td><code>&lt;stdio.h&gt;</code></td>
+</tr>
+<tr>
+<td>std/c/stdlib.c</td>
+<td><code>&lt;stdlib.h&gt;</code></td>
+</tr>
+<tr>
+<td>std/c/time.c</td>
+<td>Different time functions</td>
+</tr>
+<tr>
+<td>std/c/valist.c</td>
+<td>Definitions for working with C variadic functions</td>
+</tr>
+<tr>
+<td>std/c/panic.c</td>
+<td>Defined <code>panic</code></td>
+</tr>
+<tr>
+<td>std/c/std.zh</td>
+<td>All C standard library</td>
+</tr>
+</tbody>
+</table>
+    </div>
+  </body>
+</html>

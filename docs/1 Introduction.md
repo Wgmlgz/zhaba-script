@@ -4,15 +4,33 @@
 
 Zhaba-script (Russian: ˈʐabə, жаба(toad)) - is a multi-paradigm, high-level, statically typed, interpreted or source to source compiled language, designed to be as performant as C, but as beautiful as Python.
 
-## Motivation
+The syntax of zhaba-script is the most interesting and different feature from other programming languages. It basically resembles python, which uses indents instead of curly brackets to declare code blocks. But zhaba-script takes a step forward by making many syntactic elements, such as commas, optional. For example, in the expression: `print(1, 2, 4)` it is obvious where the commas should be, and zhaba-script makes them optional in some places. Other syntactic elements, such as colons or semicolons, are also optional. In addition, the most common keywords in other languages, such as `if` or `while`, are reduced to simple characters, for example `?` or `@` to make the code shorter and more readable. Another very important syntactic feature is the ability to overload any operations and even create new ones.
 
-C is one of my favorite languages because of it's power and performance, but at the same time it's syntax is over 50 years old and doest't have lots of amazing features of modern programming languages. For example to simply loop over int range you have to use something like this: `for (int i = 0; i < n; ++i)`. Can we do better? In python you can use `for i in range(0, n)`, this is already a huge improvement, but can we do even better? Of course! Zhaba-script solution to this task looks like this: `@ i 0..n`. Another example is function pointers: the C syntax for them is very unintuitive: `int (*foo) (int, int)`. It puts variable name inside of type definition, which can be very confusing. Zhaba-script function pointer looks like this: `F<int int int> foo`. This is relatively simple examples, but them can show what zhaba-script is tries to achieve.
+Semantically, the language is similar to such system languages as C, C++ or Rust. Like C, zhaba-script provides low-level memory control and combines it with so-called zero-cost abstractions. For example, among them are references, function overloading, template types, constructors and destructors.
+
+Combining its syntactic and semantic properties, zhaba-script strives to provide the developer with a language that is as fast and convenient as possible.
+
+Zhaba-script was conceived as translatable in C, which allows you to achieve a theoretical maximum of performance and use its already existing ecosystem to create real applications right now. The compiler provides an easy way to import C code. The main part of the C standard library has also been ported. However, programs can also be executed directly by compiling them into bytecode, which makes the language free from C and allows it to be used without runtime dependencies, which allows, for example, to run programs in an online compiler, on the client side.
+
+Also an important part of the language is the standard library, which complements and allows you to use it to solve real problems. In its relation, the C++ approach is used, which brings many basic elements of the language into it, for example, dynamic arrays, and does not include them in the “core” of the language, such as python. So, the standard library adds the ability to work with files, complex and random numbers, exceptions, contains containers such as a dynamic array (`Vec<T>`), sorted associative container (`Map<K V>`) or dynamic strings and adds many other objects and methods for solving various tasks.
+
+Here is an example of a program written in zhaba-script:
+
+```zh
+use std
+
+fn fizz_buzz int mx
+  @ i 1..=mx
+    ? i %% 15: < 'FizzBuzz' <
+    | i %% 3: < 'Fizz' <
+    | i %% 5: < 'Buzz' <
+    \ < i <
+fn main: fizz_buzz(20)
+```
 
 So, the main goal of zhaba-script is to make your programs smaller while also maintain readability and performance. To do this, zhaba-script is using C and C++ semantic concepts and bringing them with short python-like syntax.
 
-## Syntax
-
-The zhaba-script syntax is the most different and interesting part from other programming languages and mostly resembles python, which does't use `{}` to declare blocks of code. But zhaba-script takes a step forward by removing almost all unnecessary syntax elements like `,` in some places. For example in this expression: `print(1, 2, 4)` it is obvious where commas should be so you don't need to explicitly write them. Other syntax elements like `;` or `:` are not required, but their use is put to make your code even shorter. Also most common keywords such as `if` or `return` are reduced to simple symbols, to make code shorter and even more readable. Other very big feature is ability to overload any operator and even create your onw new ones.
+The project itself, in addition to the language compiler, includes a web application with an online compiler and documentation. It also includes an extension for Visual Studio Code that adds syntax highlighting.
 
 ## List of Zhaba-script features
 
@@ -73,21 +91,6 @@ Here is some of zhaba-script code examples:
 
 ```zh
 fn main: out 'Hi world'
-```
-
-## FizzBuzz
-
-```zh
-use std
-
-fn fizz_buzz int mx
-  @ i 1..mx+1
-    ? i %% 15: <'FizzBuzz'<
-    | i %% 3: <'Fizz'<
-    | i %% 5: <'Buzz'<
-    \ <i<
-
-fn main: fizz_buzz(20)
 ```
 
 ## File reading
@@ -179,6 +182,37 @@ fn main
     screen[head.a][head.b] = chr('o')
 
     screen.println()
+```
+
+## Brainfuck interpreter
+
+```zh
+use std
+
+fn brainfuck Str s
+  m := Vec<int>(s.size 0)
+  stack := Vec<int>()
+
+  @ i:=0, i<s.size, ++i
+    ?? s[i]:
+      '[': stack += i
+      ']':
+        t := stack.pop()
+        m[i] = t
+        m[t] = i
+
+  p := malloc(3000) as u8P
+
+  @ i=0 i<s.size, ++i: ?? s[i]:
+    '>': p = p + 1
+    '<': p = p - 1
+    '+': (*p) += 1u8
+    '-': (*p) -= 1u8
+    '.': put (*p as char)
+    ',': > *(p as charP)
+    '[': ? *p == 0u8: i = m[i]
+    ']': ? *p != 0u8: i = m[i] - 1
+
 ```
 
 ## Links
