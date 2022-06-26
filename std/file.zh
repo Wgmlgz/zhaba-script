@@ -3,6 +3,7 @@ use result
 use c/valist.c
 use c/stdio.c
 
+/** Wrapper for C `FILE*` */
 type File: FILEP f
 impl File
   fn ctor FILEP f
@@ -23,6 +24,7 @@ fn Result<File Err> open Str s Str mode
   ? f != (0 as FILEP): <<< Result<File Err>(File(f))
   <<< Result<File Err>(Err('can\'t open ' + s))
 
+/** Overloads */
 fn Result<File Err> open Str s str mode: <<< open(s Str(mode))
 fn Result<File Err> open Str s: <<< open(Str(s) 'r')
 fn Result<File Err> open str s: <<< open(Str(s))
