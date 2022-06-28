@@ -95,7 +95,7 @@ fn main: out 'Hi world'
 
 ## File reading
 
-```
+```zh
 use file
 use c/std
 
@@ -563,22 +563,22 @@ Binary operator is an operator that accepts 2 arguments from different sides:
 But binary operators can also accept more or less than 2 arguments. In this case, they have 1 argument on the left side and others on the right size. At first, it may seem useless, but in fact all member function calls are implicitly converted to binary operators:
 
 ```zh
-// .push_back acts like binary operator
+// .push acts like binary operator
 
-//   .push_back
+//   .push
 //     /  \
 //   vec   1
-vec.push_back(1)
+vec.push(1)
 
-//   .push_back
+//   .reverse
 //     /  \
 //   vec  (1 2)
 vec.reverse(1 2)
 
-//   .pop_back
+//   .pop
 //     /  \
 //   vec  ()
-vec.pop_back()
+vec.pop()
 
 ```
 
@@ -1062,7 +1062,7 @@ impl VecInt // implementation block for VecInt
   fn intP end
     <<< slf.atP(slf.size)
 
-  fn push_back int val
+  fn push int val
     ? slf.size == slf.capacity: slf.double_capacity()
     *slf.atP(slf.size) = val
     &slf.size += 1
@@ -1187,10 +1187,10 @@ Generic `impl` block allows you not only to create member function, but also to 
 
 ```zh
 impl Vec
-  op 17 += Vec<T>R slf T val: slf.push_back(val)
+  op 17 += Vec<T>R slf T val: slf.push(val)
 
   op 17 += Vec<T>R slf Vec<T> other
-    @ i other: slf.push_back(*i)
+    @ i other: slf.push(*i)
 
   lop put Vec<T>R slf: slf.print()
   lop out Vec<T>R slf: slf.print(); out ''
@@ -1790,8 +1790,8 @@ The storage of the vector is handled automatically, being expanded and contracte
 | `fn print`                             | Prints vector content in this form: `[0 1 3 4]`                                                 |
 | `fn println`                           | Prints every vector element from new line, doesn't print `[]`                                   |
 | `fn double_cap`                        | Doubles vector's capacity                                                                       |
-| `fn push_back T val`                   | Adds an element to the end                                                                      |
-| `fn pop_back`                          | Removes the last element                                                                        |
+| `fn push T val`                   | Adds an element to the end                                                                      |
+| `fn T pop`                               | Removes the last element and returns it                                                         |
 | `fn VecIter<T> begin`                  | Returns an iterator to the beginning                                                            |
 | `fn VecIter<T> end`                    | Returns an iterator to the end                                                                  |
 | `lop VecIterRange<T> iter Vec<T>R slf` | Returns iterator range                                                                          |
@@ -1827,7 +1827,7 @@ The storage of the vector is handled automatically, being expanded and contracte
 
 ## Iterators
 
-Vector also has iterators, which can be used as random access iterators. After `push_back` iterators may be invalid.
+Vector also has iterators, which can be used as random access iterators. After `push` iterators may be invalid.
 
 ```zh
 type VecIter T: TP ptr
@@ -1892,20 +1892,20 @@ Note that this class handles bytes independently of the encoding used: If used t
 
 ## `Str` member functions
 
-| Functions                            | Description                        |
-| ------------------------------------ | ---------------------------------- |
-| `fn ctor`                            | Default constructor                |
-| `fn ctor str s`                      | Constructor from `str`             |
-| `fn ctor StrR s`                     | Copy constructor                   |
-| `fn dtor`                            | Destructor                         |
-| `fn str cstr`                        | Returns `str`                      |
-| `lop VecIterRange<char> iter StrR s` | Returns iterator range             |
-| `fn charR at int pos`                | Get character in string            |
-| `fn charR sub int pos`               | Get character in string            |
-| `fn charP atP int pos`               | Get pointer to character in string |
-| `fn push_back char ch`               | Append character to string         |
-| `fn pop_back`                        | Delete last character              |
-| `fn sort`                            | Sorts string                       |
+| Functions                            | Description                         |
+| ------------------------------------ | ----------------------------------- |
+| `fn ctor`                            | Default constructor                 |
+| `fn ctor str s`                      | Constructor from `str`              |
+| `fn ctor StrR s`                     | Copy constructor                    |
+| `fn dtor`                            | Destructor                          |
+| `fn str cstr`                        | Returns `str`                       |
+| `lop VecIterRange<char> iter StrR s` | Returns iterator range              |
+| `fn charR at int pos`                | Get character in string             |
+| `fn charR sub int pos`               | Get character in string             |
+| `fn charP atP int pos`               | Get pointer to character in string  |
+| `fn push_back char ch`               | Append character to string          |
+| `fn char pop`                        | Delete last character and return it |
+| `fn sort`                            | Sorts string                        |
 
 ## `Str` non-member functions
 

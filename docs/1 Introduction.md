@@ -95,7 +95,7 @@ fn main: out 'Hi world'
 
 ## File reading
 
-```
+```zh
 use file
 use c/std
 
