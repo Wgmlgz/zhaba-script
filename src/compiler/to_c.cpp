@@ -51,7 +51,7 @@ std::string module2C(ZHModule* block) {
   for (auto& dep : deps) {
     auto ext = dep.extension().string();
     includes += "#include \"";
-    includes += zhdata.options["dep-pr"];
+    if (dep.is_relative()) includes += zhdata.options["dep-pr"];
     includes += dep.string();
     includes += "\"\n";
   }
