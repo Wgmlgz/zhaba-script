@@ -3,12 +3,18 @@
 #include <fstream>
 #include <string>
 
+#include "../core/core.hpp"
 #include "../interpreter/to_bytecode.hpp"
 #include "../interpreter/zhvm.hpp"
-#include "../core/core.hpp"
+#include "../libs/termcolor.hpp"
 #include "../parser/parser.hpp"
 #include "./to_c.hpp"
 
+void runCmd(Str cmd) {
+  std::cerr << termcolor::green << "[RUN] " << termcolor::reset << cmd
+            << std::endl;
+  auto res = system(cmd.c_str());
+}
 void compileFile(std::filesystem::path file_path) {
   auto start_time = clock();
 
@@ -44,31 +50,32 @@ void compileFile(std::filesystem::path file_path) {
       std::cout << "C:" << std::endl << c_code << std::endl;
     }
 
-    auto tmp_file = std::ofstream("zhaba_tmp.c");
+    auto tmp_file = std::ofstream(zhdata.options["out"]);
     tmp_file << c_code;
     tmp_file.close();
 
-    std::cerr << "[INFO] compiling complete in "
-              << std::to_string((clock() - start_time) * 1.0 / CLOCKS_PER_SEC)
-              << std::endl;
-
-    auto c_comptime = clock();
-
-    auto cmd =
-        (zhdata.options["compiler"] + " zhaba_tmp.c -o zhaba_tmp -O3 -w");
-    system(cmd.c_str());
-
-    std::cerr << "[INFO] C compiling complete in "
-              << std::to_string((clock() - c_comptime) * 1.0 / CLOCKS_PER_SEC)
-              << std::endl;
-
-    auto run_time = clock();
-
-    system(".\\zhaba_tmp");
-
     if (!zhdata.flags["pure"])
-      std::cerr << "[INFO] run complete in "
-                << std::to_string((clock() - run_time) * 1.0 / CLOCKS_PER_SEC)
+      std::cerr << "[INFO] compiling complete in "
+                << std::to_string((clock() - start_time) * 1.0 / CLOCKS_PER_SEC)
                 << std::endl;
+
+    if (!zhdata.flags["no-comp"]) {
+      auto c_comptime = clock();
+      runCmd(zhdata.options["compiler"]);
+      if (!zhdata.flags["pure"])
+        std::cerr << "[INFO] C compiling complete in "
+                  << std::to_string((clock() - c_comptime) * 1.0 / CLOCKS_PER_SEC)
+                  << std::endl;
+    }
+
+    if (!zhdata.flags["no-run"]) {
+      auto run_time = clock();
+      runCmd(zhdata.options["run"]);
+
+      if (!zhdata.flags["pure"])
+        std::cerr << "[INFO] run complete in "
+                  << std::to_string((clock() - run_time) * 1.0 / CLOCKS_PER_SEC)
+                  << std::endl;
+    }
   }
 }

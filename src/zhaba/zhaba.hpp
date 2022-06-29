@@ -27,10 +27,24 @@ int zh_main(int argc, char **argv) {
   app.add_flag("--show_bytecode", zhdata.flags["show_bytecode"],
                "shows resulted bytecode, if build target is bytecode");
   app.add_flag("--pure", zhdata.flags["pure"], "doesn't print logs");
+  app.add_flag("--no-comp", zhdata.flags["no-comp"],
+               "doesn't compile result C");
+  app.add_flag("--no-run", zhdata.flags["no-run"], "doesn't run output");
 
-  app.add_option("--compiler, -c", zhdata.options["compiler"],
-                 "compiler, used to compile file, if target isn't bytecode")
-      ->default_val("gcc");
+  app.add_option("--out, -o", zhdata.options["out"],
+                 "out filename (with extension)")
+      ->default_val("zhaba_tmp.c");
+  app.add_option(
+         "--compiler, -c", zhdata.options["compiler"],
+         "compiler command, used to compile file, if target isn't bytecode")
+      ->default_val("gcc zhaba_tmp.c -o zhaba_tmp -O3 -w");
+  app.add_option("--run, -r", zhdata.options["run"],
+                 "run command, if target isn't bytecode")
+      ->default_val(".\\zhaba_tmp");
+  app.add_option("--dep-pr", zhdata.options["dep-pr"],
+                 "dependency prefix, used when generating C source, `#include"
+                 "<prefix><dep/path>`")
+      ->default_val("");
 
   CLI11_PARSE(app, argc, argv);
 
