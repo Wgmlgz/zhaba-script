@@ -1,11 +1,27 @@
 #include "./to_c.hpp"
 
 size_t tab_size = 2;
+std::set<Str> used_types = {
+    "u8",  "u16", "u32", "u64",  "i8",   "i16", "i32",
+    "i64", "f32", "f64", "char", "bool", "str",
+};
+
+bool isValidCId(Str str) {
+  return std::regex_match(str, std::regex("[_a-zA-Z][0-9a-zA-Z]*"));
+}
 
 std::string id2C(const std::string& str) {
   static std::unordered_map<std::string, std::string> cache;
+  static std::set<Str> used_ids;
 
   if (cache.contains(str)) return cache.at(str) + "/*" + str + "*/";
+
+  /** First appearance of function name will be normal, instead of id_xxx */
+  if (isValidCId(str) && !used_ids.contains(str)) {
+    used_ids.emplace(str);
+    cache.emplace(str, str);
+    return str;
+  }
 
   std::string ans = "id_" + std::to_string(genId());
   cache.emplace(str, ans);
@@ -32,9 +48,10 @@ std::string module2C(ZHModule* block) {
   };
   gather_deps(block);
 
-  for (const auto& dep : deps) {
+  for (auto& dep : deps) {
     auto ext = dep.extension().string();
     includes += "#include \"";
+    includes += zhdata.options["dep-pr"];
     includes += dep.string();
     includes += "\"\n";
   }
@@ -123,6 +140,7 @@ void panic(const char* str) {
   res += "\n";
 
   for (auto [_, i] : order) {
+    used_types.emplace(i->name);
     if (i->defined == DEFINED::zh) {
       auto id = i;
       res += struct2C(id);
@@ -229,11 +247,13 @@ std::string exp2C(zhexp::Exp* exp) {
       auto type_a = op->lhs->type;
       auto type_b = static_cast<zhexp::TypeLiteral*>(op->rhs)->literal_type;
 
-      if (!(type_b.getPtr() || type_b.getRef() || type_b.getTypeId()->defined == DEFINED::core)||
-          !(type_a.getPtr() || type_a.getRef() || type_a.getTypeId()->defined == DEFINED::core))
-        throw ParserError(
-            op->begin, op->end,
-            "C doesn't allow conversion to non-scalar type `" + type_b.toString() + "`");
+      if (!(type_b.getPtr() || type_b.getRef() ||
+            type_b.getTypeId()->defined == DEFINED::core) ||
+          !(type_a.getPtr() || type_a.getRef() ||
+            type_a.getTypeId()->defined == DEFINED::core))
+        throw ParserError(op->begin, op->end,
+                          "C doesn't allow conversion to non-scalar type `" +
+                              type_b.toString() + "`");
       res += "(";
       res += type2C(type_b);
       res += ")";
@@ -289,12 +309,11 @@ std::string exp2C(zhexp::Exp* exp) {
     if (op->func && op->func->defined == DEFINED::core) {
       if (0) {
       }
-#define MAKE_LOP_C(name, type_, impl_)                          \
-  else if (op->val == #name &&                                  \
-           op->child->type.getTypeId() == types::type_) { \
-    res += impl_;                                               \
-    res += args2C(op->child, {types::Type()});                  \
-    res += ")";                                                 \
+#define MAKE_LOP_C(name, type_, impl_)                                        \
+  else if (op->val == #name && op->child->type.getTypeId() == types::type_) { \
+    res += impl_;                                                             \
+    res += args2C(op->child, {types::Type()});                                \
+    res += ")";                                                               \
   }
 
 #define MAKE_C_FN_INT(type)                     \
@@ -303,97 +322,97 @@ std::string exp2C(zhexp::Exp* exp) {
   MAKE_LOP_C(+, type##T, "+(")                  \
   MAKE_LOP_C(~, type##T, "~(")                  \
   MAKE_LOP_C(in_##type, voidT, "in_" #type "(") \
-  MAKE_LOP_C(i8, type##T, "(i8)(")                \
-  MAKE_LOP_C(i16, type##T, "(i16)(")              \
-  MAKE_LOP_C(i32, type##T, "(i32)(")              \
-  MAKE_LOP_C(i64, type##T, "(i64)(")              \
-  MAKE_LOP_C(u8, type##T, "(u8)(")                \
-  MAKE_LOP_C(u16, type##T, "(u16)(")              \
-  MAKE_LOP_C(u32, type##T, "(u32)(")              \
-  MAKE_LOP_C(u64, type##T, "(u64)(")              \
-  MAKE_LOP_C(f32, type##T, "(f32)(")              \
-  MAKE_LOP_C(f64, type##T, "(f64)(")              \
-  MAKE_LOP_C(bool, type##T, "(bool)(")            \
+  MAKE_LOP_C(i8, type##T, "(i8)(")              \
+  MAKE_LOP_C(i16, type##T, "(i16)(")            \
+  MAKE_LOP_C(i32, type##T, "(i32)(")            \
+  MAKE_LOP_C(i64, type##T, "(i64)(")            \
+  MAKE_LOP_C(u8, type##T, "(u8)(")              \
+  MAKE_LOP_C(u16, type##T, "(u16)(")            \
+  MAKE_LOP_C(u32, type##T, "(u32)(")            \
+  MAKE_LOP_C(u64, type##T, "(u64)(")            \
+  MAKE_LOP_C(f32, type##T, "(f32)(")            \
+  MAKE_LOP_C(f64, type##T, "(f64)(")            \
+  MAKE_LOP_C(bool, type##T, "(bool)(")          \
   MAKE_LOP_C(char, type##T, "(char)(")
 
-  MAKE_C_FN_INT(i8)
-  MAKE_C_FN_INT(i16)
-  MAKE_C_FN_INT(i32)
-  MAKE_C_FN_INT(i64)
-  MAKE_C_FN_INT(u8)
-  MAKE_C_FN_INT(u16)
-  MAKE_C_FN_INT(u32)
-  MAKE_C_FN_INT(u64)
-  MAKE_C_FN_INT(bool)
-  MAKE_C_FN_INT(char)
+      MAKE_C_FN_INT(i8)
+      MAKE_C_FN_INT(i16)
+      MAKE_C_FN_INT(i32)
+      MAKE_C_FN_INT(i64)
+      MAKE_C_FN_INT(u8)
+      MAKE_C_FN_INT(u16)
+      MAKE_C_FN_INT(u32)
+      MAKE_C_FN_INT(u64)
+      MAKE_C_FN_INT(bool)
+      MAKE_C_FN_INT(char)
 
 #define MAKE_C_FN_FLOAT(type)                   \
   MAKE_LOP_C(!, type##T, "!(")                  \
   MAKE_LOP_C(-, type##T, "-(")                  \
   MAKE_LOP_C(+, type##T, "+(")                  \
   MAKE_LOP_C(in_##type, voidT, "in_" #type "(") \
-  MAKE_LOP_C(i8, type##T, "(i8)(")                \
-  MAKE_LOP_C(i16, type##T, "(i16)(")              \
-  MAKE_LOP_C(i32, type##T, "(i32)(")              \
-  MAKE_LOP_C(i64, type##T, "(i64)(")              \
-  MAKE_LOP_C(u8, type##T, "(u8)(")                \
-  MAKE_LOP_C(u16, type##T, "(u16)(")              \
-  MAKE_LOP_C(u32, type##T, "(u32)(")              \
-  MAKE_LOP_C(u64, type##T, "(u64)(")              \
-  MAKE_LOP_C(f32, type##T, "(f32)(")              \
-  MAKE_LOP_C(f64, type##T, "(f64)(")              \
-  MAKE_LOP_C(bool, type##T, "(bool)(")            \
+  MAKE_LOP_C(i8, type##T, "(i8)(")              \
+  MAKE_LOP_C(i16, type##T, "(i16)(")            \
+  MAKE_LOP_C(i32, type##T, "(i32)(")            \
+  MAKE_LOP_C(i64, type##T, "(i64)(")            \
+  MAKE_LOP_C(u8, type##T, "(u8)(")              \
+  MAKE_LOP_C(u16, type##T, "(u16)(")            \
+  MAKE_LOP_C(u32, type##T, "(u32)(")            \
+  MAKE_LOP_C(u64, type##T, "(u64)(")            \
+  MAKE_LOP_C(f32, type##T, "(f32)(")            \
+  MAKE_LOP_C(f64, type##T, "(f64)(")            \
+  MAKE_LOP_C(bool, type##T, "(bool)(")          \
   MAKE_LOP_C(char, type##T, "(char)(")
 
-  MAKE_C_FN_FLOAT(f32)
-  MAKE_C_FN_FLOAT(f64)
+      MAKE_C_FN_FLOAT(f32)
+      MAKE_C_FN_FLOAT(f64)
 
-  MAKE_LOP_C(in_str, voidT, "in_str(")
+      MAKE_LOP_C(in_str, voidT, "in_str(")
 
-  MAKE_LOP_C(put, i8T, "printf(\"%d\", ")
-  MAKE_LOP_C(out, i8T, "printf(\"%d\\n\", ")
+      MAKE_LOP_C(put, i8T, "printf(\"%d\", ")
+      MAKE_LOP_C(out, i8T, "printf(\"%d\\n\", ")
 
-  MAKE_LOP_C(put, i16T, "printf(\"%hd\", ")
-  MAKE_LOP_C(out, i16T, "printf(\"%hd\\n\", ")
+      MAKE_LOP_C(put, i16T, "printf(\"%hd\", ")
+      MAKE_LOP_C(out, i16T, "printf(\"%hd\\n\", ")
 
-  MAKE_LOP_C(put, i32T, "printf(\"%d\", ")
-  MAKE_LOP_C(out, i32T, "printf(\"%d\\n\", ")
+      MAKE_LOP_C(put, i32T, "printf(\"%d\", ")
+      MAKE_LOP_C(out, i32T, "printf(\"%d\\n\", ")
 
-  MAKE_LOP_C(put, i64T, "printf(\"%lld\", ")
-  MAKE_LOP_C(out, i64T, "printf(\"%lld\\n\", ")
+      MAKE_LOP_C(put, i64T, "printf(\"%lld\", ")
+      MAKE_LOP_C(out, i64T, "printf(\"%lld\\n\", ")
 
-  MAKE_LOP_C(put, u8T, "printf(\"%d\", ")
-  MAKE_LOP_C(out, u8T, "printf(\"%d\\n\", ")
+      MAKE_LOP_C(put, u8T, "printf(\"%d\", ")
+      MAKE_LOP_C(out, u8T, "printf(\"%d\\n\", ")
 
-  MAKE_LOP_C(put, u16T, "printf(\"%hd\", ")
-  MAKE_LOP_C(out, u16T, "printf(\"%hd\\n\", ")
+      MAKE_LOP_C(put, u16T, "printf(\"%hd\", ")
+      MAKE_LOP_C(out, u16T, "printf(\"%hd\\n\", ")
 
-  MAKE_LOP_C(put, u32T, "printf(\"%u\", ")
-  MAKE_LOP_C(out, u32T, "printf(\"%u\\n\", ")
+      MAKE_LOP_C(put, u32T, "printf(\"%u\", ")
+      MAKE_LOP_C(out, u32T, "printf(\"%u\\n\", ")
 
-  MAKE_LOP_C(put, u64T, "printf(\"%llu\", ")
-  MAKE_LOP_C(out, u64T, "printf(\"%llu\\n\", ")
+      MAKE_LOP_C(put, u64T, "printf(\"%llu\", ")
+      MAKE_LOP_C(out, u64T, "printf(\"%llu\\n\", ")
 
-  MAKE_LOP_C(put, f32T, "printf(\"%f\", ")
-  MAKE_LOP_C(out, f32T, "printf(\"%f\\n\", ")
+      MAKE_LOP_C(put, f32T, "printf(\"%f\", ")
+      MAKE_LOP_C(out, f32T, "printf(\"%f\\n\", ")
 
-  MAKE_LOP_C(put, f64T, "printf(\"%f\", ")
-  MAKE_LOP_C(out, f64T, "printf(\"%f\\n\", ")
+      MAKE_LOP_C(put, f64T, "printf(\"%f\", ")
+      MAKE_LOP_C(out, f64T, "printf(\"%f\\n\", ")
 
-  MAKE_LOP_C(put, strT, "printf(\"%s\", ")
-  MAKE_LOP_C(out, strT, "printf(\"%s\\n\", ")
+      MAKE_LOP_C(put, strT, "printf(\"%s\", ")
+      MAKE_LOP_C(out, strT, "printf(\"%s\\n\", ")
 
-  MAKE_LOP_C(put, charT, "printf(\"%c\", ")
-  MAKE_LOP_C(out, charT, "printf(\"%c\\n\", ")
+      MAKE_LOP_C(put, charT, "printf(\"%c\", ")
+      MAKE_LOP_C(out, charT, "printf(\"%c\\n\", ")
 
-  MAKE_LOP_C(put, boolT, "printf(\"%d\", ")
-  MAKE_LOP_C(out, boolT, "printf(\"%d\\n\", ")
+      MAKE_LOP_C(put, boolT, "printf(\"%d\", ")
+      MAKE_LOP_C(out, boolT, "printf(\"%d\\n\", ")
 
-  MAKE_LOP_C(malloc, i64T, "alloc(")
-  MAKE_LOP_C(free, i64T, "free((void*) ")
+      MAKE_LOP_C(malloc, i64T, "alloc(")
+      MAKE_LOP_C(free, i64T, "free((void*) ")
 
-  else {
-    throw ParserError(op->begin, op->end, "unimplemented C op " + op->val);
+      else {
+        throw ParserError(op->begin, op->end, "unimplemented C op " + op->val);
       }
     } else if (op->val == "&") {
       res += "&";
@@ -459,7 +478,7 @@ std::string block2C(STBlock* block, Function* fn, size_t depth) {
   res += "{\n";
 
   for (const auto [name, varInfo] : block->scope_info.vars.get()) {
-    res += std::string((depth+1) * tab_size , ' ');
+    res += std::string((depth + 1) * tab_size, ' ');
     if (varInfo->type.isFn()) {
       res += type2C(varInfo->type, "v" + std::to_string(varInfo->id));
       res += ";";
@@ -469,7 +488,7 @@ std::string block2C(STBlock* block, Function* fn, size_t depth) {
       res += "v" + std::to_string(varInfo->id);
       res += ";";
     }
-    res += " /*" + name + "*/\n"; 
+    res += " /*" + name + "*/\n";
   }
 
   for (auto& i : block->nodes) {
@@ -524,8 +543,21 @@ std::string node2C(STNode* node, Function* fn, size_t depth) {
 
 std::string funcName2C(Function* func) {
   if (!func) throw std::runtime_error("null head bop");
-  if (func->defined == DEFINED::extern_c) \
-    return func->extern_name;
+  if (func->defined == DEFINED::extern_c) return func->extern_name;
+
+  static std::unordered_map<Function*, std::string> cache;
+  static std::set<Str> used_ids;
+
+  if (cache.contains(func)) return cache.at(func);
+
+  /** First appearance of function name will be normal, instead of id_xxx */
+  if (isValidCId(func->name) && !used_ids.contains(func->name) &&
+      !used_types.contains(func->name)) {  // constructor check
+    used_ids.emplace(func->name);
+    cache.emplace(func, func->name);
+    return func->name;
+  }
+
   return id2C(func->toUniqueStr());
 }
 
@@ -540,8 +572,8 @@ std::string funcHead2C(Function* func) {
     for (auto& [name, type] : func->args) {
       if (!start) str += ", ";
       if (type.isFn()) {
-        str +=
-            type2C(type, "v" + std::to_string(func->args_scope->vars.at(name)->id));
+        str += type2C(
+            type, "v" + std::to_string(func->args_scope->vars.at(name)->id));
       } else {
         str += type2C(type) + " ";
         str += "v" + std::to_string(func->args_scope->vars.at(name)->id);
@@ -574,8 +606,8 @@ std::string funcHead2FnPtr(Function* func) {
 
 std::string func2C(Function* fn) {
   bool is_void = fn->type.getTypeId() == types::voidT;
-  std::string res = funcHead2C(fn) + (is_void ? "" : " {") +
-                    block2C(fn->body, fn);
+  std::string res =
+      funcHead2C(fn) + (is_void ? "" : " {") + block2C(fn->body, fn);
   if (!is_void) {
     /** Emergency exit */
     res += " panic(\"reached function end without returning anything ";
@@ -595,7 +627,8 @@ std::string struct2C(types::TYPE id) {
   res += " {\n";
   for (const auto& [name, type] : id->members) {
     res += "  " +
-           (type.isFn() ? type2C(type, id2C(name)) : type2C(type) + " " + id2C(name)) +
+           (type.isFn() ? type2C(type, id2C(name))
+                        : type2C(type) + " " + id2C(name)) +
            ";\n";
   }
   res += "};\n";
