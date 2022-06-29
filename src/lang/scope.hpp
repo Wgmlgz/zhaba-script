@@ -176,8 +176,8 @@ class Scope {
     last_fn.emplace(name.name, val);
   }
   void setVar(const std::string& name, const types::Type& val) {
-    if (vars.contains(name))
-      throw std::runtime_error("variable '" + name + "'" +
+    if (!vars.empty() && vars.get().contains(name))
+      throw std::runtime_error("variable '" + name + "' " +
                                "is already defined in this scope");
     auto info = new VarInfo{name, val, genId()};
     vars.emplace(name, info);
