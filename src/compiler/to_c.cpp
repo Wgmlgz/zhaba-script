@@ -546,7 +546,7 @@ std::string funcName2C(Function* func) {
   if (func->defined == DEFINED::extern_c) return func->extern_name;
 
   static std::unordered_map<Function*, std::string> cache;
-  static std::set<Str> used_ids;
+  static std::set<Str> used_ids = {"abs", "qsort", "min", "max"};
 
   if (cache.contains(func)) return cache.at(func);
 
