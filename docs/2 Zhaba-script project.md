@@ -35,7 +35,7 @@ You can show help information with `-h` flag:
 
 ```
 Zhaba-script compiler
-Usage: zhaba.exe [OPTIONS] file
+Usage: C:\Users\wgmlgz\code\zhaba-script\build\zhaba.exe [OPTIONS] file
 
 Positionals:
   file TEXT REQUIRED          input file to compile
@@ -51,6 +51,14 @@ Options:
   --stack_trace               traces stack, if build target is bytecode
   --show_bytecode             shows resulted bytecode, if build target is bytecode
   --pure                      doesn't print logs
-  -c,--compiler TEXT [gcc]    compiler, used to compile file, if target isn't bytecode
+  --no-comp                   doesn't compile result C
+  --no-run                    doesn't run output
+  -o,--out TEXT [zhaba_tmp.c]
+                              out filename (with extension)
+  -c,--compiler TEXT [gcc zhaba_tmp.c -o zhaba_tmp -O3 -w]
+                              compiler command, used to compile file, if target isn't bytecode
+  -r,--run TEXT [.\zhaba_tmp]
+                              run command, if target isn't bytecode
+  --dep-pr TEXT               dependency prefix, used when generating C source, `#include<prefix><dep/path>`
 
 ```
