@@ -7,3 +7,4 @@
 // @zh-fn ["fn EXIT_CODE EXIT_FAILURE ", "GET_EXIT_FAILURE "]
 #define GET_EXIT_FAILURE() EXIT_FAILURE
 // @zh-fn ["fn exit EXIT_CODE code", "exit"]
+// @zh-fn ["fn int system str s", "system"]

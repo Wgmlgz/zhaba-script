@@ -14,9 +14,8 @@ void zh_sleep(long long sleepMs) {
 #endif
 }
 
-// @zh-type ["bool _", "clock_t"]
-// @zh-fn ["fn clock_t clock", "clock"]
-// @zh-fn ["fn int dif clock_t a clock_t b", "dif_clock_t"]
-long long dif_clock_t(clock_t a, clock_t b) {
+// @zh-fn ["fn int clock", "clock"]
+// @zh-fn ["fn int dif int a int b", "dif_clock_t"]
+long long dif_clock_t(int a, int b) {
   return a - b;
 }
